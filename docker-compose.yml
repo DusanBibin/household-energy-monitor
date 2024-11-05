@@ -1,0 +1,24 @@
+services:
+  # app:
+  
+  #   image: 'docker-spring-boot-postgres:latest'
+  #   build:
+  #     context: ./nvtbackend
+  #   volumes:
+  #     - ./src:/app/src  # Maps local src folder to container's src folder
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgresdb
+  #     SPRING_DATASOURCE_USERNAME: nvt
+  #     SPRING_DATASOURCE_PASSWORD: 123
+  #   depends_on:
+  #     - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: nvt
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: postgresdb
+    ports:
+      - "5432:5432"
