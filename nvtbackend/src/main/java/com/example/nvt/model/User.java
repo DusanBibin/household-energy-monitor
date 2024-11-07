@@ -31,6 +31,10 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String phoneNumber;
+    private boolean emailConfirmed;
+    private String profileImgLocation;
+    @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private Verification verification;
     @Enumerated(EnumType.STRING)
     private Role role;
 
