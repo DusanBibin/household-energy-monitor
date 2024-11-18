@@ -1,5 +1,7 @@
 package com.example.nvt.helpers;
 
+import com.example.nvt.exceptions.EmailNotConfirmedException;
+import com.example.nvt.exceptions.InvalidAuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,5 +23,23 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
         return errors;
+    }
+
+    @ExceptionHandler(value
+            = InvalidAuthenticationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse
+    handleEmailNotConfirmedException(InvalidAuthenticationException ex)
+    {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(value
+            = EmailNotConfirmedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse
+    handleEmailNotConfirmedException(EmailNotConfirmedException ex)
+    {
+        return new ErrorResponse(ex.getMessage());
     }
 }

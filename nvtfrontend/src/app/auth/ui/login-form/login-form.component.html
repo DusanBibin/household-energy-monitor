@@ -1,0 +1,70 @@
+
+<div style="height: 100%;" class="d-flex justify-content-center align-items-center">
+    
+  <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          
+            <form [formGroup]="loginForm" (ngSubmit)="loginClick()">
+                
+              <h4 class="card-title mb-4">Login</h4>
+                
+              <div class="form-group mb-2">
+                  <label for="email">Email address</label>
+                  <input type="email"
+                        class="form-control"
+                        id="email"
+                        placeholder="Enter email"
+                        name="email"
+                        formControlName="email"
+                        [ngClass]="{'is-invalid': loginClicked && (loginForm.get('email')?.invalid || data.isError)}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="loginClicked && loginForm.get('email')?.invalid" class="invalid-feedback">
+                        Please Enter Email
+                  </div>
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="loginClicked && data.isError" class="invalid-feedback">
+                        {{data.error?.message}}
+                  </div>
+            
+              </div>
+              
+              <div class="form-group mb-4">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Password"
+                    formControlName="password"
+                    [ngClass]="{'is-invalid': loginClicked && (loginForm.get('password')?.invalid || data.isError)}"
+                    required>
+
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="loginClicked && loginForm.get('password')?.invalid" class="invalid-feedback">
+                        Please Enter Password
+                  </div>
+                    
+                   <div
+                        class="invalid-feedback"
+                        *ngIf="loginClicked && data.isError" class="invalid-feedback">
+                        {{data.error?.message}}
+                  </div>
+              </div>
+                
+              <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+                <span *ngIf="!loading">Login</span>
+                <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+    

@@ -1,8 +1,8 @@
 package com.example.nvt.service;
 
 
-import com.example.nvt.DTO.AuthenticationRequestDTO;
-import com.example.nvt.DTO.AuthenticationResponseDTO;
+import com.example.nvt.DTO.AuthRequestDTO;
+import com.example.nvt.DTO.AuthResponseDTO;
 import com.example.nvt.exceptions.EmailNotConfirmedException;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
 import com.example.nvt.repository.UserRepository;
@@ -21,7 +21,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
 
-    public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
+    public AuthResponseDTO authenticate(AuthRequestDTO request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -42,7 +42,7 @@ public class AuthenticationService {
 
 
         var jwtToken = jwtService.generateToken(user, user.getId());
-        return AuthenticationResponseDTO.builder()
+        return AuthResponseDTO.builder()
                 .token(jwtToken)
                 .build();
     }
