@@ -28,14 +28,16 @@ export class LoginComponent {
           this.loginResponse = {isError: false, data: data as AuthResponseDTO}
           console.log(this.loginResponse)
           this.jwtService.login(data.token);
-     
+          
         },
         error: (error) => {
           
           console.log(error)
+
           if(error.status == 400){
             console.log(this.loginResponse)
-            this.loginResponse = {isError: true, error: error.error}
+            this.loginResponse = {isError: true, error: error.error as ErrorMessage}
+            console.log(this.loginResponse)
           }
           
         }
