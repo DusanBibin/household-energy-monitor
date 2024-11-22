@@ -11,6 +11,7 @@ import { ErrorMessage, ResponseData } from '../../../shared/model';
 export class LoginFormComponent implements OnInit {
   
   @Input() data: ResponseData;
+  
   @Output() loginSent = new EventEmitter<AuthRequestDTO>();
   loginForm: FormGroup;
   loading: boolean = false;
@@ -20,7 +21,7 @@ export class LoginFormComponent implements OnInit {
 
     this.data = {isError: false}
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
 
@@ -40,6 +41,11 @@ export class LoginFormComponent implements OnInit {
     if (changes['data'] && this.loginClicked) {
       if(this.data.isError){
         this.loading = false;
+        const error = this.data.error?.message || 'Unknown error';
+        console.log("greska je " + error)
+        this.loginForm.controls['email'].setErrors({ backendError: error });
+        if(error === "Email or password is invalid") this.loginForm.controls['password'].setErrors({ backendError: error });
+
       }
     }
 

@@ -5,6 +5,7 @@ import com.example.nvt.DTO.AuthRequestDTO;
 import com.example.nvt.DTO.AuthResponseDTO;
 import com.example.nvt.exceptions.EmailNotConfirmedException;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
+import com.example.nvt.model.SuperAdmin;
 import com.example.nvt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,6 +43,14 @@ public class AuthenticationService {
 
 
         var jwtToken = jwtService.generateToken(user, user.getId());
+        if(user instanceof SuperAdmin superAdmin){
+
+            return AuthResponseDTO.builder()
+                    .firstLogin(superAdmin.isFirstLogin())
+                    .token(jwtToken)
+                    .build();
+
+        }
         return AuthResponseDTO.builder()
                 .token(jwtToken)
                 .build();

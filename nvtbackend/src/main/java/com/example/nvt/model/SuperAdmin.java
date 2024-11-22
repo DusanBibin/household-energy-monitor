@@ -15,4 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "superadmin_user")
 public class SuperAdmin extends User{
 
+    private boolean firstLogin;
+
+
 }
