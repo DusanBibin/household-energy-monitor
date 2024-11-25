@@ -13,6 +13,5 @@ import java.util.Optional;
 @NoArgsConstructor
 public class AuthResponseDTO {
     private String token;
-    private Boolean firstLogin;
 }
 

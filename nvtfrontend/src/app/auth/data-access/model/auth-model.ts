@@ -5,5 +5,4 @@ export interface AuthRequestDTO{
 
 export interface AuthResponseDTO{
     token: string,
-    firstLogin?: boolean
 }

@@ -13,6 +13,13 @@ const routes: Routes = [
       import('../login/login.module').then(
         (m) => m.LoginModule
       ),
+  },
+  {
+    path:'change-password',
+    loadChildren: () =>
+      import('../superadmin-change-password/superadmin-change-password.module').then(
+        (m) => m.SuperadminChangePasswordModule
+      ),
   }
 ];
 

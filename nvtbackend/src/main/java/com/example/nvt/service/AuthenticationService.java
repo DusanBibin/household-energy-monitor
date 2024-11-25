@@ -46,7 +46,6 @@ public class AuthenticationService {
         if(user instanceof SuperAdmin superAdmin){
 
             return AuthResponseDTO.builder()
-                    .firstLogin(superAdmin.isFirstLogin())
                     .token(jwtToken)
                     .build();
 

@@ -38,6 +38,17 @@ export class JwtService {
     return roles.some((role: { authority: string }) => role.authority === requiredRole);
   }
 
+  isFirstSuperadminLogin(): boolean {
+    
+    const token = this.getToken();
+    if(!token) return false;
+
+    const payload = this.decodeToken(token)
+    
+    return payload.isFirstLogin;
+
+  }
+
 
   isTokenExpired(token: string): boolean {
     const payload = this.decodeToken(token);

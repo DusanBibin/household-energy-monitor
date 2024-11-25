@@ -1,11 +1,14 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.model.SuperAdmin;
+import com.example.nvt.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private static final String SECRET_KEY = "73b65149d2e77ab667711a01e6e68a89a75e8e506faead08c8c3f50d80a00d38";
-
+    private final UserRepository userRepository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -31,12 +35,24 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails, Long id){
+
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         return generateToken(claims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+
+        if("SUPERADMIN".equals(userDetails.getAuthorities().iterator().next().getAuthority())){
+            var user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow();
+            if(user instanceof SuperAdmin superAdmin){
+                if(superAdmin.isFirstLogin()) extraClaims.put("isFirstLogin", true);
+                else extraClaims.put("isFirstLogin", false);
+
+            }
+        }
+
         extraClaims.put("role", userDetails.getAuthorities());
         return Jwts
                 .builder()

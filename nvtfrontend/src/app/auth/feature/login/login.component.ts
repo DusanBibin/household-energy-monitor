@@ -28,6 +28,13 @@ export class LoginComponent {
           this.loginResponse = {isError: false, data: data as AuthResponseDTO}
           console.log(this.loginResponse)
           this.jwtService.login(data.token);
+          if(this.jwtService.hasRole("SUPERADMIN")){
+
+            if(this.jwtService.isFirstSuperadminLogin()) console.log("ovo je prvi put")
+    
+          }
+
+          console.log("iksdebro")
           
         },
         error: (error) => {
