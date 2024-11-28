@@ -21,13 +21,8 @@
                         
                   <div
                         class="invalid-feedback"
-                        *ngIf="loginClicked && loginForm.get('email')?.invalid && !data.isError" class="invalid-feedback">
-                        Please Enter Email
-                  </div>
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="loginClicked && loginForm.get('email')?.hasError('backendError')" class="invalid-feedback">
-                        {{loginForm.get('email')?.getError('backendError')}}
+                        *ngIf="loginClicked && loginForm.get('email')?.invalid" class="invalid-feedback">
+                        {{getEmailError()}}
                   </div>
             
               </div>
@@ -38,21 +33,15 @@
                     type="password"
                     class="form-control"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Enter password"
                     formControlName="password"
                     [ngClass]="{'is-invalid': loginClicked && loginForm.get('password')?.invalid}"
                     required>
 
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="loginClicked && loginForm.get('password')?.invalid && !data.isError" class="invalid-feedback">
-                        Please Enter Password
-                  </div>
-                    
                    <div
                         class="invalid-feedback"
-                        *ngIf="loginClicked && loginForm.get('password')?.hasError('backendError')" class="invalid-feedback">
-                        {{loginForm.get('password')?.getError('backendError')}}
+                        *ngIf="loginClicked && loginForm.get('password')?.invalid" class="invalid-feedback">
+                        {{getPasswordError()}}
                   </div>
               </div>
                 

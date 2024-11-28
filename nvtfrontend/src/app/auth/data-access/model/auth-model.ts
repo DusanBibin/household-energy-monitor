@@ -6,3 +6,8 @@ export interface AuthRequestDTO{
 export interface AuthResponseDTO{
     token: string,
 }
+
+export interface SuperadminPasswordChangeDTO{
+    newPassword: string,
+    repeatPassword: string
+}

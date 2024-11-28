@@ -11,7 +11,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
     if(jwtService.isTokenExpired(token)){
       jwtService.logout();
-      
     }else{
 
       const cloned = req.clone({

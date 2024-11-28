@@ -1,11 +1,11 @@
-export interface ErrorMessage{
+export interface ResponseMessage{
   message: string;
 }
 
 export interface ResponseData{
   isError: boolean,
   data?: any,
-  error?: ErrorMessage
+  error?: ResponseMessage
 }
 
 export interface Role{

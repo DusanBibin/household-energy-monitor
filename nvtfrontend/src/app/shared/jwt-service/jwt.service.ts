@@ -10,18 +10,26 @@ export class JwtService {
   constructor(private http: HttpClient) { }
 
 
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
+
   public login(jwt: string): void{
     this.logout();
-    localStorage.setItem('access_token', jwt);
+    if(this.isBrowser()){
+      localStorage.setItem('access_token', jwt);
+    }
   }
 
 
   public logout(): void{
-    localStorage.removeItem('access_token');
+    if(this.isBrowser()){
+      localStorage.removeItem('access_token');
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return this.isBrowser() ? localStorage.getItem('access_token') : null;
   }
 
   isLoggedIn(): boolean {
@@ -43,7 +51,8 @@ export class JwtService {
     const token = this.getToken();
     if(!token) return false;
 
-    const payload = this.decodeToken(token)
+    if(!this.hasRole("SUPERADMIN")) return false;
+    const payload = this.decodeToken(token);
     
     return payload.isFirstLogin;
 

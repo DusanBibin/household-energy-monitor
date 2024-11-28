@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { guardGuard } from './guard.guard';
+import { superadminFirstLoginGuard } from './superadmin-first-login.guard';
 
-describe('guardGuard', () => {
+describe('superadminFirstLoginGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => guardGuard(...guardParameters));
+      TestBed.runInInjectionContext(() => superadminFirstLoginGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

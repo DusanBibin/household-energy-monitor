@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { SuperadminChangePasswordFormRoutingModule } from './superadmin-change-password-form-routing.module';
 import { SuperadminChangePasswordComponent } from '../../feature/superadmin-change-password/superadmin-change-password.component';
 import { SuperadminChangePasswordFormComponent } from './superadmin-change-password-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [SuperadminChangePasswordFormComponent],
   imports: [
     CommonModule,
-    SuperadminChangePasswordFormRoutingModule
+    SuperadminChangePasswordFormRoutingModule,
+    ReactiveFormsModule
   ],
   exports:[SuperadminChangePasswordFormComponent]
 })

@@ -85,6 +85,25 @@ public class JwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    public Boolean extractIsFirstLogin(String token) {
+
+        Claims claims = extractAllClaims(token);
+        return claims.containsKey("isFirstLogin") ? (Boolean) claims.get("isFirstLogin") : null;
+    }
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.containsKey("role") ? claims.get("role").toString() : null;
+    }
+
+    public Boolean isSuperAdminPasswordChanged(String token){
+        if(!extractRole(token).equals("SUPERADMIN")) return null;
+
+        return extractIsFirstLogin(token);
+    }
+
+
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }

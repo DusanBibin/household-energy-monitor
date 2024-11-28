@@ -1,7 +1,6 @@
 package com.example.nvt.helpers;
 
-import com.example.nvt.exceptions.EmailNotConfirmedException;
-import com.example.nvt.exceptions.InvalidAuthenticationException;
+import com.example.nvt.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,18 +27,46 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value
             = InvalidAuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody ErrorResponse
+    public @ResponseBody ResponseMessage
     handleEmailNotConfirmedException(InvalidAuthenticationException ex)
     {
-        return new ErrorResponse(ex.getMessage());
+        return new ResponseMessage(ex.getMessage());
     }
 
     @ExceptionHandler(value
             = EmailNotConfirmedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody ErrorResponse
+    public @ResponseBody ResponseMessage
     handleEmailNotConfirmedException(EmailNotConfirmedException ex)
     {
-        return new ErrorResponse(ex.getMessage());
+        return new ResponseMessage(ex.getMessage());
     }
+
+    @ExceptionHandler(value
+            = InvalidAuthorizationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ResponseMessage
+    handleInvalidAuthorizationException(InvalidAuthorizationException ex)
+    {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(value
+            = InvalidInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ResponseMessage
+    handleInvalidInputException(InvalidInputException ex)
+    {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(value
+            = NotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ResponseMessage
+    handleNotFoundExceptionException(InvalidInputException ex)
+    {
+        return new ResponseMessage(ex.getMessage());
+    }
+
 }

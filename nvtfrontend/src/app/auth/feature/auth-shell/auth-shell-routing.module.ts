@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { superadminFirstLoginGuard } from '../../../shared/guard/superadmin-first-login.guard';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       import('../superadmin-change-password/superadmin-change-password.module').then(
         (m) => m.SuperadminChangePasswordModule
       ),
+    canActivate: [superadminFirstLoginGuard]
   }
 ];
 

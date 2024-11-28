@@ -1,6 +1,7 @@
 package com.example.nvt.configuration;
 
 import com.example.nvt.repository.UserRepository;
+import com.example.nvt.service.JwtService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,6 +24,8 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
     private final UserRepository repository;
+    private final JwtService jwtService;
+
 
     @Bean
     public UserDetailsService userDetailsService(){
