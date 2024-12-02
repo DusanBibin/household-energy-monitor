@@ -36,7 +36,7 @@ public class DataInitializer implements CommandLineRunner {
                 .phoneNumber("0691817839")
                 .password(passwordEncoder.encode(PasswordGenerator.generatePassword(superAdminMail, "password.txt", 30)))
                 .verification(new Verification())
-                .profileImgLocation("iksde")
+                .profileImg("iksde")
                 .emailConfirmed(true)
                 .firstLogin(true)
                 .role(Role.SUPERADMIN).build();
@@ -51,7 +51,7 @@ public class DataInitializer implements CommandLineRunner {
                 .phoneNumber("0691817839")
                 .password(passwordEncoder.encode("admin1"))
                 .verification(new Verification())
-                .profileImgLocation("iksde")
+                .profileImg("iksde")
                 .emailConfirmed(true)
                 .role(Role.ADMIN).build();
 

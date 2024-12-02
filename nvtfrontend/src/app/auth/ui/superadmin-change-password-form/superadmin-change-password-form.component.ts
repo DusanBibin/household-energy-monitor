@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { passwordsMatchValidator, passwordValidator } from '../../../shared/custom-validators';
 import { SuperadminPasswordChangeDTO } from '../../data-access/model/auth-model'
+import { ResponseMessage, ResponseData } from '../../../shared/model';
 
 @Component({
   selector: 'app-superadmin-change-password-form',
@@ -10,6 +11,8 @@ import { SuperadminPasswordChangeDTO } from '../../data-access/model/auth-model'
 })
 export class SuperadminChangePasswordFormComponent implements OnInit{
     
+
+  @Input() data: ResponseData;
   @Output() changePasswordSent = new EventEmitter<SuperadminPasswordChangeDTO>();
 
   changePasswordForm: FormGroup;
@@ -18,6 +21,7 @@ export class SuperadminChangePasswordFormComponent implements OnInit{
 
   constructor(private fb: FormBuilder){
 
+    this.data = {isError: false}
     this.changePasswordForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(10), passwordValidator]],
       repeatPassword: ['', [Validators.required]]
@@ -25,15 +29,32 @@ export class SuperadminChangePasswordFormComponent implements OnInit{
 
     this.changePasswordForm.valueChanges.subscribe(() => {
         if(this.changePasswordClicked) this.changePasswordClicked = false;
-        if(this.changePasswordForm.get('email')?.hasError('backendError')) this.changePasswordForm.get('email')?.setErrors(null)
-        if(this.changePasswordForm.get('password')?.hasError('backendError')) this.changePasswordForm.get('password')?.setErrors(null)
+        if(this.changePasswordForm.get('newPassword')?.hasError('backendError')) this.changePasswordForm.get('newPassword')?.setErrors(null)
+        if(this.changePasswordForm.get('repeatPassword')?.hasError('backendError')) this.changePasswordForm.get('repeatPassword')?.setErrors(null)
         
       }
     )
 
   }
 
-  changePassword(): void{
+  ngOnChanges(changes: SimpleChanges): void {
+ 
+    if (changes['data'] && this.changePasswordClicked) {
+  
+      if(this.data.isError){
+      
+        this.loading = false;
+        const error = this.data.error?.message || 'Unknown error';
+     
+        this.changePasswordForm.controls['newPassword'].setErrors({ backendError: error });
+        if(error === "Email or password is invalid") this.changePasswordForm.controls['repeatPassword'].setErrors({ backendError: error });
+
+      }
+    }
+
+  }
+
+  changePasswordClick(): void{
     this.changePasswordClicked = true;
     this.loading = true;
    

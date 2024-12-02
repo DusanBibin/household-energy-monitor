@@ -42,14 +42,14 @@ export class LoginFormComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
  
     if (changes['data'] && this.loginClicked) {
-      console.log("1")
+  
       if(this.data.isError){
-        console.log("2")
+      
         this.loading = false;
         const error = this.data.error?.message || 'Unknown error';
      
         this.loginForm.controls['email'].setErrors({ backendError: error });
-        if(error === "Email or password is invalid") this.loginForm.controls['password'].setErrors({ backendError: error });
+        this.loginForm.controls['password'].setErrors({ backendError: error });
 
       }
     }

@@ -26,5 +26,10 @@ public class Verification {
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
+    public Verification(String verificationCode, LocalDateTime expirationDate) {
+        this.verificationCode = verificationCode;
+        this.expirationDate = expirationDate;
+    }
+
 }
 

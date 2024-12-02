@@ -3,33 +3,42 @@ package com.example.nvt.service;
 
 import com.example.nvt.DTO.AuthRequestDTO;
 import com.example.nvt.DTO.AuthResponseDTO;
+import com.example.nvt.DTO.RegisterRequestDTO;
 import com.example.nvt.DTO.SuperadminPasswordChangeDTO;
+import com.example.nvt.enumeration.Role;
 import com.example.nvt.exceptions.EmailNotConfirmedException;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
 import com.example.nvt.exceptions.InvalidAuthorizationException;
 import com.example.nvt.exceptions.InvalidInputException;
+import com.example.nvt.model.Client;
 import com.example.nvt.model.SuperAdmin;
 import com.example.nvt.model.User;
+import com.example.nvt.model.Verification;
 import com.example.nvt.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-
+    private final FileService fileService;
+    private final ClientService clientService;
+    private final UserRepository userRepository;
 
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
         System.out.println(request);
@@ -63,9 +72,7 @@ public class AuthenticationService {
     }
 
 
-    public void changeSuperadminPassword(SuperadminPasswordChangeDTO request, User user) {
-
-
+    public void  changeSuperadminPassword(SuperadminPasswordChangeDTO request, User user) {
 
 
         if(!request.getNewPassword().equals(request.getRepeatPassword()))
@@ -85,6 +92,51 @@ public class AuthenticationService {
         superAdmin.setFirstLogin(false);
         superAdmin.setPassword(newPassword);
         userService.saveUser(user);
+
+    }
+
+    public void registerClient(@Valid RegisterRequestDTO request, MultipartFile profileImage) {
+
+        Random random = new Random();
+        String code = String.format("%05d", random.nextInt(100000));
+
+        if(!request.getPassword().equals(request.getRepeatPassword()))
+            throw new InvalidInputException("Passwords do not match");
+
+        if(userService.emailAlreadyExists(request.getEmail())) throw new InvalidInputException("User with this email already exists");
+
+
+        var user = Client.builder()
+                .firstName(request.getName())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .emailConfirmed(false)
+                .role(Role.CLIENT)
+                .build();
+
+        user = (Client) userService.saveUser(user);
+
+        String filePath = "";
+        try {
+            filePath = fileService.saveProfileImg(profileImage, user.getId());
+        }catch (Exception e){
+            throw new InvalidInputException("Profile image is inv alid");
+        }
+
+        user.setVerification(new Verification(code, LocalDateTime.now().plusDays(1)));
+        user.setProfileImg(filePath);
+        userService.saveUser(user);
+        emailService.sendVerificationEmail(user);
+    }
+
+    public void verifyUser(String verificationCode) {
+
+        var client = clientService.findClientByValidValidation(verificationCode);
+
+        client.setEmailConfirmed(true);
+        userRepository.save(client);
 
     }
 }

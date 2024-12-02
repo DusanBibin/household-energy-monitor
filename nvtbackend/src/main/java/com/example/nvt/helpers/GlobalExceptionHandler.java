@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
             = NotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ResponseMessage
-    handleNotFoundExceptionException(InvalidInputException ex)
+    handleNotFoundExceptionException(NotFoundException ex)
     {
         return new ResponseMessage(ex.getMessage());
     }
