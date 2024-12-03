@@ -41,6 +41,7 @@ public class AuthenticationController {
 
     }
 
+
     @GetMapping(value = "/activate/{idActivation}")
     public ResponseEntity<?> activateUserEmail(@PathVariable("idActivation") String verificationCode) {
 
@@ -48,8 +49,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseMessage("Account activated"));
     }
 
-
-
+    
     @PutMapping("/change-superadmin-password")
     @PreAuthorize("hasAuthority('SUPERADMIN')")
     public ResponseEntity<?> changeSuperadminPassword(@Valid @RequestBody SuperadminPasswordChangeDTO request,

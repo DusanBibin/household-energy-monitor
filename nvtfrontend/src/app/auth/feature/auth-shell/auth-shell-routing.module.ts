@@ -22,6 +22,13 @@ const routes: Routes = [
         (m) => m.SuperadminChangePasswordModule
       ),
     canActivate: [superadminFirstLoginGuard]
+  },
+  {
+    path:'registration',
+    loadChildren: () =>
+      import('../client-registration/client-registration.module').then(
+        (m) => m.ClientRegistrationModule
+      )
   }
 ];
 
