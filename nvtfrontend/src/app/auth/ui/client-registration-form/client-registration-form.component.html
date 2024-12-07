@@ -1,0 +1,171 @@
+<div style="height: 100%;" class="d-flex justify-content-center align-items-center">
+    
+    <form [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
+      
+      <h4 class="mb-4">Registration</h4>
+
+      <div class="d-flex flex-column flex-md-row justify-content-center gap-4 mb-4">
+          <div style="height: auto; width: 19rem;">
+              <div style="height: 17rem; width: 19rem;" class="border p-2 rounded">
+                  <img [src]="imgUrl" class="img-thumbnail rounded" style="height: 100%; width: 100%; background-color: grey;">
+              </div>
+
+
+
+              <div class="form-group mt-2 mb-3">
+                  <label for="profileImg">Profile picture</label>
+                  <input type="file"
+
+                        #fileInput
+                        
+                        class="form-control"
+                        id="profileImg"
+                        placeholder="Upload profile image"
+                        name="profileImg"
+                        (change)="onImagePicked($event)"
+                        [ngClass]="{'is-invalid': isInvalidImg}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="isInvalidImg">
+                        {{imgErrMsg}}
+                  </div>
+                      
+              </div>
+
+              <p class="fs-7">Already have an account?<a routerLink="../login" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Login here</a></p>
+
+          </div>
+          <div style="height: auto; width: 19rem;">
+              
+              <div class="form-group mb-2" >
+                  <label for="name">Name</label>
+                  <input type="text"
+                        class="form-control"
+                        id="name"
+                        placeholder="Enter your name"
+                        name="name"
+                        formControlName="name"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('name')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('name')">
+                        
+                        {{getControlError('name')}}
+                  </div>
+                  
+              </div>
+              
+              <div class="form-group mb-2">
+                  <label for="lastname">Lastname</label>
+                  <input type="text"
+                        class="form-control"
+                        id="lastname"
+                        placeholder="Enter your lastname"
+                        name="lastname"
+                        formControlName="lastname"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('lastname')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('lastname')">
+                        {{getControlError('lastname')}}
+                  </div>
+                      
+              </div>
+              
+              <div class="form-group mb-2">
+                  <label for="email">Enter email</label>
+                  <input type="email"
+                        class="form-control"
+                        id="email"
+                        placeholder="Enter your email"
+                        name="email"
+                        formControlName="email"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('email')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('email')">
+                        
+                        {{getControlError('email')}}
+                  </div>
+                      
+              </div>
+
+              <div class="form-group mb-2">
+                  <label for="phone">Phone number</label>
+                  <input type="text"
+                        class="form-control"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                        name="phone"
+                        formControlName="phone"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('phone')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('phone')">
+                        
+                        {{getControlError('phone')}}
+                  </div>
+                      
+              </div>
+
+
+              <div class="form-group mb-2">
+                  <label for="password">Password</label>
+                  <input type="password"
+                        class="form-control"
+                        id="password"
+                        placeholder="Enter password"
+                        name="password"
+                        formControlName="password"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('password')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('password')">
+                        {{getControlError('password')}}
+                  </div>
+                      
+              </div>
+
+
+              <div class="form-group">
+                  <label for="repeatPassword">Repeat password</label>
+                  <input type="password"
+                        class="form-control"
+                        id="repeatPassword"
+                        placeholder="Enter password again"
+                        name="repeatPassword"
+                        formControlName="repeatPassword"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('repeatPassword')}"
+                        required>
+                        
+                  <div
+                        class="invalid-feedback"
+                        *ngIf="registerClicked && isControlInvalid('repeatPassword')">
+                        {{getControlError('repeatPassword')}}
+                  </div>
+                      
+              </div>
+
+
+          </div>
+      </div>
+
+      <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+          <span *ngIf="!loading">Register</span>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      </button>
+  </form>
+</div>

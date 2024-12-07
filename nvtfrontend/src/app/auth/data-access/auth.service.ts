@@ -19,7 +19,11 @@ export class AuthService {
 
 
   changeSuperadminPassword(request: SuperadminPasswordChangeDTO): Observable<ResponseMessage>{
-    return this.http.put<ResponseMessage>(environment.apiUrl + '/auth/change-superadmin-password', request)
+    return this.http.put<ResponseMessage>(environment.apiUrl + '/auth/change-superadmin-password', request);
+  }
+
+  registerClient(request: FormData): Observable<ResponseMessage>{
+    return this.http.post<ResponseMessage>(environment.apiUrl + '/auth/register', request); 
   }
 
 }

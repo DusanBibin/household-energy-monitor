@@ -111,7 +111,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNumber(request.getPhoneNumber())
+                .phoneNumber(request.getPhone())
                 .emailConfirmed(false)
                 .role(Role.CLIENT)
                 .build();
@@ -122,7 +122,7 @@ public class AuthenticationService {
         try {
             filePath = fileService.saveProfileImg(profileImage, user.getId());
         }catch (Exception e){
-            throw new InvalidInputException("Profile image is inv alid");
+            throw new InvalidInputException("Profile image is invalid");
         }
 
         user.setVerification(new Verification(code, LocalDateTime.now().plusDays(1)));

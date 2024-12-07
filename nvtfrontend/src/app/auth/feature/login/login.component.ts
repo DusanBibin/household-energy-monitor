@@ -4,6 +4,7 @@ import { AuthService } from '../../data-access/auth.service';
 import { ResponseMessage, ResponseData } from '../../../shared/model';
 import { JwtService } from '../../../shared/jwt-service/jwt.service';
 import { Router } from '@angular/router';
+import { SnackBarService } from '../../../shared/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   loginResponse: ResponseData;
-  constructor(private router: Router, private authService: AuthService, private jwtService: JwtService){
+  constructor(private router: Router, private authService: AuthService, private jwtService: JwtService, private snackBar: SnackBarService){
     this.loginResponse = {
       isError: false,
       data: null
@@ -32,11 +33,10 @@ export class LoginComponent {
           if(this.jwtService.hasRole("SUPERADMIN")){
 
             if(this.jwtService.isFirstSuperadminLogin()) this.router.navigate(['/auth/change-password'])
-    
+            
           }
 
-      
-          
+          this.snackBar.openSnackBar("Login successful")
         },
         error: (error) => {
           

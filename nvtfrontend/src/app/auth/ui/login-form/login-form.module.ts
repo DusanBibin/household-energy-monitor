@@ -2,10 +2,15 @@ import { NgModule, ViewEncapsulation, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginFormComponent } from './login-form.component';
 import { ReactiveFormsModule} from '@angular/forms';
+import { LoginFormRoutingModule } from './login-form-routing.module';
 
 @NgModule({
   declarations: [LoginFormComponent],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LoginFormRoutingModule
+  ],
   exports: [LoginFormComponent]
 })
 export class LoginFormModule { }

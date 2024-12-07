@@ -25,7 +25,7 @@ export class SuperadminChangePasswordFormComponent implements OnInit{
     this.changePasswordForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(10), passwordValidator]],
       repeatPassword: ['', [Validators.required]]
-    }, {validators: passwordsMatchValidator})
+    }, {validators: passwordsMatchValidator('newPassword', 'repeatPassword')})
 
     this.changePasswordForm.valueChanges.subscribe(() => {
         if(this.changePasswordClicked) this.changePasswordClicked = false;
@@ -78,41 +78,31 @@ export class SuperadminChangePasswordFormComponent implements OnInit{
     return this.changePasswordForm.get('repeatPassword');
   }
 
-  getNewPasswordError(): string | null {
-    const newPassword = this.newPassword
-
-
-    if(newPassword?.hasError('required')){
-      return 'This field is required'
-    }
-
-    if(newPassword?.hasError('minlength')){
-      return 'Password must be at least 10 characters long';
-    }
-
-    if(newPassword?.hasError('passwordStrength')){
-      return newPassword.getError('passwordStrength')
-    }
-
-    if(this.changePasswordForm.hasError('passwordsMismatch')){
-      return this.changePasswordForm.getError('passwordsMismatch')
-    }
-
-    return null;
+  isControlInvalid(name: string): boolean{
+    const control = this.changePasswordForm.get(name);
+    console.log(control?.valid)
+    if(!control) {console.log("Control " + name + " doesn't exist"); return false;}
+    
+    if(name === 'newPassword' || name === 'repeatPassword') return control.invalid || this.changePasswordForm.hasError('passwordsMismatch');
+    else return control.invalid;
   }
 
-  getRepeatPasswordError(): string | null {
-    const repeatPassword = this.repeatPassword
+  getControl(name: string){
+    return this.changePasswordForm.get(name);
+  }
 
-    if(repeatPassword?.hasError('required')){
-      return 'This field is required'
-    }
+  getControlError(name: string): string | null{
+    const control = this.changePasswordForm.get(name);
 
-
-    if(this.changePasswordForm.hasError('passwordsMismatch')){
-      return this.changePasswordForm.getError('passwordsMismatch')
-    }
-
+    if(!control) console.log("Control " + name + " doesn't exist");
+    
+    if(control?.hasError('required')) return 'This field is required';
+    if(control?.hasError('minlength')) return 'Password must be at least 10 characters long';
+    if(control?.hasError('passwordStrength')) return control.getError('passwordStrength')
+    if((name === 'newPassword' || name === 'repeatPassword') && this.changePasswordForm.hasError('passwordsMismatch')) 
+      return this.changePasswordForm.getError('passwordsMismatch');
+    if(control?.hasError('backendError')) return control?.getError('backendError')
+    
     return null;
   }
 

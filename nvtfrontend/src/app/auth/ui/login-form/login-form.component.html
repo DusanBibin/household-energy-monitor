@@ -1,8 +1,8 @@
 <div style="height: 100%;" class="d-flex justify-content-center align-items-center">
     
-  <div class="border p-3" style="width: 18rem;">
+  <div class="border p-3" style="width: 19rem;">
 
-    <form [formGroup]="loginForm" (ngSubmit)="loginClick()">
+    <form [formGroup]="loginForm" (ngSubmit)="loginClick()" novalidate>
         
       <h4 class="card-title mb-4">Login</h4>
         
@@ -14,18 +14,18 @@
                 placeholder="Enter email"
                 name="email"
                 formControlName="email"
-                [ngClass]="{'is-invalid': loginClicked && loginForm.get('email')?.invalid}"
+                [ngClass]="{'is-invalid': loginClicked && isControlInvalid('email')}"
                 required>
                 
           <div
                 class="invalid-feedback"
-                *ngIf="loginClicked && loginForm.get('email')?.invalid" class="invalid-feedback">
-                {{getEmailError()}}
+                *ngIf="loginClicked && isControlInvalid('email')" class="invalid-feedback">
+                {{getControlError('email')}}
           </div>
     
       </div>
       
-      <div class="form-group mb-4">
+      <div class="form-group mb-1">
           <label for="password">Password</label>
           <input
             type="password"
@@ -38,10 +38,12 @@
 
             <div
                 class="invalid-feedback"
-                *ngIf="loginClicked && loginForm.get('password')?.invalid" class="invalid-feedback">
-                {{getPasswordError()}}
+                *ngIf="loginClicked && isControlInvalid('password')" class="invalid-feedback">
+                {{getControlError('password')}}
           </div>
       </div>
+      <p class="fs-7">Don't have an account?<a routerLink="../registration" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Register here</a></p>
+
         
       <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
         <span *ngIf="!loading">Login</span>

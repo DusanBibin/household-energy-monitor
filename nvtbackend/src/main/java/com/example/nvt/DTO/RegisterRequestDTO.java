@@ -27,10 +27,15 @@ public class RegisterRequestDTO {
     String email;
 
     @NotBlank(message = "Phone number is required")
-    String phoneNumber;
+    @Size(min = 10,max = 11, message = "Password must be at least 10 characters long")
+    @Pattern(
+            regexp = "^[0-9]+$",
+            message = "Password must contain at least one uppercase letter"
+    )
+    String phone;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 10, message = "Password must be at least 10 characters long")
+    @Size(min = 10, message = "Invalid phone number length")
     @Pattern(
             regexp = ".*[A-Z].*",
             message = "Password must contain at least one uppercase letter"

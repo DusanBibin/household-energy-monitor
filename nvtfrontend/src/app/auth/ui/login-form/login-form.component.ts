@@ -49,7 +49,7 @@ export class LoginFormComponent implements OnInit {
         const error = this.data.error?.message || 'Unknown error';
      
         this.loginForm.controls['email'].setErrors({ backendError: error });
-        this.loginForm.controls['password'].setErrors({ backendError: error });
+        if(!(error === "Email not confirmed for this user")) this.loginForm.controls['password'].setErrors({ backendError: error });
 
       }
     }
@@ -57,8 +57,10 @@ export class LoginFormComponent implements OnInit {
   }
   
   loginClick(): void {
-   
+    console.log("jebi se")
     
+    if(this.getControlError('email') === "Email not confirmed for this user") this.loginForm.get('email')?.setErrors(null)
+
     this.data.isError = false;
     this.loginClicked = true;
     this.loading = true;
@@ -72,40 +74,29 @@ export class LoginFormComponent implements OnInit {
     this.loginSent.emit(formData);
   }
 
-  get email(){
-    return this.loginForm.get('email');
-  }
 
-  get password(){
-    return this.loginForm.get('password');
-  }
-
-  getEmailError(): string | null {
-    const email = this.email
+  isControlInvalid(name: string): boolean{
     
-    if(email?.hasError('required')){
-      return 'This field is required'
-    }
+    const control = this.loginForm.get(name);
 
-    if(email?.hasError('backendError')){
-      return email?.getError('backendError')
-    }
+    if(!control) {console.log("Control " + name + " doesn't exist"); return false;}
+    return control.invalid;
+  }
 
+  getControl(name: string){
+    return this.loginForm.get(name);
+  }
+
+  getControlError(name: string): string | null{
+    const control = this.loginForm.get(name);
+    
+    if(!control) console.log("Control " + name + " doesn't exist");
+
+    if(control?.hasError('required')) return 'This field is required';
+    if(control?.hasError('backendError')) return control?.getError('backendError')
+    
     return null;
   }
 
-  getPasswordError(): string | null {
-    const password = this.password
-
-    if(password?.hasError('required')){
-      return 'This field is required'
-    }
-
-    if(password?.hasError('backendError')){
-      return password?.getError('backendError')
-    }
-
-    return null;
-  }
 
 }
