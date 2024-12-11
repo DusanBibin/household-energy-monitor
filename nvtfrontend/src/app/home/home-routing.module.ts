@@ -7,6 +7,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent, // Default component for /kera
   }
+  
 ];
 
 @NgModule({

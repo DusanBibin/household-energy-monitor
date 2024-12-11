@@ -1,14 +1,16 @@
 package com.example.nvt.configuration;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EnableRabbit
 public class RabbitMQConfig {
 
     @Bean
     public Queue myQueue() {
-        return new Queue("my-queue", true); // 'true' makes the queue durable
+        return new Queue("neki_queue", true); // 'true' makes the queue durable
     }
 }

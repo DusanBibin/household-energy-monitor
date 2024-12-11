@@ -13,7 +13,7 @@ public class RabbitMQSender {
     }
 
     public void send(String message) {
-        rabbitTemplate.convertAndSend("my-queue", message);
+        rabbitTemplate.convertAndSend("neki_queue", message);
         System.out.println("Sent message: " + message);
     }
 }

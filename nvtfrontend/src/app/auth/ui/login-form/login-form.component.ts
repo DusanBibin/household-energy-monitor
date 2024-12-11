@@ -57,7 +57,7 @@ export class LoginFormComponent implements OnInit {
   }
   
   loginClick(): void {
-    console.log("jebi se")
+  
     
     if(this.getControlError('email') === "Email not confirmed for this user") this.loginForm.get('email')?.setErrors(null)
 
