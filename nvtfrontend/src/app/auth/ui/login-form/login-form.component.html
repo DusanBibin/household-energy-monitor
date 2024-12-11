@@ -1,6 +1,6 @@
 <div style="height: 100%;" class="d-flex justify-content-center align-items-center">
     
-  <div class="border p-3" style="width: 19rem;">
+  <div class="border p-3" style="width: 20rem;">
 
     <form [formGroup]="loginForm" (ngSubmit)="loginClick()" novalidate>
         
@@ -25,7 +25,7 @@
     
       </div>
       
-      <div class="form-group mb-1">
+      <div class="form-group mb-2">
           <label for="password">Password</label>
           <input
             type="password"
@@ -42,7 +42,7 @@
                 {{getControlError('password')}}
           </div>
       </div>
-      <p class="fs-7">Don't have an account?<a routerLink="../registration" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Register here</a></p>
+      <p class="fs-8 mb-4">Don't have an account?<a routerLink="../registration" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Register here</a></p>
 
         
       <button class="btn btn-primary w-100" type="submit" [disabled]="loading">

@@ -28,6 +28,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request){
         AuthResponseDTO token = authService.authenticate(request);
+
         return ResponseEntity.ok(token);
     }
 
