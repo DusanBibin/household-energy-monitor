@@ -19,5 +19,5 @@ import java.util.List;
 public class Client extends User{
 
     @OneToMany
-    private List<RealEstate> realEstates;
+    private List<Realestate> realEstates;
 }

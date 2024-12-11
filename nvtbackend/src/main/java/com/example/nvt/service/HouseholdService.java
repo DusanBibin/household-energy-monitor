@@ -6,6 +6,8 @@ import com.example.nvt.repository.HouseholdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class HouseholdService {
@@ -15,4 +17,7 @@ public class HouseholdService {
         return householdRepository.save(household);
     }
 
+    public List<Long> getAllHouseholdIds() {
+        return householdRepository.getAllHouseholdIds();
+    }
 }

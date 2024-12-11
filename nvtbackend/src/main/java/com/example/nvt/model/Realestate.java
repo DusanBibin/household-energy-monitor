@@ -13,15 +13,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RealEstate {
+public class Realestate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Client client;
 
     @OneToMany
-    private List<Household> household;
+    private List<Household> households;
 }

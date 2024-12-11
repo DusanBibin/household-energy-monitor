@@ -20,8 +20,8 @@ public class Household {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private RealEstate realEstate;
+    @ManyToOne
+    private Realestate realEstate;
 
     private Boolean isOnline;
     private LocalDateTime lastOnline;
