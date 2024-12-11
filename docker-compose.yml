@@ -22,3 +22,28 @@ services:
       POSTGRES_DB: postgresdb
     ports:
       - "5432:5432"
+
+  influxdb:
+      image: influxdb:2.7
+      container_name: influxdb
+      environment:
+        INFLUXDB_ADMIN_USER: nvt
+        INFLUXDB_ADMIN_PASSWORD: 123
+        INFLUXDB_DB: my_database
+      # volumes:
+      #   - influxdb-data:/var/lib/influxdb2
+      ports:
+        - "8086:8086"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Port for RabbitMQ messaging
+      - "15672:15672" # Port for RabbitMQ management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: nvt
+      RABBITMQ_DEFAULT_PASS: 123
+
+# volumes:
+#   influxdb-data:

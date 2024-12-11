@@ -5,9 +5,11 @@ import com.example.nvt.DTO.AuthRequestDTO;
 import com.example.nvt.DTO.AuthResponseDTO;
 import com.example.nvt.DTO.RegisterRequestDTO;
 import com.example.nvt.DTO.SuperadminPasswordChangeDTO;
+import com.example.nvt.configuration.RabbitMQSender;
 import com.example.nvt.helpers.ResponseMessage;
 import com.example.nvt.model.User;
 import com.example.nvt.service.AuthenticationService;
+import com.sendgrid.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthenticationController {
 
     private final AuthenticationService authService;
+    private final RabbitMQSender rabbitMQSender;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request){
@@ -59,6 +62,13 @@ public class AuthenticationController {
         authService.changeSuperadminPassword(request, user);
 
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
+    }
+
+    @PostMapping("/proba")
+    public ResponseEntity<?> proba(String poruka){
+        rabbitMQSender.send(poruka);
+
+        return ResponseEntity.ok(new ResponseMessage("Nesto"));
     }
 
 
