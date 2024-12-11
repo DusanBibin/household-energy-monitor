@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -20,4 +22,7 @@ public class Household {
 
     @OneToOne
     private RealEstate realEstate;
+
+    private Boolean isOnline;
+    private LocalDateTime lastOnline;
 }
