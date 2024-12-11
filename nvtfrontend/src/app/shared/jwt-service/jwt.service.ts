@@ -34,16 +34,20 @@ export class JwtService {
 
   isLoggedIn(): boolean {
     const token = this.getToken();
+    
     return !!token && !this.isTokenExpired(token);
   }
 
-  hasRole(requiredRole: string): boolean {
+  hasRole(allowedRoles: string[]): boolean {
     const token = this.getToken();
     if (!token) return false;
 
     const decoded = this.decodeToken(token);
-    const roles = decoded?.role || [];
-    return roles.some((role: { authority: string }) => role.authority === requiredRole);
+    const userRoles = decoded?.role || [];
+    
+    return userRoles.some((role: { authority: string }) =>
+      allowedRoles.includes(role.authority)
+    );
   }
 
   isFirstSuperadminLogin(): boolean {
@@ -51,7 +55,7 @@ export class JwtService {
     const token = this.getToken();
     if(!token) return false;
 
-    if(!this.hasRole("SUPERADMIN")) return false;
+    if(!this.hasRole(["SUPERADMIN"])) return false;
     const payload = this.decodeToken(token);
     
     return payload.isFirstLogin;

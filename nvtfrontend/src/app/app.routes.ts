@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './shared/guard/auth.guard';
 
 export const routes: Routes = [
     {
-        path: '',
-        redirectTo: 'auth', 
-        pathMatch: 'full', 
+        path: 'home',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+        canActivate: [authGuard],
+        data: {roles: ['SUPERADMIN', 'ADMIN', 'CLIENT', 'OFFICIAL']}
     },
     {
         path: 'auth',
@@ -12,7 +14,7 @@ export const routes: Routes = [
     },
     {
         path: '**', // ako ne skonta ni jedan route
-        redirectTo: 'auth', // redirect na auth
+        redirectTo: 'home', // redirect na ''
     }
     
 ];

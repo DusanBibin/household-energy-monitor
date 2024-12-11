@@ -30,12 +30,13 @@ export class LoginComponent {
           this.loginResponse = {isError: false, data: data as AuthResponseDTO}
          
           this.jwtService.login(data.token);
-          if(this.jwtService.hasRole("SUPERADMIN")){
+          if(this.jwtService.hasRole(["SUPERADMIN"])){
 
             if(this.jwtService.isFirstSuperadminLogin()) this.router.navigate(['/auth/change-password'])
             
           }
-
+          
+          this.router.navigate(['']);
           this.snackBar.openSnackBar("Login successful")
         },
         error: (error) => {

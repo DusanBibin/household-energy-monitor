@@ -6,9 +6,7 @@ export const superadminFirstLoginGuard: CanActivateFn = (route, state) => {
   const jwtService = inject(JwtService);
   const router = inject(Router);
 
-  const requiredRole = route.data['role'] as string;
-
-  if (jwtService.isLoggedIn() && jwtService.hasRole("SUPERADMIN")) {
+  if (jwtService.isLoggedIn() && jwtService.hasRole(["SUPERADMIN"])) {
 
     if(jwtService.isFirstSuperadminLogin()) return true;
     else return false;
