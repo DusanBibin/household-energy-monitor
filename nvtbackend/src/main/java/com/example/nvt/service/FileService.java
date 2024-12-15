@@ -1,10 +1,16 @@
 package com.example.nvt.service;
 
+import com.example.nvt.exceptions.InvalidInputException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 public class FileService {
 
     private final String uploadDir = "files";
+    private final UserService userService;
 
     public String saveProfileImg(MultipartFile file, Long userId) throws IOException {
 
@@ -34,5 +41,45 @@ public class FileService {
 
         return fileName;
 
+    }
+
+    public String getProfileImg(Long id) {
+
+        var user = userService.getUserById(id);
+        return uploadDir + "/" + user.getId() + "/" + user.getProfileImg();
+    }
+
+    public Resource getFileResource(String filePath) {
+
+        Path path = Paths.get(filePath);
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return resource;
+
+    }
+
+    public MediaType getFileMediaType(String filePath) {
+
+        String ext = FilenameUtils.getExtension(filePath);
+        MediaType mediaType = null;
+        switch (ext) {
+            case "jpg":
+                mediaType = MediaType.IMAGE_JPEG;
+                break;
+            case "png":
+                mediaType = MediaType.IMAGE_PNG;
+                break;
+            case "jpeg":
+                mediaType = MediaType.IMAGE_JPEG;
+                break;
+            default:
+                throw new InvalidInputException("Media type not recognized");
+        }
+
+        return mediaType;
     }
 }
