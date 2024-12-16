@@ -1,6 +1,7 @@
 package com.example.nvt.controller;
 
 
+import com.example.nvt.DTO.PartialUserDataDTO;
 import com.example.nvt.model.User;
 import com.example.nvt.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,14 @@ public class UserController {
     @GetMapping(value = "/partial-data")
     public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
 
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
 
-        return ResponseEntity.ok().body("kurac");
+        return ResponseEntity.ok().body(data);
 
     }
 }

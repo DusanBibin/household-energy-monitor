@@ -3,9 +3,9 @@ import { AuthService } from '../../data-access/auth.service';
 import { ResponseData, ResponseMessage } from '../../../shared/model';
 import { error } from 'console';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../../shared/snackbar-service/snackbar.service';
+import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import { RegisterRequestDTO } from '../../data-access/model/auth-model';
-import { JwtService } from '../../../shared/jwt-service/jwt.service';
+import { JwtService } from '../../../shared/services/jwt-service/jwt.service';
 
 @Component({
   selector: 'app-client-registration',

@@ -1,6 +1,6 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { JwtService } from '../jwt-service/jwt.service';
+import { JwtService } from '../services/jwt-service/jwt.service';
 
 export const superadminFirstLoginGuard: CanActivateFn = (route, state) => {
   const jwtService = inject(JwtService);

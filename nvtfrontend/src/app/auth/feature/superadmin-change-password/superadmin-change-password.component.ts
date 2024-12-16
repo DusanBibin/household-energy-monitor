@@ -4,7 +4,7 @@ import { AuthService } from '../../data-access/auth.service';
 import { error } from 'console';
 import { ResponseMessage, ResponseData } from '../../../shared/model';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../../shared/snackbar-service/snackbar.service';
+import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-superadmin-change-password',

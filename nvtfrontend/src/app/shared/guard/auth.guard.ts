@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { JwtService } from '../jwt-service/jwt.service';
+import { JwtService } from '../services/jwt-service/jwt.service';
 import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {

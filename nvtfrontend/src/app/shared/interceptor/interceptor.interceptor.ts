@@ -1,7 +1,7 @@
 
 import { inject } from '@angular/core';
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
-import { JwtService } from '../jwt-service/jwt.service';
+import { JwtService } from '../services/jwt-service/jwt.service';
 import { Router } from '@angular/router';
 
 

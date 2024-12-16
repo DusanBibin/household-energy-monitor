@@ -1,3 +1,13 @@
+
+export interface PartialUserData{
+  name?: string,
+  lastname?: string,
+  email?: string,
+  role?: Role
+}
+
+
+
 export interface ResponseMessage{
   message: string;
 }
