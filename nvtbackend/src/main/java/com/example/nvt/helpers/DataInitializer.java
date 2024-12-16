@@ -41,8 +41,8 @@ public class DataInitializer implements CommandLineRunner {
         String superAdminMail = "admin";
         SuperAdmin superAdmin = SuperAdmin.builder()
                 .email(superAdminMail)
-                .firstName("ime")
-                .lastname("prezime")
+                .firstName("Ime")
+                .lastname("Prezime")
                 .phoneNumber("0691817839")
                 .password(passwordEncoder.encode(PasswordGenerator.generatePassword(superAdminMail, "password.txt", 30)))
                 .verification(new Verification())
@@ -55,8 +55,8 @@ public class DataInitializer implements CommandLineRunner {
 
         Admin admin1 = Admin.builder()
                 .email("admin1@gmail.com")
-                .firstName("ime")
-                .lastname("prezime")
+                .firstName("Ime")
+                .lastname("Prezime")
                 .phoneNumber("0691817839")
                 .password(passwordEncoder.encode("admin1"))
                 .verification(new Verification())
@@ -68,8 +68,8 @@ public class DataInitializer implements CommandLineRunner {
 
         Client client1 = Client.builder()
                 .email("client1@gmail.com")
-                .firstName("ime")
-                .lastname("prezime")
+                .firstName("Ime")
+                .lastname("Prezime")
                 .phoneNumber("0691817839")
                 .password(passwordEncoder.encode("admin1"))
                 .verification(new Verification())

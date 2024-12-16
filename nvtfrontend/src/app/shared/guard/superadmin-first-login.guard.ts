@@ -1,10 +1,12 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { JwtService } from '../services/jwt-service/jwt.service';
+import { SnackBarService } from '../services/snackbar-service/snackbar.service';
 
 export const superadminFirstLoginGuard: CanActivateFn = (route, state) => {
   const jwtService = inject(JwtService);
   const router = inject(Router);
+  const snackBar = inject(SnackBarService);
 
   if (jwtService.isLoggedIn() && jwtService.hasRole(["SUPERADMIN"])) {
 
@@ -12,6 +14,7 @@ export const superadminFirstLoginGuard: CanActivateFn = (route, state) => {
     else return false;
   
   }else{
+    snackBar.openSnackBar("Session expired, please login again");
     router.navigate(["/auth/login"])
   }
 
