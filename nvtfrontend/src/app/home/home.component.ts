@@ -16,7 +16,7 @@ import { ResponseData } from '../shared/model';
 export class HomeComponent implements OnInit, OnDestroy{
   
 
-  protected partialUserData: PartialUserData = {};
+  protected partialUserData: PartialUserData;
   protected profileImg: string = "";
   data: any[] | null = null;
   private cacheSubscription: Subscription;
@@ -24,6 +24,15 @@ export class HomeComponent implements OnInit, OnDestroy{
   
   constructor(private jwtService: JwtService, private router: Router, private cacheService: CacheService,
     private fileService: FileService, private userService: UserService){
+
+
+      this.partialUserData = {
+        email: "",
+        name: "",
+        lastname: ""
+      }
+
+
       this.loginResponse = {
         isError: false,
         data: null
