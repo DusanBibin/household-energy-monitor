@@ -107,7 +107,7 @@ public class AuthenticationService {
 
 
         var user = Client.builder()
-                .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1))
+                .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1) )
                 .lastname(request.getLastname().substring(0, 1).toUpperCase() + request.getLastname().substring(1))
                 .email(request.getEmail().toLowerCase())
                 .password(passwordEncoder.encode(request.getPassword()))

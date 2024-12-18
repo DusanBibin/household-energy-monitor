@@ -9,8 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,5 +84,22 @@ public class FileService {
         }
 
         return mediaType;
+    }
+
+
+    public void checkProfileImg(MultipartFile img){
+
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(img.getInputStream());
+        } catch (IOException e) {
+            throw new InvalidInputException("There was an image input error");
+        }
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        if(width != 500 || height != 500) throw new InvalidInputException("Image dimensions must be 500x500");
+
     }
 }
