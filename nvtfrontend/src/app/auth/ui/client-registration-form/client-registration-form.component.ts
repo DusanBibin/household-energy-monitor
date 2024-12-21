@@ -1,19 +1,22 @@
-import { AfterViewInit, Component, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, SimpleChanges, ViewChild, ViewChildren, Inject, PLATFORM_ID, ElementRef} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { passwordsMatchValidator, passwordValidator } from '../../../shared/custom-validators';
 import { RegisterRequestDTO } from '../../data-access/model/auth-model';
 import { ResponseData } from '../../../shared/model';
 import { EventEmitter } from '@angular/core'
-import { stringify } from 'node:querystring';
-import { profile } from 'node:console';
-import { register } from 'node:module';
+import { Modal } from 'bootstrap';
+import { isPlatformBrowser} from '@angular/common';
+import { After } from 'v8';
 
 @Component({
   selector: 'app-client-registration-form',
   templateUrl: './client-registration-form.component.html',
   styleUrl: './client-registration-form.component.css'
 })
-export class ClientRegistrationFormComponent{
+export class ClientRegistrationFormComponent implements AfterViewInit{
+
+  @ViewChild('cropDialog', { static: true }) cropDialog!: ElementRef;
+  private modalInstance!: Modal;
 
   @Input() data: ResponseData;
   @Output() registerSent = new EventEmitter<{formData: FormData, email: string}>();
@@ -30,7 +33,7 @@ export class ClientRegistrationFormComponent{
   loading: boolean = false;
   registerClicked: boolean = false;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: object ){
     console.log(this.profileImg)
 
     this.data = {isError: false}
@@ -50,6 +53,13 @@ export class ClientRegistrationFormComponent{
     })
 
   }
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.modalInstance = new Modal(this.cropDialog.nativeElement);
+    }
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void{
     if(changes['data'] && this.registerClicked){
@@ -96,6 +106,7 @@ export class ClientRegistrationFormComponent{
   }
 
   onImagePicked(event: Event): void {
+    console.log("OVO SE UPALILO")
     const fileInput = event.target as HTMLInputElement;
     
   
@@ -113,15 +124,22 @@ export class ClientRegistrationFormComponent{
         };
 
         reader.readAsDataURL(fileInput.files[0]);
+
+        if (this.modalInstance) this.modalInstance.show();
+        console.log("iksde")
       }
       this.profileImg = fileInput.files[0]
+
+      
+
+
     }
     
   }
 
   isControlInvalid(name: string): boolean{
     console.log("da li smo usli ovde uopste?")
-    
+    console.log("Jebem ti mamu")
     const control = this.registrationForm.get(name);
     console.log(control?.valid)
     if(!control) {console.log("Control " + name + " doesn't exist"); return false;}

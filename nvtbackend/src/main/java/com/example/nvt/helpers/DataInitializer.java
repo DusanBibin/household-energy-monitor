@@ -2,15 +2,16 @@ package com.example.nvt.helpers;
 
 import com.example.nvt.enumeration.Role;
 import com.example.nvt.model.*;
-import com.example.nvt.repository.ClientRepository;
-import com.example.nvt.repository.HouseholdRepository;
-import com.example.nvt.repository.RealestateRepository;
-import com.example.nvt.repository.UserRepository;
+import com.example.nvt.repository.*;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +25,16 @@ public class DataInitializer implements CommandLineRunner {
     private final HouseholdRepository householdRepository;
     private final ClientRepository clientRepository;
     private final RealestateRepository realestateRepository;
+    private final CityRepository cityRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-
+        cityRepository.deleteAll();
         userRepository.deleteAll();
         clientRepository.deleteAll();
         householdRepository.deleteAll();
-
+        var cities = initializeCities();
 
         System.out.println(userRepository.getAllUsers().size());
         System.out.println(clientRepository.getAllClients().size());
@@ -114,6 +116,35 @@ public class DataInitializer implements CommandLineRunner {
         client1.getRealEstates().add(realestate1);
         client1 = clientRepository.save(client1);
 
+    }
+
+    private List<City> initializeCities() {
+        String filePath = "rs.csv";
+        List<City> cities = new ArrayList<>();
+
+        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+            String[] line;
+            boolean isFirstLine = true;
+
+            while ((line = csvReader.readNext()) != null) {
+                if (isFirstLine) { // Skip the header
+                    isFirstLine = false;
+                    continue;
+                }
+
+                // Extract relevant parts
+                String name = line[0];
+                Double lat = Double.parseDouble(line[1]);
+                Double lon = Double.parseDouble(line[2]);
+
+                // Create City instance and add it to the list
+                cities.add(new City(null, name, lat, lon));
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return cityRepository.saveAll(cities);
     }
 
 

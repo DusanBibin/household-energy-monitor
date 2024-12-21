@@ -23,6 +23,11 @@ public class Household {
     @ManyToOne
     private Realestate realEstate;
 
+
     private Boolean isOnline;
     private LocalDateTime lastOnline;
+
+    private Double floorNum;
+
+    private Double size;
 }
