@@ -166,35 +166,29 @@
               </div>
 
 
-          </div>
-      </div>
+            </div>
+            </div>
 
-      <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
-          <span *ngIf="!loading">Register</span>
-          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      </button>
+            <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+            <span *ngIf="!loading">Register</span>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
 
-
-      
       </form>
 
-
-      <div class="modal fade" #cropDialog tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  <div class="modal-content">
-                        <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                              <button type="button" class="btn-close"  aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                              Uides u kurac
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary">Cancel</button>
-                              <button type="button" class="btn btn-primary">Submit</button>
-                        </div>
-                  </div>
+      <ng-template #cropDialog let-modal>
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+              <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
             </div>
-      </div>
+            <div class="modal-body">
+              Test modal
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="modal.close('Submit click')">Submit</button>
+            </div>
+      </ng-template>
+          
       
 </div>

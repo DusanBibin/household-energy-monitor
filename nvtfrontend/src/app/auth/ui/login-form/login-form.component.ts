@@ -4,9 +4,10 @@ import { AuthRequestDTO } from '../../data-access/model/auth-model'
 import { ResponseMessage, ResponseData } from '../../../shared/model';
 
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css'
+    selector: 'app-login-form',
+    templateUrl: './login-form.component.html',
+    styleUrl: './login-form.component.css',
+    standalone: false
 })
 export class LoginFormComponent implements OnInit {
   

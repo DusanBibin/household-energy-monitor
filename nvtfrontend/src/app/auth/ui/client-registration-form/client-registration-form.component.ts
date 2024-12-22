@@ -1,22 +1,20 @@
-import { AfterViewInit, Component, Input, OnInit, Output, SimpleChanges, ViewChild, ViewChildren, Inject, PLATFORM_ID, ElementRef} from '@angular/core';
+import { Component, Input, Output, SimpleChanges, ViewChild, TemplateRef} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { passwordsMatchValidator, passwordValidator } from '../../../shared/custom-validators';
 import { RegisterRequestDTO } from '../../data-access/model/auth-model';
 import { ResponseData } from '../../../shared/model';
 import { EventEmitter } from '@angular/core'
-import { Modal } from 'bootstrap';
-import { isPlatformBrowser} from '@angular/common';
-import { After } from 'v8';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-client-registration-form',
-  templateUrl: './client-registration-form.component.html',
-  styleUrl: './client-registration-form.component.css'
+    selector: 'app-client-registration-form',
+    templateUrl: './client-registration-form.component.html',
+    styleUrl: './client-registration-form.component.css',
+    standalone: false
 })
-export class ClientRegistrationFormComponent implements AfterViewInit{
+export class ClientRegistrationFormComponent{
 
-  @ViewChild('cropDialog', { static: true }) cropDialog!: ElementRef;
-  private modalInstance!: Modal;
+  @ViewChild('cropDialog') cropDialog!: TemplateRef<any>;
 
   @Input() data: ResponseData;
   @Output() registerSent = new EventEmitter<{formData: FormData, email: string}>();
@@ -33,7 +31,7 @@ export class ClientRegistrationFormComponent implements AfterViewInit{
   loading: boolean = false;
   registerClicked: boolean = false;
 
-  constructor(private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: object ){
+  constructor(private fb: FormBuilder, private modalService: NgbModal){
     console.log(this.profileImg)
 
     this.data = {isError: false}
@@ -52,12 +50,6 @@ export class ClientRegistrationFormComponent implements AfterViewInit{
 
     })
 
-  }
-
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.modalInstance = new Modal(this.cropDialog.nativeElement);
-    }
   }
 
 
@@ -125,7 +117,7 @@ export class ClientRegistrationFormComponent implements AfterViewInit{
 
         reader.readAsDataURL(fileInput.files[0]);
 
-        if (this.modalInstance) this.modalInstance.show();
+        this.modalService.open(this.cropDialog, {centered: true, scrollable: true})
         console.log("iksde")
       }
       this.profileImg = fileInput.files[0]
@@ -136,6 +128,8 @@ export class ClientRegistrationFormComponent implements AfterViewInit{
     }
     
   }
+
+  
 
   isControlInvalid(name: string): boolean{
     console.log("da li smo usli ovde uopste?")

@@ -12,9 +12,10 @@ import { forkJoin } from 'rxjs';
 import { UserService } from '../../../shared/services/user-service/user.service';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-auth',
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css',
+    standalone: false
 })
 export class LoginComponent {
 

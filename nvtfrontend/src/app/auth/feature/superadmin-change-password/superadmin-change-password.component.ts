@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
 import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
 
 @Component({
-  selector: 'app-superadmin-change-password',
-  templateUrl: './superadmin-change-password.component.html',
-  styleUrl: './superadmin-change-password.component.css'
+    selector: 'app-superadmin-change-password',
+    templateUrl: './superadmin-change-password.component.html',
+    styleUrl: './superadmin-change-password.component.css',
+    standalone: false
 })
 export class SuperadminChangePasswordComponent {
   

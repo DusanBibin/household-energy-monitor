@@ -8,9 +8,10 @@ import { RegisterRequestDTO } from '../../data-access/model/auth-model';
 import { JwtService } from '../../../shared/services/jwt-service/jwt.service';
 
 @Component({
-  selector: 'app-client-registration',
-  templateUrl: './client-registration.component.html',
-  styleUrl: './client-registration.component.css'
+    selector: 'app-client-registration',
+    templateUrl: './client-registration.component.html',
+    styleUrl: './client-registration.component.css',
+    standalone: false
 })
 export class ClientRegistrationComponent {
 

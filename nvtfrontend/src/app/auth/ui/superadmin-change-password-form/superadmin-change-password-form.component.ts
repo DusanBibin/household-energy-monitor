@@ -5,9 +5,10 @@ import { SuperadminPasswordChangeDTO } from '../../data-access/model/auth-model'
 import { ResponseMessage, ResponseData } from '../../../shared/model';
 
 @Component({
-  selector: 'app-superadmin-change-password-form',
-  templateUrl: './superadmin-change-password-form.component.html',
-  styleUrl: './superadmin-change-password-form.component.css'
+    selector: 'app-superadmin-change-password-form',
+    templateUrl: './superadmin-change-password-form.component.html',
+    styleUrl: './superadmin-change-password-form.component.css',
+    standalone: false
 })
 export class SuperadminChangePasswordFormComponent implements OnInit{
     
