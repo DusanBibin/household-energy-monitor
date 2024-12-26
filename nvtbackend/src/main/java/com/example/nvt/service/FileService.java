@@ -3,6 +3,7 @@ package com.example.nvt.service;
 import com.example.nvt.exceptions.InvalidInputException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -13,11 +14,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 @RequiredArgsConstructor
@@ -39,17 +38,38 @@ public class FileService {
         }
 
         String fileName = file.getOriginalFilename();
+        if (fileName == null) {
+            throw new IllegalArgumentException("Invalid file name");
+        }
+        String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+        // Resize the image
+        BufferedImage originalImage = ImageIO.read(file.getInputStream());
+        BufferedImage resizedImage;
+
+        if(originalImage.getWidth() < 128 || originalImage.getHeight() < 128) throw new InvalidInputException("Image is too small");
+        if(originalImage.getWidth() >= 128 || originalImage.getHeight() >= 128) resizedImage = resizeImage(originalImage, 256, 256);
+        else resizedImage = originalImage;
+
+        BufferedImage resizedSmallImage = resizeImage(originalImage, 100, 100);
+
+
         Path filePath = uploadPath.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        Path filePathSmall = uploadPath.resolve("small_" + fileName);
+        ImageIO.write(resizedImage, fileExtension, filePath.toFile());
+        ImageIO.write(resizedSmallImage, fileExtension, filePathSmall.toFile());
 
         return fileName;
-
     }
 
-    public String getProfileImg(Long id) {
+    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight, Scalr.OP_ANTIALIAS);
+    }
+
+    public String getSmallProfileImg(Long id) {
 
         var user = userService.getUserById(id);
-        return uploadDir + "/" + user.getId() + "/" + user.getProfileImg();
+        return uploadDir + "/" + user.getId() + "/small_" + user.getProfileImg();
     }
 
     public Resource getFileResource(String filePath) {
@@ -86,20 +106,4 @@ public class FileService {
         return mediaType;
     }
 
-
-    public void checkProfileImg(MultipartFile img){
-
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(img.getInputStream());
-        } catch (IOException e) {
-            throw new InvalidInputException("There was an image input error");
-        }
-
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        if(width != 500 || height != 500) throw new InvalidInputException("Image dimensions must be 500x500");
-
-    }
 }

@@ -4,7 +4,9 @@ import { passwordsMatchValidator, passwordValidator } from '../../../shared/cust
 import { RegisterRequestDTO } from '../../data-access/model/auth-model';
 import { ResponseData } from '../../../shared/model';
 import { EventEmitter } from '@angular/core'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-client-registration-form',
@@ -14,24 +16,32 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ClientRegistrationFormComponent{
 
-  @ViewChild('cropDialog') cropDialog!: TemplateRef<any>;
+  loading: boolean = false;
+  registerClicked: boolean = false;
 
   @Input() data: ResponseData;
   @Output() registerSent = new EventEmitter<{formData: FormData, email: string}>();
 
   registrationForm: FormGroup
 
+
+
+
+
   @ViewChild('fileInput') fileInput: any;
   profileImg: File | null = null;
   imgErrMsg: string = "";
   isInvalidImg: boolean = false;
-  imgUrl: string | ArrayBuffer | null = null;
+  //imgUrl: string | ArrayBuffer | null = null;
+  imgUrl: SafeUrl = '';
+  croppedImgUrl: SafeUrl = '';
+  minCrop: number = 0;
 
+  imageChangedEvent: Event | null = null;
+  @ViewChild('cropDialog') cropDialog: TemplateRef<any> | null = null;
 
-  loading: boolean = false;
-  registerClicked: boolean = false;
-
-  constructor(private fb: FormBuilder, private modalService: NgbModal){
+  
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private sanitizer: DomSanitizer){
     console.log(this.profileImg)
 
     this.data = {isError: false}
@@ -95,47 +105,107 @@ export class ClientRegistrationFormComponent{
     
     const email = registerData.email
     this.registerSent.emit({formData, email});
+
   }
 
   onImagePicked(event: Event): void {
-    console.log("OVO SE UPALILO")
-    const fileInput = event.target as HTMLInputElement;
     
-  
+    const fileInput = event.target as HTMLInputElement;
+
     if (fileInput?.files && fileInput.files.length > 0) {
-      console.log(fileInput.files[0].type)
-      if(!(fileInput.files[0].type === 'image/jpeg' || fileInput.files[0].type === 'image/png')){ 
+      const file = fileInput.files[0];
+    
+      // Check file type
+      if (!(file.type === 'image/jpeg' || file.type === 'image/png')) {
         this.isInvalidImg = true;
-        this.imgErrMsg = "Profile image can only be png or jpg"
-      }
-      else { this.isInvalidImg = false;
+        this.imgErrMsg = 'Profile image can only be png or jpg';
+      } else {
+        this.isInvalidImg = false;
+    
+        // Use FileReader to read the image
         const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const img = new Image();
+          img.src = e.target.result;
+    
+          img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+            
+            console.log(`Image dimensions: ${width}x${height}`);
+            
+            // Perform actions based on dimensions if needed
+            if (width < 128 || height < 128) {
+              this.isInvalidImg = true;
+              this.imgErrMsg = 'Image is too small';
+            } else {
 
-        reader.onload = () => {
-          this.imgUrl = reader.result; // Set the image URL
+              this.imageChangedEvent = event;
+              
+              this.minCrop = width < height ? width : height;
+              if (this.cropDialog) {
+                this.modalService.open(this.cropDialog, {
+                  centered: true,
+                  scrollable: true,
+                  backdrop: 'static',
+                });
+              } else {
+                console.error('Crop dialog template is not defined.');
+              }
+            }
+          };
+    
+          img.onerror = () => {
+            console.error('Invalid image file.');
+            this.isInvalidImg = true;
+            this.imgErrMsg = 'Unable to process the selected image.';
+          };
         };
-
-        reader.readAsDataURL(fileInput.files[0]);
-
-        this.modalService.open(this.cropDialog, {centered: true, scrollable: true})
-        console.log("iksde")
+    
+        reader.readAsDataURL(file);
       }
-      this.profileImg = fileInput.files[0]
+    }
+    
+    
+  }
 
-      
-
-
+  imageCropped(event: ImageCroppedEvent) {
+    if (event.objectUrl) {
+      this.croppedImgUrl = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl as string);
+      if (event.blob) {
+        this.profileImg = new File([event.blob], 'cropped-image.png', { type: 'image/png' });
+        console.log('Cropped Image File:', this.profileImg);
+      } else {
+        console.error('Image cropping failed: No Blob received.');
+      }
+    } else {
+      console.error('Invalid objectUrl from cropped event.');
     }
     
   }
 
+  cropImage(){
+    console.log("iksdebro1")
+    if (this.cropDialog) {
+      this.imgUrl = this.croppedImgUrl;
+      this.modalService.dismissAll(); 
+    }
+  }
+
+  imageLoaded(image: LoadedImage) {}
+
+  cropperReady() {}
+
+  loadImageFailed() {}
   
 
+
+
+
+
+  //error handling frontend
   isControlInvalid(name: string): boolean{
-    console.log("da li smo usli ovde uopste?")
-    console.log("Jebem ti mamu")
     const control = this.registrationForm.get(name);
-    console.log(control?.valid)
     if(!control) {console.log("Control " + name + " doesn't exist"); return false;}
     
     if(name === 'password' || name === 'repeatPassword') return control.invalid || this.registrationForm.hasError('passwordsMismatch');
@@ -178,6 +248,11 @@ export class ClientRegistrationFormComponent{
   // ngAfterViewInit(){
   //   this.resetFileInput
   // }
+
+  
+
+
+  
 
 
 }
