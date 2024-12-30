@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class FileService {
 
-    private final String uploadDir = "files";
+    private final String uploadDir = "files/";
     private final UserService userService;
 
     public String saveProfileImg(MultipartFile file, Long userId) throws IOException {
@@ -69,7 +69,7 @@ public class FileService {
     public String getSmallProfileImg(Long id) {
 
         var user = userService.getUserById(id);
-        return uploadDir + "/" + user.getId() + "/small_" + user.getProfileImg();
+        return "/" + uploadDir + user.getId() + "/small_" + user.getProfileImg();
     }
 
     public Resource getFileResource(String filePath) {

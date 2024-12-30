@@ -1,9 +1,11 @@
-package com.example.nvt.configuration;
+package com.example.nvt.controller;
 
 
 import com.example.nvt.model.User;
 import com.example.nvt.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,15 +23,19 @@ public class FileController {
 
     @GetMapping(value = "/profile-img")
     public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
-
+        //        String filePath = fileService.getSmallProfileImg(user.getId());
+//        Resource resource = fileService.getFileResource(filePath);
+//        MediaType mediaType = fileService.getFileMediaType(filePath);
+//
+//        return ResponseEntity.ok()
+//                .contentType(mediaType)
+//                .body(resource);
         String filePath = fileService.getSmallProfileImg(user.getId());
-        Resource resource = fileService.getFileResource(filePath);
-        MediaType mediaType = fileService.getFileMediaType(filePath);
-
-        return ResponseEntity.ok()
-                .contentType(mediaType)
-                .body(resource);
-
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Accel-Redirect", filePath);
+        System.out.println(filePath);
+        // Return an empty response (Nginx will serve the file)
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
 }
