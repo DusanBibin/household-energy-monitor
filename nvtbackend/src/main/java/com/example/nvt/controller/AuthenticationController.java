@@ -35,11 +35,12 @@ public class AuthenticationController {
 
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerClient(@Valid @RequestPart(value = "formData", required = true) RegisterRequestDTO request,
-                                      @Valid @RequestPart(value = "profileImage", required = true) MultipartFile profileImage){
+    public ResponseEntity<?> register(@Valid @RequestPart(value = "formData", required = true) RegisterRequestDTO request,
+                                      @Valid @RequestPart(value = "profileImage", required = true) MultipartFile profileImage,
+                                      @AuthenticationPrincipal User user){
 
-        authService.registerClient(request, profileImage);
-        return ResponseEntity.ok(new ResponseMessage("Registration successful. Validation email sent to".concat(request.getEmail())));
+        String message = authService.register(request, profileImage, user);
+        return ResponseEntity.ok(new ResponseMessage(message));
 
     }
 

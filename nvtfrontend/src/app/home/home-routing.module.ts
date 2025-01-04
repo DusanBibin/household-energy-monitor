@@ -5,7 +5,16 @@ import { HomeComponent } from './home.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent, // Default component for /kera
+    component: HomeComponent,
+    children: [
+      {
+        path: 'admin-registration',
+        loadChildren: () =>
+          import('../auth/feature/client-registration/client-registration.module').then(
+            (m) => m.ClientRegistrationModule
+          )
+      }
+    ]
   }
   
 ];

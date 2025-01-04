@@ -18,12 +18,12 @@ export class HomeComponent implements OnInit, OnDestroy{
   
 
   protected partialUserData: PartialUserData;
-  protected profileImg: string = "";
+  protected imgUri: string = "";
   data: any[] | null = null;
   private cacheSubscription: Subscription;
   loginResponse: ResponseData;
   
-  constructor(private jwtService: JwtService, private router: Router, private cacheService: CacheService,
+  constructor(protected jwtService: JwtService, private router: Router, private cacheService: CacheService,
     private fileService: FileService, private userService: UserService){
 
 
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy{
   
       this.cacheSubscription = this.cacheService.cache$.subscribe(data => {
         this.data = data;
-        this.profileImg = this.data?.[0];
+        this.imgUri= this.data?.[0];
         this.partialUserData = this.data?.[1] as PartialUserData;
       })
 
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     console.log(cachedData)
     if(!cachedData){
 
-      console.log('sto nismo usli ovdee')
+      console.log("NEMA KESHA ULAZIMO DA UZMEMO OVO")
       forkJoin({
         profileImg: this.fileService.getProfileImage(),
         partialUserData: this.userService.getPartialUserData()
@@ -87,7 +87,11 @@ export class HomeComponent implements OnInit, OnDestroy{
           console.log(this.loginResponse)
         }
       })
+    }else{
+      console.log("IMA KESHA ULAZIMO DA UZMEMO KESH");
+      // const [imgUri, partialUserData] = cachedData;
     }
+
 
   }
 

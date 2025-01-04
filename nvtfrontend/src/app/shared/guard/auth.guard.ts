@@ -14,6 +14,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log(jwtService.isLoggedIn())
   console.log(jwtService.hasRole(allowedRoles))
   if (jwtService.isLoggedIn() && jwtService.hasRole(allowedRoles)) {
+    
+    if(jwtService.hasRole(['SUPERADMIN']) && jwtService.isFirstSuperadminLogin()){
+      router.navigate(['/auth/change-password'])
+      return false;
+    }
+
     console.log("upravu sii")
     return true;
   }

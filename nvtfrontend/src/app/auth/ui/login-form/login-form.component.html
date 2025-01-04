@@ -17,11 +17,13 @@
                 [ngClass]="{'is-invalid': loginClicked && isControlInvalid('email')}"
                 required>
                 
-          <div
-                class="invalid-feedback"
-                *ngIf="loginClicked && isControlInvalid('email')" class="invalid-feedback">
+          @if (loginClicked && isControlInvalid('email')) {
+            <div
+                class="invalid-feedback">
                 {{getControlError('email')}}
-          </div>
+            x</div>
+          }
+          
     
       </div>
       
@@ -36,18 +38,20 @@
             [ngClass]="{'is-invalid': loginClicked && loginForm.get('password')?.invalid}"
             required>
 
-            <div
-                class="invalid-feedback"
-                *ngIf="loginClicked && isControlInvalid('password')" class="invalid-feedback">
+            @if(loginClicked && isControlInvalid('password')) {
+              <div
+                class="invalid-feedback">
                 {{getControlError('password')}}
-          </div>
+              </div>
+            }
       </div>
       <p class="fs-8 mb-4">Don't have an account?<a routerLink="../registration" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Register here</a></p>
 
         
       <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
-        <span *ngIf="!loading">Login</span>
-        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        @if (!loading) {<span>Login</span>}
+        @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+        
       </button>
 
   </form>

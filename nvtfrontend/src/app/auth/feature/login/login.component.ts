@@ -37,15 +37,17 @@ export class LoginComponent {
           console.log("uspelo")
           this.loginResponse = {isError: false, data: data as AuthResponseDTO}
          
-          
-          if(this.jwtService.hasRole(["SUPERADMIN"])) { 
-            if(this.jwtService.isFirstSuperadminLogin()){
-              this.router.navigate(['/auth/change-password']) 
-              return;
-            } 
-          }
-
           this.jwtService.login(data.token);
+          // if(this.jwtService.hasRole(["SUPERADMIN"])) { 
+          //   console.log("OVO JE SUPERADMIN")
+          //   if(this.jwtService.isFirstSuperadminLogin()){
+          //     console.log("MENJAMO SIFRU")
+          //     this.router.navigate(['/auth/change-password']) 
+          //     return;
+          //   } 
+          // }
+
+          
 
           forkJoin({
             profileImg: this.fileService.getProfileImage(),
@@ -53,6 +55,7 @@ export class LoginComponent {
           }).subscribe({
             next: ({profileImg, partialUserData}) => {
           
+              this.cacheService.clear('userData');
               let imgUri: string = URL.createObjectURL(profileImg);
               this.cacheService.set('userData', [imgUri, partialUserData]);
 

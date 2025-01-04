@@ -5,6 +5,7 @@ import { error } from 'console';
 import { ResponseMessage, ResponseData } from '../../../shared/model';
 import { Router } from '@angular/router';
 import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { JwtService } from '../../../shared/services/jwt-service/jwt.service';
 
 @Component({
     selector: 'app-superadmin-change-password',
@@ -16,7 +17,7 @@ export class SuperadminChangePasswordComponent {
   
 
   changePasswordResponse: ResponseData;
-  constructor(private authService: AuthService, private router: Router, private snackBar: SnackBarService){
+  constructor(private authService: AuthService, private router: Router, private snackBar: SnackBarService, private jwtService: JwtService){
     this.changePasswordResponse = {
       isError: false,
       data: null
@@ -29,6 +30,7 @@ export class SuperadminChangePasswordComponent {
       {
         next: (data) => {
           this.changePasswordResponse = {isError: false, data: data as ResponseMessage};
+          this.jwtService.logout();
           this.router.navigate(["/auth/login"])
           
           this.snackBar.openSnackBar("Password change successful")

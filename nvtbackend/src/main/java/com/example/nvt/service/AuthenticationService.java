@@ -95,7 +95,18 @@ public class AuthenticationService {
 
     }
 
-    public void registerClient(@Valid RegisterRequestDTO request, MultipartFile profileImage) {
+    public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
+
+        if(!(user instanceof SuperAdmin superAdmin || user == null))
+            throw new InvalidAuthorizationException("Invalid action");
+
+        boolean emailConfirmed = false;
+        Role role = Role.CLIENT;
+
+        if(user instanceof SuperAdmin superAdmin){
+            emailConfirmed = true;
+            role = Role.ADMIN;
+        }
 
         Random random = new Random();
         String code = String.format("%05d", random.nextInt(100000));
@@ -106,29 +117,34 @@ public class AuthenticationService {
         if(userService.emailAlreadyExists(request.getEmail())) throw new InvalidInputException("User with this email already exists");
 
 
-        var user = Client.builder()
+        var newUser = Client.builder()
                 .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1) )
                 .lastname(request.getLastname().substring(0, 1).toUpperCase() + request.getLastname().substring(1))
                 .email(request.getEmail().toLowerCase())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhone())
-                .emailConfirmed(false)
-                .role(Role.CLIENT)
+                .emailConfirmed(emailConfirmed)
+                .role(role)
                 .build();
 
-        user = (Client) userService.saveUser(user);
+        newUser = (Client) userService.saveUser(newUser);
 
         String filePath = "";
         try {
-            filePath = fileService.saveProfileImg(profileImage, user.getId());
+            filePath = fileService.saveProfileImg(profileImage, newUser.getId());
         }catch (Exception e){
             throw new InvalidInputException("Profile image is invalid");
         }
 
-        user.setVerification(new Verification(code, LocalDateTime.now().plusDays(1)));
-        user.setProfileImg(filePath);
-        userService.saveUser(user);
-        emailService.sendVerificationEmail(user);
+        newUser.setVerification(new Verification(code, LocalDateTime.now().plusDays(1)));
+        newUser.setProfileImg(filePath);
+        userService.saveUser(newUser);
+
+        String message = "Registration successful. Validation email sent to".concat(request.getEmail());
+        if(!emailConfirmed) emailService.sendVerificationEmail(newUser);
+        else message = "Admin registration successful";
+
+        return message;
     }
 
     public void verifyUser(String verificationCode) {

@@ -24,13 +24,16 @@ export class ClientRegistrationComponent {
   }
 
   handleRegisterData(event: {formData: FormData, email: string}){
-    this.jwtService.logout();
+
+    if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))) this.jwtService.logout();
+
     this.authService.registerClient(event.formData).subscribe({
       next: (data) =>{
         this.registerResponse = {isError: false, data: data as ResponseMessage}
-        this.router.navigate(["/auth/login"])
 
-        this.snackBar.openSnackBar("Confirmation email sent to " + event.email)
+        if(!this.jwtService.hasRole(['SUPERADMIN'])) this.router.navigate(["/auth/login"])
+
+        this.snackBar.openSnackBar(data.message);
         console.log("I need the succsezzz")
       },
       error: (error) =>{

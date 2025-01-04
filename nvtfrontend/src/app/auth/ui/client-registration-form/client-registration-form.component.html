@@ -2,7 +2,13 @@
     
     <form [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
       
-      <h4 class="mb-4">Registration</h4>
+
+      @if(this.jwtService.hasRole(['SUPERADMIN'])){
+            <h4 class="mb-4">Admin registration</h4>
+      }
+      @else {
+            <h4 class="mb-4">Registration</h4>
+      }
 
       <div class="d-flex flex-column flex-md-row justify-content-center gap-4 mb-4">
           <div style="height: auto; width: fit-content;">
@@ -34,8 +40,10 @@
                       
               </div>
 
-              <p class="fs-7">Already have an account?<a routerLink="../login" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Login here</a></p>
-
+              @if(!this.jwtService.hasRole(['SUPERADMIN'])){
+                  <p class="fs-7">Already have an account?<a routerLink="../login" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Login here</a></p>
+              }
+              
           </div>
           <div style="height: fit-content; width: fit-content;">
               
@@ -91,13 +99,12 @@
                         formControlName="email"
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('email')}"
                         required>
-                        
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('email')">
-                        
-                        {{getControlError('email')}}
-                  </div>
+                  
+                  @if(registerClicked && isControlInvalid('email')) {
+                        <div class="invalid-feedback">
+                              {{getControlError('email')}}
+                        </div>
+                  }
                       
               </div>
 
@@ -113,14 +120,13 @@
                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('phone')}"
                         required>
-                        
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('phone')">
-                        
-                        {{getControlError('phone')}}
-                  </div>
-                      
+                  
+                  @if(registerClicked && isControlInvalid('phone')){
+                        <div class="invalid-feedback">
+                              {{getControlError('phone')}}
+                        </div>
+                  }
+                  
               </div>
 
 
@@ -135,12 +141,12 @@
                         formControlName="password"
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('password')}"
                         required>
-                        
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('password')">
-                        {{getControlError('password')}}
-                  </div>
+                  @if (registerClicked && isControlInvalid('password')) {
+                        <div
+                              class="invalid-feedback">
+                              {{getControlError('password')}}
+                        </div>     
+                  }
                       
               </div>
 
@@ -157,11 +163,12 @@
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('repeatPassword')}"
                         required>
                         
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('repeatPassword')">
-                        {{getControlError('repeatPassword')}}
-                  </div>
+                  @if (registerClicked && isControlInvalid('repeatPassword')) {
+                        <div class="invalid-feedback">
+                              {{getControlError('repeatPassword')}}
+                        </div>
+                  }
+                  
                       
               </div>
 
@@ -170,8 +177,8 @@
             </div>
 
             <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
-            <span *ngIf="!loading">Register</span>
-            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  @if (!loading) {<span>Register</span>}
+                  @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
             </button>
 
 

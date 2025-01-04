@@ -7,6 +7,7 @@ import { EventEmitter } from '@angular/core'
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { JwtService } from '../../../shared/services/jwt-service/jwt.service';
 
 @Component({
     selector: 'app-client-registration-form',
@@ -41,7 +42,7 @@ export class ClientRegistrationFormComponent{
   @ViewChild('cropDialog') cropDialog: TemplateRef<any> | null = null;
 
   
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private sanitizer: DomSanitizer){
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private sanitizer: DomSanitizer, protected jwtService: JwtService){
     console.log(this.profileImg)
 
     this.data = {isError: false}
@@ -72,6 +73,12 @@ export class ClientRegistrationFormComponent{
         const error = this.data.error?.message || 'Unknown error';
 
         this.registrationForm.controls['email'].setErrors({backendError: error});
+      }else{
+        this.profileImg = null;
+        this.imgUrl = "";
+        this.croppedImgUrl = "";
+        this.registrationForm.reset();
+        this.loading = false;
       }
 
     }
