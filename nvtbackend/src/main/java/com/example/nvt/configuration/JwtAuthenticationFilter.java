@@ -1,5 +1,7 @@
 package com.example.nvt.configuration;
 
+import com.example.nvt.model.SuperAdmin;
+import com.example.nvt.model.User;
 import com.example.nvt.service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -62,6 +64,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+
+                    if (userDetails.getAuthorities().stream()
+                            .anyMatch(auth -> auth.getAuthority().equals("SUPERADMIN"))) {
+
+                        // Assuming your `User` class implements `UserDetails` and has `isFirstLogin` property
+                        var superadmin = (SuperAdmin) userDetails;
+                        boolean isFirstLogin = superadmin.isFirstLogin();
+
+                        // Check if it's the first login and block other endpoints except for password change
+                        if (isFirstLogin && !request.getRequestURI().equals("/api/v1/auth/change-superadmin-password")) {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("Access Denied: You must change your password first.");
+                            return;
+                        }
+                    }
+
                 }
             }
             filterChain.doFilter(request, response);

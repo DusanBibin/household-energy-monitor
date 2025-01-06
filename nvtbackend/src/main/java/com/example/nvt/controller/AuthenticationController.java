@@ -63,12 +63,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
     }
 
-    @PostMapping("/proba")
-    public ResponseEntity<?> proba(String poruka){
-        rabbitMQSender.send(poruka);
-
-        return ResponseEntity.ok(new ResponseMessage("Nesto"));
+    @GetMapping("/kurcinaa")
+    @PreAuthorize("hasAuthority('SUPERADMIN')")
+    public ResponseEntity<?> getKurcinaa(){
+        return ResponseEntity.ok(new ResponseMessage("Kurcinaa"));
     }
+
 
 
 
