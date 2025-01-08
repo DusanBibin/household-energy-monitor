@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -34,11 +35,9 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.deleteAll();
         clientRepository.deleteAll();
         householdRepository.deleteAll();
+        realestateRepository.deleteAll();
         var cities = initializeCities();
 
-        System.out.println(userRepository.getAllUsers().size());
-        System.out.println(clientRepository.getAllClients().size());
-        System.out.println(householdRepository.getAllHouseholds().size());
 
         String superAdminMail = "admin";
         SuperAdmin superAdmin = SuperAdmin.builder()
@@ -82,9 +81,11 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         client1 = clientRepository.save(client1);
 
+        initializeRealestates();
+
 
         Realestate realestate1 = Realestate.builder()
-                .client(client1)
+                .realestateOwner(client1)
                 .households(new ArrayList<>())
                 .build();
         realestate1 = realestateRepository.save(realestate1);
@@ -145,6 +146,46 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         return cityRepository.saveAll(cities);
+    }
+
+    private void initializeRealestates(){
+        String filePath = "../aleksandrovo.csv";
+        List<Realestate> realestates = new ArrayList<>();
+
+        Optional<City> cityWrapper = cityRepository.findByName("Nova Crnja");
+        if(cityWrapper.isEmpty()) throw new RuntimeException("City not found");
+        City city = cityWrapper.get();
+
+        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+            String[] line;
+            boolean isFirstLine = true;
+
+            while ((line = csvReader.readNext()) != null) {
+                if (isFirstLine) { // Skip the header
+                    isFirstLine = false;
+                    continue;
+                }
+
+                // Extract relevant parts
+                String cityame = line[1];
+                Double lat = Double.parseDouble(line[2]);
+                Double lon = Double.parseDouble(line[3]);
+                String addressStreet = line[4];
+                String addressNum = line[5];
+                Realestate realestate = Realestate.builder()
+                        .city(city)
+                        .lat(lat)
+                        .lon(lon)
+                        .addressStreet(addressStreet)
+                        .addressNum(addressNum)
+                        .build();
+                realestates.add(realestate);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        realestateRepository.saveAll(realestates);
     }
 
 

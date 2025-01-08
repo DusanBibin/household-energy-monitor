@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private String phoneNumber;
     private boolean emailConfirmed;
     private String profileImg;
-    @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Verification verification;
     @Enumerated(EnumType.STRING)
     private Role role;

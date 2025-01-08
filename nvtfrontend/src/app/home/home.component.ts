@@ -16,12 +16,16 @@ import { ResponseData } from '../shared/model';
 })
 export class HomeComponent implements OnInit, OnDestroy{
   
-
+  center: google.maps.LatLngLiteral = { lat: 23.0225, lng: 72.5714}
+ 
   protected partialUserData: PartialUserData;
   protected imgUri: string = "";
   data: any[] | null = null;
   private cacheSubscription: Subscription;
   loginResponse: ResponseData;
+
+
+
   
   constructor(protected jwtService: JwtService, private router: Router, private cacheService: CacheService,
     private fileService: FileService, private userService: UserService){

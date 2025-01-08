@@ -21,32 +21,29 @@ public class Realestate {
     private Long id;
 
     @ManyToOne
-    private Client client;
+    private Client realestateOwner;
 
     @OneToMany
     private List<Household> households;
 
-    @ElementCollection
-    @CollectionTable(name = "proof_realestate_img", joinColumns = @JoinColumn(name = "realestate_id"))
-    @Column(name = "proof_img_url")
-    private List<String> proof_images;
+
+    @OneToOne
+    private RealEstateRequest request;
+
 
     @ElementCollection
     @CollectionTable(name = "realestate_img", joinColumns = @JoinColumn(name = "realestate_id"))
     @Column(name = "img_url")
     private List<String> images;
 
-    @ElementCollection
-    @CollectionTable(name = "realestate_pdf", joinColumns = @JoinColumn(name = "realestate_id"))
-    @Column(name = "proof_pdf_url")
-    private List<String> proof_pdfs;
-
     private Double lat;
     private Double lon;
 
     private RealEstateType type;
 
-    private String address;
+    private String addressStreet;
+
+    private String addressNum;
 
     @ManyToOne
     @JoinColumn(name = "city_id")

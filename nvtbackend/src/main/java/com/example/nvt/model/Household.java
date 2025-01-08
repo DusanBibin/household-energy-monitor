@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,11 +24,17 @@ public class Household {
     @ManyToOne
     private Realestate realEstate;
 
+    @ManyToOne
+    private Client houseHoldOwner;
+
+    @OneToMany
+    private List<Client> authorizedViewers;
 
     private Boolean isOnline;
     private LocalDateTime lastOnline;
 
     private Double floorNum;
+    private Double apartmentNum; // popunjava se samo ako je stan u pitanju
 
     private Double size;
 }

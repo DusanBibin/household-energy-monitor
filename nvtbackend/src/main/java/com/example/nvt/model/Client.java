@@ -20,4 +20,11 @@ public class Client extends User{
 
     @OneToMany
     private List<Realestate> realEstates;
+
+    @OneToMany
+    private List<Household> households;
+
+
+    @OneToMany
+    private List<RealEstateRequest> realEstateRequests;
 }
