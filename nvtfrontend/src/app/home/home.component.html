@@ -11,6 +11,13 @@
                             </a>
                         </li>
                     }
+
+                    @if(this.jwtService.hasRole(["CLIENT"])){
+                        <li>
+                            <a routerLink="vacant-households-client" routerLinkActive="active" class="nav-link mb-md-4 p-0 me-3">
+                                <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-md-inline">Vacant households request</span> </a>
+                        </li>
+                    }
                     
                     <li>
                         <a href="#submenu1" data-bs-toggle="collapse" class="nav-link mb-md-4 p-0 me-3">
@@ -61,7 +68,7 @@
             </div> -->
             
             
-            <!-- <router-outlet class="h-100 w-100"></router-outlet> -->
+            <router-outlet style="background-color: red;" class="h-100 w-100"></router-outlet>
            
             <!-- <google-map [center]="center">
 

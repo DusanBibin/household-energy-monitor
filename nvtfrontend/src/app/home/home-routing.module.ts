@@ -13,6 +13,13 @@ const routes: Routes = [
           import('../auth/feature/client-registration/client-registration.module').then(
             (m) => m.ClientRegistrationModule
           )
+      },
+      {
+        path:'vacant-households-client',
+        loadChildren: () =>
+          import('./feature/vacant-households-client/vacant-households-client.module').then(
+            (m) => m.VacantHouseholdsClientModule
+          )
       }
     ]
   }

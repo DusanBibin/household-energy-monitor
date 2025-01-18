@@ -3,7 +3,7 @@
     <form [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
       
 
-      @if(this.jwtService.hasRole(['SUPERADMIN'])){
+      @if(this.router.url === '/home/admin-registration'){
             <h4 class="mb-4">Admin registration</h4>
       }
       @else {
@@ -40,7 +40,7 @@
                       
               </div>
 
-              @if(!this.jwtService.hasRole(['SUPERADMIN'])){
+              @if(!(this.router.url === '/home/admin-registration')){
                   <p class="fs-7">Already have an account?<a routerLink="../login" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Login here</a></p>
               }
               

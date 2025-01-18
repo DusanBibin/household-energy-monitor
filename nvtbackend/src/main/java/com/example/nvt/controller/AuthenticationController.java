@@ -29,7 +29,6 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request){
         AuthResponseDTO token = authService.authenticate(request);
-
         return ResponseEntity.ok(token);
     }
 
@@ -63,11 +62,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
     }
 
-    @GetMapping("/kurcinaa")
-    @PreAuthorize("hasAuthority('SUPERADMIN')")
-    public ResponseEntity<?> getKurcinaa(){
-        return ResponseEntity.ok(new ResponseMessage("Kurcinaa"));
-    }
+
 
 
 

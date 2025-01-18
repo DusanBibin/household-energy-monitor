@@ -30,7 +30,7 @@ export class LoginComponent {
   }
 
   handleLoginData(formData: AuthRequestDTO): void {
-
+    this.jwtService.logout();
     this.authService.login(formData).subscribe(
       {
         next: (data) => {
@@ -38,39 +38,23 @@ export class LoginComponent {
           this.loginResponse = {isError: false, data: data as AuthResponseDTO}
          
           this.jwtService.login(data.token);
-          // if(this.jwtService.hasRole(["SUPERADMIN"])) { 
-          //   console.log("OVO JE SUPERADMIN")
-          //   if(this.jwtService.isFirstSuperadminLogin()){
-          //     console.log("MENJAMO SIFRU")
-          //     this.router.navigate(['/auth/change-password']) 
-          //     return;
-          //   } 
-          // }
 
-          
+          this.snackBar.openSnackBar("Login successful")
+          if(this.jwtService.hasRole(["SUPERADMIN"])) { 
+            console.log("OVO JE SUPERADMIN")
 
-          forkJoin({
-            profileImg: this.fileService.getProfileImage(),
-            partialUserData: this.userService.getPartialUserData()
-          }).subscribe({
-            next: ({profileImg, partialUserData}) => {
-          
-              this.cacheService.clear('userData');
-              let imgUri: string = URL.createObjectURL(profileImg);
-              this.cacheService.set('userData', [imgUri, partialUserData]);
-
-              this.router.navigate(['']);
-              this.snackBar.openSnackBar("Login successful")
-
-            },
-            error: (error) => {
-              console.log("e ovde bas nismo")
-              if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
-              console.log(this.loginResponse)
+            if(!this.jwtService.isFirstSuperadminLogin()){
+              this.getUserData();
+              this.router.navigate(['/home'], {replaceUrl: true})
+              
+            }else{
+              this.router.navigate(['/home'])
             }
-          })
+          }else{
+            this.getUserData();
+            this.router.navigate(['/home'], {replaceUrl: true})
+          } 
 
-        
 
         },
         error: (error) => {
@@ -84,5 +68,30 @@ export class LoginComponent {
 
   }
 
+  getUserData(): void{
+    forkJoin({
+      profileImg: this.fileService.getProfileImage(),
+      partialUserData: this.userService.getPartialUserData()
+    }).subscribe({
+      next: ({profileImg, partialUserData}) => {
+    
+        this.cacheService.clear('userData');
+        let imgUri: string = URL.createObjectURL(profileImg);
+        this.cacheService.set('userData', [imgUri, partialUserData]);
+
+        this.router.navigate(['/home']);
+        
+
+      },
+      error: (error) => {
+        console.log("e ovde bas nismo")
+        if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+        console.log(this.loginResponse)
+      }
+    })
+  }
+  
 
 }
+
+

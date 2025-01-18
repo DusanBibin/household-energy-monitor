@@ -45,6 +45,7 @@ public class Realestate {
 
     private String addressNum;
 
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;

@@ -19,7 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "_user",
+        indexes = {
+                @Index(name = "idx_user_email", columnList = "email")
+        }
+)
 @ToString
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
@@ -28,6 +32,7 @@ public class User implements UserDetails {
     private Long id;
     private String firstName;
     private String lastname;
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
     private String phoneNumber;
