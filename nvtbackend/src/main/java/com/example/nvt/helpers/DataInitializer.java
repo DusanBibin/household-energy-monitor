@@ -6,21 +6,30 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.*;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import kotlin.OptIn;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
+
+    private static final int BATCH_SIZE = 5000;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionRepository regionRepository;
     private final MunicipalityRepository municipalityRepository;
 
+    private StopWatch stopWatch = new StopWatch();
     @Override
     public void run(String... args) throws Exception {
 
@@ -42,7 +52,14 @@ public class DataInitializer implements CommandLineRunner {
         //householdRepository.deleteAll();
         //realestateRepository.deleteAll();
 
-        initializeCities();
+        initCitiesMunicipalitiesRegions();
+
+
+
+
+
+
+
 
 
         String superAdminMail = "admin";
@@ -87,9 +104,9 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         client1 = clientRepository.save(client1);
 
-        initializeRealestates();
+        initRealestates();
 
-
+        System.out.println(stopWatch.prettyPrint());
 
 //        Realestate realestate1 = Realestate.builder()
 //                .realestateOwner(client1)
@@ -126,115 +143,105 @@ public class DataInitializer implements CommandLineRunner {
 
     }
 
-    private void initializeCities() {
-        String filePath = "naselja_sr.csv";
+    @Transactional
+    protected void initCitiesMunicipalitiesRegions() {
+        stopWatch.start("Initializing cities");
+        System.out.println("Initializing Cities...");
+
+        String filePath = "naselja.csv";
         List<City> cities = new ArrayList<>();
+        Map<String, Region> regionMap = regionRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(Region::getName, Function.identity()));
+
+        Map<String, Municipality> municipalityMap = municipalityRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(Municipality::getName, Function.identity()));
 
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
             String[] line;
             boolean isFirstLine = true;
 
-            Map<String, Long> regionMap = new HashMap<>();
-            Map<String, Long> municipalityMap = new HashMap<>();
-
             while ((line = csvReader.readNext()) != null) {
-//                if (isFirstLine) { // Skip the header
-//                    isFirstLine = false;
-//                    continue;
-//                }
-
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
 
                 String cityName = line[0];
                 Long zipCode = Long.parseLong(line[1]);
                 String regionName = line[2];
                 String municipalityName = line[3];
 
-                //System.out.println(cityName);
-                //System.out.println("IKSDE1");
+                // Get or create Region
+                Region region = regionMap.computeIfAbsent(regionName, name -> {
+                    Region newRegion = Region.builder().name(name).build();
+                    regionRepository.save(newRegion);
+                    return newRegion;
+                });
+
+                // Get or create Municipality
+                Municipality municipality = municipalityMap.computeIfAbsent(municipalityName, name -> {
+                    Municipality newMunicipality = Municipality.builder()
+                            .name(name)
+                            .region(region)
+                            .build();
+                    municipalityRepository.save(newMunicipality);
+                    return newMunicipality;
+                });
+
+                // Create City
                 City city = City.builder()
-                        .zipCode(zipCode)
                         .name(cityName)
+                        .zipCode(zipCode)
+                        .municipality(municipality)
                         .build();
-                //System.out.println(cityName);
-                city = cityRepository.save(city);
 
+                cities.add(city);
 
-               // System.out.println("IKSDE2");
-                Municipality municipality;
-                if(municipalityMap.containsKey(municipalityName)){
-
-                    Long municipalityId = municipalityMap.get(municipalityName);
-                    Optional<Municipality> municipalityWrapper = municipalityRepository.findById(municipalityId);
-                    if(municipalityWrapper.isEmpty()) throw new InvalidInputException("Municipality not found");
-                    municipality = municipalityWrapper.get();
-                }else{
-                    municipality = Municipality.builder()
-                            .cities(new ArrayList<>())
-                            .name(municipalityName)
-                            .build();
-                    municipality = municipalityRepository.save(municipality);
-                    municipalityMap.put(municipalityName, municipality.getId());
+                if (cities.size() >= BATCH_SIZE) {
+                    cityRepository.saveAll(cities);
+                    cities.clear();
                 }
-
-               // System.out.println("IKSDE3");
-                city.setMunicipality(municipality);
-                city = cityRepository.save(city);
-//                municipality.getCities().add(city);
-//                municipality = municipalityRepository.save(municipality);
-
-
-               // System.out.println("IKSDE4");
-                Region region;
-                if(regionMap.containsKey(regionName)){
-                    Long regionId = regionMap.get(regionName);
-                    Optional<Region> regionWrapper = regionRepository.findById(regionId);
-                    if(regionWrapper.isEmpty()) throw new InvalidInputException("Region not found");
-                    region = regionWrapper.get();
-                }else{
-                    region = Region.builder()
-                            .municipalities(new ArrayList<>())
-                            .name(regionName)
-                            .build();
-                    region = regionRepository.save(region);
-                    regionMap.put(regionName, region.getId());
-                }
-
-
-               // System.out.println("IKSDE5");
-                municipality.setRegion(region);
-                municipality = municipalityRepository.save(municipality);
-                //System.out.println("IKSDE5.5");
-//                region.getMunicipalities().add(municipality);
-//                region = regionRepository.save(region);
-
-
-                //System.out.println("IKSDE6");
-
-
             }
+
+            // Save remaining cities
+            if (!cities.isEmpty()) {
+                cityRepository.saveAll(cities);
+            }
+
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
 
-        //return cityRepository.saveAll(cities);
+        stopWatch.stop();
+        System.out.println("DONE in " + stopWatch.getTotalTimeSeconds() + " seconds");
     }
 
-    private void  initializeRealestates(){
-        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese.csv";
+
+    @Transactional
+    protected void initRealestates() {
+        System.out.println("Initializing Realestates...");
+        stopWatch.start("Initializing Realestates");
+        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese_lite.csv";
+
+        // Preload all cities into memory
+        Map<String, City> cityMap = cityRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        city -> city.getName() + "_" + city.getMunicipality().getName(),
+                        city -> city
+                ));
+
         List<Realestate> realestates = new ArrayList<>();
 
-//        Optional<City> cityWrapper = cityRepository.findByName("Nova Crnja");
-//        if(cityWrapper.isEmpty()) throw new RuntimeException("City not found");
-//        City city = cityWrapper.get();
-
-        Map<String, Long> cityMap = new HashMap<>();
-        Map<String, Long> municipalityMap = new HashMap<>();
-
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+
             String[] line;
             boolean isFirstLine = true;
 
             while ((line = csvReader.readNext()) != null) {
+
                 if (isFirstLine) { // Skip the header
                     isFirstLine = false;
                     continue;
@@ -248,66 +255,42 @@ public class DataInitializer implements CommandLineRunner {
                 String addressStreet = line[4];
                 String addressNum = line[5];
 
-                try{
-                    Optional<City> cWrapper = cityRepository.findByNameAndMunName(cityName, municipalityName);
-                    if(cWrapper.isEmpty()) {
-                        if(cityMap.containsKey(cityName)){
-                            cityMap.put(cityName, cityMap.get(cityName) + 1L);
-                        }else{
-                            System.out.println("NASELJE");
-                            System.out.println(cityName + "-" + municipalityName + "\n");
-                            cityMap.put(cityName, 1L);
-                        }
-
-                    }
-                }catch (IncorrectResultSizeDataAccessException e){
-                    System.out.println("CITY EXCEPTION");
-                    System.out.println(cityName + "-" + municipalityName + "\n");
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                    return;
+                // Lookup city
+                City city = cityMap.get(cityName + "_" + municipalityName);
+                if (city == null) {
+                    System.out.println("City not found: " + cityName + ", " + municipalityName);
+                    continue; // Skip if city is not found
                 }
 
+                // Create Realestate object
+                Realestate realestate = Realestate.builder()
+                        .city(city)
+                        .lat(lat)
+                        .lon(lon)
+                        .addressStreet(addressStreet)
+                        .addressNum(addressNum)
+                        .build();
+                realestates.add(realestate);
 
-                try{
-                    Optional<Municipality> mWrapper = municipalityRepository.findByNameAndCityName(municipalityName, cityName);
-                    if(mWrapper.isEmpty()) {
-                        if(municipalityMap.containsKey(municipalityName)){
-                            municipalityMap.put(municipalityName, municipalityMap.get(municipalityName) + 1L);
-                        }else{
-                            System.out.println("OPSTINA");
-                            System.out.println(cityName + "-" + municipalityName + "\n");
-                            municipalityMap.put(municipalityName, 1L);
-                        }
-                    }
-                }catch (IncorrectResultSizeDataAccessException e){
-                    System.out.println("MUNICIPALITY EXCEPTION");
-                    System.out.println(cityName + "-" + municipalityName + "\n");
-                    System.out.println(e.getMessage());
-                    e.printStackTrace();
-                    return;
+                // Save in batches
+                if (realestates.size() >= BATCH_SIZE) {
+                    realestateRepository.saveAll(realestates);
+                    realestates.clear();
                 }
-
-
-
-
-//                Realestate realestate = Realestate.builder()
-//                        .city(city)
-//                        .lat(lat)
-//                        .lon(lon)
-//                        .addressStreet(addressStreet)
-//                        .addressNum(addressNum)
-//                        .build();
-                //realestates.add(realestate);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        System.out.println("ZAVRSILI SMO");
-//        System.out.println(cityMap);
-//        System.out.println(municipalityMap);
-        //realestateRepository.saveAll(realestates);
+
+        // Save remaining records
+        if (!realestates.isEmpty()) {
+            realestateRepository.saveAll(realestates);
+        }
+
+        stopWatch.stop();
+        System.out.println("DONE in " + stopWatch.getTotalTimeSeconds() + " seconds");
     }
+
 
 
 }

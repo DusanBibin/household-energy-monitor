@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(
+        indexes = @Index(name = "idx_city_name", columnList = "name")
+)
 public class City {
 
     @Id
@@ -27,11 +30,6 @@ public class City {
     @ManyToOne
     @JoinColumn(name = "municipality_id")
     private Municipality municipality;
-
-//    @Column(nullable = false)
-//    private Double lat;
-//    @Column(nullable = false)
-//    private Double lon;
 
 
 }

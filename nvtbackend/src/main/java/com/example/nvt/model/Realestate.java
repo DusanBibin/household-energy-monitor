@@ -26,7 +26,6 @@ public class Realestate {
     @OneToMany
     private List<Household> households;
 
-
     @OneToOne
     private RealEstateRequest request;
 

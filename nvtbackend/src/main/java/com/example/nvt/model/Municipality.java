@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
+@Table(
+        indexes = @Index(name = "idx_municipality_name", columnList = "name")
+)
 public class Municipality {
 
     @Id
@@ -26,6 +29,4 @@ public class Municipality {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<City> cities;
 }
