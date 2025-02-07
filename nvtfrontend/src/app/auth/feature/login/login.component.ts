@@ -30,6 +30,7 @@ export class LoginComponent {
   }
 
   handleLoginData(formData: AuthRequestDTO): void {
+    console.log(formData)
     this.jwtService.logout();
     this.authService.login(formData).subscribe(
       {

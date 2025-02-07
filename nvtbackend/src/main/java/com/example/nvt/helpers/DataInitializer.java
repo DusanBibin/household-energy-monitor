@@ -1,8 +1,12 @@
 package com.example.nvt.helpers;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
+import co.elastic.clients.elasticsearch.indices.GetIndexRequest;
 import com.example.nvt.enumeration.Role;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
+import com.example.nvt.model.elastic.RealestateDoc;
 import com.example.nvt.repository.*;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -40,6 +44,9 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionRepository regionRepository;
     private final MunicipalityRepository municipalityRepository;
 
+    private final RealestateDocRepository realestateDocRepository;
+    private final ElasticsearchClient elasticsearchClient;
+
     private StopWatch stopWatch = new StopWatch();
     @Override
     public void run(String... args) throws Exception {
@@ -53,11 +60,6 @@ public class DataInitializer implements CommandLineRunner {
         //realestateRepository.deleteAll();
 
         initCitiesMunicipalitiesRegions();
-
-
-
-
-
 
 
 
@@ -275,6 +277,28 @@ public class DataInitializer implements CommandLineRunner {
                 // Save in batches
                 if (realestates.size() >= BATCH_SIZE) {
                     realestateRepository.saveAll(realestates);
+
+
+                    List<RealestateDoc> realestateDocs = realestates.stream()
+                                    .map(r -> {
+                                            City c = r.getCity();
+                                            Municipality m = c.getMunicipality();
+                                            Region reg = m.getRegion();
+
+                                            String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
+                                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
+                                            return RealestateDoc.builder()
+                                                    .dbId(r.getId())
+                                                    .address(r.getAddressStreet() + " " + r.getAddressNum())
+                                                    .zipcode(c.getZipCode().toString())
+                                                    .city(c.getName())
+                                                    .municipality("Opština " + m.getName())
+                                                    .region(reg.getName())
+                                                    .lat(r.getLat())
+                                                    .lon(r.getLon())
+                                                    .build(); })
+                                    .toList();
+                    realestateDocRepository.saveAll(realestateDocs);
                     realestates.clear();
                 }
             }
@@ -285,6 +309,26 @@ public class DataInitializer implements CommandLineRunner {
         // Save remaining records
         if (!realestates.isEmpty()) {
             realestateRepository.saveAll(realestates);
+            List<RealestateDoc> realestateDocs = realestates.stream()
+                    .map(r -> {
+                        City c = r.getCity();
+                        Municipality m = c.getMunicipality();
+                        Region reg = m.getRegion();
+                        String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
+                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
+                        return RealestateDoc.builder()
+                                .dbId(r.getId())
+                                .address(r.getAddressStreet() + " " + r.getAddressNum())
+                                .zipcode(c.getZipCode().toString())
+                                .city(c.getName())
+                                .municipality("Opština " + m.getName())
+                                .region(reg.getName())
+                                .lat(r.getLat())
+                                .lon(r.getLon())
+                                .build(); })
+                    .toList();
+            realestateDocRepository.saveAll(realestateDocs);
+            realestates.clear();
         }
 
         stopWatch.stop();

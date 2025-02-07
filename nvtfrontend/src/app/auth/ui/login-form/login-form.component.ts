@@ -71,7 +71,7 @@ export class LoginFormComponent implements OnInit {
       return;
     }
     let formData: AuthRequestDTO = this.loginForm.value;
-
+    console.log(formData)
     this.loginSent.emit(formData);
   }
 

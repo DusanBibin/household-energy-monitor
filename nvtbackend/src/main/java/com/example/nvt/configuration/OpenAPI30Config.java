@@ -11,9 +11,9 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.ArrayList;
 
 @Configuration
-public class OpenAPI30Configuration {
+public class OpenAPI30Config {
 
-    public OpenAPI30Configuration(MappingJackson2HttpMessageConverter converter) {
+    public OpenAPI30Config(MappingJackson2HttpMessageConverter converter) {
         var supportedMediaTypes = new ArrayList<>(converter.getSupportedMediaTypes());
         supportedMediaTypes.add(new MediaType("application", "octet-stream"));
         converter.setSupportedMediaTypes(supportedMediaTypes);
