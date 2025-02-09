@@ -61,6 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy{
   signOut(): void{
     this.jwtService.logout();
     this.router.navigate(['../auth/login'])
+    this.cacheService.clear('userData');
   }
 
   ngOnDestroy(): void {

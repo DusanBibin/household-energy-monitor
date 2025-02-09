@@ -49,7 +49,7 @@ export class LoginComponent {
               this.router.navigate(['/home'], {replaceUrl: true})
               
             }else{
-              this.router.navigate(['/home'])
+              this.router.navigate(['/home'], {replaceUrl: true})
             }
           }else{
             this.getUserData();

@@ -1,24 +1,39 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
+import { JwtService } from '../shared/services/jwt-service/jwt.service';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    // canActivate:[roleGuard],
+    // data: {roles: ['ADMIN', 'SUPERADMIN', 'CLIENT', 'OFFICIAL']},
     children: [
+      
       {
-        path: 'admin-registration',
+        path: '',
+        redirectTo: () => {
+          const jwtService = inject(JwtService);
+          
+          if(jwtService.hasRole(['SUPERADMIN'])) return 'superadmin'
+          if(jwtService.hasRole(['CLIENT'])) return 'client'
+          return ''
+        },
+        pathMatch: 'full'
+      },
+      {
+        path: 'superadmin',
         loadChildren: () =>
-          import('../auth/feature/client-registration/client-registration.module').then(
-            (m) => m.ClientRegistrationModule
+          import('./superadmin/feature/superadmin-shell/superadmin-shell-routing.module').then(
+            (m) => m.SuperadminShellRoutingModule
           )
       },
       {
-        path:'vacant-households-client',
+        path:'client',
         loadChildren: () =>
-          import('./feature/vacant-households-client/vacant-households-client.module').then(
-            (m) => m.VacantHouseholdsClientModule
+          import('./client/feature/client-shell/client-shell-routing.module').then(
+            (m) => m.ClientShellRoutingModule
           )
       }
     ]
@@ -30,4 +45,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {
+ }
