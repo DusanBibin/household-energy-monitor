@@ -2,6 +2,7 @@ import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { JwtService } from '../shared/services/jwt-service/jwt.service';
+import { roleGuard } from '../shared/guard/role.guard';
 
 const routes: Routes = [
   {
@@ -27,14 +28,18 @@ const routes: Routes = [
         loadChildren: () =>
           import('./superadmin/feature/superadmin-shell/superadmin-shell-routing.module').then(
             (m) => m.SuperadminShellRoutingModule
-          )
+          ),
+          canActivate: [roleGuard],
+          data: {roles: ['SUPERADMIN']}
       },
       {
         path:'client',
         loadChildren: () =>
           import('./client/feature/client-shell/client-shell-routing.module').then(
             (m) => m.ClientShellRoutingModule
-          )
+          ),
+          canActivate: [roleGuard],
+          data: {roles: ['CLIENT']}
       }
     ]
   }

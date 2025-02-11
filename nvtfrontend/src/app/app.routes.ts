@@ -10,7 +10,9 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: () => import('./auth/feature/auth-shell/auth-shell.module').then(m => m.AuthShellModule)
+        loadChildren: () => import('./auth/feature/auth-shell/auth-shell.module').then(m => m.AuthShellModule),
+        canActivate: [authGuard],
+        data: {roles: ['SUPERADMIN', 'ADMIN', 'CLIENT', 'OFFICIAL']}
     },
     {
         path: '**', // ako ne skonta ni jedan route
