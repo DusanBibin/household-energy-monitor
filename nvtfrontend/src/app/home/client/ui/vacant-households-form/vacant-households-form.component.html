@@ -1,0 +1,25 @@
+<div class="w-100 h-100 d-flex align-items-center justify-content-center">
+  <div class="form-group w-100 h-100 mx-4 position-relative">
+    <label for="searchInput"></label>
+    <input
+      type="text"
+      class="form-control py-3 px-4"
+      id="searchInput"
+      style="font-size: medium;"
+      placeholder="Search for address, city, municipality, or region"
+      name="search-vacant"
+      [formControl]="searchControl"
+      (focus)="showDropdown = true"
+      (blur)="hideDropdown()"
+    >
+
+    <ul *ngIf="filteredSuggestions.length > 0 && showDropdown"
+        class="list-group position-absolute w-100 mt-2 shadow bg-white">
+      <li *ngFor="let suggestion of filteredSuggestions"
+          class="list-group-item list-group-item-action"
+          (click)="selectSuggestion(suggestion)"
+          [innerHTML]="suggestion.highlighted">
+      </li>
+    </ul>
+  </div>
+</div>

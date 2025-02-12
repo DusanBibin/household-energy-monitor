@@ -5,13 +5,3 @@
   }
   
 
-.dropdown-menu {
-  position: absolute !important;
-  z-index: 1050;
-  width: 100%;
-}
-
-.dropdown-item.active {
-  background-color: #007bff;
-  color: white;
-}

@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './vacant-households.component.css'
 })
 export class VacantHouseholdsComponent {
-
+  
 }
