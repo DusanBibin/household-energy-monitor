@@ -33,7 +33,7 @@ public class Household {
     private Boolean isOnline;
     private LocalDateTime lastOnline;
 
-    private Double floorNum;
+    private Double totalFloors;
     private Double apartmentNum; // popunjava se samo ako je stan u pitanju
 
     private Double size;

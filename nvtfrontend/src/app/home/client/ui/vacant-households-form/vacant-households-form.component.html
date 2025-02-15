@@ -1,25 +1,50 @@
-<div class="w-100 h-100 d-flex align-items-center justify-content-center">
-  <div class="form-group w-100 h-100 mx-4 position-relative">
+<div class="h-100 d-flex flex-column mx-3 align-items-center justify-content-center">
+  
+  <div class="form-group w-100 mb-4 position-relative">
     <label for="searchInput"></label>
     <input
       type="text"
       class="form-control py-3 px-4"
       id="searchInput"
       style="font-size: medium;"
-      placeholder="Search for address, city, municipality, or region"
+      placeholder="Search for address, city, zipcode, municipality, or region"
       name="search-vacant"
       [formControl]="searchControl"
       (focus)="showDropdown = true"
       (blur)="hideDropdown()"
     >
 
-    <ul *ngIf="filteredSuggestions.length > 0 && showDropdown"
-        class="list-group position-absolute w-100 mt-2 shadow bg-white">
+    <ul style="z-index: 1050;"  *ngIf="filteredSuggestions.length > 0 && showDropdown"
+      class="list-group position-absolute w-100 shadow bg-white"  >
       <li *ngFor="let suggestion of filteredSuggestions"
-          class="list-group-item list-group-item-action"
-          (click)="selectSuggestion(suggestion)"
-          [innerHTML]="suggestion.highlighted">
+        class="list-group-item list-group-item-action"
+        (click)="selectSuggestion(suggestion)">
+        <i class="bi bi-shop me-2"></i> 
+        <span [innerHTML]="suggestion.highlighted"></span>
       </li>
     </ul>
+
   </div>
+
+
+  
+  <div class="d-flex flex-grow-1 flex-row w-100 mb-3" style="background-color: black;">
+    
+    <div class="d-flex flex-grow-1" style="background-color: blueviolet; ">
+      <div style="width: 100%; height: 100%">
+        <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
+      </div>
+    </div>
+    
+
+    <div class="d-flex flex-grow-1" style="background-color: red;">
+
+    </div>
+    
+    
+
+  </div>
+
+  
+
 </div>

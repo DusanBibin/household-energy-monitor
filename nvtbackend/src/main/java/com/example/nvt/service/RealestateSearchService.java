@@ -29,142 +29,17 @@ public class RealestateSearchService {
 
     public List<RealestateDoc> search(String queryString) throws IOException {
 
-//        Query streetQuery = MatchQuery.of(m -> m
-//                .field("street")
-//                .query(string)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//
-//        SearchResponse<RealestateDoc> response = esClient.search(s -> s
-//                        .index("realestate")
-//                        .query(q -> q
-//                                .bool(b -> b
-//                                        .must(streetQuery)
-//                                )
-//                        ),
-//                        RealestateDoc.class
-//        );
 
-
-
-//        Query fuzzyRegionQuery = MatchQuery.of(m -> m
-//                .field("region")
-//                .query(string)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//        SearchResponse<RealestateDoc> response = esClient.search(s -> s
-//                        .index("realestate")
-//                        .query(q -> q
-//                                .bool(b -> b
-//                                        .should(fuzzyRegionQuery)
-//                                )
-//                        ),
-//                RealestateDoc.class
-//        );
-//
-//
-//
-//
-//        List<Hit<RealestateDoc>> hits = response.hits().hits();
-//
-//        return hits.stream()
-//                .map(hit -> {
-//                    RealestateDoc doc = hit.source();
-//                    if (doc != null) {
-//                        doc.setId(hit.id());  // Manually set the id from the hit
-//                    }
-//                    return doc;
-//                })
-//                .collect(Collectors.toList());
-
-//-----------------------OVO RADIIII---------------------------------
-//        Query multiMatchQuery = MultiMatchQuery.of(m -> m
-//                .query(queryString)
-//                .fields("address", "city", "municipality", "region") // Add relevant fields
-//                .fuzziness("AUTO")
-//                .type(co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType.MostFields)
-//        )._toQuery();
-//
-//        // Execute the search
-//        SearchResponse<RealestateDoc> response = esClient.search(s -> s
-//                        .index("realestate")
-//                        .query(q -> q
-//                                .bool(b -> b
-//                                        .should(multiMatchQuery)
-//                                )
-//                        )
-//                        .size(10) // Limit to 10 results
-//                        .sort(SortOptions.of(so -> so
-//                                .field(f -> f
-//                                        .field("_score")
-//                                        .order(SortOrder.Desc)
-//                                )
-//                        )),
-//                RealestateDoc.class
-//        );
-//-----------------------OVO RADIIII---------------------------------
-//        Query matchAddress = MatchQuery.of(m -> m
-//                .field("address")
-//                .query(queryString)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//        Query matchCity = MatchQuery.of(m -> m
-//                .field("city")
-//                .query(queryString)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//        Query matchRegion = MatchQuery.of(m -> m
-//                .field("region")
-//                .query(queryString)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//        Query matchMunicipality = MatchQuery.of(m -> m
-//                .field("municipality")
-//                .query(queryString)
-//                .fuzziness("AUTO")
-//        )._toQuery();
-//
-//        // Combine them into a bool query (should clause)
-//        Query boolQuery = BoolQuery.of(b -> b
-//                .should(matchAddress, matchCity, matchRegion, matchMunicipality)
-//        )._toQuery();
-//
-//        // Execute the search
-//        SearchResponse<RealestateDoc> response = esClient.search(s -> s
-//                        .index("realestate")
-//                        .query(boolQuery)
-//                        .size(10) // Limit to 10 results
-//                        .sort(SortOptions.of(so -> so
-//                                .field(f -> f
-//                                        .field("_score")
-//                                        .order(SortOrder.Desc)
-//                                )
-//                        )),
-//                RealestateDoc.class
-//        );
-//        List<Hit<RealestateDoc>> hits = response.hits().hits();
-
-        Query multiMatchQuery = MultiMatchQuery.of(m -> m
+        Query query = MatchQuery.of(m -> m
                 .query(queryString)
-                .type(TextQueryType.MostFields)  // Equivalent to "type": "most_fields"
-                .fields(Arrays.asList(
-                        "address",
-                        "city^2",          // Boost city field
-                        "municipality^2",  // Boost municipality field
-                        "region^14"        // Boost region field
-                ))
-                .fuzziness("0")  // Exact matching, no fuzziness
+                .field("fullAddress")
+                .fuzziness("auto")
         )._toQuery();
 
         // Execute the search
         SearchResponse<RealestateDoc> response = esClient.search(s -> s
                         .index("realestate")
-                        .query(multiMatchQuery)  // Use the multi_match query
+                        .query(query)  // Use the multi_match query
                         .size(10) // Limit to 10 results
                         .sort(SortOptions.of(so -> so
                                 .field(f -> f

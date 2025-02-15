@@ -48,7 +48,7 @@ public class ElasticsearchIndexConfig {
                                         .definition(fd -> fd
                                                 .edgeNgram(ngram -> ngram
                                                         .minGram(1)
-                                                        .maxGram(20)
+                                                        .maxGram(30)
                                                 )
                                         )
                                 ).filter("asciifolding_filter", f -> f
@@ -82,11 +82,9 @@ public class ElasticsearchIndexConfig {
                                 "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
                                 "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
                                 "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
-//                              "suggest", new Property.Builder().completion(new CompletionProperty.Builder().build()).build()
-//                                "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_analyzer").build()).build(),
-//                                "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_analyzer").build()).build(),
-//                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_analyzer").build()).build()
+                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
+                                "zipcode", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
+                                "fullAddress", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
                         )
                 ))
         );

@@ -42,9 +42,10 @@ public class RealestateDoc {
     private Double lat;
     private Double lon;
 
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     private String zipcode;
 
-//    @CompletionField
-//    private List<String> suggest;
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
+    private String fullAddress;
 
 }

@@ -48,13 +48,10 @@ export class HomeComponent implements OnInit, OnDestroy{
         this.imgUri= this.data?.[0];
         this.partialUserData = this.data?.[1] as PartialUserData;
       })
-
+      this.getData('userData');
   }
 
   ngOnInit(): void {
-    
-
-    this.getData('userData');
   }
 
 
@@ -84,6 +81,8 @@ export class HomeComponent implements OnInit, OnDestroy{
         next: ({profileImg, partialUserData}) => {
       
           let imgUri: string = URL.createObjectURL(profileImg);
+          const cachedData = this.cacheService.get(key);
+          console.log(cachedData)
           this.cacheService.set('userData', [imgUri, partialUserData]);
         },
         error: (error) => {
