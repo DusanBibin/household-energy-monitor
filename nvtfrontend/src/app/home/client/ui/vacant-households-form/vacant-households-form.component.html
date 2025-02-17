@@ -28,18 +28,24 @@
 
 
   
-  <div class="d-flex flex-grow-1 flex-row w-100 mb-3" style="background-color: black;">
+  <div class="flex-grow-1 flex-row w-100 mb-3" style="background-color: black;">
     
-    <div class="d-flex flex-grow-1" style="background-color: blueviolet; ">
-      <div style="width: 100%; height: 100%">
-        <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
+  
+    <div class="d-flex w-100 h-100 row g-0" style="background-color: red;">
+      <div class="container g-0" style="background-color: green;">
+        <div class="d-flex flex-lg-row flex-column h-100" style="background-color: blue;">
+            <div class="bg-primary text-white" style="flex-grow: 4;">
+              <div style="width: 100%; height: 100%">
+                <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
+              </div>
+            </div>
+            <div class="bg-secondary text-white" style="flex-grow: 8;"></div>
+        </div>
       </div>
     </div>
-    
-
-    <div class="d-flex flex-grow-1" style="background-color: red;">
-
-    </div>
+  
+      
+      
     
     
 
@@ -48,3 +54,5 @@
   
 
 </div>
+
+
