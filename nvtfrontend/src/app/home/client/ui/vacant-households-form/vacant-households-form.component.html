@@ -1,56 +1,271 @@
-<div class="h-100 d-flex flex-column mx-3 align-items-center justify-content-center">
+<div class="w-100 vh-100 d-flex flex-column" style="max-height: 100vh;">
   
-  <div class="form-group w-100 mb-4 position-relative">
-    <label for="searchInput"></label>
-    <input
-      type="text"
-      class="form-control py-3 px-4"
-      id="searchInput"
-      style="font-size: medium;"
-      placeholder="Search for address, city, zipcode, municipality, or region"
-      name="search-vacant"
-      [formControl]="searchControl"
-      (focus)="showDropdown = true"
-      (blur)="hideDropdown()"
-    >
-
-    <ul style="z-index: 1050;"  *ngIf="filteredSuggestions.length > 0 && showDropdown"
-      class="list-group position-absolute w-100 shadow bg-white"  >
-      <li *ngFor="let suggestion of filteredSuggestions"
-        class="list-group-item list-group-item-action"
-        (click)="selectSuggestion(suggestion)">
-        <i class="bi bi-shop me-2"></i> 
-        <span [innerHTML]="suggestion.highlighted"></span>
-      </li>
-    </ul>
-
+  <div class="px-4">
+    <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;">
+      <label for="searchInput"></label>
+      <input
+        type="text"
+        class="form-control py-3 px-4"
+        id="searchInput"
+        style="font-size: medium;"
+        placeholder="Search for address, city, zipcode, municipality, or region"
+        name="search-vacant"
+        [formControl]="searchControl"
+        (focus)="showDropdown = true"
+        (blur)="hideDropdown()"
+      >
+  
+      <ul style="z-index: 1050;"  *ngIf="filteredSuggestions.length > 0 && showDropdown"
+        class="list-group position-absolute w-100 shadow bg-white"  >
+        <li *ngFor="let suggestion of filteredSuggestions"
+          class="list-group-item list-group-item-action"
+          (click)="selectSuggestion(suggestion)">
+          <i class="bi bi-shop me-2"></i> 
+          <span [innerHTML]="suggestion.highlighted"></span>
+        </li>
+      </ul>
+    </div>
   </div>
-
-
   
-  <div class="flex-grow-1 flex-row w-100 mb-3" style="background-color: black;">
+
+  <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"> 
+  
+    <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 50%;">
+      
+        <div id="mape" style="width: 100%; height: 100%">
+          <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
+        </div>
     
-  
-    <div class="d-flex w-100 h-100 row g-0" style="background-color: red;">
-      <div class="container g-0" style="background-color: green;">
-        <div class="d-flex flex-lg-row flex-column h-100" style="background-color: blue;">
-            <div class="bg-primary text-white" style="flex-grow: 4;">
-              <div style="width: 100%; height: 100%">
-                <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
-              </div>
+    </div>
+    
+    <div class="border" style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
+      <div class="container-fluid g-0 p-3">
+        <div class="row g-3 pb-2">
+          
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
             </div>
-            <div class="bg-secondary text-white" style="flex-grow: 8;"></div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+
+
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+        
+
+          <div class="col-sm-6">
+            <div class="p-3 rounded border">
+               iskde
+            </div>
+          </div>
+
+
+
         </div>
       </div>
     </div>
   
-      
-      
-    
-    
-
   </div>
-
+ 
+  
   
 
 </div>

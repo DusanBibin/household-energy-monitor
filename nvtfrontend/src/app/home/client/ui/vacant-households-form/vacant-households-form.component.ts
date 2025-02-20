@@ -15,7 +15,8 @@ export class VacantHouseholdsFormComponent {
   mapOptions: google.maps.MapOptions = {
     streetViewControl: false, 
     mapTypeControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    clickableIcons: false
   };
   
   searchControl = new FormControl('');
