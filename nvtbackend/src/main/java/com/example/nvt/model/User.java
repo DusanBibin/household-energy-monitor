@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
+    @Column(unique = true)
     private String phoneNumber;
     private boolean emailConfirmed;
     private String profileImg;

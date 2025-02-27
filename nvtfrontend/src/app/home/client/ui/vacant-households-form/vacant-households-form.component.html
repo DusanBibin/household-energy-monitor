@@ -15,22 +15,36 @@
         (blur)="hideDropdown()"
       >
   
-      <ul style="z-index: 1050;"  *ngIf="filteredSuggestions.length > 0 && showDropdown"
+
+      @if(filteredSuggestions.length > 0 && showDropdown){
+        <ul style="z-index: 1050;"
         class="list-group position-absolute w-100 shadow bg-white"  >
-        <li *ngFor="let suggestion of filteredSuggestions"
-          class="list-group-item list-group-item-action"
-          (click)="selectSuggestion(suggestion)">
-          <i class="bi bi-shop me-2"></i> 
-          <span [innerHTML]="suggestion.highlighted"></span>
-        </li>
-      </ul>
+
+          @for (suggestion of filteredSuggestions; track suggestion) {
+            <li
+              class="list-group-item list-group-item-action"
+              (click)="selectSuggestion(suggestion)">
+              <i class="bi me-2" [ngClass]="{
+                'bi-house-door': suggestion.type === 'HOUSE',
+                'bi-building': suggestion.type === 'BUILDING',
+                'bi-signpost': suggestion.type === 'COTTAGE',
+                'bi-shop': suggestion.type === 'COMMERCE_SPACE',
+                'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(suggestion.type)
+              }"></i> 
+              <span [innerHTML]="suggestion.highlighted"></span>
+            </li>
+          }
+          
+        </ul>
+      }
+      
     </div>
   </div>
   
 
   <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"> 
   
-    <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 50%;">
+    <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
       
         <div id="mape" style="width: 100%; height: 100%">
           <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
@@ -40,7 +54,7 @@
     
     <div class="border" style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
       <div class="container-fluid g-0 p-3">
-        <div class="row g-3 pb-2">
+        <div class="row g-3">
           
           <div class="col-sm-6">
             <div class="p-3 rounded border">

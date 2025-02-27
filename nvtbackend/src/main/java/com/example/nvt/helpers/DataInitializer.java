@@ -1,13 +1,18 @@
 package com.example.nvt.helpers;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
-import co.elastic.clients.elasticsearch.indices.GetIndexRequest;
+import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
-import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
+import com.example.nvt.model.elastic.CityDoc;
+import com.example.nvt.model.elastic.MunicipalityDoc;
 import com.example.nvt.model.elastic.RealestateDoc;
+import com.example.nvt.model.elastic.RegionDoc;
 import com.example.nvt.repository.*;
+import com.example.nvt.repository.elastic.CityDocRepository;
+import com.example.nvt.repository.elastic.MunicipalityDocRepository;
+import com.example.nvt.repository.elastic.RealestateDocRepository;
+import com.example.nvt.repository.elastic.RegionDocRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityManager;
@@ -45,19 +50,15 @@ public class DataInitializer implements CommandLineRunner {
     private final MunicipalityRepository municipalityRepository;
 
     private final RealestateDocRepository realestateDocRepository;
+    private final RegionDocRepository regionDocRepository;
+    private final MunicipalityDocRepository municipalityDocRepository;
+    private final CityDocRepository cityDocRepository;
     private final ElasticsearchClient elasticsearchClient;
 
     private StopWatch stopWatch = new StopWatch();
     @Override
     public void run(String... args) throws Exception {
 
-        //regionRepository.deleteAll();
-        //municipalityRepository.deleteAll();
-        //cityRepository.deleteAll();
-        //userRepository.deleteAll();
-        //clientRepository.deleteAll();
-        //householdRepository.deleteAll();
-        //realestateRepository.deleteAll();
 
         initCitiesMunicipalitiesRegions();
 
@@ -69,7 +70,7 @@ public class DataInitializer implements CommandLineRunner {
                 .email(superAdminMail)
                 .firstName("Ime")
                 .lastname("Prezime")
-                .phoneNumber("0691817839")
+                .phoneNumber("0695817839")
                 .password(passwordEncoder.encode(PasswordGenerator.generatePassword(superAdminMail, "password.txt", 30)))
                 .verification(new Verification())
                 .profileImg("dijamantmann.jpg")
@@ -83,7 +84,7 @@ public class DataInitializer implements CommandLineRunner {
                 .email("admin1@gmail.com")
                 .firstName("Ime")
                 .lastname("Prezime")
-                .phoneNumber("0691817839")
+                .phoneNumber("0692817839")
                 .password(passwordEncoder.encode("admin1"))
                 .verification(new Verification())
                 .profileImg("dijamantmann.jpg")
@@ -97,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
-                .password(passwordEncoder.encode("admin1"))
+                .password(passwordEncoder.encode("client1"))
                 .verification(new Verification())
                 .profileImg("dijamantmann.jpg")
                 .emailConfirmed(true)
@@ -110,38 +111,6 @@ public class DataInitializer implements CommandLineRunner {
 
         System.out.println(stopWatch.prettyPrint());
 
-//        Realestate realestate1 = Realestate.builder()
-//                .realestateOwner(client1)
-//                .households(new ArrayList<>())
-//                .build();
-//        realestate1 = realestateRepository.save(realestate1);
-//
-//        Household household1 = Household.builder()
-//                .isOnline(false)
-//                .realEstate(realestate1)
-//                .lastOnline(LocalDateTime.now().minusYears(100))
-//                .build();
-//        household1 = householdRepository.save(household1);
-//
-//        Household household2 = Household.builder()
-//                .isOnline(false)
-//                .realEstate(realestate1)
-//                .lastOnline(LocalDateTime.now().minusYears(100))
-//                .build();
-//        household2 = householdRepository.save(household2);
-//
-//        Household household3 = Household.builder()
-//                .isOnline(false)
-//                .realEstate(realestate1)
-//                .lastOnline(LocalDateTime.now().minusYears(100))
-//                .build();
-//        household3 = householdRepository.save(household3);
-//
-//        realestate1.getHouseholds().addAll(List.of(household1, household2, household3));
-//        realestate1 = realestateRepository.save(realestate1);
-//
-//        client1.getRealEstates().add(realestate1);
-//        client1 = clientRepository.save(client1);
 
     }
 
@@ -178,7 +147,12 @@ public class DataInitializer implements CommandLineRunner {
                 // Get or create Region
                 Region region = regionMap.computeIfAbsent(regionName, name -> {
                     Region newRegion = Region.builder().name(name).build();
-                    regionRepository.save(newRegion);
+                    newRegion = regionRepository.save(newRegion);
+                    RegionDoc doc = RegionDoc.builder()
+                            .dbId(newRegion.getId())
+                            .region(newRegion.getName())
+                            .build();
+                    doc = regionDocRepository.save(doc);
                     return newRegion;
                 });
 
@@ -188,7 +162,12 @@ public class DataInitializer implements CommandLineRunner {
                             .name(name)
                             .region(region)
                             .build();
-                    municipalityRepository.save(newMunicipality);
+                    newMunicipality = municipalityRepository.save(newMunicipality);
+                    MunicipalityDoc doc = MunicipalityDoc.builder()
+                            .dbId(newMunicipality.getId())
+                            .municipality("Opština " + newMunicipality.getName())
+                            .build();
+                    doc = municipalityDocRepository.save(doc);
                     return newMunicipality;
                 });
 
@@ -203,13 +182,31 @@ public class DataInitializer implements CommandLineRunner {
 
                 if (cities.size() >= BATCH_SIZE) {
                     cityRepository.saveAll(cities);
+
+                    List<CityDoc> citiesDocs = cities.stream()
+                                    .map(c -> CityDoc.builder()
+                                            .dbId(c.getId())
+                                            .city(c.getName())
+                                            .build()
+                                    ).toList();
+                    cities.clear();
+                    cityDocRepository.saveAll(citiesDocs);
                     cities.clear();
                 }
             }
 
             // Save remaining cities
             if (!cities.isEmpty()) {
-                cityRepository.saveAll(cities);
+                cities = cityRepository.saveAll(cities);
+                List<CityDoc> citiesDocs = cities.stream()
+                        .map(c -> CityDoc.builder()
+                                .dbId(c.getId())
+                                .city(c.getName())
+                                .build()
+                        ).toList();
+                cities.clear();
+                cityDocRepository.saveAll(citiesDocs);
+                cities.clear();
             }
 
         } catch (IOException | CsvValidationException e) {
@@ -225,7 +222,7 @@ public class DataInitializer implements CommandLineRunner {
     protected void initRealestates() {
         System.out.println("Initializing Realestates...");
         stopWatch.start("Initializing Realestates");
-        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese_lite.csv";
+        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese.csv";
 
         // Preload all cities into memory
         Map<String, City> cityMap = cityRepository.findAll()
@@ -271,6 +268,7 @@ public class DataInitializer implements CommandLineRunner {
                         .lon(lon)
                         .addressStreet(addressStreet)
                         .addressNum(addressNum)
+                        .type(getRandomRealEstateType())
                         .build();
                 realestates.add(realestate);
 
@@ -286,15 +284,11 @@ public class DataInitializer implements CommandLineRunner {
                                             Region reg = m.getRegion();
 
                                             String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
-                                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
+                                                + " " + c.getName() + " Opština " + m.getName() + " " + reg.getName();
                                             return RealestateDoc.builder()
                                                     .dbId(r.getId())
-                                                    .address(r.getAddressStreet() + " " + r.getAddressNum())
-                                                    .zipcode(c.getZipCode().toString())
-                                                    .city(c.getName())
-                                                    .municipality("Opština " + m.getName())
-                                                    .region(reg.getName())
-                                                    .fullAddress(fullAddress)
+                                                    .address(fullAddress)
+                                                    .type(r.getType())
                                                     .lat(r.getLat())
                                                     .lon(r.getLon())
                                                     .build(); })
@@ -316,15 +310,10 @@ public class DataInitializer implements CommandLineRunner {
                         Municipality m = c.getMunicipality();
                         Region reg = m.getRegion();
                         String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
-                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
+                                + " " + c.getName() + " Opština " + m.getName() + " " + reg.getName();
                         return RealestateDoc.builder()
                                 .dbId(r.getId())
-                                .address(r.getAddressStreet() + " " + r.getAddressNum())
-                                .zipcode(c.getZipCode().toString())
-                                .city(c.getName())
-                                .municipality("Opština " + m.getName())
-                                .region(reg.getName())
-                                .fullAddress(fullAddress)
+                                .address(fullAddress)
                                 .lat(r.getLat())
                                 .lon(r.getLon())
                                 .build(); })
@@ -335,6 +324,19 @@ public class DataInitializer implements CommandLineRunner {
 
         stopWatch.stop();
         System.out.println("DONE in " + stopWatch.getTotalTimeSeconds() + " seconds");
+    }
+
+    public static RealEstateType getRandomRealEstateType() {
+        TreeMap<Double, RealEstateType> map = new TreeMap<>();
+        Random random = new Random();
+
+        // Defining the probabilities
+        map.put(70.0, RealEstateType.HOUSE); //70%
+        map.put(88.0, RealEstateType.BUILDING); //18%
+        map.put(93.0, RealEstateType.COTTAGE); //5%
+        map.put(100.0, RealEstateType.COMMERCE_SPACE); //7%
+        double rand = random.nextDouble() * 100;
+        return map.ceilingEntry(rand).getValue();
     }
 
 

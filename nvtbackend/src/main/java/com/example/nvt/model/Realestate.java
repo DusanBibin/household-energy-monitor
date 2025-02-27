@@ -23,7 +23,7 @@ public class Realestate {
     @ManyToOne
     private Client realestateOwner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "realestate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Household> households;
 
     @OneToOne
@@ -48,7 +48,7 @@ public class Realestate {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-    private Double totalFloors;
-
+    private Long totalFloors;
+    private Long apartmentPerFloorNum;
 
 }

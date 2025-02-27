@@ -1,7 +1,5 @@
 package com.example.nvt.model.elastic;
 
-
-import com.example.nvt.enumeration.RealEstateType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,25 +10,19 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+
 @Data
-@Document(indexName = "realestate")
+@Document(indexName = "municipality")
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RealestateDoc {
-
+public class MunicipalityDoc {
     @Id
     private String id;
 
     private Long dbId;
 
-    private RealEstateType type;
-
-    private Double lat;
-    private Double lon;
-
     @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
-    private String address;
-
+    private String municipality;
 }

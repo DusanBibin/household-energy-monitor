@@ -2,10 +2,25 @@ export interface RealestateDoc{
     id: string,
     dbId: number,
     address: string,
-    city: string,
-    municipality: string,
-    region: string,
+    type: string,
     lat: number,
-    lon: number,
-    zipcode: string
+    lon: number
+}
+
+export interface CityDoc {
+  id: string;
+  dbId: number;
+  city: string;
+}
+
+export interface MunicipalityDoc {
+  id: string;
+  dbId: number;
+  municipality: string;
+}
+
+export interface RegionDoc {
+  id: string;
+  dbId: number;
+  region: string;
 }

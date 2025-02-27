@@ -22,7 +22,8 @@ public class Household {
     private Long id;
 
     @ManyToOne
-    private Realestate realEstate;
+    @JoinColumn(name="realestate_id")
+    private Realestate realestate;
 
     @ManyToOne
     private Client houseHoldOwner;
@@ -33,7 +34,6 @@ public class Household {
     private Boolean isOnline;
     private LocalDateTime lastOnline;
 
-    private Double totalFloors;
     private Double apartmentNum; // popunjava se samo ako je stan u pitanju
 
     private Double size;

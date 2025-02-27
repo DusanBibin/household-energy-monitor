@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { ClientService } from '../../data-access/client.service';
-import { RealestateDoc } from '../../data-access/model/client-model';
+import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc } from '../../data-access/model/client-model';
 
 @Component({
   selector: 'app-vacant-households-form',
@@ -20,24 +20,21 @@ export class VacantHouseholdsFormComponent {
   };
   
   searchControl = new FormControl('');
-  suggestions: string[] = [
-    'New York', 'Los Angeles', 'San Francisco', 'Chicago', 'Houston',
-    'Seattle', 'Miami', 'Boston', 'Austin', 'Denver'
-  ];
-  filteredSuggestions: { original: string, highlighted: string }[] = [];
+
+  filteredSuggestions: { original: string, highlighted: string, type:string }[] = [];
   showDropdown = false;
 
   constructor(private clientService: ClientService) {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(200), 
+        debounceTime(100), 
         distinctUntilChanged(),
         switchMap(value => this.clientService.searchVacantHousehold(value || ''))
       )
       .subscribe(results => this.filterSuggestions(results, this.searchControl.value || ''));
   }
 
-  filterSuggestions(results: RealestateDoc[], value: string) {
+  filterSuggestions(results: (CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc)[], value: string) {
     console.log(results)
     if (!value) {
       this.filteredSuggestions = [];
@@ -46,31 +43,48 @@ export class VacantHouseholdsFormComponent {
 
     const lowercaseValue = value.toLowerCase();
     this.filteredSuggestions = results
-      // .filter(item =>
-      //   item.address.toLowerCase().includes(lowercaseValue) ||
-      //   item.city.toLowerCase().includes(lowercaseValue) ||
-      //   item.municipality.toLowerCase().includes(lowercaseValue) ||
-      //   item.region.toLowerCase().includes(lowercaseValue)
-      // )
-      .map(item => ({
-        original: `${item.address}, ${item.city}, ${item.municipality}, ${item.region}, ${item.zipcode}`,
-        highlighted: this.highlightMatch(`${item.address}, ${item.city}, ${item.municipality}, ${item.region}, ${item.zipcode}`, lowercaseValue)
-      }));
+
+      .map((item: CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc) => {
+        if ((item as CityDoc).city) {
+          // item is of type CityDoc
+          return {
+            original: `${(item as CityDoc).city}`,
+            highlighted: this.highlightMatch(`${(item as CityDoc).city}`, lowercaseValue),
+            type: 'CITY',
+          };
+        } else if ((item as MunicipalityDoc).municipality) {
+          // item is of type MunicipalityDoc
+          return {
+            original: `${(item as MunicipalityDoc).municipality}`,
+            highlighted: this.highlightMatch(`${(item as MunicipalityDoc).municipality}`, lowercaseValue),
+            type: 'MUNICIPALITY',
+          };
+        } else if ((item as RegionDoc).region) {
+          // item is of type RegionDoc
+          return {
+            original: `${(item as RegionDoc).region}`,
+            highlighted: this.highlightMatch(`${(item as RegionDoc).region}`, lowercaseValue),
+            type: 'REGION',
+          };
+        } else {
+          // item is of type RealestateDoc
+          return {
+            original: `${(item as RealestateDoc).address}`,
+            highlighted: this.highlightMatch(`${(item as RealestateDoc).address}`, lowercaseValue),
+            type: `${(item as RealestateDoc).type}`,
+          };
+        }
+      });
   }
 
   highlightMatch(text: string, search: string): string {
-    // const regex = new RegExp(`(${search})`, 'gi');
-    // return text.replace(regex, `<strong>$1</strong>`);
     
-
     const words = search.trim().split(/\s+/).filter(word => word.length > 0);
 
-    if (words.length === 0) return text; // Return original text if search is empty
+    if (words.length === 0) return text; 
 
-    // Create a regex pattern that matches all words (case-insensitive)
     const regex = new RegExp(`(${words.join("|")})`, "gi");
 
-    // Replace matched words with <strong>...</strong>
     return text.replace(regex, `<strong>$1</strong>`);
     
   }
@@ -83,6 +97,6 @@ export class VacantHouseholdsFormComponent {
   hideDropdown() {
     setTimeout(() => {
       this.showDropdown = false;
-    }, 200);
+    }, 100);
   }
 }

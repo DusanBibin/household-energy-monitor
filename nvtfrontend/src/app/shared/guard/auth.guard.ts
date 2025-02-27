@@ -49,6 +49,14 @@ export const authGuard: CanActivateFn = (route, state) => {
     if(currentPath.includes('home')){
       console.log("sadrzi home")
       router.navigate(['/auth'], {replaceUrl: true});
+      
+      const token = jwtService.getToken();
+      if(token){
+        if(jwtService.isTokenExpired(token)){
+          snackBar.openSnackBar("Session expired, please login again");
+        }
+      }
+      
       return false;
     }
   }
@@ -58,20 +66,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log("sve je normalno ")
   
   
-  
-  // if (jwtService.isLoggedIn()) {
-  //   if(jwtService.hasRole(allowedRoles)){
-  //     if(jwtService.hasRole(['SUPERADMIN']) && jwtService.isFirstSuperadminLogin()){
-  //       router.navigate(['/auth/change-password'])
-  //       return false;
-  //     }
-  
-  //     console.log("upravu sii")
-  //     return true;
-  //   }
-  // }else{
-
-  // }
 
   
 

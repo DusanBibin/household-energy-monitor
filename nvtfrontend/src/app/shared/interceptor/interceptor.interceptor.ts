@@ -13,8 +13,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const router = inject(Router);
 
   if (token != null) {
-
+    console.log("imamo token")
     if(jwtService.isTokenExpired(token)){
+      console.log("istekao je")
       jwtService.logout();
       
     }else{

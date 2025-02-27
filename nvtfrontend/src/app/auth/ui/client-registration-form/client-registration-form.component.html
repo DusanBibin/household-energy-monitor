@@ -32,11 +32,12 @@
                         [ngClass]="{'is-invalid': isInvalidImg}"
                         required>
                         
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="isInvalidImg">
-                        {{imgErrMsg}}
-                  </div>
+                  
+                  @if(isInvalidImg){
+                        <div class="invalid-feedback">
+                              {{imgErrMsg}}
+                        </div>            
+                  }
                       
               </div>
 
@@ -59,12 +60,12 @@
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('name')}"
                         required>
                         
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('name')">
+                  @if(registerClicked && isControlInvalid('name')){
+                        <div class="invalid-feedback">
                         
-                        {{getControlError('name')}}
-                  </div>
+                              {{getControlError('name')}}
+                        </div>
+                  }
                   
               </div>
               
@@ -80,11 +81,12 @@
                         [ngClass]="{'is-invalid': registerClicked && isControlInvalid('lastname')}"
                         required>
                         
-                  <div
-                        class="invalid-feedback"
-                        *ngIf="registerClicked && isControlInvalid('lastname')">
-                        {{getControlError('lastname')}}
-                  </div>
+                  
+                  @if(registerClicked && isControlInvalid('lastname')){
+                        <div class="invalid-feedback">
+                              {{getControlError('lastname')}}
+                        </div>
+                  }
                       
               </div>
               

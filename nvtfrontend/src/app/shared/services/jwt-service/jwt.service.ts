@@ -38,6 +38,8 @@ export class JwtService {
     return !!token && !this.isTokenExpired(token);
   }
 
+  
+
   hasRole(allowedRoles: string[]): boolean {
     const token = this.getToken();
     if (!token) return false;
