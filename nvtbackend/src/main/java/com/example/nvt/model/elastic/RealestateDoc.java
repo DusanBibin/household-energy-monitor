@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
 
 @Data
 @Document(indexName = "realestate")
@@ -27,10 +28,18 @@ public class RealestateDoc {
 
     private RealEstateType type;
 
-    private Double lat;
-    private Double lon;
+    @GeoPointField
+    private String location;
 
     @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     private String address;
 
+    @Field(type = FieldType.Keyword)
+    private String cityDocId;
+
+    @Field(type = FieldType.Keyword)
+    private String municipalityDocId;
+
+    @Field(type = FieldType.Keyword)
+    private String regionDocId;
 }

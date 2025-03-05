@@ -28,3 +28,8 @@ export interface JwtPayload{
   exp: number,
   role: Role[]
 }
+
+export interface LocationDTO{
+  lat: number,
+  lon: number
+}

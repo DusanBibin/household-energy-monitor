@@ -1,3 +1,6 @@
 <div class="parent w-100 h-100">
-  <app-vacant-households-form></app-vacant-households-form>
+  <app-vacant-households-form 
+    (searchQueryE)="handleSearchQuery($event)" [filteredSuggestions]="filteredSuggestions"
+    (searchAggregateE)="handleSearchAggregate($event)" [realestatePins]="realestatePins"
+  ></app-vacant-households-form>
 </div>

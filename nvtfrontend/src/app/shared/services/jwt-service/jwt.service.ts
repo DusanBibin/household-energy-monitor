@@ -34,7 +34,7 @@ export class JwtService {
 
   isLoggedIn(): boolean {
     const token = this.getToken();
-    
+
     return !!token && !this.isTokenExpired(token);
   }
 

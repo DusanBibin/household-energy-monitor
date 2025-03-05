@@ -3,6 +3,7 @@ package com.example.nvt.helpers;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
+import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
 import com.example.nvt.model.elastic.CityDoc;
 import com.example.nvt.model.elastic.MunicipalityDoc;
@@ -39,7 +40,6 @@ public class DataInitializer implements CommandLineRunner {
     @PersistenceContext
     private EntityManager entityManager;
 
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final HouseholdRepository householdRepository;
@@ -56,6 +56,13 @@ public class DataInitializer implements CommandLineRunner {
     private final ElasticsearchClient elasticsearchClient;
 
     private StopWatch stopWatch = new StopWatch();
+
+
+
+    private Map<Long, String> regionDocMap = new HashMap<>();
+    private Map<Long, String> municipalityDocMap = new HashMap<>();
+    private Map<Long, String> cityDocMap = new HashMap<>();
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -107,6 +114,20 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         client1 = clientRepository.save(client1);
 
+        Client client2 = Client.builder()
+                .email("client2@gmail.com")
+                .firstName("Ime")
+                .lastname("Prezime")
+                .phoneNumber("0697817839")
+                .password(passwordEncoder.encode("client2"))
+                .verification(new Verification())
+                .profileImg("NEMA")
+                .emailConfirmed(true)
+                .role(Role.CLIENT)
+                .realEstates(new ArrayList<>())
+                .build();
+        client2 = clientRepository.save(client2);
+
         initRealestates();
 
         System.out.println(stopWatch.prettyPrint());
@@ -121,6 +142,13 @@ public class DataInitializer implements CommandLineRunner {
 
         String filePath = "naselja.csv";
         List<City> cities = new ArrayList<>();
+
+
+
+
+
+
+
         Map<String, Region> regionMap = regionRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(Region::getName, Function.identity()));
@@ -144,7 +172,6 @@ public class DataInitializer implements CommandLineRunner {
                 String regionName = line[2];
                 String municipalityName = line[3];
 
-                // Get or create Region
                 Region region = regionMap.computeIfAbsent(regionName, name -> {
                     Region newRegion = Region.builder().name(name).build();
                     newRegion = regionRepository.save(newRegion);
@@ -153,25 +180,26 @@ public class DataInitializer implements CommandLineRunner {
                             .region(newRegion.getName())
                             .build();
                     doc = regionDocRepository.save(doc);
+                    if(!regionDocMap.containsKey(newRegion.getId())) regionDocMap.put(newRegion.getId(), doc.getId());
                     return newRegion;
                 });
 
-                // Get or create Municipality
                 Municipality municipality = municipalityMap.computeIfAbsent(municipalityName, name -> {
                     Municipality newMunicipality = Municipality.builder()
                             .name(name)
                             .region(region)
                             .build();
                     newMunicipality = municipalityRepository.save(newMunicipality);
+
                     MunicipalityDoc doc = MunicipalityDoc.builder()
                             .dbId(newMunicipality.getId())
-                            .municipality("Opština " + newMunicipality.getName())
+                            .municipality(newMunicipality.getName() + ", " + region.getName())
                             .build();
                     doc = municipalityDocRepository.save(doc);
+                    if(!municipalityDocMap.containsKey(newMunicipality.getId())) municipalityDocMap.put(newMunicipality.getId(), doc.getId());
                     return newMunicipality;
                 });
 
-                // Create City
                 City city = City.builder()
                         .name(cityName)
                         .zipCode(zipCode)
@@ -181,16 +209,26 @@ public class DataInitializer implements CommandLineRunner {
                 cities.add(city);
 
                 if (cities.size() >= BATCH_SIZE) {
-                    cityRepository.saveAll(cities);
 
+                    cityRepository.saveAll(cities);
+                    Map<String, Long> helpMap = new HashMap<>();
                     List<CityDoc> citiesDocs = cities.stream()
-                                    .map(c -> CityDoc.builder()
+                                    .map(c -> {
+                                            var m = c.getMunicipality();
+                                            var r = m.getRegion();
+                                            var doc = CityDoc.builder()
                                             .dbId(c.getId())
-                                            .city(c.getName())
-                                            .build()
+                                            .city(c.getName() + ", " + m.getName() + ", " + r.getName())
+                                            .build();
+                                            return doc;
+                                        }
                                     ).toList();
-                    cities.clear();
-                    cityDocRepository.saveAll(citiesDocs);
+                    Iterable<CityDoc> cityDocsIter = cityDocRepository.saveAll(citiesDocs);
+
+                    for(CityDoc cityDoc : cityDocsIter){
+                        cityDocMap.put(cityDoc.getDbId(), cityDoc.getId());
+                    }
+
                     cities.clear();
                 }
             }
@@ -199,13 +237,22 @@ public class DataInitializer implements CommandLineRunner {
             if (!cities.isEmpty()) {
                 cities = cityRepository.saveAll(cities);
                 List<CityDoc> citiesDocs = cities.stream()
-                        .map(c -> CityDoc.builder()
-                                .dbId(c.getId())
-                                .city(c.getName())
-                                .build()
+                        .map(c -> {
+                                    var m = c.getMunicipality();
+                                    var r = m.getRegion();
+                                    var doc = CityDoc.builder()
+                                            .dbId(c.getId())
+                                            .city(c.getName() + ", " + m.getName() + ", " + r.getName())
+                                            .build();
+                                    return doc;
+                                }
                         ).toList();
-                cities.clear();
-                cityDocRepository.saveAll(citiesDocs);
+                Iterable<CityDoc> cityDocsIter = cityDocRepository.saveAll(citiesDocs);
+
+                for(CityDoc cityDoc : cityDocsIter){
+                    cityDocMap.put(cityDoc.getDbId(), cityDoc.getId());
+                }
+
                 cities.clear();
             }
 
@@ -222,7 +269,7 @@ public class DataInitializer implements CommandLineRunner {
     protected void initRealestates() {
         System.out.println("Initializing Realestates...");
         stopWatch.start("Initializing Realestates");
-        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese.csv";
+        String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese_lite.csv";
 
         // Preload all cities into memory
         Map<String, City> cityMap = cityRepository.findAll()
@@ -255,7 +302,7 @@ public class DataInitializer implements CommandLineRunner {
                 String addressNum = line[5];
 
                 // Lookup city
-                City city = cityMap.get(cityName + "_" + municipalityName);
+                City city = cityMap.get(cityName + "_Opština " + municipalityName);
                 if (city == null) {
                     System.out.println("City not found: " + cityName + ", " + municipalityName);
                     continue; // Skip if city is not found
@@ -284,13 +331,15 @@ public class DataInitializer implements CommandLineRunner {
                                             Region reg = m.getRegion();
 
                                             String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
-                                                + " " + c.getName() + " Opština " + m.getName() + " " + reg.getName();
+                                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
                                             return RealestateDoc.builder()
                                                     .dbId(r.getId())
                                                     .address(fullAddress)
                                                     .type(r.getType())
-                                                    .lat(r.getLat())
-                                                    .lon(r.getLon())
+                                                    .cityDocId(cityDocMap.get(c.getId()))
+                                                    .municipalityDocId(municipalityDocMap.get(m.getId()))
+                                                    .regionDocId(regionDocMap.get(reg.getId()))
+                                                    .location(r.getLat() + "," + r.getLon())
                                                     .build(); })
                                     .toList();
                     realestateDocRepository.saveAll(realestateDocs);
@@ -310,12 +359,15 @@ public class DataInitializer implements CommandLineRunner {
                         Municipality m = c.getMunicipality();
                         Region reg = m.getRegion();
                         String fullAddress = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getZipCode().toString()
-                                + " " + c.getName() + " Opština " + m.getName() + " " + reg.getName();
+                                + " " + c.getName() + " " + m.getName() + " " + reg.getName();
                         return RealestateDoc.builder()
                                 .dbId(r.getId())
                                 .address(fullAddress)
-                                .lat(r.getLat())
-                                .lon(r.getLon())
+                                .type(r.getType())
+                                .cityDocId(cityDocMap.get(c.getId()))
+                                .municipalityDocId(municipalityDocMap.get(m.getId()))
+                                .regionDocId(regionDocMap.get(reg.getId()))
+                                .location(r.getLat() + "," + r.getLon())
                                 .build(); })
                     .toList();
             realestateDocRepository.saveAll(realestateDocs);

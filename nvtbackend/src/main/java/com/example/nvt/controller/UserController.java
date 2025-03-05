@@ -22,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
     @GetMapping(value = "/partial-data")
-    public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> getUserData(@AuthenticationPrincipal User user) {
 
         PartialUserDataDTO data = PartialUserDataDTO.builder()
                 .email(user.getEmail())

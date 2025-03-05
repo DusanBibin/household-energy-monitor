@@ -1,7 +1,7 @@
-<div class="w-100 d-flex flex-column" style="height: 100%;">
+<div class="w-100 d-flex flex-column" style="height: 100%; ">
   
   <div class="px-4">
-    <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;">
+    <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;  ">
       <label for="searchInput"></label>
       <input
         type="text"
@@ -11,14 +11,14 @@
         placeholder="Search for address, city, zipcode, municipality, or region"
         name="search-vacant"
         [formControl]="searchControl"
-        (focus)="showDropdown = true"
+        (focus)="showDropdown =true"
         (blur)="hideDropdown()"
       >
   
 
-      @if(filteredSuggestions.length > 0 && showDropdown){
-        <ul style="z-index: 1050;"
-        class="list-group position-absolute w-100 shadow bg-white"  >
+      @if((filteredSuggestions.length > 0 && showDropdown)){
+        <ul style="z-index: 1050; overflow-y: auto;"
+        class="list-group position-absolute w-100 shadow bg-white shadow"  >
 
           @for (suggestion of filteredSuggestions; track suggestion) {
             <li
@@ -47,7 +47,9 @@
     <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
       
         <div id="mape" style="width: 100%; height: 100%">
-          <google-map width="100%" height="100%" [options]="mapOptions"></google-map>
+          <google-map #googleMap [center]="center" [zoom]="7" width="100%" height="100%" [options]="mapOptions">
+            <map-marker *ngFor="let marker of markers" [position]="marker"></map-marker>
+          </google-map>
         </div>
     
     </div>

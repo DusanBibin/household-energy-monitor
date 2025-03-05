@@ -10,4 +10,6 @@ public interface CityRepository extends JpaRepository<City, Integer> {
 
     @Query("select c from City c where c.name = :cityName and c.municipality.name = :munName")
     Optional<City> findByNameAndMunName(String cityName, String munName);
+
+    Optional<City> findById(Long dbId);
 }

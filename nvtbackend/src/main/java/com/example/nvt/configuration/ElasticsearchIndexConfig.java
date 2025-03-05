@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
 import co.elastic.clients.elasticsearch.indices.IndexSettings;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.stereotype.Service;
 
 
@@ -91,12 +92,16 @@ public class ElasticsearchIndexConfig {
                         )
                 ))
                 .mappings(m -> m.properties(Map.of(
-//                                "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
+                                "location", new Property.Builder().geoPoint(new GeoPointProperty.Builder().build()).build(),
+                                "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
+                                "cityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                                "municipalityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                                "regionDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build()
 //                                "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
 //                                "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
 //                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
 //                                "zipcode", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-                                "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
+
                         )
                 ))
         );

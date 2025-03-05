@@ -29,4 +29,5 @@ public class Municipality {
     @JoinColumn(name = "region_id")
     private Region region;
 
+
 }

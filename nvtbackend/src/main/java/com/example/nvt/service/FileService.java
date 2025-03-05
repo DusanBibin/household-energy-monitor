@@ -69,7 +69,11 @@ public class FileService {
     public String getSmallProfileImg(Long id) {
 
         var user = userService.getUserById(id);
-        return uploadDir + "/" +  user.getId() + "/small_" + user.getProfileImg();
+        String imagePath = uploadDir + "/" +  user.getId() + "/small_" + user.getProfileImg();
+
+        if(!Files.exists(Paths.get(imagePath))) return uploadDir + "/DEFAULT.jpg";
+
+        return imagePath;
     }
 
     public Resource getFileResource(String filePath) {

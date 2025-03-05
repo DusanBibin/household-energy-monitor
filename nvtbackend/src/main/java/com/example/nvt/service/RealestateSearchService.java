@@ -3,11 +3,16 @@ package com.example.nvt.service;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.AggregationBuilders;
+import co.elastic.clients.elasticsearch._types.aggregations.GeoTileGridBucket;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
+import com.example.nvt.enumeration.FilterType;
 import com.example.nvt.model.elastic.CityDoc;
 import com.example.nvt.model.elastic.MunicipalityDoc;
 import com.example.nvt.model.elastic.RealestateDoc;
@@ -15,12 +20,19 @@ import com.example.nvt.model.elastic.RegionDoc;
 import com.example.nvt.repository.elastic.RealestateDocRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
+import org.springframework.data.elasticsearch.core.AggregationContainer;
+import org.springframework.data.elasticsearch.core.AggregationsContainer;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +43,94 @@ public class RealestateSearchService {
     private final RealestateDocRepository realestateDocRepository;
 
     private final ElasticsearchClient esClient;
+
+    public List<RealestateDoc> aggregate(
+            double topLeftLon, double topLeftLat,
+            double bottomRightLon, double bottomRightLat,
+            FilterType filterType, String filterDocId, int zoomLevel) throws IOException {
+
+
+        GeoBoundingBoxQuery geoBoundingBoxQuery = QueryBuilders.geoBoundingBox()
+                .field("location")
+                .boundingBox(g -> g.coords(
+                        c -> c
+                                .top(topLeftLat)
+                                .left(topLeftLon)
+                                .bottom(bottomRightLat)
+                                .right(bottomRightLon)
+                ))
+                .build();
+
+
+        BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool()
+                .filter(f -> f.geoBoundingBox(geoBoundingBoxQuery));
+        if(filterType != null) {
+
+            String fieldTypeStr;
+            if(filterType.equals(FilterType.REGION)) fieldTypeStr = "regionDocId";
+            else if(filterType.equals(FilterType.MUNICIPALITY)) fieldTypeStr = "municipalityDocId";
+            else fieldTypeStr = "cityDocId";
+
+            boolQueryBuilder.filter(f -> f
+                    .term(
+                            t -> t
+                                    .field(fieldTypeStr)
+                                    .value(filterDocId)
+                    ));
+        }
+
+        BoolQuery boolQuery = boolQueryBuilder.build();
+        System.out.println("zoom: " + zoomLevel);
+        // Define aggregation for geo_tile_grid with dynamic precision
+        Aggregation geoTileGridAggregation = Aggregation.of(a -> a
+                .geotileGrid(g -> g
+                        .field("location")
+                        .precision(2 + zoomLevel))
+                .aggregations("top_realestates", agg -> agg
+                        .topHits(th -> th
+                                .size(1)
+                                .source(src -> src
+                                        .filter(f -> f
+                                                .includes("id", "location", "address", "dbId"))
+                                )
+                        )
+                )
+        );
+
+
+
+        SearchRequest request = SearchRequest.of( s-> s
+                .index("realestate")
+                .query( q-> q.bool(boolQuery))
+                .aggregations("grid", geoTileGridAggregation)
+                .size(500)
+        );
+
+
+
+
+        // Execute search and return results
+//        System.out.println(esClient.search(request, JsonData.class));
+        SearchResponse<RealestateDoc> response = esClient.search(request, RealestateDoc.class);
+
+        List<GeoTileGridBucket> list = response.aggregations().get("grid").geotileGrid().buckets().array();
+        List<RealestateDoc> realestateDocs = new ArrayList<>();
+        for(GeoTileGridBucket b: list){
+            System.out.println("-------------------------");
+//            System.out.println(b.aggregations().get("top_realestates").topHits().hits().hits().get(0));
+
+
+            RealestateDoc doc = b.aggregations().get("top_realestates").topHits().hits().hits().get(0).source().to(RealestateDoc.class);
+            realestateDocs.add(doc);
+
+            System.out.println(doc);
+            System.out.println("-------------------------");
+        }
+
+        return realestateDocs;
+//        System.out.println(docs);
+//        System.out.println(docs.size());
+    }
 
     public List<Object> search(String queryString) throws IOException {
 
@@ -56,9 +156,7 @@ public class RealestateSearchService {
 
         SearchResponse<JsonData> response = esClient.search(request, JsonData.class);
 
-//        for (Hit<JsonData> hit : response.hits().hits()) {
-//            System.out.println(hit.source().toJson());
-//        }
+
 
         return response.hits().hits().stream()
                 .map(hit -> {

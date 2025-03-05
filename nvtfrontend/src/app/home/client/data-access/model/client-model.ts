@@ -3,8 +3,7 @@ export interface RealestateDoc{
     dbId: number,
     address: string,
     type: string,
-    lat: number,
-    lon: number
+    location:string
 }
 
 export interface CityDoc {

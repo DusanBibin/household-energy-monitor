@@ -34,7 +34,7 @@ public class FileController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Accel-Redirect", filePath);
         System.out.println(filePath);
-        // Return an empty response (Nginx will serve the file)
+
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
