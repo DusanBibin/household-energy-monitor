@@ -25,8 +25,8 @@ public class Household {
     @JoinColumn(name="realestate_id")
     private Realestate realestate;
 
-    @ManyToOne
-    private Client houseHoldOwner;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Client householdOwner;
 
     @OneToMany
     private List<Client> authorizedViewers;
@@ -34,7 +34,7 @@ public class Household {
     private Boolean isOnline;
     private LocalDateTime lastOnline;
 
-    private Double apartmentNum; // popunjava se samo ako je stan u pitanju
+    private Long apartmentNum; // popunjava se samo ako je stan u pitanju
 
     private Double size;
 }

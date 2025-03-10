@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "superadmin_user")
+//@Table(name = "superadmin_user")
 public class SuperAdmin extends Admin{
 
     private boolean firstLogin;

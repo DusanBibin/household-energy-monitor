@@ -26,6 +26,10 @@ public class Verification {
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
+
+    @OneToOne(mappedBy = "verification") // Inverse side
+    private User user;
+
     public Verification(String verificationCode, LocalDateTime expirationDate) {
         this.verificationCode = verificationCode;
         this.expirationDate = expirationDate;

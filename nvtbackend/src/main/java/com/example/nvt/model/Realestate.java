@@ -23,7 +23,7 @@ public class Realestate {
     @ManyToOne
     private Client realestateOwner;
 
-    @OneToMany(mappedBy = "realestate", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "realestate", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Household> households;
 
     @OneToOne
@@ -43,6 +43,8 @@ public class Realestate {
     private String addressStreet;
 
     private String addressNum;
+
+    private boolean isVacant;
 
 
     @ManyToOne

@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "admin_user")
+//@Table(name = "admin_user")
 public class Admin extends User{
 
 }

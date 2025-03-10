@@ -3,7 +3,6 @@ package com.example.nvt.helpers;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
-import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
 import com.example.nvt.model.elastic.CityDoc;
 import com.example.nvt.model.elastic.MunicipalityDoc;
@@ -55,6 +54,8 @@ public class DataInitializer implements CommandLineRunner {
     private final CityDocRepository cityDocRepository;
     private final ElasticsearchClient elasticsearchClient;
 
+
+
     private StopWatch stopWatch = new StopWatch();
 
 
@@ -63,10 +64,12 @@ public class DataInitializer implements CommandLineRunner {
     private Map<Long, String> municipalityDocMap = new HashMap<>();
     private Map<Long, String> cityDocMap = new HashMap<>();
 
+
+    String passwordUniversal;
     @Override
     public void run(String... args) throws Exception {
 
-
+        passwordUniversal = passwordEncoder.encode("clientuniversal");
         initCitiesMunicipalitiesRegions();
 
 
@@ -110,7 +113,6 @@ public class DataInitializer implements CommandLineRunner {
                 .profileImg("dijamantmann.jpg")
                 .emailConfirmed(true)
                 .role(Role.CLIENT)
-                .realEstates(new ArrayList<>())
                 .build();
         client1 = clientRepository.save(client1);
 
@@ -124,12 +126,11 @@ public class DataInitializer implements CommandLineRunner {
                 .profileImg("NEMA")
                 .emailConfirmed(true)
                 .role(Role.CLIENT)
-                .realEstates(new ArrayList<>())
                 .build();
         client2 = clientRepository.save(client2);
 
         initRealestates();
-
+        //initClients();
         System.out.println(stopWatch.prettyPrint());
 
 
@@ -211,7 +212,6 @@ public class DataInitializer implements CommandLineRunner {
                 if (cities.size() >= BATCH_SIZE) {
 
                     cityRepository.saveAll(cities);
-                    Map<String, Long> helpMap = new HashMap<>();
                     List<CityDoc> citiesDocs = cities.stream()
                                     .map(c -> {
                                             var m = c.getMunicipality();
@@ -271,6 +271,8 @@ public class DataInitializer implements CommandLineRunner {
         stopWatch.start("Initializing Realestates");
         String filePath = "../../../Downloads/kucni_br_csv/kucne_adrese_lite.csv";
 
+        Random random = new Random();
+
         // Preload all cities into memory
         Map<String, City> cityMap = cityRepository.findAll()
                 .stream()
@@ -281,11 +283,11 @@ public class DataInitializer implements CommandLineRunner {
 
         List<Realestate> realestates = new ArrayList<>();
 
+        Long clientCounter = 3L;
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
 
             String[] line;
             boolean isFirstLine = true;
-
             while ((line = csvReader.readNext()) != null) {
 
                 if (isFirstLine) { // Skip the header
@@ -307,7 +309,6 @@ public class DataInitializer implements CommandLineRunner {
                     System.out.println("City not found: " + cityName + ", " + municipalityName);
                     continue; // Skip if city is not found
                 }
-
                 // Create Realestate object
                 Realestate realestate = Realestate.builder()
                         .city(city)
@@ -316,16 +317,108 @@ public class DataInitializer implements CommandLineRunner {
                         .addressStreet(addressStreet)
                         .addressNum(addressNum)
                         .type(getRandomRealEstateType())
+                        .households(new ArrayList<>())
                         .build();
                 realestates.add(realestate);
 
+                switch (realestate.getType()){
+                    case HOUSE -> {
+                        Client clientH = null;
+                        if(random.nextLong() > 10L){
+                            clientH = createClient(clientCounter);
+                        }
+
+                        Household household = Household.builder()
+                                .size(random.nextDouble(71) + 40)
+                                .authorizedViewers(new ArrayList<>())
+                                .householdOwner(clientH)
+                                .realestate(realestate)
+                                .build();
+
+                        clientCounter++;
+
+                        realestate.setTotalFloors(random.nextLong(1) + 3);
+                        realestate.getHouseholds().add(household);
+                    }
+                    case COTTAGE -> {
+                        Client clientH = null;
+                        if(random.nextLong() > 10L){
+                            clientH = createClient(clientCounter);
+                        }
+
+                        Household household = Household.builder()
+                                .size(random.nextDouble(100) + 100)
+                                .authorizedViewers(new ArrayList<>())
+                                .householdOwner(clientH)
+                                .realestate(realestate)
+                                .build();
+
+                        clientCounter++;
+
+                        realestate.setTotalFloors(1L);
+                        realestate.getHouseholds().add(household);
+                    }
+                    case BUILDING -> {
+                        Long totalFloors = getBuildingStories();
+                        Long apartmentsPerFloor = random.nextLong(20) + 2;
+                        Double apartmentSize = random.nextDouble(60) + 10;
+
+                        Long counter = 0L;
+                        for(int i = 0; i < totalFloors; i++) {
+                            for (int j = 0; j < apartmentsPerFloor; j++) {
+                                counter++;
+
+                                Client clientH = null;
+                                if(random.nextLong() > 10L){
+                                    clientH = createClient(clientCounter);
+                                }
+
+                                Household household = Household.builder()
+                                        .size(apartmentSize)
+                                        .apartmentNum(counter)
+                                        .authorizedViewers(new ArrayList<>())
+                                        .householdOwner(clientH)
+                                        .realestate(realestate)
+                                        .build();
+
+                                clientCounter++;
+                                realestate.getHouseholds().add(household);
+
+                            }
+                        }
+                        realestate.setTotalFloors(totalFloors);
+                        realestate.setApartmentPerFloorNum(apartmentsPerFloor);
+
+                    }
+                    case COMMERCE_SPACE -> {
+                        Client clientH = null;
+                        if(random.nextLong() > 10L){
+                            clientH = createClient(clientCounter);
+                        }
+
+                        Household household = Household.builder()
+                                .size(random.nextDouble(230) + 20)
+                                .authorizedViewers(new ArrayList<>())
+                                .realestate(realestate)
+                                .householdOwner(clientH)
+                                .build();
+
+                        clientCounter++;
+                        realestate.setTotalFloors(random.nextLong(1) + 1);
+                        realestate.getHouseholds().add(household);
+                    }
+                }
+
                 // Save in batches
                 if (realestates.size() >= BATCH_SIZE) {
-                    realestateRepository.saveAll(realestates);
+                    realestates = realestateRepository.saveAll(realestates);
 
 
                     List<RealestateDoc> realestateDocs = realestates.stream()
                                     .map(r -> {
+
+
+
                                             City c = r.getCity();
                                             Municipality m = c.getMunicipality();
                                             Region reg = m.getRegion();
@@ -342,6 +435,7 @@ public class DataInitializer implements CommandLineRunner {
                                                     .location(r.getLat() + "," + r.getLon())
                                                     .build(); })
                                     .toList();
+
                     realestateDocRepository.saveAll(realestateDocs);
                     realestates.clear();
                 }
@@ -373,12 +467,35 @@ public class DataInitializer implements CommandLineRunner {
             realestateDocRepository.saveAll(realestateDocs);
             realestates.clear();
         }
-
         stopWatch.stop();
         System.out.println("DONE in " + stopWatch.getTotalTimeSeconds() + " seconds");
+
     }
 
-    public static RealEstateType getRandomRealEstateType() {
+
+    private Client createClient(Long clientNum){
+        Random random = new Random();
+        Client client = null;
+        //if(random.nextLong(100L) >= 10){
+            client = Client.builder()
+                    .email("client" + clientNum + "@example.com")
+                    .firstName("Ime" + clientNum)
+                    .lastname("Prezime" + clientNum)
+                    .phoneNumber("0697817839")
+                    .password(passwordUniversal)
+                    .profileImg("NEMA")
+                    .emailConfirmed(true)
+                    .realEstates(new ArrayList<>())
+                    .realEstateRequests(new ArrayList<>())
+                    .households(new ArrayList<>())
+                    .role(Role.CLIENT)
+                    .build();
+        //}
+        return client;
+    }
+
+
+    private static RealEstateType getRandomRealEstateType() {
         TreeMap<Double, RealEstateType> map = new TreeMap<>();
         Random random = new Random();
 
@@ -389,6 +506,22 @@ public class DataInitializer implements CommandLineRunner {
         map.put(100.0, RealEstateType.COMMERCE_SPACE); //7%
         double rand = random.nextDouble() * 100;
         return map.ceilingEntry(rand).getValue();
+    }
+
+    private static Long getBuildingStories(){
+        TreeMap<Double, int[]> map = new TreeMap<>();
+        Random random = new Random();
+
+        map.put(65.0, new int[]{2, 10}); //65%
+        map.put(92.5, new int[]{11, 20}); //27.5%
+        map.put(97.5, new int[]{21, 30}); //5%
+        map.put(100.0, new int[]{31, 40}); //2.5%
+
+        double rand = random.nextDouble() * 100;
+
+        int[] range = map.ceilingEntry(rand).getValue();
+
+        return (long)(random.nextInt(range[1] - range[0] + 1) + range[0]);
     }
 
 

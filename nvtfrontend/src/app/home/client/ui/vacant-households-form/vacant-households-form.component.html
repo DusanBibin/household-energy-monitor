@@ -1,6 +1,6 @@
 <div class="w-100 d-flex flex-column" style="height: 100%; ">
   
-  <div class="px-4">
+  <div class="px-3">
     <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;  ">
       <label for="searchInput"></label>
       <input
@@ -48,9 +48,30 @@
       
         <div id="mape" style="width: 100%; height: 100%">
           <google-map #googleMap [center]="center" [zoom]="7" width="100%" height="100%" [options]="mapOptions">
-            <map-marker *ngFor="let marker of markers" [position]="marker"></map-marker>
+            @for (realestate of realestates; track realestate.doc.dbId) {
+              <map-marker
+                [position]="realestate.marker"
+                (mapClick)="onMarkerClick($event, realestate)">
+                
+              </map-marker>
+        
+            }
+
+            @if(selectedRealestateMarker){
+              <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
+                <a>
+                    {{selectedRealestateMarker.doc.address}} 
+                </a>
+              </div>
+  
+            }
+
           </google-map>
+
+        
         </div>
+
+       
     
     </div>
     

@@ -1,6 +1,6 @@
 <div class="vh-100">
     <div class="d-flex flex-column flex-md-row h-100">
-        <div class="col-12 col-md-3 col-xl-2 px-0 bg-dark d-flex sticky-top " style="min-width:fit-content;">
+        <div class="col-12 col-md-1 col-xl-1 px-0 bg-dark d-flex sticky-top " style="min-width: fit-content;">
             <div class="d-flex flex-md-column flex-row flex-grow-1 align-items-center align-items-md-start text-white my-md-4 ms-md-4 m-3">
                 <ul class="nav nav-pills flex-md-column flex-row flex-nowrap flex-shrink-1 flex-md-grow-0 flex-grow-1 mb-md-auto justify-content-space-between align-items-center align-items-sm-start" id="menu">
                     
@@ -39,9 +39,9 @@
                 </ul>
 
                 @if (partialUserData) {
-                    <div class="dropdown mt-md-auto ms-auto ms-md-0 flex-shrink-1">
+                    <div class="mt-md-auto ms-auto ms-md-0 flex-shrink-1">
 
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <img [src]="imgUri" alt="profileImg" width="30" height="30" class="rounded-circle">
                             <div class="d-none d-md-flex flex-column ms-2">
                                 <span>{{partialUserData.name}} {{partialUserData.lastname}}</span>
@@ -49,7 +49,7 @@
                             </div>
                             
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">

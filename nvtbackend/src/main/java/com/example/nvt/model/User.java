@@ -35,11 +35,12 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
-    @Column(unique = true)
+//    @Column(unique = true)
     private String phoneNumber;
     private boolean emailConfirmed;
     private String profileImg;
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "verification_id")
     private Verification verification;
     @Enumerated(EnumType.STRING)
     private Role role;

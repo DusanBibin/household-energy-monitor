@@ -46,7 +46,6 @@ export class VacantHouseholdsComponent {
 
 
   filterSuggestions(results: (CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc)[], value: string) {
-    console.log(results)
     if (!value) {
       this.filteredSuggestions = [];
       return;

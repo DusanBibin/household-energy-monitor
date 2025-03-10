@@ -80,7 +80,7 @@ public class RealestateSearchService {
         }
 
         BoolQuery boolQuery = boolQueryBuilder.build();
-        System.out.println("zoom: " + zoomLevel);
+        //System.out.println("zoom: " + zoomLevel);
         // Define aggregation for geo_tile_grid with dynamic precision
         Aggregation geoTileGridAggregation = Aggregation.of(a -> a
                 .geotileGrid(g -> g
@@ -116,17 +116,17 @@ public class RealestateSearchService {
         List<GeoTileGridBucket> list = response.aggregations().get("grid").geotileGrid().buckets().array();
         List<RealestateDoc> realestateDocs = new ArrayList<>();
         for(GeoTileGridBucket b: list){
-            System.out.println("-------------------------");
+//            System.out.println("-------------------------");
 //            System.out.println(b.aggregations().get("top_realestates").topHits().hits().hits().get(0));
 
 
             RealestateDoc doc = b.aggregations().get("top_realestates").topHits().hits().hits().get(0).source().to(RealestateDoc.class);
             realestateDocs.add(doc);
 
-            System.out.println(doc);
-            System.out.println("-------------------------");
+//            System.out.println(doc);
+//            System.out.println("-------------------------");
         }
-
+        System.out.println(realestateDocs.size());
         return realestateDocs;
 //        System.out.println(docs);
 //        System.out.println(docs.size());

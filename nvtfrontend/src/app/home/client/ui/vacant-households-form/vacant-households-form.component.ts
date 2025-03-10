@@ -22,7 +22,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
   @ViewChild('googleMap') googleMap!: any;
 
-  selectedSuggestion: FilteredSuggestion | null= null;
+  selectedSuggestion: FilteredSuggestion | null = null;
+  isSelectedSuggestion = false;
   
   center: google.maps.LatLngLiteral = { lat: 44.215341185649585, lng: 20.83940393242209 };
   mapOptions: google.maps.MapOptions = {
@@ -30,10 +31,12 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     mapTypeControl: false,
     fullscreenControl: false,
     clickableIcons: false,
-    cameraControl: false
+    cameraControl: false,
   };
 
-  markers: google.maps.LatLngLiteral[] = [];
+ 
+
+  realestates: {doc: RealestateDoc, marker: google.maps.LatLngLiteral}[] = [];
 
   private map!: google.maps.Map;
   private mapMoveSubject = new Subject<void>(); 
@@ -42,6 +45,9 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
   
   showDropdown = false;
+  selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.LatLngLiteral} | null = null;
+
+  popupPosition = { x: 0, y: 0 };
 
   constructor(private ngZone: NgZone) {
     this.searchControl.valueChanges
@@ -49,9 +55,14 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         debounceTime(100), 
         distinctUntilChanged(),
         tap(value => {
-          console.log(value)
+          this.selectedRealestateMarker = null;
+          if(this.isSelectedSuggestion) this.isSelectedSuggestion = false;
+          else{
+            this.selectedSuggestion = null;
+            this.logMapDetails();
+          } 
+          
           if(value) value = encodeURIComponent(value.trim());
-          console.log(value)
           this.searchQueryE.emit(value || '');
         })
       ).subscribe()
@@ -60,33 +71,49 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
       if(changes['realestatePins']){
-        console.log("KURAC")
-        console.log(this.realestatePins)
+    
+  
         
-        this.markers = [];
+        this.realestates = [];
 
-        this.realestatePins.forEach(realestate => {
-          let [lat, lon] = realestate.location.split(",");
-          this.markers.push({lat: parseFloat(lat), lng: parseFloat(lon)})
+        this.realestatePins.forEach(doc => {
+          let [lat, lon] = doc.location.split(",");
+          let marker: google.maps.LatLngLiteral = {lat: parseFloat(lat), lng: parseFloat(lon)}
+          this.realestates.push({doc, marker})
         });
       }
   }
 
+  
+  onMarkerClick(event: google.maps.MapMouseEvent, realestate: {doc: RealestateDoc, marker: google.maps.LatLngLiteral}){
+    if (!event.latLng) return;
+
+    console.log(realestate.doc.address)
+
+    const projection = (event as any).domEvent;
+    console.log(projection)
+    // const position = projection.fromLatLngToDivPixel(event.latLng);
+
+    this.popupPosition = {
+      x: projection.clientX,
+      y: projection.clientY
+    };
+
+    console.log(this.popupPosition)
+    this.selectedRealestateMarker = realestate;
+  }
+
   ngAfterViewInit() {
-    console.log("iksdebro1")
-    console.log(this.googleMap)
-    console.log(this.googleMap.googleMap)
+
     if (this.googleMap && this.googleMap.googleMap) {
       this.map = this.googleMap.googleMap;
-
-      console.log("iksdebro2")
      
-      this.map.addListener('zoom_changed', () => this.mapMoveSubject.next());
-      this.map.addListener('bounds_changed', () => this.mapMoveSubject.next());
-
+      this.map.addListener('zoom_changed', () => this.onMapMove());
+      this.map.addListener('bounds_changed', () => this.onMapMove());
+      this.map.addListener('click', () => this.onMapMove());
   
       this.mapMoveSubject.pipe(
-        debounceTime(2000), 
+        debounceTime(1000), 
         tap(() => {
           this.ngZone.run(() => {
             this.logMapDetails();
@@ -96,7 +123,16 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     }
   }
 
+
+  onMapMove() {
+    this.ngZone.run(() => {
+      this.selectedRealestateMarker = null
+    });
+    this.mapMoveSubject.next();
+  }
+
   logMapDetails() {
+    
     if (!this.map) return;
 
     const zoom = this.map.getZoom();
@@ -124,8 +160,15 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
       let filterType: string = "";
       let filterDocId: string = "";
+   
+      if(this.selectedSuggestion != null){  
+    
+        filterType = this.selectedSuggestion.type;
+        filterDocId = this.selectedSuggestion.id;
+      }
+      
       let zoomLevel: number = zoom!;
-
+  
       this.searchAggregateE.emit({topLeft, bottomRight, zoomLevel, filterType, filterDocId});
     }
   }
@@ -134,9 +177,11 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   selectSuggestion(suggestion: FilteredSuggestion) {
     this.searchControl.setValue(suggestion.original);
     this.showDropdown = false;
-
-    if(['CITY', 'MUNICIPALITY', 'REGION'].includes(suggestion.type)) this.selectedSuggestion = suggestion;
-
+    if(['CITY', 'MUNICIPALITY', 'REGION'].includes(suggestion.type)){
+      this.isSelectedSuggestion = true;
+      this.selectedSuggestion = suggestion;
+      this.logMapDetails();
+    } 
 
   }
 

@@ -15,7 +15,6 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "client")
 public class Client extends User{
 
     @OneToMany
@@ -24,7 +23,7 @@ public class Client extends User{
     @OneToMany
     private List<Household> households;
 
-
     @OneToMany
     private List<RealEstateRequest> realEstateRequests;
+
 }
