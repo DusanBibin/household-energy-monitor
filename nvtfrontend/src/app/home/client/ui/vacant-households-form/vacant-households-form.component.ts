@@ -87,8 +87,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   
   onMarkerClick(event: google.maps.MapMouseEvent, realestate: {doc: RealestateDoc, marker: google.maps.LatLngLiteral}){
     if (!event.latLng) return;
-
-    console.log(realestate.doc.address)
+    console.log("kurackernin")
+    console.log(realestate.doc)
 
     const projection = (event as any).domEvent;
     console.log(projection)

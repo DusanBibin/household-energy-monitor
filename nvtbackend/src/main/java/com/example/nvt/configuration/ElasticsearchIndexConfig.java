@@ -96,7 +96,8 @@ public class ElasticsearchIndexConfig {
                                 "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
                                 "cityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
                                 "municipalityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
-                                "regionDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build()
+                                "regionDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                                "vacant", new Property.Builder().boolean_(new BooleanProperty.Builder().build()).build()
 //                                "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
 //                                "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
 //                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),

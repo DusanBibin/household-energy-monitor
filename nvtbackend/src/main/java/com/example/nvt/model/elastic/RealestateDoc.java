@@ -42,4 +42,8 @@ public class RealestateDoc {
 
     @Field(type = FieldType.Keyword)
     private String regionDocId;
+
+    @Field(type = FieldType.Boolean)
+    private boolean vacant;
+
 }

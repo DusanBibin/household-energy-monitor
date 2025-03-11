@@ -69,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        passwordUniversal = passwordEncoder.encode("clientuniversal");
+        passwordUniversal = passwordEncoder.encode("sifra123");
         initCitiesMunicipalitiesRegions();
 
 
@@ -303,13 +303,13 @@ public class DataInitializer implements CommandLineRunner {
                 String addressStreet = line[4];
                 String addressNum = line[5];
 
-                // Lookup city
+
                 City city = cityMap.get(cityName + "_Opština " + municipalityName);
                 if (city == null) {
                     System.out.println("City not found: " + cityName + ", " + municipalityName);
-                    continue; // Skip if city is not found
+                    continue;
                 }
-                // Create Realestate object
+
                 Realestate realestate = Realestate.builder()
                         .city(city)
                         .lat(lat)
@@ -324,10 +324,10 @@ public class DataInitializer implements CommandLineRunner {
                 switch (realestate.getType()){
                     case HOUSE -> {
                         Client clientH = null;
-                        if(random.nextLong() > 10L){
+                        if(random.nextLong(1, 101) > 10L){
                             clientH = createClient(clientCounter);
+                            clientCounter++;
                         }
-
                         Household household = Household.builder()
                                 .size(random.nextDouble(71) + 40)
                                 .authorizedViewers(new ArrayList<>())
@@ -335,15 +335,15 @@ public class DataInitializer implements CommandLineRunner {
                                 .realestate(realestate)
                                 .build();
 
-                        clientCounter++;
-
+                        realestate.setVacant(clientH == null);
                         realestate.setTotalFloors(random.nextLong(1) + 3);
                         realestate.getHouseholds().add(household);
                     }
                     case COTTAGE -> {
                         Client clientH = null;
-                        if(random.nextLong() > 10L){
+                        if(random.nextLong(1, 101) > 10L){
                             clientH = createClient(clientCounter);
+                            clientCounter++;
                         }
 
                         Household household = Household.builder()
@@ -353,8 +353,8 @@ public class DataInitializer implements CommandLineRunner {
                                 .realestate(realestate)
                                 .build();
 
-                        clientCounter++;
 
+                        realestate.setVacant(clientH == null);
                         realestate.setTotalFloors(1L);
                         realestate.getHouseholds().add(household);
                     }
@@ -364,13 +364,15 @@ public class DataInitializer implements CommandLineRunner {
                         Double apartmentSize = random.nextDouble(60) + 10;
 
                         Long counter = 0L;
+                        boolean isVacant = true;
                         for(int i = 0; i < totalFloors; i++) {
                             for (int j = 0; j < apartmentsPerFloor; j++) {
                                 counter++;
 
                                 Client clientH = null;
-                                if(random.nextLong() > 10L){
+                                if(random.nextLong(1, 101) > 10L){
                                     clientH = createClient(clientCounter);
+                                    clientCounter++;
                                 }
 
                                 Household household = Household.builder()
@@ -381,19 +383,26 @@ public class DataInitializer implements CommandLineRunner {
                                         .realestate(realestate)
                                         .build();
 
-                                clientCounter++;
+                                if(clientH != null && isVacant){
+                                    isVacant = false;
+                                }
+
+
                                 realestate.getHouseholds().add(household);
 
                             }
                         }
+
+                        realestate.setVacant(isVacant);
                         realestate.setTotalFloors(totalFloors);
                         realestate.setApartmentPerFloorNum(apartmentsPerFloor);
 
                     }
                     case COMMERCE_SPACE -> {
                         Client clientH = null;
-                        if(random.nextLong() > 10L){
+                        if(random.nextLong(1, 101) > 10L){
                             clientH = createClient(clientCounter);
+                            clientCounter++;
                         }
 
                         Household household = Household.builder()
@@ -403,7 +412,8 @@ public class DataInitializer implements CommandLineRunner {
                                 .householdOwner(clientH)
                                 .build();
 
-                        clientCounter++;
+
+                        realestate.setVacant(clientH == null);
                         realestate.setTotalFloors(random.nextLong(1) + 1);
                         realestate.getHouseholds().add(household);
                     }
@@ -416,7 +426,6 @@ public class DataInitializer implements CommandLineRunner {
 
                     List<RealestateDoc> realestateDocs = realestates.stream()
                                     .map(r -> {
-
 
 
                                             City c = r.getCity();
@@ -433,6 +442,7 @@ public class DataInitializer implements CommandLineRunner {
                                                     .municipalityDocId(municipalityDocMap.get(m.getId()))
                                                     .regionDocId(regionDocMap.get(reg.getId()))
                                                     .location(r.getLat() + "," + r.getLon())
+                                                    .vacant(r.isVacant())
                                                     .build(); })
                                     .toList();
 
@@ -462,6 +472,7 @@ public class DataInitializer implements CommandLineRunner {
                                 .municipalityDocId(municipalityDocMap.get(m.getId()))
                                 .regionDocId(regionDocMap.get(reg.getId()))
                                 .location(r.getLat() + "," + r.getLon())
+                                .vacant(r.isVacant())
                                 .build(); })
                     .toList();
             realestateDocRepository.saveAll(realestateDocs);
@@ -476,9 +487,9 @@ public class DataInitializer implements CommandLineRunner {
     private Client createClient(Long clientNum){
         Random random = new Random();
         Client client = null;
-        //if(random.nextLong(100L) >= 10){
+        if(random.nextLong(100L) >= 10){
             client = Client.builder()
-                    .email("client" + clientNum + "@example.com")
+                    .email("client" + clientNum + "@gmail.com")
                     .firstName("Ime" + clientNum)
                     .lastname("Prezime" + clientNum)
                     .phoneNumber("0697817839")
@@ -490,7 +501,7 @@ public class DataInitializer implements CommandLineRunner {
                     .households(new ArrayList<>())
                     .role(Role.CLIENT)
                     .build();
-        //}
+        }
         return client;
     }
 

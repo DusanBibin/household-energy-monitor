@@ -24,6 +24,7 @@ export class VacantHouseholdsComponent {
     console.log("ides u kurac")
     this.clientService.aggregate(event.topLeft, event.bottomRight, event.zoomLevel, event.filterType, event.filterDocId).subscribe({
       next: value => {
+          console.log("iksdebro1")
           console.log(value)
 
           this.realestatePins = value;
