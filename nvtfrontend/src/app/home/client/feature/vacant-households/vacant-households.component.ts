@@ -57,7 +57,7 @@ export class VacantHouseholdsComponent {
 
       .map((item: CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc): FilteredSuggestion => {
         if ((item as CityDoc).city) {
-          // item is of type CityDoc
+          
           return {
             id: `${(item as CityDoc).id}`,
             original: `${(item as CityDoc).city}`,
@@ -65,7 +65,7 @@ export class VacantHouseholdsComponent {
             type: 'CITY',
           };
         } else if ((item as MunicipalityDoc).municipality) {
-          // item is of type MunicipalityDoc
+          
           return {
 
             id: `${(item as MunicipalityDoc).id}`,
@@ -74,7 +74,7 @@ export class VacantHouseholdsComponent {
             type: 'MUNICIPALITY',
           };
         } else if ((item as RegionDoc).region) {
-          // item is of type RegionDoc
+          
           return {
             id: `${(item as RegionDoc).id}`,
             original: `${(item as RegionDoc).region}`,
@@ -82,7 +82,7 @@ export class VacantHouseholdsComponent {
             type: 'REGION',
           };
         } else {
-          // item is of type RealestateDoc
+          
           return {
             id: `${(item as RealestateDoc).id}`,
             original: `${(item as RealestateDoc).address}`,

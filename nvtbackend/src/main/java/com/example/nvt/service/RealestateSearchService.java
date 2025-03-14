@@ -87,7 +87,7 @@ public class RealestateSearchService {
         Aggregation geoTileGridAggregation = Aggregation.of(a -> a
                 .geotileGrid(g -> g
                         .field("location")
-                        .precision(2 + zoomLevel))
+                        .precision(3 + zoomLevel))
                 .aggregations("top_realestates", agg -> agg
                         .topHits(th -> th
                                 .size(1)
@@ -126,7 +126,7 @@ public class RealestateSearchService {
     public List<Object> search(String queryString) throws IOException {
 
 
-        BoolQuery.Builder query = QueryBuilders.bool()
+        BoolQuery.Builder queryBuilder = QueryBuilders.bool()
                 .must(m -> m.multiMatch(MultiMatchQuery.of(q -> q
                         .query(queryString)
                         .fields("address", "city^2", "municipality^4", "region^7")
@@ -134,9 +134,11 @@ public class RealestateSearchService {
                         .fuzziness("1")
                         )
                 )
-        ).must(m -> m.term( t -> t.field("vacant").value(true)));
+        ).mustNot(m -> m.term( t -> t.field("vacant").value(false)));
 
-        BoolQuery boolQuery = query.build();
+        BoolQuery boolQuery = queryBuilder.build();
+
+
 //        Query query = Query.of(q -> q
 //                .multiMatch(MultiMatchQuery.of(m -> m
 //                        .query(queryString)
@@ -148,7 +150,7 @@ public class RealestateSearchService {
 
         SearchRequest request = SearchRequest.of(s -> s
                 .index("city", "municipality", "region", "realestate")
-                .query(q-> q.bool(boolQuery))
+                .query(q -> q.bool(boolQuery))
                 .sort(SortOptions.of(so -> so
                                 .field(f -> f
                                         .field("_score")

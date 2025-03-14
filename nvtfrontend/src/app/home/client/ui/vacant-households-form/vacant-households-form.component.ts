@@ -6,6 +6,8 @@ import { ClientService } from '../../data-access/client.service';
 import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc } from '../../data-access/model/client-model';
 import { FilteredSuggestion } from '../../feature/vacant-households/vacant-households.component';
 import { LocationDTO } from '../../../../shared/model';
+import { GoogleMap,  } from '@angular/google-maps';
+
 @Component({
   selector: 'app-vacant-households-form',
   standalone: false,
@@ -27,16 +29,28 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   
   center: google.maps.LatLngLiteral = { lat: 44.215341185649585, lng: 20.83940393242209 };
   mapOptions: google.maps.MapOptions = {
+    zoom: 7,
+    center: this.center,
     streetViewControl: false, 
     mapTypeControl: false,
     fullscreenControl: false,
     clickableIcons: false,
     cameraControl: false,
+    mapId:"5e0fff8eb964f0f7"
   };
 
- 
+  // markerPin = new google.maps.marker.PinElement({
+  //   background: '#76ba1b',
+  //   scale: 2,
+  //   borderColor: '#137333',
+  //   glyphColor: '#137333'
+  // })
 
-  realestates: {doc: RealestateDoc, marker: google.maps.LatLngLiteral}[] = [];
+
+  
+
+ 
+  realestates: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement}[] = [];
 
   private map!: google.maps.Map;
   private mapMoveSubject = new Subject<void>(); 
@@ -45,11 +59,15 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
   
   showDropdown = false;
-  selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.LatLngLiteral} | null = null;
+  selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
 
   popupPosition = { x: 0, y: 0 };
 
   constructor(private ngZone: NgZone) {
+    
+
+
+
     this.searchControl.valueChanges
       .pipe(
         debounceTime(100), 
@@ -78,31 +96,66 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
         this.realestatePins.forEach(doc => {
           let [lat, lon] = doc.location.split(",");
-          let marker: google.maps.LatLngLiteral = {lat: parseFloat(lat), lng: parseFloat(lon)}
+
+          const pin = new google.maps.marker.PinElement({
+            scale: 0.5,
+          });
+        
+          
+          const marker = new google.maps.marker.AdvancedMarkerElement({
+            map: this.map,
+            position: { lat: parseFloat(lat), lng: parseFloat(lon) },
+            content: pin.element,
+          });
+
+          marker.addListener('click', (event: google.maps.MapMouseEvent) => {
+            // Extract the map projection from the event
+            if (!event.latLng) return;
+            console.log("kurackernin")
+            console.log(doc)
+  
+            const projection = (event as any).domEvent;
+            console.log(projection)
+            // const position = projection.fromLatLngToDivPixel(event.latLng);
+  
+            this.popupPosition = {
+              x: projection.clientX,
+              y: projection.clientY
+            };
+  
+            console.log(this.popupPosition)
+  
+            this.selectedRealestateMarker = {doc, marker};
+          });
+
+
+          // let marker: google.maps.LatLngLiteral = {lat: parseFloat(lat), lng: parseFloat(lon)}
           this.realestates.push({doc, marker})
         });
       }
   }
 
   
-  onMarkerClick(event: google.maps.MapMouseEvent, realestate: {doc: RealestateDoc, marker: google.maps.LatLngLiteral}){
-    if (!event.latLng) return;
-    console.log("kurackernin")
-    console.log(realestate.doc)
+  // onMarkerClick(location: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement){
+  
+  //   const projection = event.map.getProjection();  // Get the projection of the map
 
-    const projection = (event as any).domEvent;
-    console.log(projection)
-    // const position = projection.fromLatLngToDivPixel(event.latLng);
+  //   // Convert the lat/lng to pixel coordinates
+  //   const position = projection.fromLatLngToDivPixel(event.latLng);
 
-    this.popupPosition = {
-      x: projection.clientX,
-      y: projection.clientY
-    };
+  //   const projection = (event as any).domEvent;
+  //   // const position = projection.fromLatLngToDivPixel(event.latLng);
 
-    console.log(this.popupPosition)
-    this.selectedRealestateMarker = realestate;
-  }
+  //   this.popupPosition = {
+  //     x: projection.clientX,
+  //     y: projection.clientY
+  //   };
 
+
+  //   this.selectedRealestateMarker = location;
+  // }
+
+  
   ngAfterViewInit() {
 
     if (this.googleMap && this.googleMap.googleMap) {
@@ -110,7 +163,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
      
       this.map.addListener('zoom_changed', () => this.onMapMove());
       this.map.addListener('bounds_changed', () => this.onMapMove());
-      this.map.addListener('click', () => this.onMapMove());
+      this.map.addListener('gmp-click', () => this.onMapMove());
   
       this.mapMoveSubject.pipe(
         debounceTime(1000), 
