@@ -38,15 +38,6 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     cameraControl: false,
     mapId:"5e0fff8eb964f0f7"
   };
-
-  // markerPin = new google.maps.marker.PinElement({
-  //   background: '#76ba1b',
-  //   scale: 2,
-  //   borderColor: '#137333',
-  //   glyphColor: '#137333'
-  // })
-
-
   
 
  
@@ -90,33 +81,56 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
       if(changes['realestatePins']){
     
-  
+        this.realestates.forEach(realestate => {
+          if (realestate.marker) {
+            realestate.marker.map = null;  
+          }
+        });
         
         this.realestates = [];
 
         this.realestatePins.forEach(doc => {
           let [lat, lon] = doc.location.split(",");
 
-          const pin = new google.maps.marker.PinElement({
-            scale: 0.5,
-          });
-        
+
+
+          //ovo sranje bi trebalo da radi medjutim iz nekog razloga ne prima eksterni smrdljivi css 
+          const priceTag = document.createElement('div');
+          priceTag.className = 'price-tag';
+          priceTag.textContent = '$2.5M';
+          //PA ONDA MORA NA OVAJ GLUPAV RETARDIRANI NACIN MRZIM CSS I JAVASCRIPT
+          const shadowRoot = priceTag.attachShadow({ mode: "open" });
+          shadowRoot.innerHTML = `
+          <style>
+            .price-tag {
+              background-color: #d11608;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              border: solid 2.5px white
+            }
+
+            .price-tag:hover{
+              background-color: green;
+            }
+          </style>
+          <div class="price-tag"></div>
+        `;
           
           const marker = new google.maps.marker.AdvancedMarkerElement({
             map: this.map,
             position: { lat: parseFloat(lat), lng: parseFloat(lon) },
-            content: pin.element,
+            content: priceTag,
           });
 
           marker.addListener('click', (event: google.maps.MapMouseEvent) => {
-            // Extract the map projection from the event
+
             if (!event.latLng) return;
             console.log("kurackernin")
             console.log(doc)
   
             const projection = (event as any).domEvent;
             console.log(projection)
-            // const position = projection.fromLatLngToDivPixel(event.latLng);
   
             this.popupPosition = {
               x: projection.clientX,
@@ -128,32 +142,11 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
             this.selectedRealestateMarker = {doc, marker};
           });
 
-
-          // let marker: google.maps.LatLngLiteral = {lat: parseFloat(lat), lng: parseFloat(lon)}
           this.realestates.push({doc, marker})
         });
       }
   }
 
-  
-  // onMarkerClick(location: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement){
-  
-  //   const projection = event.map.getProjection();  // Get the projection of the map
-
-  //   // Convert the lat/lng to pixel coordinates
-  //   const position = projection.fromLatLngToDivPixel(event.latLng);
-
-  //   const projection = (event as any).domEvent;
-  //   // const position = projection.fromLatLngToDivPixel(event.latLng);
-
-  //   this.popupPosition = {
-  //     x: projection.clientX,
-  //     y: projection.clientY
-  //   };
-
-
-  //   this.selectedRealestateMarker = location;
-  // }
 
   
   ngAfterViewInit() {
@@ -163,7 +156,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
      
       this.map.addListener('zoom_changed', () => this.onMapMove());
       this.map.addListener('bounds_changed', () => this.onMapMove());
-      this.map.addListener('gmp-click', () => this.onMapMove());
+      this.map.addListener('click', () => this.onMapMove());
   
       this.mapMoveSubject.pipe(
         debounceTime(1000), 
