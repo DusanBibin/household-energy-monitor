@@ -22,7 +22,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   @Input() realestatePins: RealestateDoc[] = [];
   @Output() searchAggregateE = new EventEmitter<{topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}>();
 
-  @ViewChild('googleMap') googleMap!: any;
+  @ViewChild('googleMap') googleMap!: GoogleMap;
 
   selectedSuggestion: FilteredSuggestion | null = null;
   isSelectedSuggestion = false;
@@ -44,8 +44,9 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   realestates: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement}[] = [];
 
   private map!: google.maps.Map;
-  private mapMoveSubject = new Subject<void>(); 
-  
+  private mapMoveSubject = new Subject<void>();
+
+
   searchControl = new FormControl('');
 
   
@@ -96,10 +97,14 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
           //ovo sranje bi trebalo da radi medjutim iz nekog razloga ne prima eksterni smrdljivi css 
           const priceTag = document.createElement('div');
+          
           priceTag.className = 'price-tag';
-          priceTag.textContent = '$2.5M';
+          console.log(priceTag)
+          
+          const shadowRoot = priceTag.attachShadow({mode: 'open'})
+          
           //PA ONDA MORA NA OVAJ GLUPAV RETARDIRANI NACIN MRZIM CSS I JAVASCRIPT
-          const shadowRoot = priceTag.attachShadow({ mode: "open" });
+         
           shadowRoot.innerHTML = `
           <style>
             .price-tag {
@@ -138,8 +143,14 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
             };
   
             console.log(this.popupPosition)
-  
+
+            if(this.selectedRealestateMarker) this.paintMarker(this.selectedRealestateMarker.marker, ' #d11608')
+            this.paintMarker(marker, 'green')
+            
+            
+
             this.selectedRealestateMarker = {doc, marker};
+            
           });
 
           this.realestates.push({doc, marker})
@@ -147,7 +158,26 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       }
   }
 
+  paintMarker(marker: google.maps.marker.AdvancedMarkerElement, color: string){
+    const markerElement = marker.content as HTMLElement;
+    const markerShadow = markerElement.shadowRoot; 
 
+    if (markerShadow) {
+      const styleTag = markerShadow.querySelector("style");
+      if (styleTag) {
+        styleTag.innerHTML = `
+          .price-tag {
+            background-color:${color};
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: solid 2.5px white
+          }`;
+      }
+    } else {
+      console.error("ShadowRoot not found!");
+    }
+  }
   
   ngAfterViewInit() {
 
@@ -156,22 +186,30 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
      
       this.map.addListener('zoom_changed', () => this.onMapMove());
       this.map.addListener('bounds_changed', () => this.onMapMove());
-      this.map.addListener('click', () => this.onMapMove());
+      this.map.addListener('click', () => {
+       
+        this.ngZone.run(() => {
+          if(this.selectedRealestateMarker) this.paintMarker(this.selectedRealestateMarker?.marker, ' #d11608')
+          this.selectedRealestateMarker = null; 
+        });
+
+      });
   
       this.mapMoveSubject.pipe(
-        debounceTime(1000), 
+        debounceTime(500), 
         tap(() => {
           this.ngZone.run(() => {
             this.logMapDetails();
           });
         })
       ).subscribe();
+
     }
   }
 
-
   onMapMove() {
     this.ngZone.run(() => {
+      if(this.selectedRealestateMarker) this.paintMarker(this.selectedRealestateMarker?.marker, ' #d11608')
       this.selectedRealestateMarker = null
     });
     this.mapMoveSubject.next();

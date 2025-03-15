@@ -57,25 +57,22 @@
                   (mapClick)="onMarkerClick($event, realestate)">  
                 </map-advanced-marker>
               }
-            } -->
-
-            @if(selectedRealestateMarker){
-              <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
-                <a>
-                  <i class="bi me-2" [ngClass]="{
-                    'bi-house-door': selectedRealestateMarker.doc.type === 'HOUSE',
-                    'bi-building': selectedRealestateMarker.doc.type === 'BUILDING',
-                    'bi-signpost': selectedRealestateMarker.doc.type === 'COTTAGE',
-                    'bi-shop': selectedRealestateMarker.doc.type === 'COMMERCE_SPACE',
-                    'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(selectedRealestateMarker.doc.type)
-                  }"></i> {{selectedRealestateMarker.doc.address}} 
-                </a>
-              </div>
-  
-            }
-
+            } -->            
           </google-map>
+          @if(selectedRealestateMarker){
+            <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
+              <a>
+                <i class="bi me-2" [ngClass]="{
+                  'bi-house-door': selectedRealestateMarker.doc.type === 'HOUSE',
+                  'bi-building': selectedRealestateMarker.doc.type === 'BUILDING',
+                  'bi-signpost': selectedRealestateMarker.doc.type === 'COTTAGE',
+                  'bi-shop': selectedRealestateMarker.doc.type === 'COMMERCE_SPACE',
+                  'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(selectedRealestateMarker.doc.type)
+                }"></i> {{selectedRealestateMarker.doc.address}} 
+              </a>
+            </div>
 
+          }
         
         </div>
 
