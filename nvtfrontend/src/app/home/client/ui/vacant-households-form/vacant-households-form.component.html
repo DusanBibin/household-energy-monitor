@@ -16,11 +16,11 @@
       >
   
 
-      @if((filteredSuggestions.length > 0 && showDropdown)){
+      @if((filteredSuggestionsInput.length > 0 && showDropdown)){
         <ul style="z-index: 1050; overflow-y: auto;"
         class="list-group position-absolute w-100 shadow bg-white shadow"  >
 
-          @for (suggestion of filteredSuggestions; track suggestion) {
+          @for (suggestion of filteredSuggestionsInput; track suggestion) {
             <li
               class="list-group-item list-group-item-action"
               (click)="selectSuggestion(suggestion)">
@@ -47,17 +47,7 @@
     <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
       
         <div id="mape" style="width: 100%; height: 100%">
-          <google-map #googleMap width="100%" height="100%" [options]="mapOptions">
-            <!-- @for (realestate of realestates; track realestate.doc.dbId) {
-
-              @if (realestate.marker.position) {
-                <map-advanced-marker
-                  [content]="realestate.marker.content ?? null"
-                  [position]="realestate.marker.position"
-                  (mapClick)="onMarkerClick($event, realestate)">  
-                </map-advanced-marker>
-              }
-            } -->            
+          <google-map #googleMap width="100%" height="100%" [options]="mapOptions">        
           </google-map>
           @if(selectedRealestateMarker){
             <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
@@ -80,30 +70,30 @@
     
     </div>
     
-    <div class="border flex-grow-1" style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
+    <div class="border flex-grow-1 " style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
+     
+     
+     
+     
+     @if (isLoading) {
+      <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+     }@else{
       <div class="container-fluid g-0 p-3">
         <div class="row g-3">
-          
-          <!-- <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div> -->
           @for (realestate of realestates; track realestate.doc.dbId) {
             <div class="col-sm-6">
-              <div class="p-2 rounded border"s>
-                <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide" style="background-color: red;" >
+              <a [routerLink]="['/realestate', realestate.doc.dbId]" class="text-decoration-none text-reset">
+                <div [ngClass]="{'shadow-lg': realestate.doc.dbId == highlightedRealestate?.doc?.dbId}"
+                class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
+                  <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide" style="background-color: red;" >
                   <div class="carousel-indicators">
-                    <button type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="2" aria-label="Slide 3"></button>
                   </div>
                   <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -116,264 +106,44 @@
                       <img src="realestate3.png" class="d-block w-100" alt="...">
                     </div>
                   </div>
-                  <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="prev">
+                  <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                   </button>
-                  <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="next">
+                  <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                   </button>
-                </div>
-                <div >
-                  {{realestate.doc.type}}
+                  </div>
+                  <div >
+                  <i class="bi me-2" [ngClass]="{
+                    'bi-house-door': realestate.doc.type === 'HOUSE',
+                    'bi-building': realestate.doc.type === 'BUILDING',
+                    'bi-signpost': realestate.doc.type === 'COTTAGE',
+                    'bi-shop': realestate.doc.type === 'COMMERCE_SPACE',
+                    'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(realestate.doc.type)
+                  }">
+                  </i>
+                  @if(realestate.doc.type === 'HOUSE'){<strong>Residential House</strong>}
+                  @if(realestate.doc.type === 'BUILDING'){<strong>Apartment Building</strong>}
+                  @if(realestate.doc.type === 'COTTAGE'){<strong>Cottage</strong>}
+                  @if(realestate.doc.type === 'COMMERCE_SPACE'){<strong>Commerce Space</strong>}
+                  <br>
                   {{realestate.doc.address}}
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           }
-
-          <!-- <div class="col-sm-6">
-            <div class="p-2 rounded border"s>
-              <div id="carouselExampleIndicators" class="carousel slide" style="background-color: red;" >
-                <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="realestate1.png" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="realestate2.png" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="realestate3.png" class="d-block w-100" alt="...">
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
-              <div >
-                iksdebroa jebem ti mamu 16 23132432, neki okrug
-              </div>
-            </div>
-          </div> -->
-
-
-
-
-
-          
-        
-          
-
-          <!-- <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-
-
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div>
-        
-
-          <div class="col-sm-6">
-            <div class="p-3 rounded border">
-               iskde
-            </div>
-          </div> -->
-
-
-
         </div>
       </div>
+     }
+     
+     
+
+
+
+
     </div>
   
   </div>

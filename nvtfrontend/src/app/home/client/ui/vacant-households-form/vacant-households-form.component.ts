@@ -16,17 +16,22 @@ import { GoogleMap,  } from '@angular/google-maps';
 })
 export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
-  @Input() filteredSuggestions: FilteredSuggestion[] = []
+  @Input() filteredSuggestionsInput: FilteredSuggestion[] = []
   @Output() searchQueryE = new EventEmitter<string>();
 
-  @Input() realestatePins: RealestateDoc[] = [];
+  @Input() realestatesInput: RealestateDoc[] = [];
   @Output() searchAggregateE = new EventEmitter<{topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}>();
 
   @ViewChild('googleMap') googleMap!: GoogleMap;
-
+  //search
   selectedSuggestion: FilteredSuggestion | null = null;
   isSelectedSuggestion = false;
-  
+  showDropdown = false;
+  searchControl = new FormControl('');
+  //mapa
+
+  private map!: google.maps.Map;
+  private mapMoveSubject = new Subject<void>();
   center: google.maps.LatLngLiteral = { lat: 44.215341185649585, lng: 20.83940393242209 };
   mapOptions: google.maps.MapOptions = {
     zoom: 7,
@@ -38,28 +43,16 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     cameraControl: false,
     mapId:"5e0fff8eb964f0f7"
   };
-  
-
- 
   realestates: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement}[] = [];
 
-  private map!: google.maps.Map;
-  private mapMoveSubject = new Subject<void>();
-
-
-  searchControl = new FormControl('');
-
-  
-  showDropdown = false;
+  highlightedRealestate: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
   selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
-
   popupPosition = { x: 0, y: 0 };
 
+
+  protected isLoading = true;
+
   constructor(private ngZone: NgZone) {
-    
-
-
-
     this.searchControl.valueChanges
       .pipe(
         debounceTime(100), 
@@ -80,8 +73,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
 
   ngOnChanges(changes: SimpleChanges): void {
-      if(changes['realestatePins']){
-    
+      if(changes['realestatesInput']){
+        
         this.realestates.forEach(realestate => {
           if (realestate.marker) {
             realestate.marker.map = null;  
@@ -90,7 +83,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         
         this.realestates = [];
 
-        this.realestatePins.forEach(doc => {
+        this.realestatesInput.forEach(doc => {
           let [lat, lon] = doc.location.split(",");
 
 
@@ -119,8 +112,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
               background-color: green;
             }
           </style>
-          <div class="price-tag"></div>
-        `;
+          <div class="price-tag"></div>`
           
           const marker = new google.maps.marker.AdvancedMarkerElement({
             map: this.map,
@@ -155,6 +147,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
           this.realestates.push({doc, marker})
         });
+
+        this.isLoading = false;
       }
   }
 
@@ -196,8 +190,9 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       });
   
       this.mapMoveSubject.pipe(
-        debounceTime(500), 
+        debounceTime(1000), 
         tap(() => {
+          
           this.ngZone.run(() => {
             this.logMapDetails();
           });
@@ -216,14 +211,13 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   }
 
   logMapDetails() {
-    
     if (!this.map) return;
 
     const zoom = this.map.getZoom();
     const bounds = this.map.getBounds();
 
     if (bounds) {
-
+      
       const northEast = bounds.getNorthEast(); 
       const southWest = bounds.getSouthWest(); 
 
@@ -252,7 +246,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       }
       
       let zoomLevel: number = zoom!;
-  
+      this.isLoading = true;
       this.searchAggregateE.emit({topLeft, bottomRight, zoomLevel, filterType, filterDocId});
     }
   }
@@ -274,6 +268,19 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       this.showDropdown = false;
     }, 100);
   }
+
+
+  highlightRealestate(highlight: boolean, realestate: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement}){
+    if(highlight){
+      this.paintMarker(realestate.marker, 'green')
+      this.highlightedRealestate = realestate;
+    } 
+    else {
+      this.paintMarker(realestate.marker, ' #d11608')
+      this.highlightedRealestate = null;
+    }
+
+  }
+
+
 }
-
-
