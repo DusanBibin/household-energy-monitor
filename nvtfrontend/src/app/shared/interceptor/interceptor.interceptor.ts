@@ -17,7 +17,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     if(jwtService.isTokenExpired(token)){
       console.log("istekao je")
       jwtService.logout();
-      
+      router.navigate(['../auth/login'])
+      snackBar.openSnackBar("Session has expired, please login again");
     }else{
 
       const cloned = req.clone({

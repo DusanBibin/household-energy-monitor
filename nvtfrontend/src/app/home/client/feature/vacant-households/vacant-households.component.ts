@@ -16,19 +16,15 @@ export class VacantHouseholdsComponent {
   protected realestatePins: RealestateDoc[] = [];
 
   constructor(private clientService: ClientService){
-
   }
 
 
   handleSearchAggregate(event: {topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}){
-    console.log("ides u kurac")
+
     this.clientService.aggregate(event.topLeft, event.bottomRight, event.zoomLevel, event.filterType, event.filterDocId).subscribe({
       next: value => {
-          console.log("iksdebro1")
-          console.log(value)
 
           this.realestatePins = value;
-          console.log(this.realestatePins);
       },
       error: err => {
 

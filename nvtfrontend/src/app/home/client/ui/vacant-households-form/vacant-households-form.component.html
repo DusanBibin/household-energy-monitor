@@ -73,23 +73,27 @@
     <div class="border flex-grow-1 " style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
      
      
-     
-     
+    
+    @if(realestatesInput.length === 0 && !isLoading){<div class="w-100 h-100 d-flex justify-content-center align-items-center"><p class="m-0 g-0 px-2 pt-3">No vacant realestates found</p></div>}
      @if (isLoading) {
       <div class="w-100 h-100 d-flex justify-content-center align-items-center">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-     }@else{
+     }
+     
+     @if(realestatesInput.length !==0){
+      
       <div class="container-fluid g-0 p-3">
         <div class="row g-3">
+          @if(realestatesInput.length > 0){<p class="m-0 g-0 px-2 pt-3">{{realestatesInput.length}} results displayed, zoom in on map for more results</p>}
           @for (realestate of realestates; track realestate.doc.dbId) {
             <div class="col-sm-6">
               <a [routerLink]="['/realestate', realestate.doc.dbId]" class="text-decoration-none text-reset">
                 <div [ngClass]="{'shadow-lg': realestate.doc.dbId == highlightedRealestate?.doc?.dbId}"
                 class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
-                  <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide" style="background-color: red;" >
+                  <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide">
                   <div class="carousel-indicators">
                     <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -97,13 +101,13 @@
                   </div>
                   <div class="carousel-inner">
                     <div class="carousel-item active">
-                      <img src="realestate1.png" class="d-block w-100" alt="...">
+                      <img src="realestate1.png" class="d-block w-100" alt="..." loading="lazy">
                     </div>
                     <div class="carousel-item">
-                      <img src="realestate2.png" class="d-block w-100" alt="...">
+                      <img src="realestate2.png" class="d-block w-100" alt="..." loading="lazy">
                     </div>
                     <div class="carousel-item">
-                      <img src="realestate3.png" class="d-block w-100" alt="...">
+                      <img src="realestate3.png" class="d-block w-100" alt="..." loading="lazy">
                     </div>
                   </div>
                   <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="prev">

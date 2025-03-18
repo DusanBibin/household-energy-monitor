@@ -50,8 +50,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   popupPosition = { x: 0, y: 0 };
 
 
-  protected isLoading = true;
-
+  isLoading = true;
+  isInitialChange = true;
   constructor(private ngZone: NgZone) {
     this.searchControl.valueChanges
       .pipe(
@@ -73,8 +73,11 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
 
   ngOnChanges(changes: SimpleChanges): void {
+      //inicijalizacija u parent componenti liste koja je ovde obelezena sa @input triggeruje prvi put onChanges funkciju pa ovo stavljamo da ignorisemo jednu promenu
+      if(this.isInitialChange){this.isInitialChange = false; return;}
+
       if(changes['realestatesInput']){
-        
+        console.log(this.realestatesInput)
         this.realestates.forEach(realestate => {
           if (realestate.marker) {
             realestate.marker.map = null;  
@@ -82,7 +85,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         });
         
         this.realestates = [];
-
+        console.log(this.realestatesInput.length)
         this.realestatesInput.forEach(doc => {
           let [lat, lon] = doc.location.split(",");
 
@@ -149,6 +152,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         });
 
         this.isLoading = false;
+
+        
       }
   }
 

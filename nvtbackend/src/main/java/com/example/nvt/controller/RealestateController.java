@@ -5,10 +5,7 @@ import com.example.nvt.enumeration.FilterType;
 import com.example.nvt.model.elastic.RealestateDoc;
 import com.example.nvt.service.RealestateSearchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,4 +36,5 @@ public class RealestateController {
         return searchService.aggregate(
                 topLeftLon, topLeftLat, bottomRightLon, bottomRightLat, filterType, filterDocId, zoomLevel);
     }
+
 }
