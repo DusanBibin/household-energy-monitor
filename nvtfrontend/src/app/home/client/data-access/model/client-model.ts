@@ -23,3 +23,8 @@ export interface RegionDoc {
   dbId: number;
   region: string;
 }
+
+export interface RealestateImagePathsDTO{
+  id: number,
+  paths: string[]
+}

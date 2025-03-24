@@ -1,9 +1,11 @@
 package com.example.nvt.controller;
 
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.example.nvt.DTO.RealestateImagePathsDTO;
 import com.example.nvt.enumeration.FilterType;
 import com.example.nvt.model.elastic.RealestateDoc;
 import com.example.nvt.service.RealestateSearchService;
+import com.example.nvt.service.RealestateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class RealestateController {
 
     private final RealestateSearchService searchService;
+    private final RealestateService realestateService;
 
     @GetMapping("/search")
     public List<Object> search(@RequestParam String query) throws IOException {
@@ -37,4 +40,9 @@ public class RealestateController {
                 topLeftLon, topLeftLat, bottomRightLon, bottomRightLat, filterType, filterDocId, zoomLevel);
     }
 
+
+    @PostMapping("/paged-realestate-image-paths")
+    public List<RealestateImagePathsDTO> getImagePaths(@RequestBody List<Long> realestateIds) throws IOException {
+        return realestateService.getImagePaths(realestateIds);
+    }
 }

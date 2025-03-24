@@ -1,5 +1,5 @@
 import { Component, Query } from '@angular/core';
-import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc } from '../../data-access/model/client-model';
+import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, RealestateImagePathsDTO } from '../../data-access/model/client-model';
 import { ClientService } from '../../data-access/client.service';
 import { filter } from 'rxjs';
 import { LocationDTO } from '../../../../shared/model';
@@ -14,6 +14,8 @@ export class VacantHouseholdsComponent {
   
   protected filteredSuggestions: FilteredSuggestion[] = [];
   protected realestatePins: RealestateDoc[] = [];
+  protected realestatesImagePaths: RealestateImagePathsDTO[] = [];
+  protected realestateImagesMap: Map<number, string[]> = new Map<number, string[]>();
 
   constructor(private clientService: ClientService){
   }
@@ -27,7 +29,7 @@ export class VacantHouseholdsComponent {
           this.realestatePins = value;
       },
       error: err => {
-
+        console.log(err)
       }
     })
   }
@@ -36,6 +38,26 @@ export class VacantHouseholdsComponent {
     this.clientService.searchVacantHousehold(query).subscribe({
       next: results => {
         this.filterSuggestions(results, query);
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+
+  handleRealestateImagePaths(realestateIds: number[]){
+    this.clientService.getRealestateImagePaths(realestateIds).subscribe({
+      next: results => {
+        console.log("EVO OVO SU REZULTATI REALESTATE IDJEVA")
+        console.log(results)
+
+        let m = new Map<number, string[]>();
+
+        for(const i of results){
+          m.set(i.id, i.paths);
+        }
+
+        this.realestateImagesMap = m;
+        
       },
       error: err => {console.log(err)}
     })

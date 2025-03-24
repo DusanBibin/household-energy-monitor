@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { AuthRequestDTO } from '../../data-access/model/auth-model'
 import { ResponseMessage, ResponseData } from '../../../shared/model';
+import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
 
 @Component({
     selector: 'app-login-form',
@@ -18,7 +19,7 @@ export class LoginFormComponent implements OnInit {
   loading: boolean = false;
   loginClicked: boolean = false;
   
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private snackbar: SnackBarService){
 
     this.data = {isError: false}
     this.loginForm = this.fb.group({
@@ -41,16 +42,19 @@ export class LoginFormComponent implements OnInit {
  
   //reaguje na promene responsa
   ngOnChanges(changes: SimpleChanges): void {
- 
+    console.log("Neki change")
     if (changes['data'] && this.loginClicked) {
-  
+      console.log("Nesto se promenilo u data")
       if(this.data.isError){
-      
+        console.log("Neka greska???")
         this.loading = false;
         const error = this.data.error?.message || 'Unknown error';
      
-        this.loginForm.controls['email'].setErrors({ backendError: error });
-        if(!(error === "Email not confirmed for this user")) this.loginForm.controls['password'].setErrors({ backendError: error });
+        if(error === 'Unknown error') this.snackbar.openSnackBar("There is something wrong, try again later")
+        else{
+          this.loginForm.controls['email'].setErrors({ backendError: error });
+          if(!(error === "Email not confirmed for this user")) this.loginForm.controls['password'].setErrors({ backendError: error });
+        }
 
       }
     }

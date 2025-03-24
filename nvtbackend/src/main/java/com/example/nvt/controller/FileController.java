@@ -23,13 +23,7 @@ public class FileController {
 
     @GetMapping(value = "/profile-img")
     public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
-        //        String filePath = fileService.getSmallProfileImg(user.getId());
-//        Resource resource = fileService.getFileResource(filePath);
-//        MediaType mediaType = fileService.getFileMediaType(filePath);
-//
-//        return ResponseEntity.ok()
-//                .contentType(mediaType)
-//                .body(resource);
+
         String filePath = fileService.getSmallProfileImg(user.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Accel-Redirect", filePath);

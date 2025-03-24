@@ -59,8 +59,14 @@ export class LoginComponent {
 
         },
         error: (error) => {
-          
+        
           if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+          else{
+            console.log(error)
+            this.loginResponse = {isError: true, error: {message: "Unknown error"}}
+          }
+          
+          
      
         }
         
@@ -70,12 +76,14 @@ export class LoginComponent {
   }
 
   getUserData(): void{
+
+
     forkJoin({
       profileImg: this.fileService.getProfileImage(),
       partialUserData: this.userService.getPartialUserData()
     }).subscribe({
       next: ({profileImg, partialUserData}) => {
-    
+        console.log(partialUserData)
         this.cacheService.clear('userData');
         let imgUri: string = URL.createObjectURL(profileImg);
         this.cacheService.set('userData', [imgUri, partialUserData]);

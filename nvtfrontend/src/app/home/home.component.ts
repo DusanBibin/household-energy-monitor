@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy{
         partialUserData: this.userService.getPartialUserData()
       }).subscribe({
         next: ({profileImg, partialUserData}) => {
-      
+          console.log(partialUserData)
           let imgUri: string = URL.createObjectURL(profileImg);
           const cachedData = this.cacheService.get(key);
           console.log(cachedData)

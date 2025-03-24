@@ -6,7 +6,8 @@ import { ClientService } from '../../data-access/client.service';
 import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc } from '../../data-access/model/client-model';
 import { FilteredSuggestion } from '../../feature/vacant-households/vacant-households.component';
 import { LocationDTO } from '../../../../shared/model';
-import { GoogleMap,  } from '@angular/google-maps';
+import { GoogleMap  } from '@angular/google-maps';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-vacant-households-form',
@@ -15,12 +16,17 @@ import { GoogleMap,  } from '@angular/google-maps';
   styleUrl: './vacant-households-form.component.css'
 })
 export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
+  protected ENVIRONMENT_URL = environment.url
+
 
   @Input() filteredSuggestionsInput: FilteredSuggestion[] = []
   @Output() searchQueryE = new EventEmitter<string>();
 
   @Input() realestatesInput: RealestateDoc[] = [];
   @Output() searchAggregateE = new EventEmitter<{topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}>();
+
+  @Input() realestatesImagesMapInput: Map<Number, string[]> = new Map<number, string[]>();
+  @Output() realestateIdsE = new EventEmitter<number[]>();
 
   @ViewChild('googleMap') googleMap!: GoogleMap;
   //search
@@ -44,6 +50,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     mapId:"5e0fff8eb964f0f7"
   };
   realestates: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement}[] = [];
+  realestatesDisplay: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement, imagePaths?: string[]}[] = []; //sluzi za paginaciju
+  
 
   highlightedRealestate: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
   selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
@@ -51,7 +59,16 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
 
   isLoading = true;
-  isInitialChange = true;
+  initialRealestates = true;
+  initialImagesMap = true;
+
+
+  realestatePagination: Pagination = {
+    currentPage: 0,
+    totalPages: 0,
+    pages: []
+  };
+
   constructor(private ngZone: NgZone) {
     this.searchControl.valueChanges
       .pipe(
@@ -62,7 +79,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           if(this.isSelectedSuggestion) this.isSelectedSuggestion = false;
           else{
             this.selectedSuggestion = null;
-            this.logMapDetails();
+            // this.logMapDetails();
           } 
           
           if(value) value = encodeURIComponent(value.trim());
@@ -71,13 +88,71 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       ).subscribe()
   }
 
+  setPage(pageNum: number): void{
+
+    // this.isLoading = true;
+
+    this.realestatesDisplay = []
+    this.realestatePagination.currentPage = pageNum
+    this.realestatePagination.pages = []
+
+
+    let upperBound = this.realestatePagination.totalPages;
+    let lowerBound = 1;
+
+    console.log(this.realestatePagination.totalPages)
+
+    if(this.realestatePagination.currentPage - 4 < lowerBound){
+      upperBound = Math.min(9, this.realestatePagination.totalPages)
+    }                                                               
+    else if(this.realestatePagination.currentPage + 4 > upperBound){ 
+      lowerBound = Math.max(1, upperBound - 8)
+    }
+    else{
+      upperBound = this.realestatePagination.currentPage + 4
+      lowerBound = this.realestatePagination.currentPage - 4
+    }
+
+    for(let i = lowerBound; i <= upperBound; i++){
+      this.realestatePagination.pages.push(i)
+    }
+
+
+    this.realestatesDisplay = this.realestates.slice(10 * (this.realestatePagination.currentPage - 1) ,10 * this.realestatePagination.currentPage)
+
+    if(this.realestatesDisplay.length !== 0) this.realestateIdsE.emit(this.realestatesDisplay.map(r => r.doc.dbId));
+    
+    //this.isLoading = false;
+    // return this.realestatesDisplay.map(r => r.doc.dbId)
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
       //inicijalizacija u parent componenti liste koja je ovde obelezena sa @input triggeruje prvi put onChanges funkciju pa ovo stavljamo da ignorisemo jednu promenu
-      if(this.isInitialChange){this.isInitialChange = false; return;}
+      if(changes['realestatesImagesMapInput']){
+        //OVO BI VALJDA TREBALO DA RADI NISAM SIGURAN
+        // if(this.initialImagesMap){this.initialImagesMap = false; return;}
+        console.log(this.realestatesImagesMapInput)
+
+        for(const i of this.realestatesDisplay){
+          i.imagePaths = this.realestatesImagesMapInput.get(i.doc.dbId) 
+        }
+
+
+        for(const i of this.realestatesDisplay){
+          console.log(i.imagePaths)
+        }
+      }
 
       if(changes['realestatesInput']){
-        console.log(this.realestatesInput)
+
+
+        if(this.initialRealestates){this.initialRealestates = false; return;}
+        console.log(this.realestatesInput.length)
+        
+        
+
+
         this.realestates.forEach(realestate => {
           if (realestate.marker) {
             realestate.marker.map = null;  
@@ -86,6 +161,13 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         
         this.realestates = [];
         console.log(this.realestatesInput.length)
+
+
+
+
+
+
+
         this.realestatesInput.forEach(doc => {
           let [lat, lon] = doc.location.split(",");
 
@@ -95,7 +177,6 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           const priceTag = document.createElement('div');
           
           priceTag.className = 'price-tag';
-          console.log(priceTag)
           
           const shadowRoot = priceTag.attachShadow({mode: 'open'})
           
@@ -126,18 +207,16 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           marker.addListener('click', (event: google.maps.MapMouseEvent) => {
 
             if (!event.latLng) return;
-            console.log("kurackernin")
-            console.log(doc)
-  
+          
             const projection = (event as any).domEvent;
-            console.log(projection)
+      
   
             this.popupPosition = {
               x: projection.clientX,
               y: projection.clientY
             };
   
-            console.log(this.popupPosition)
+  
 
             if(this.selectedRealestateMarker) this.paintMarker(this.selectedRealestateMarker.marker, ' #d11608')
             this.paintMarker(marker, 'green')
@@ -151,9 +230,17 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           this.realestates.push({doc, marker})
         });
 
-        this.isLoading = false;
 
+
+        this.realestatePagination = {
+          currentPage: 1,
+          totalPages:  Math.ceil(this.realestatesInput.length / 10),
+          pages: []
+        }
+
+        this.setPage(this.realestatePagination.currentPage)
         
+        this.isLoading = false;
       }
   }
 
@@ -245,7 +332,6 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       let filterDocId: string = "";
    
       if(this.selectedSuggestion != null){  
-    
         filterType = this.selectedSuggestion.type;
         filterDocId = this.selectedSuggestion.id;
       }
@@ -265,6 +351,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       this.selectedSuggestion = suggestion;
       this.logMapDetails();
     } 
+
 
   }
 
@@ -288,4 +375,10 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   }
 
 
+}
+
+interface Pagination {
+  currentPage: number;
+  totalPages: number;
+  pages: number[];
 }
