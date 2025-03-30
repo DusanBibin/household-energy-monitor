@@ -185,13 +185,13 @@
                 <nav aria-label="iksdebro" class="pt-4">
                   <ul class="pagination">
                     <li class="page-item">
-                      <a class="page-link" role="button" (click)="setPage(realestatePagination.currentPage - 1)" [ngClass]="{'disabled': realestatePagination.currentPage === 1}">Previous</a>
+                      <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage - 1)" [ngClass]="{'disabled': realestatePagination.currentPage === 1}">Previous</a>
                     </li>
                     @for (pageNum of realestatePagination.pages; track $index) {
-                      <li class="page-item" role="button" (click)="setPage(pageNum)" [ngClass]="{'active': realestatePagination.currentPage === pageNum}"><a class="page-link">{{pageNum}}</a></li>
+                      <li class="page-item" role="button" (click)="changePage(pageNum)" [ngClass]="{'active': realestatePagination.currentPage === pageNum}"><a class="page-link">{{pageNum}}</a></li>
                     }
                     <li class="page-item">
-                      <a class="page-link" role="button" (click)="setPage(realestatePagination.currentPage + 1)"[ngClass]="{'disabled': realestatePagination.currentPage === realestatePagination.totalPages}">Next</a>
+                      <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage + 1)"[ngClass]="{'disabled': realestatePagination.currentPage === realestatePagination.totalPages}">Next</a>
                     </li> 
                   </ul>
                 </nav>

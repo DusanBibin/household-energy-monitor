@@ -1,6 +1,7 @@
 package com.example.nvt.controller;
 
 
+import com.example.nvt.DTO.HouseholdDetailsDTO;
 import com.example.nvt.helpers.ResponseMessage;
 import com.example.nvt.service.HouseholdService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,15 @@ public class HouseholdController {
 
         return ResponseEntity.ok(householdIds);
 
+    }
+
+
+
+    @GetMapping("/{householdId}")
+    public ResponseEntity<?> getHouseHoldDetails(@PathVariable Long householdId) {
+
+        HouseholdDetailsDTO details = householdService.getHouseholdDetails(householdId);
+        return ResponseEntity.ok(details);
     }
 
 }

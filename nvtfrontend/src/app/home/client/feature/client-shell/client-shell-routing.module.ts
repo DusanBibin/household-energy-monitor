@@ -12,6 +12,14 @@ const routes: Routes = [{
     import('../vacant-households/vacant-households.module').then(
       (m) => m.VacantHouseholdsModule
     )
+},
+{
+  path:'household',
+  loadChildren:() =>
+    import('../household-details/household-details.module').then(
+      (m) => m.HouseholdDetailsModule
+    )
+
 }];
 
 @NgModule({

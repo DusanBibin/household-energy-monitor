@@ -79,7 +79,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           if(this.isSelectedSuggestion) this.isSelectedSuggestion = false;
           else{
             this.selectedSuggestion = null;
-            // this.logMapDetails();
+            this.onMapMove();
+            //this.logMapDetails();
           } 
           
           if(value) value = encodeURIComponent(value.trim());
@@ -88,7 +89,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       ).subscribe()
   }
 
-  setPage(pageNum: number): void{
+  changePage(pageNum: number): void{
 
     // this.isLoading = true;
 
@@ -122,8 +123,6 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
     if(this.realestatesDisplay.length !== 0) this.realestateIdsE.emit(this.realestatesDisplay.map(r => r.doc.dbId));
     
-    //this.isLoading = false;
-    // return this.realestatesDisplay.map(r => r.doc.dbId)
   }
 
 
@@ -132,27 +131,19 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       if(changes['realestatesImagesMapInput']){
         //OVO BI VALJDA TREBALO DA RADI NISAM SIGURAN
         // if(this.initialImagesMap){this.initialImagesMap = false; return;}
-        console.log(this.realestatesImagesMapInput)
 
         for(const i of this.realestatesDisplay){
           i.imagePaths = this.realestatesImagesMapInput.get(i.doc.dbId) 
         }
 
-
-        for(const i of this.realestatesDisplay){
-          console.log(i.imagePaths)
-        }
       }
 
       if(changes['realestatesInput']){
 
 
         if(this.initialRealestates){this.initialRealestates = false; return;}
-        console.log(this.realestatesInput.length)
         
-        
-
-
+      
         this.realestates.forEach(realestate => {
           if (realestate.marker) {
             realestate.marker.map = null;  
@@ -161,10 +152,6 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         
         this.realestates = [];
         console.log(this.realestatesInput.length)
-
-
-
-
 
 
 
@@ -238,13 +225,13 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           pages: []
         }
 
-        this.setPage(this.realestatePagination.currentPage)
+        this.changePage(this.realestatePagination.currentPage)
         
         this.isLoading = false;
       }
   }
 
-  paintMarker(marker: google.maps.marker.AdvancedMarkerElement, color: string){
+  paintMarker(marker: google.maps.marker.AdvancedMarkerElement, color: string): void{
     const markerElement = marker.content as HTMLElement;
     const markerShadow = markerElement.shadowRoot; 
 
@@ -286,7 +273,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         tap(() => {
           
           this.ngZone.run(() => {
-            this.logMapDetails();
+            this.searchAggregateMap();
           });
         })
       ).subscribe();
@@ -302,7 +289,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     this.mapMoveSubject.next();
   }
 
-  logMapDetails() {
+  searchAggregateMap() {
     if (!this.map) return;
 
     const zoom = this.map.getZoom();
@@ -349,7 +336,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     if(['CITY', 'MUNICIPALITY', 'REGION'].includes(suggestion.type)){
       this.isSelectedSuggestion = true;
       this.selectedSuggestion = suggestion;
-      this.logMapDetails();
+      this.searchAggregateMap();
     } 
 
 

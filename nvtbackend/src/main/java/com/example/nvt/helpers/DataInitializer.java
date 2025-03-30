@@ -72,7 +72,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         passwordUniversal = passwordEncoder.encode("sifra123");
-        initCitiesMunicipalitiesRegions();
+        //initCitiesMunicipalitiesRegions();
 
 
 
@@ -131,7 +131,7 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
         client2 = clientRepository.save(client2);
 
-        initRealestates();
+        //initRealestates();
         //initClients();
         System.out.println(stopWatch.prettyPrint());
 
