@@ -1,10 +1,7 @@
 package com.example.nvt.service;
 
 
-import com.example.nvt.DTO.AuthRequestDTO;
-import com.example.nvt.DTO.AuthResponseDTO;
-import com.example.nvt.DTO.RegisterRequestDTO;
-import com.example.nvt.DTO.SuperadminPasswordChangeDTO;
+import com.example.nvt.DTO.*;
 import com.example.nvt.enumeration.Role;
 import com.example.nvt.exceptions.EmailNotConfirmedException;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
@@ -15,6 +12,8 @@ import com.example.nvt.model.SuperAdmin;
 import com.example.nvt.model.User;
 import com.example.nvt.model.Verification;
 import com.example.nvt.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +39,7 @@ public class AuthenticationService {
     private final ClientService clientService;
     private final UserRepository userRepository;
 
-    public AuthResponseDTO authenticate(AuthRequestDTO request) {
+    public PartialUserDataDTO authenticate(AuthRequestDTO request, HttpServletResponse response) {
         System.out.println(request);
         try {
             authenticationManager.authenticate(
@@ -59,16 +58,28 @@ public class AuthenticationService {
         if(!user.isEmailConfirmed() ) throw new EmailNotConfirmedException("Email not confirmed for this user");
 
         var jwtToken = jwtService.generateToken(user, user.getId());
-        if(user instanceof SuperAdmin superAdmin){
 
-            return AuthResponseDTO.builder()
-                    .token(jwtToken)
-                    .build();
+        Cookie jwtCookie = new Cookie("jwt", jwtToken);
+        jwtCookie.setHttpOnly(true); // Prevent JavaScript access
+        //jwtCookie.setSecure(true); // Use only on HTTPS
+        jwtCookie.setPath("/"); // Available for all endpoints
+        jwtCookie.setMaxAge(24 * 60 * 60); // 1 day expiration
+        jwtCookie.setAttribute("SameSite", "Strict"); // Prevent CSRF attacks
 
-        }
-        return AuthResponseDTO.builder()
-                .token(jwtToken)
+        response.addCookie(jwtCookie);
+
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
                 .build();
+
+        if(user instanceof SuperAdmin superAdmin){
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+
+        return data;
     }
 
 

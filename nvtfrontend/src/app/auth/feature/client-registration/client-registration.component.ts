@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { SnackBarService } from '../../../shared/services/snackbar-service/snackbar.service';
 import { RegisterRequestDTO } from '../../data-access/model/auth-model';
 import { JwtService } from '../../../shared/services/jwt-service/jwt.service';
+import { register } from 'module';
 
 @Component({
     selector: 'app-client-registration',
@@ -25,9 +26,27 @@ export class ClientRegistrationComponent {
 
   handleRegisterData(event: {formData: FormData, email: string}){
 
-    if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))) this.jwtService.logout();
+    if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))){
+      this.authService.logout().subscribe({
+        next: value => {
+          this.jwtService.setUser(null);
+          this.router.navigate(["/auth/login"])
+          this.snackBar.openSnackBar("Password change successful")
 
-    this.authService.registerClient(event.formData).subscribe({
+          this.registerClient(event.formData);
+          
+        },
+        error: error => {
+          console.log(error)
+        }
+      })
+    }else this.registerClient(event.formData)
+
+  }
+
+
+  registerClient(formData: FormData){
+    this.authService.registerClient(formData).subscribe({
       next: (data) =>{
         this.registerResponse = {isError: false, data: data as ResponseMessage}
 
@@ -41,8 +60,9 @@ export class ClientRegistrationComponent {
         if(error.status == 400) this.registerResponse = {isError: true, error: error.error as ResponseMessage}
       }
     })
-
   }
+
+
 
   
 }

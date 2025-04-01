@@ -50,12 +50,12 @@ export const authGuard: CanActivateFn = (route, state) => {
       console.log("sadrzi home")
       router.navigate(['/auth'], {replaceUrl: true});
       
-      const token = jwtService.getToken();
-      if(token){
-        if(jwtService.isTokenExpired(token)){
-          snackBar.openSnackBar("Session expired, please login again");
-        }
-      }
+      // const token = jwtService.getToken();
+      // if(token){
+      //   if(jwtService.isTokenExpired(token)){
+      //     snackBar.openSnackBar("Session expired, please login again");
+      //   }
+      // }
       
       return false;
     }

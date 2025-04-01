@@ -1,85 +1,61 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtPayload } from '../../model';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AuthService } from '../../../auth/data-access/auth.service';
+import { forkJoin } from 'rxjs';
+import { FileService } from '../file-service/file.service';
+import { UserService } from '../user-service/user.service';
+import { PartialUserData } from '../../model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JwtService {
+  private userSubject = new BehaviorSubject<{ data: PartialUserData, profileImage: string } | null>(null);
+  user$ = this.userSubject.asObservable(); // Observable for components to subscribe to
 
-  constructor(private http: HttpClient) { }
-
-
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
-  }
-
-  public login(jwt: string): void{
-    this.logout();
-    if(this.isBrowser()){
-      localStorage.setItem('access_token', jwt);
-    }
+  constructor(private authService: AuthService) {
+    console.log("da li se ovo upalilo jwt service jajajahh")
   }
 
 
-  public logout(): void{
-    if(this.isBrowser()){
-      localStorage.removeItem('access_token');
-    }
+
+  setUser(user: { data: PartialUserData, profileImage: string } | null): void {
+    this.userSubject.next(user);
   }
 
-  getToken(): string | null {
-    return this.isBrowser() ? localStorage.getItem('access_token') : null;
+  // Get the current user details (if already fetched)
+  getUser(): { data: PartialUserData, profileImage: string } | null {
+    return this.userSubject.value;
   }
 
+  // Check if user is logged in
   isLoggedIn(): boolean {
-    const token = this.getToken();
-
-    return !!token && !this.isTokenExpired(token);
+    return this.userSubject.value !== null;
   }
 
-  
-
+  // Check if user has a specific role
   hasRole(allowedRoles: string[]): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-
-    const decoded = this.decodeToken(token);
-    const userRoles = decoded?.role || [];
-    
-    return userRoles.some((role: { authority: string }) =>
-      allowedRoles.includes(role.authority)
-    );
+    const user = this.getUser();
+    return user ? allowedRoles.includes(user.data.role) : false;
   }
 
+  // Check if superadmin needs to change password
   isFirstSuperadminLogin(): boolean {
-    
-    const token = this.getToken();
-    if(!token) return false;
-
-    if(!this.hasRole(["SUPERADMIN"])) return false;
-    const payload = this.decodeToken(token);
-    
-    return payload.isFirstLogin;
-
+    const user = this.getUser();
+    return user?.data.role === 'SUPERADMIN' && user.data.firstLogin === true;
   }
 
-
-  isTokenExpired(token: string): boolean {
-    const payload = this.decodeToken(token);
-    if (!payload || !payload.exp) {
-      return true;
-    }
-    const now = Math.floor(new Date().getTime() / 1000);
-    return payload.exp < now;
-  }
-
-  decodeToken(token: string): any {
-    try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload));
-    } catch (error) {
-      return null;
-    }
-  }
+  // Logout by making a request to the backend (JWT cookie will be removed)
+  // logout(): void {
+  //   this.authService.logout().subscribe({
+  //     next: value => {
+  //       this.userSubject.next(null);
+  //     },
+  //     error: err => {
+  //       console.log(err)
+  //     }
+  //   })
+  // }
 }

@@ -1,9 +1,10 @@
 
 export interface PartialUserData{
-  name?: string,
-  lastname?: string,
-  email?: string,
-  role?: Role
+  name: string,
+  lastname: string,
+  email: string,
+  role: string
+  firstLogin?: boolean
 }
 
 

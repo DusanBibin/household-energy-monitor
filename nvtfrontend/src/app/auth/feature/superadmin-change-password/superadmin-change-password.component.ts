@@ -30,10 +30,20 @@ export class SuperadminChangePasswordComponent {
       {
         next: (data) => {
           this.changePasswordResponse = {isError: false, data: data as ResponseMessage};
-          this.jwtService.logout();
-          this.router.navigate(["/auth/login"])
-          
-          this.snackBar.openSnackBar("Password change successful")
+
+
+
+          this.authService.logout().subscribe({
+            next: value => {
+              this.jwtService.setUser(null);
+              this.router.navigate(["/auth/login"])
+              this.snackBar.openSnackBar("Password change successful")
+            },
+            error: error => {
+              console.log(error)
+            }
+          })
+         
         },
         error: (error) => {
           

@@ -6,6 +6,7 @@ import com.example.nvt.service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -36,57 +37,56 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        final String jwt = extractJwtFromCookies(request);
         String userEmail;
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request, response);
 
+        if (jwt == null) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        try{
-            jwt = authHeader.substring(7);
+        try {
             userEmail = jwtService.extractUsername(jwt);
-            if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-                if(jwtService.isTokenValid(jwt, userDetails)){
+                if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
+                            userDetails, null, userDetails.getAuthorities()
                     );
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
-
+                    // ✅ RESTORING SUPERADMIN LOGIN CHECK
                     if (userDetails.getAuthorities().stream()
                             .anyMatch(auth -> auth.getAuthority().equals("SUPERADMIN"))) {
 
-                        // Assuming your `User` class implements `UserDetails` and has `isFirstLogin` property
                         var superadmin = (SuperAdmin) userDetails;
                         boolean isFirstLogin = superadmin.isFirstLogin();
 
-                        // Check if it's the first login and block other endpoints except for password change
                         if (isFirstLogin && !request.getRequestURI().equals("/api/v1/auth/change-superadmin-password")) {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.getWriter().write("Access Denied: You must change your password first.");
                             return;
                         }
                     }
-
                 }
             }
             filterChain.doFilter(request, response);
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             exceptionResolver.resolveException(request, response, null, e);
         }
+    }
 
+    // Helper method to extract JWT from cookies
+    private String extractJwtFromCookies(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

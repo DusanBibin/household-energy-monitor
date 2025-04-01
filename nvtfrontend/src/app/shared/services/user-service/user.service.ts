@@ -14,5 +14,6 @@ export class UserService {
   getPartialUserData(): Observable<PartialUserData>{
     return this.http.get<PartialUserData>(environment.apiUrl + '/user/partial-data');
   }
+
   
 }

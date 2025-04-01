@@ -1,14 +1,14 @@
 package com.example.nvt.controller;
 
 
-import com.example.nvt.DTO.AuthRequestDTO;
-import com.example.nvt.DTO.AuthResponseDTO;
-import com.example.nvt.DTO.RegisterRequestDTO;
-import com.example.nvt.DTO.SuperadminPasswordChangeDTO;
+import com.example.nvt.DTO.*;
 import com.example.nvt.rabbitmq.RabbitMQSender;
 import com.example.nvt.helpers.ResponseMessage;
 import com.example.nvt.model.User;
 import com.example.nvt.service.AuthenticationService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,8 +27,8 @@ public class AuthenticationController {
     private final RabbitMQSender rabbitMQSender;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request){
-        AuthResponseDTO token = authService.authenticate(request);
+    public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request, HttpServletResponse response){
+        PartialUserDataDTO token = authService.authenticate(request, response);
         return ResponseEntity.ok(token);
     }
 
@@ -62,7 +62,36 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setHttpOnly(true);
+        //jwtCookie.setSecure(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0); // Expire immediately
+        jwtCookie.setAttribute("SameSite", "Strict");
 
+        response.addCookie(jwtCookie);
+        System.out.println("izlogovali smo se ");
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request) {
+        // If the user has a valid session (JWT in cookie), return true
+        return ResponseEntity.ok(true);
+    }
+
+    
+    @PreAuthorize("hasAuthority('CLIENT')")
+    @GetMapping("/kurac-auth")
+    public void kurac(){
+        System.out.println("kurac-authorized");
+    }
+
+    @GetMapping("/kurac-unauth")
+    public void kuracUnauthorized(){
+        System.out.println("kurac-unauthorized");
+    }
 
 
 

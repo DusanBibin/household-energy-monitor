@@ -2,6 +2,7 @@ package com.example.nvt.controller;
 
 
 import com.example.nvt.DTO.PartialUserDataDTO;
+import com.example.nvt.model.SuperAdmin;
 import com.example.nvt.model.User;
 import com.example.nvt.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
     @GetMapping(value = "/partial-data")
     public ResponseEntity<?> getUserData(@AuthenticationPrincipal User user) {
 
@@ -30,6 +32,10 @@ public class UserController {
                 .lastname(user.getLastname())
                 .role(user.getRole())
                 .build();
+
+        if(user instanceof SuperAdmin superAdmin){
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
 
         return ResponseEntity.ok().body(data);
 
