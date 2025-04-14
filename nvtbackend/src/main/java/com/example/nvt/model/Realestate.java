@@ -21,6 +21,7 @@ public class Realestate {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "realestate_owner_id", nullable = true)
     private Client realestateOwner;
 
     @OneToMany(mappedBy = "realestate", cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -44,6 +45,7 @@ public class Realestate {
 
     private String addressNum;
 
+    @Column(nullable = true)
     private boolean isVacant;
 
 

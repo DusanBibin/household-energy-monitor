@@ -24,36 +24,52 @@ export class AppComponent implements OnInit{
 
 
 
-    this.authService.checkAuth().subscribe({
-      next: value => {
-        forkJoin({
-          profileImg: this.fileService.getProfileImage(),
-          partialUserData: this.userService.getPartialUserData()
-        }).subscribe({
-          next: ({profileImg, partialUserData}) => {
+    // this.authService.checkAuth().subscribe({
+    //   next: value => {
+    //     forkJoin({
+    //       profileImg: this.fileService.getProfileImage(),
+    //       partialUserData: this.userService.getPartialUserData()
+    //     }).subscribe({
+    //       next: ({profileImg, partialUserData}) => {
             
-            console.log(partialUserData)
-            let imgUri: string = URL.createObjectURL(profileImg);
-            this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
+    //         console.log(partialUserData)
+    //         let imgUri: string = URL.createObjectURL(profileImg);
+    //         this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
     
-            this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
-    
-            console.log(imgUri)
+    //         console.log(imgUri)
             
-          },
-          error: (error) => {
-            console.log(error)
-            console.log("nesto ne valja u forku")
-          }
-        })
+    //       },
+    //       error: (error) => {
+    //         console.log(error)
+    //         console.log("nesto ne valja u forku")
+    //       }
+    //     })
+    //   },
+    //   error: err => {
+    //     console.log(err)
+    //     console.log("nesto ne valja u authu")
+    //   }
+    // })
+
+
+    forkJoin({
+      profileImg: this.fileService.getProfileImage(),
+      partialUserData: this.userService.getPartialUserData()
+    }).subscribe({
+      next: ({profileImg, partialUserData}) => {
+        
+        console.log(partialUserData)
+        let imgUri: string = URL.createObjectURL(profileImg);
+        this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
+
+        console.log(imgUri)
+        
       },
-      error: err => {
-        console.log(err)
-        console.log("nesto ne valja u authu")
+      error: () => {
+        // console.log(error)
+        // console.log("nesto ne valja u forku")
       }
     })
-
-
 
 
     

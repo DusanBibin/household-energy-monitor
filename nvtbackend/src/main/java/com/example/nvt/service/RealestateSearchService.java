@@ -66,7 +66,7 @@ public class RealestateSearchService {
                 .filter(f -> f.geoBoundingBox(geoBoundingBoxQuery))
                 .must(m -> m.term( t -> t
                         .field("vacant")
-                        .value(true)));
+                        .value(false)));
         if(filterType != null) {
 
             String fieldTypeStr;
@@ -134,7 +134,7 @@ public class RealestateSearchService {
                         .fuzziness("1")
                         )
                 )
-        ).mustNot(m -> m.term( t -> t.field("vacant").value(false)));
+        ).mustNot(m -> m.term( t -> t.field("vacant").value(true)));
 
         BoolQuery boolQuery = queryBuilder.build();
 

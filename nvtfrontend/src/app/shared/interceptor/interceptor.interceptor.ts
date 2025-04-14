@@ -18,30 +18,25 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     catchError((error: any) => {
       if (error instanceof HttpErrorResponse) {
         if (!navigator.onLine) {
-          // 🛑 No internet connection
           console.error('No Internet Connection');
           snackBar.openSnackBar('You are offline. Please check your internet connection.');
         } else if (error.status === 0) {
-          // 🛑 Server unreachable (CORS issues, server down, etc.)
           console.error('Cannot reach the server');
           snackBar.openSnackBar('The server is unreachable. Please try again later.');
         } else if (error.status === 401) {
-          // 🛑 Unauthorized - Logging out
           console.error('Unauthorized - Redirecting to login');
           router.navigate(['/auth/login']);
           snackBar.openSnackBar('Your session has expired. Please log in again.');
         } else if (error.status === 403) {
-          // 🛑 Forbidden - No access
           console.error('Forbidden - No access');
-          snackBar.openSnackBar('You do not have permission to perform this action.');
+          // snackBar.openSnackBar('You do not have permission to perform this action.');
         } else if (error.status >= 500) {
-          // 🛑 Server error
           console.error(`Server Error (${error.status}): ${error.message}`);
           snackBar.openSnackBar('Something went wrong on our end. Please try again later.');
-        } else {
-          // 🛑 General error handling
+        } 
+        else {
           console.error(`HTTP Error (${error.status}): ${error.message}`);
-          snackBar.openSnackBar(error.error?.message || 'An unexpected error occurred.');
+          // snackBar.openSnackBar(error.error?.message || 'An unexpected error occurred.');
         }
       }
 

@@ -16,7 +16,7 @@ export class JwtService {
   user$ = this.userSubject.asObservable(); // Observable for components to subscribe to
 
   constructor(private authService: AuthService) {
-    console.log("da li se ovo upalilo jwt service jajajahh")
+    console.log("Auth service initialized")
   }
 
 

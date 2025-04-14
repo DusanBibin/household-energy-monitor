@@ -1,0 +1,181 @@
+1,Opština Ada,1
+2,Opština Šid,2
+3,Opština Kanjiža,1
+4,Opština Kraljevo,3
+5,Opština Smederevska Palanka,4
+6,Opština Sombor,5
+7,Opština Žabari,6
+8,Opština Aleksandrovac,7
+9,Opština Nova Crnja,8
+10,Opština Aleksinac,9
+11,Opština Alibunar,10
+12,Opština Prijepolje,11
+13,Opština Apatin,5
+14,Opština Zrenjanin,8
+15,Opština Aranđelovac,12
+16,Opština Arilje,11
+17,Opština Pećinci,2
+18,Opština Babušnica,13
+19,Opština Kovin,10
+20,Opština Jagodina,14
+21,Opština Batočina,12
+22,Opština Bogatić,15
+23,Opština Bajina Bašta,11
+24,Opština Subotica,16
+25,Opština Bačka Topola,16
+26,Opština Merošina,9
+27,Opština Raška,3
+28,Opština Sečanj,8
+29,Opština Bela Crkva,10
+30,Opština Kikinda,1
+31,Opština Pančevo,10
+32,Opština Žitište,8
+33,Opština Novi Kneževac,1
+34,Opština Stara Pazova,2
+35,Opština Beočin,17
+36,Opština Priboj,11
+37,Opština Loznica,15
+38,Opština Ub,18
+39,Opština Zvečan,19
+40,Opština Barajevo,20
+41,Opština Opovo,10
+42,Opština Blace,21
+43,Opština Požarevac,6
+44,Opština Knić,12
+45,Opština Sjenica,11
+46,Opština Plandište,10
+47,Opština Obrenovac,20
+48,Opština Kuršumlija,21
+49,Opština Lazarevac,20
+50,Opština Kosovo Polje,22
+51,Opština Bač,17
+52,Opština Varvarin,7
+53,Opština Bačka Palanka,17
+54,Opština Odžaci,5
+55,Opština Temerin,17
+56,Opština Bački Petrovac,17
+57,Opština Bečej,17
+58,Opština Vrbas,17
+59,Opština Novi Sad,17
+60,Opština Kruševac,7
+61,Opština Užice,11
+62,Opština Bela Palanka,13
+63,Opština Krupanj,15
+64,Opština Ljig,18
+65,Opština Ivanjica,23
+66,Opština Voždovac,20
+67,Opština Knjaževac,24
+68,Opština Prokuplje,21
+69,Opština Topola,12
+70,Opština Doljevac,9
+71,Opština Kragujevac,12
+72,Opština Rekovac,14
+73,Opština Sremska Mitrovica,2
+74,Opština Inđija,2
+75,Opština Ćuprija,14
+76,Opština Bujanovac,25
+77,Opština Bosilegrad,25
+78,Opština Nova Varoš,11
+79,Opština Brus,7
+80,Opština Svilajnac,14
+81,Opština Senta,1
+82,Opština Lajkovac,18
+83,Opština Boljevac,24
+84,Opština Leskovac,26
+85,Opština Malo Crniće,6
+86,Opština Surdulica,25
+87,Opština Bojnik,26
+88,Opština Gornji Milanovac,23
+89,Opština Bor,27
+90,Opština Novi Bečej,8
+91,Opština Lebane,26
+92,Opština Golubac,6
+93,Opština Valjevo,18
+94,Opština Negotin,27
+95,Opština Mionica,18
+96,Opština Štrpce,22
+97,Opština Čačak,23
+98,Opština Kladovo,27
+99,Opština Medijana,9
+100,Opština Zaječar,24
+101,Opština Ruma,2
+102,Opština Svrljig,9
+103,Opština Petrovac Na Mlavi,6
+104,Opština Paraćin,14
+105,Opština Kosjerić,11
+106,Opština Šabac,15
+107,Opština Vršac,10
+108,Opština Trstenik,7
+109,Opština Mladenovac,20
+110,Opština Čukarica,20
+111,Opština Velika Plana,4
+112,Opština Mali Zvornik,15
+113,Opština Despotovac,14
+114,Opština Veliko Gradište,6
+115,Opština Titel,17
+116,Opština Pirot,13
+117,Opština Ražanj,9
+118,Opština Lučani,23
+119,Opština Vladimirci,15
+120,Opština Vladičin Han,25
+121,Opština Vranje,25
+122,Opština Vlasotince,26
+123,Opština Smederevo,4
+124,Opština Kučevo,6
+125,Opština Čoka,1
+126,Opština Vitina,28
+127,Opština Irig,2
+128,Opština Sokobanja,24
+129,Opština Vrnjačka Banja,3
+130,Opština Ljubovija,15
+131,Opština Žagubica,6
+132,Opština Gadžin Han,9
+133,Opština Požega,11
+134,Opština Crveni Krst,9
+135,Opština Pantelej,9
+136,Opština Žabalj,17
+137,Opština Priština,22
+138,Opština Kovačica,10
+139,Opština Novi Pazar,3
+140,Opština Tutin,3
+141,Opština Dimitrovgrad,13
+142,Opština Lipljan,22
+143,Opština Palilula (niš),9
+144,Opština Žitorađa,21
+145,Opština Koceljeva,15
+146,Opština Majdanpek,27
+147,Opština Trgovište,25
+148,Opština Čajetina,11
+149,Opština Zubin Potok,19
+150,Opština Niška Banja,9
+151,Opština Grocka,20
+152,Opština Osečina,18
+153,Opština Vranjska Banja,25
+154,Opština Kosovska Kamenica,28
+155,Opština Kosovska Mitrovica,19
+156,Opština Kostolac,6
+157,Opština Kula,5
+158,Opština Lapovo,12
+159,Opština Leposavić,19
+160,Opština Medveđa,26
+161,Opština Mali Iđoš,16
+162,Opština Sopot,20
+163,Opština Rača,12
+164,Opština Srbobran,17
+165,Opština Gnjilane,28
+166,Opština Obilić,22
+167,Opština Ćićevac,7
+168,Opština Preševo,25
+169,Opština Vučitrn,22
+170,Opština Crna Trava,26
+171,Opština Sevojno,11
+172,Opština Sremski Karlovci,17
+173,Opština Surčin,20
+174,Opština Zemun,20
+175,Opština Savski Venac,20
+176,Opština Stari Grad,20
+177,Opština Vračar,20
+178,Opština Zvezdara,20
+179,Opština Palilula (beograd),20
+180,Opština Novi Beograd,20
+181,Opština Rakovica,20

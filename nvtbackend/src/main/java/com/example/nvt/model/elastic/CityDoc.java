@@ -22,6 +22,8 @@ public class CityDoc {
 
     private Long dbId;
 
+    private String zipCode;
+
     @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     private String city;
 }
