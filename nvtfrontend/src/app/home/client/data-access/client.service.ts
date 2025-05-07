@@ -42,5 +42,13 @@ export class ClientService {
     }
 
 
+    getRealestateDetails(realestateId: number): void{
+      console.log("i ovde smo usli")
+      this.http.get<void>(environment.apiUrl + '/realestate/' + realestateId).subscribe(() => {
+        console.log('Request successful!');
+      });
+    }
+
+
   
 }

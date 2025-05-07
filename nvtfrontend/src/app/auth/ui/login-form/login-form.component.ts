@@ -50,11 +50,13 @@ export class LoginFormComponent implements OnInit {
         this.loading = false;
         const error = this.data.error?.message || 'Unknown error';
      
-        if(error === 'Unknown error') this.snackbar.openSnackBar("There is something wrong, try again later")
-        else{
+        // if(error === 'Unknown error') this.snackbar.openSnackBar("There is something wrong, try again later")
+        if(error !== 'Unknown error'){
           this.loginForm.controls['email'].setErrors({ backendError: error });
           if(!(error === "Email not confirmed for this user")) this.loginForm.controls['password'].setErrors({ backendError: error });
         }
+          
+        
 
       }
     }

@@ -90,11 +90,8 @@ public class DataInitializer implements CommandLineRunner {
 
         passwordUniversal = passwordEncoder.encode("sifra123");
         //initCitiesMunicipalitiesRegions();
-
-
-        //initializeData();
-
-
+        
+        initializeData();
 
     }
 
@@ -201,7 +198,7 @@ public class DataInitializer implements CommandLineRunner {
         //lite 15431
         //regular 7469058
         List<Client> clients = new ArrayList<>();
-        for(int i = 0; i < 7469058; i++) {
+        for(int i = 0; i < 15431; i++) {
             Client client = createClient();
             clients.add(client);
 
@@ -231,7 +228,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Initializing realestates...");
 
 
-        filePath = "/docker-entrypoint-initdb.d/REALESTATES.csv";
+        filePath = "/docker-entrypoint-initdb.d/REALESTATES_LITE.csv";
         sql = "COPY realestate(id, city_id, lat, lon, address_street, address_num, type, realestate_owner_id, total_floors, apartment_per_floor_num, is_vacant) FROM '" + filePath + "' DELIMITER ',' CSV";
         jdbcTemplate.execute(sql);
         seqName = jdbcTemplate.queryForObject("SELECT pg_get_serial_sequence('realestate', 'id')", String.class);
@@ -320,9 +317,11 @@ public class DataInitializer implements CommandLineRunner {
                 Long municipalityId = Long.parseLong(parts[0]);
                 municipalityRegion.put(municipalityId, regionId);
 
+                String regionName = regionDocMap.get(regionId).getRegion();
+
                 MunicipalityDoc doc = MunicipalityDoc.builder()
                         .dbId(municipalityId)
-                        .municipality(parts[1])
+                        .municipality(parts[1] + ", " + regionName)
                         .build();
 
                 municipalities.add(doc);
@@ -393,9 +392,11 @@ public class DataInitializer implements CommandLineRunner {
                 Long municipalityId = Long.parseLong(parts[3]);
                 cityMunicipality.put(cityId, municipalityId);
 
+                String municipalityName = municipalityDocMap.get(municipalityId).getMunicipality();
+
                 CityDoc doc = CityDoc.builder()
                         .dbId(Long.parseLong(parts[0]))
-                        .city(parts[1])
+                        .city(parts[1] + ", " + municipalityName)
                         .zipCode(parts[2])
                         .build();
 
@@ -455,7 +456,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Initializing realestates index...");
 
         List<RealestateDoc> realestates = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("data/REALESTATES.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data/REALESTATES_LITE.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",", 11);
@@ -484,7 +485,8 @@ public class DataInitializer implements CommandLineRunner {
                 RegionDoc rd = regionDocMap.get(municipalityRegion.get(md.getDbId()));
 
                 String fullAddress = addressStreet + " " + addressNumber + " " + cd.getZipCode()
-                        + " " + cd.getCity() + " " + md.getMunicipality() + " " + rd.getRegion();
+                        + " " + cd.getCity();
+//                        + " " + md.getMunicipality() + " " + rd.getRegion();
 
 
                 RealestateDoc doc = RealestateDoc.builder()
@@ -531,7 +533,7 @@ public class DataInitializer implements CommandLineRunner {
         stopWatch.start("Initializing households");
         System.out.println("Initializing households...");
 
-        filePath = "/docker-entrypoint-initdb.d/HOUSEHOLDS.csv";
+        filePath = "/docker-entrypoint-initdb.d/HOUSEHOLDS_LITE.csv";
         sql = "COPY household(realestate_id, household_owner_id, apartment_num, size) FROM '" + filePath + "' DELIMITER ',' CSV";
         jdbcTemplate.execute(sql);
 //

@@ -45,4 +45,13 @@ public class RealestateController {
     public List<RealestateImagePathsDTO> getImagePaths(@RequestBody List<Long> realestateIds) throws IOException {
         return realestateService.getImagePaths(realestateIds);
     }
+
+
+    @GetMapping("/{realestateId}")
+    public void getRealestateDetails(@PathVariable Long realestateId){
+        System.out.println(realestateId);
+
+        realestateService.getRealestateDetails(realestateId);
+
+    }
 }

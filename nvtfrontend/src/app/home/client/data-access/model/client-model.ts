@@ -20,7 +20,6 @@ export interface MunicipalityDoc {
 
 export interface RegionDoc {
   id: string;
-  dbId: number;
   region: string;
 }
 

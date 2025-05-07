@@ -33,11 +33,6 @@ public class HouseholdController {
 
 
 
-    @GetMapping("/{householdId}")
-    public ResponseEntity<?> getHouseHoldDetails(@PathVariable Long householdId) {
 
-        HouseholdDetailsDTO details = householdService.getHouseholdDetails(householdId);
-        return ResponseEntity.ok(details);
-    }
 
 }

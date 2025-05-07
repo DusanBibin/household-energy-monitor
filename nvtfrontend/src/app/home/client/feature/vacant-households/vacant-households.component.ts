@@ -3,6 +3,7 @@ import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, RealestateImagePath
 import { ClientService } from '../../data-access/client.service';
 import { filter } from 'rxjs';
 import { LocationDTO } from '../../../../shared/model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vacant-households',
@@ -17,9 +18,14 @@ export class VacantHouseholdsComponent {
   protected realestatesImagePaths: RealestateImagePathsDTO[] = [];
   protected realestateImagesMap: Map<number, string[]> = new Map<number, string[]>();
 
-  constructor(private clientService: ClientService){
+  constructor(private clientService: ClientService, private router: Router){
   }
 
+
+  handleRealestateNavigationDetails(realestateId: number){
+    console.log("da li se ovde isto upalila funkcija??")
+    this.router.navigate(['/home/client/realestate', realestateId]);
+  }
 
   handleSearchAggregate(event: {topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}){
 
@@ -78,6 +84,7 @@ export class VacantHouseholdsComponent {
           
           return {
             id: `${(item as CityDoc).id}`,
+            dbId: (item as CityDoc).dbId,
             original: `${(item as CityDoc).city}`,
             highlighted: this.highlightMatch(`${(item as CityDoc).city}`, lowercaseValue),
             type: 'CITY',
@@ -87,6 +94,7 @@ export class VacantHouseholdsComponent {
           return {
 
             id: `${(item as MunicipalityDoc).id}`,
+            dbId: (item as CityDoc).dbId,
             original: `${(item as MunicipalityDoc).municipality}`,
             highlighted: this.highlightMatch(`${(item as MunicipalityDoc).municipality}`, lowercaseValue),
             type: 'MUNICIPALITY',
@@ -95,6 +103,7 @@ export class VacantHouseholdsComponent {
           
           return {
             id: `${(item as RegionDoc).id}`,
+            dbId: (item as CityDoc).dbId,
             original: `${(item as RegionDoc).region}`,
             highlighted: this.highlightMatch(`${(item as RegionDoc).region}`, lowercaseValue),
             type: 'REGION',
@@ -103,6 +112,7 @@ export class VacantHouseholdsComponent {
           
           return {
             id: `${(item as RealestateDoc).id}`,
+            dbId: (item as CityDoc).dbId,
             original: `${(item as RealestateDoc).address}`,
             highlighted: this.highlightMatch(`${(item as RealestateDoc).address}`, lowercaseValue),
             type: `${(item as RealestateDoc).type}`,
@@ -127,7 +137,8 @@ export class VacantHouseholdsComponent {
 }
 
 export interface FilteredSuggestion{
-  id:string
+  id:string,
+  dbId:number,
   original:string,
   highlighted: string,
   type:string

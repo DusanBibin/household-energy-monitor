@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [{
+const routes: Routes = [
+{
   path: '',
   redirectTo: 'vacant-households',
   pathMatch: 'full'
@@ -14,13 +15,20 @@ const routes: Routes = [{
     )
 },
 {
-  path:'household',
+  path:'realestate/:id',
   loadChildren:() =>
     import('../household-details/household-details.module').then(
       (m) => m.HouseholdDetailsModule
     )
 
-}];
+},
+{
+  path: '**', // ako ne skonta ni jedan route
+  redirectTo: 'vacant-households', // redirect na ''
+}
+
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

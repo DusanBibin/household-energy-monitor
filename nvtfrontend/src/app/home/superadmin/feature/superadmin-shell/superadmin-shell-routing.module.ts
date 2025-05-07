@@ -14,6 +14,11 @@ const routes: Routes = [
         (m) => m.ClientRegistrationModule
       )
   },
+  {
+    path: '**', // ako ne skonta ni jedan route
+    redirectTo: 'admin-registration', // redirect na ''
+  }
+
 ];
 
 @NgModule({

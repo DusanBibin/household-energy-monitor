@@ -28,6 +28,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   @Input() realestatesImagesMapInput: Map<Number, string[]> = new Map<number, string[]>();
   @Output() realestateIdsE = new EventEmitter<number[]>();
 
+  @Output() realestateIdE = new EventEmitter<number>();
+
   @ViewChild('googleMap') googleMap!: GoogleMap;
   //search
   selectedSuggestion: FilteredSuggestion | null = null;
@@ -231,10 +233,24 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       }
   }
 
+  routeDetailsPage(realestateId: number | null){
+    console.log("funkcija radi")
+    if(realestateId){
+      this.realestateIdE.emit(realestateId);
+    }else if(this.selectedRealestateMarker){
+      this.realestateIdE.emit(this.selectedRealestateMarker.doc.dbId)
+    }else{
+      console.log("nema realestate id")
+    }
+
+  }
+
   paintMarker(marker: google.maps.marker.AdvancedMarkerElement, color: string): void{
     const markerElement = marker.content as HTMLElement;
     const markerShadow = markerElement.shadowRoot; 
 
+
+    
     if (markerShadow) {
       const styleTag = markerShadow.querySelector("style");
       if (styleTag) {
@@ -245,6 +261,10 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
             height: 10px;
             border-radius: 50%;
             border: solid 2.5px white
+          }
+            
+          .price-tag:hover{
+              background-color: green;
           }`;
       }
     } else {
@@ -337,7 +357,9 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       this.isSelectedSuggestion = true;
       this.selectedSuggestion = suggestion;
       this.searchAggregateMap();
-    } 
+    }else{
+     this.routeDetailsPage(suggestion.dbId) 
+    }
 
 
   }

@@ -96,6 +96,12 @@ export class LoginComponent {
         },
         error: error => {
           console.log(error)
+          console.log(error.error)
+          if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+          else{
+            console.log(error)
+            this.loginResponse = {isError: true, error: {message: "Unknown error"}}
+          }
         }
       })
     }else {

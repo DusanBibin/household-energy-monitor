@@ -45,4 +45,9 @@ public class RealestateService {
         if(realestateWrapper.isEmpty()) throw new InvalidInputException("Realestate with id " + id + " not found");
         return realestateWrapper.get();
     }
+
+    public void getRealestateDetails(Long realestateId) {
+        Realestate realestate = findRealestateById(realestateId);
+
+    }
 }

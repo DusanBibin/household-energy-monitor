@@ -15,34 +15,12 @@ import java.util.List;
 public class HouseholdDetailsDTO {
 
 
-    private List<String> imagePaths;
+    //realestate data
 
-    private Double lat;
-    private Double lon;
 
-    private RealEstateType type;
+    //household data
+    private boolean isVacant;
 
-    private String addressStreet;
-    private String addressNumber;
-    private Long postalCode;
-    private String city;
-    private String municipality;
-    private String region;
-
-    private Long totalFloors;
-
-    private Double size;
-
-    //ako je zgrada
-    private Long apartmentPerFloorNum;
-    //ako je kuca imace 1  koji ce biti prikazan, ako je zgrada imace
-    private List<Long> apartmentNumSelector;
-    private Long apartmentNum;
-
-    //ako ima vlasnika
-    private String ownerName;
-    private String ownerSurname;
-    private String ownerEmail;
 
 
 }

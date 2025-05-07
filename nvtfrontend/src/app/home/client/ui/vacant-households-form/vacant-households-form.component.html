@@ -51,7 +51,7 @@
           </google-map>
           @if(selectedRealestateMarker){
             <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
-              <a>
+              <a (click)="routeDetailsPage(null)">
                 <i class="bi me-2" [ngClass]="{
                   'bi-house-door': selectedRealestateMarker.doc.type === 'HOUSE',
                   'bi-building': selectedRealestateMarker.doc.type === 'BUILDING',
@@ -82,7 +82,7 @@
             </div>
           </div>
       }@else {
-        @if(realestatesDisplay.length > 1){
+        @if(realestatesDisplay.length > 0){
         
           <div class="container-fluid g-0 p-3">
             <div class="row g-3">
@@ -90,8 +90,8 @@
               @for (realestate of realestatesDisplay; track realestate.doc.dbId) {
 
 
-                <div class="col-sm-6">
-                  <a [routerLink]="['/realestate', realestate.doc.dbId]" class="text-decoration-none text-reset">
+                <div class="col-sm-6" style="display: block; cursor: pointer;">
+                  <a (click)="routeDetailsPage(realestate.doc.dbId)" class="text-decoration-none text-reset">
                     <div [ngClass]="{'shadow-lg': realestate.doc.dbId == highlightedRealestate?.doc?.dbId}"
                     class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
                       <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide">

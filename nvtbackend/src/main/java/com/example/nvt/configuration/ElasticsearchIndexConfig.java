@@ -28,7 +28,7 @@ public class ElasticsearchIndexConfig {
     public void initialize() throws IOException {
 
 
-        //initializeIndexes();
+        initializeIndexes();
         System.out.println("iksde");
 
     }
