@@ -5,7 +5,7 @@ import { ClientService } from '../../data-access/client.service';
 
 @Component({
   selector: 'app-household-details',
-  imports: [HouseholdDetailsFormComponent],
+  standalone: false,
   templateUrl: './household-details.component.html',
   styleUrl: './household-details.component.css'
 })

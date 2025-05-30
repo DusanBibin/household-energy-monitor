@@ -30,7 +30,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
   @Output() realestateIdE = new EventEmitter<number>();
 
-  @ViewChild('googleMap') googleMap!: GoogleMap;
+  
   //search
   selectedSuggestion: FilteredSuggestion | null = null;
   isSelectedSuggestion = false;
@@ -38,6 +38,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   searchControl = new FormControl('');
   //mapa
 
+  @ViewChild('googleMap') googleMap!: GoogleMap;
   private map!: google.maps.Map;
   private mapMoveSubject = new Subject<void>();
   center: google.maps.LatLngLiteral = { lat: 44.215341185649585, lng: 20.83940393242209 };

@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { HouseholdDetailsRoutingModule } from './household-details-routing.module';
 import { HouseholdDetailsFormModule } from '../../ui/household-details-form/household-details-form.module';
+import { HouseholdDetailsComponent } from './household-details.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [HouseholdDetailsComponent],
   imports: [
     CommonModule,
     HouseholdDetailsRoutingModule,

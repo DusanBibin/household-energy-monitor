@@ -195,10 +195,10 @@ public class DataInitializer implements CommandLineRunner {
 
         stopWatch.start("Initializing clients");
         System.out.println("Initializing clients...");
-        //lite 15431
-        //regular 7469058
+        //lite 15921
+        //regular 7466128
         List<Client> clients = new ArrayList<>();
-        for(int i = 0; i < 15431; i++) {
+        for(int i = 0; i < 15921; i++) {
             Client client = createClient();
             clients.add(client);
 

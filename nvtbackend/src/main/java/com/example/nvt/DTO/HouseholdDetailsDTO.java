@@ -16,7 +16,15 @@ public class HouseholdDetailsDTO {
 
 
     //realestate data
-
+    private RealEstateType realEstateType;
+    private String region;
+    private String municipality;
+    private String city;
+    private String streetName;
+    private String addressNumber;
+    private Long totalFloors;
+    private Double lat;
+    private Double lon;
 
     //household data
     private boolean isVacant;
