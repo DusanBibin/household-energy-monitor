@@ -17,5 +17,9 @@ public class SuperAdmin extends Admin{
 
     private boolean firstLogin;
 
+    @Override
+    public String toString() {
+        return "SuperAdmin{id=" + this.getId() + ", name=" + this.getEmail() + "}";
 
+    }
 }

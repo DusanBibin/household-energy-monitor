@@ -16,11 +16,7 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      let realestateId: number = params['id']
-      console.log("JEJ USLI SMO OVDE")
-      this.clientService.getRealestateDetails(realestateId);
-    });
+    
 
   }
 }

@@ -55,15 +55,15 @@ public class AuthenticationService {
 
         var user = userService.getUserByEmail(request.getEmail());
 
-        if(!user.isEmailConfirmed() ) throw new EmailNotConfirmedException("Email not confirmed for this user");
+        if(!user.isEmailConfirmed() ) throw new InvalidAuthorizationException("Email not confirmed for this user");
 
         var jwtToken = jwtService.generateToken(user, user.getId());
 
         Cookie jwtCookie = new Cookie("jwt", jwtToken);
-        jwtCookie.setHttpOnly(true); // Prevent JavaScript access
+        jwtCookie.setHttpOnly(true);
         //jwtCookie.setSecure(true); // Use only on HTTPS
-        jwtCookie.setPath("/"); // Available for all endpoints
-        jwtCookie.setMaxAge(24 * 60 * 60); // 1 day expiration
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(60); // PROMENITI I ZA JWT VREME ( VREME MORA BITI ISTO ZA OBA)
         jwtCookie.setAttribute("SameSite", "Strict"); // Prevent CSRF attacks
 
         response.addCookie(jwtCookie);
@@ -90,7 +90,7 @@ public class AuthenticationService {
             throw new InvalidInputException("Passwords do not match");
 
         if(passwordEncoder.matches(request.getNewPassword(), user.getPassword()))
-            throw new InvalidInputException("You cannot set the previous password to be current one");
+            throw new InvalidAuthorizationException("You cannot set the previous password to be current one");
 
         if(user instanceof SuperAdmin superAdmin){
             if(!superAdmin.isFirstLogin())
@@ -108,12 +108,14 @@ public class AuthenticationService {
 
     public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
 
+        System.out.println("ides u kurac registracija");
         if(!(user instanceof SuperAdmin superAdmin || user == null))
             throw new InvalidAuthorizationException("Invalid action");
-
+        System.out.println(user.getRole().toString());
         boolean emailConfirmed = false;
         Role role = Role.CLIENT;
 
+        System.out.println("Neka registracija se dogadja");
         if(user instanceof SuperAdmin superAdmin){
             emailConfirmed = true;
             role = Role.ADMIN;
@@ -151,7 +153,7 @@ public class AuthenticationService {
         newUser.setProfileImg(filePath);
         userService.saveUser(newUser);
 
-        String message = "Registration successful. Validation email sent to".concat(request.getEmail());
+        String message = "Registration successful. Validation email sent to ".concat(request.getEmail());
         if(!emailConfirmed) emailService.sendVerificationEmail(newUser);
         else message = "Admin registration successful";
 

@@ -28,12 +28,11 @@ export class LoginComponent {
   }
 
   handleLoginData(formData: AuthRequestDTO): void {
-    console.log(formData)
+    
 
 
     if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))){
-      this.authService.logout().subscribe({
-        next: value => {
+          
 
           this.jwtService.setUser(null)
 
@@ -41,44 +40,54 @@ export class LoginComponent {
           this.authService.login(formData).subscribe(
             {
               next: (data) => {
-                console.log("uspelo")
+              
                 let d: PartialUserData = data as PartialUserData;
       
                 this.loginResponse = {isError: false, data: d}
-      
                 
-                this.fileService.getProfileImage().subscribe({
-                  next: profileImg => {
-                    let imgUri: string = URL.createObjectURL(profileImg);
-      
-                    this.jwtService.setUser({data: d, profileImage: imgUri})
-                    
-      
-                    this.snackBar.openSnackBar("Login successful")
-                    if(this.jwtService.hasRole(["SUPERADMIN"])) { 
-                      console.log("OVO JE SUPERADMIN")
-          
-                      if(!this.jwtService.isFirstSuperadminLogin()){
-                        this.router.navigate(['/home'], {replaceUrl: true})
-                        
+            
+
+                if(d.firstLogin && d.firstLogin === true){
+                  this.jwtService.setUser({data: d, profileImage: ""})
+                  this.router.navigate(['/home'], {replaceUrl: true});
+                }else{
+                
+                  this.fileService.getProfileImage().subscribe({
+                    next: profileImg => {
+                      let imgUri: string = URL.createObjectURL(profileImg);
+        
+                      this.jwtService.setUser({data: d, profileImage: imgUri})
+                      
+        
+                      this.snackBar.openSnackBar("Login successful")
+                      if(this.jwtService.hasRole(["SUPERADMIN"])) { 
+                     
+            
+                        if(!this.jwtService.isFirstSuperadminLogin()){
+                          this.router.navigate(['/home'], {replaceUrl: true})
+                          
+                        }else{
+                          this.router.navigate(['/home'], {replaceUrl: true})
+                        }
                       }else{
                         this.router.navigate(['/home'], {replaceUrl: true})
-                      }
-                    }else{
-                      this.router.navigate(['/home'], {replaceUrl: true})
-                    } 
-                        
-                  },
-                  error: err => {
-                    console.log(err)
-                  }
-                })
+                      } 
+                          
+                    },
+                    error: err => {
+                      console.log(err)
+                    }
+                  })
+                
+                }
+                
+                
       
       
               },
               error: (error) => {
               
-                if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+                if([401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
                 else{
                   console.log(error)
                   this.loginResponse = {isError: true, error: {message: "Unknown error"}}
@@ -89,26 +98,13 @@ export class LoginComponent {
               
             }
           );
-
-
-
           
-        },
-        error: error => {
-          console.log(error)
-          console.log(error.error)
-          if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
-          else{
-            console.log(error)
-            this.loginResponse = {isError: true, error: {message: "Unknown error"}}
-          }
-        }
-      })
+        
     }else {
       this.authService.login(formData).subscribe(
         {
           next: (data) => {
-            console.log("uspelo")
+         
             let d: PartialUserData = data as PartialUserData;
   
             this.loginResponse = {isError: false, data: d}
@@ -123,7 +119,7 @@ export class LoginComponent {
   
                 this.snackBar.openSnackBar("Login successful")
                 if(this.jwtService.hasRole(["SUPERADMIN"])) { 
-                  console.log("OVO JE SUPERADMIN")
+                
       
                   if(!this.jwtService.isFirstSuperadminLogin()){
                     this.router.navigate(['/home'], {replaceUrl: true})
@@ -145,7 +141,7 @@ export class LoginComponent {
           },
           error: (error) => {
           
-            if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+            if([401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
             else{
               console.log(error)
               this.loginResponse = {isError: true, error: {message: "Unknown error"}}

@@ -15,4 +15,9 @@ import lombok.experimental.SuperBuilder;
 //@Table(name = "admin_user")
 public class Admin extends User{
 
+    @Override
+    public String toString() {
+        return "Admin{id=" + this.getId() + ", name=" + this.getEmail() + "}";
+
+    }
 }

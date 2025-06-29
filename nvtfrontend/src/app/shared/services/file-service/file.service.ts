@@ -11,7 +11,7 @@ export class FileService {
   constructor(private http: HttpClient) {}
 
   getProfileImage(): Observable<Blob>{
-    return this.http.get(environment.apiUrl + '/file/profile-img', {responseType: 'blob', withCredentials: true});
+    return this.http.get(environment.apiUrl + '/file/profile-img', {responseType: 'blob'});
   }
 
 }

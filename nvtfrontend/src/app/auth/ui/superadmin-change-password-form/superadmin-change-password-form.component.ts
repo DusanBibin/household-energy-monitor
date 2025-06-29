@@ -81,7 +81,7 @@ export class SuperadminChangePasswordFormComponent implements OnInit{
 
   isControlInvalid(name: string): boolean{
     const control = this.changePasswordForm.get(name);
-    console.log(control?.valid)
+  
     if(!control) {console.log("Control " + name + " doesn't exist"); return false;}
     
     if(name === 'newPassword' || name === 'repeatPassword') return control.invalid || this.changePasswordForm.hasError('passwordsMismatch');

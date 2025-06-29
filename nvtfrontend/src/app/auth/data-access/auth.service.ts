@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   checkAuth(): Observable<boolean>{
-    return this.http.get<boolean>(environment.apiUrl + '/auth/check')
+    return this.http.get<boolean>(environment.apiUrl + '/auth/is-authenticated')
   }
 
 }

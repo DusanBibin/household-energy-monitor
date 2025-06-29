@@ -51,14 +51,8 @@ export class HomeComponent{
 
 
   signOut(): void{
-    console.log("kurac1")
+ 
     // this.jwtService.logout();
-    console.log("kurac2")
-    
-    
-    console.log("kurac3")
-
-
     this.authService.logout().subscribe({
       next: value => {
         this.jwtService.setUser(null)
@@ -70,45 +64,53 @@ export class HomeComponent{
     })
   }
 
-
+  //IZ NEKOG RAZLOGA OVO JE DA SE PODACI U HOME SCREENU CUVAJU
   getData(){
  
+    if(this.jwtService.isLoggedIn()){
     
-    this.jwtService.user$.subscribe(userData => {
-      if (userData) {
-        console.log("Cached user data:", userData);
-        console.log("usli smo u prvi deo ifa")
-
-
-        this.imgUri = userData.profileImage;
-        this.partialUserData = userData.data;
-      } else {
-        console.log("usli smo u drugi deo ifa")
-
-        forkJoin({
-          profileImg: this.fileService.getProfileImage(),
-          partialUserData: this.userService.getPartialUserData()
-        }).subscribe({
-          next: ({profileImg, partialUserData}) => {
+    
+      this.jwtService.user$.subscribe(userData => {
+        
+        console.log("pokrecemo getData")
+        if (userData) {
+          
+        
+  
+          console.log("vec ima podataka u home component get data")
+          this.imgUri = userData.profileImage;
+          this.partialUserData = userData.data;
+        } 
+        else {
+          console.log("nema podataka u get data home component skidamo nove")
+          
             
-            console.log(partialUserData)
-            let imgUri: string = URL.createObjectURL(profileImg);
-            this.partialUserData = partialUserData;
-            this.imgUri = imgUri;
-    
-            this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
-    
-            console.log(imgUri)
+          forkJoin({
+            profileImg: this.fileService.getProfileImage(),
+            partialUserData: this.userService.getPartialUserData()
+          }).subscribe({
+            next: ({profileImg, partialUserData}) => {
+              
             
-          },
-          error: (error) => {
-            console.log("e ovde bas nismo")
-            if(error.status == 400) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
-            console.log(this.loginResponse)
-          }
-        })
-      }
-    })
+              let imgUri: string = URL.createObjectURL(profileImg);
+              this.partialUserData = partialUserData;
+              this.imgUri = imgUri;
+      
+              this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
+      
+              console.log("HOMECOMPONENT")
+              
+            },
+            error: (error) => {
+              console.log(error)
+              if([400, 401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+              console.log("HOMECOMPONENT GRESKA")
+            }
+          })
+        }
+      })
+    }
+    
   
   
   

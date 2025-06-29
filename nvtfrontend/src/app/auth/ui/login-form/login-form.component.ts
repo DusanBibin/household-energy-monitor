@@ -42,11 +42,11 @@ export class LoginFormComponent implements OnInit {
  
   //reaguje na promene responsa
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("Neki change")
+  
     if (changes['data'] && this.loginClicked) {
-      console.log("Nesto se promenilo u data")
+     
       if(this.data.isError){
-        console.log("Neka greska???")
+        
         this.loading = false;
         const error = this.data.error?.message || 'Unknown error';
      

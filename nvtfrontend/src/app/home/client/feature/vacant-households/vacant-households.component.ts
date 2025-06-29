@@ -23,8 +23,15 @@ export class VacantHouseholdsComponent {
 
 
   handleRealestateNavigationDetails(realestateId: number){
-    console.log("da li se ovde isto upalila funkcija??")
-    this.router.navigate(['/home/client/realestate', realestateId]);
+    this.clientService.getVacantRealestateHouseHolds(realestateId).subscribe({
+      next: ids => {
+        console.log(ids)
+      },
+      error: err => {
+        console.log(err)
+      }
+    })
+    // this.router.navigate(['/home/client/realestate', realestateId]);
   }
 
   handleSearchAggregate(event: {topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string}){
@@ -53,8 +60,7 @@ export class VacantHouseholdsComponent {
   handleRealestateImagePaths(realestateIds: number[]){
     this.clientService.getRealestateImagePaths(realestateIds).subscribe({
       next: results => {
-        console.log("EVO OVO SU REZULTATI REALESTATE IDJEVA")
-        console.log(results)
+       
 
         let m = new Map<number, string[]>();
 

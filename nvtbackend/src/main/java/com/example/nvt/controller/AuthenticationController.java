@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +31,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@Valid @RequestBody AuthRequestDTO request, HttpServletResponse response){
         PartialUserDataDTO token = authService.authenticate(request, response);
+
         return ResponseEntity.ok(token);
     }
 
@@ -62,6 +65,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new ResponseMessage("Password changed successfully"));
     }
 
+//    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @PostMapping("/logout")
     public void logout(HttpServletResponse response) {
         Cookie jwtCookie = new Cookie("jwt", null);
@@ -75,22 +79,27 @@ public class AuthenticationController {
         System.out.println("izlogovali smo se ");
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request) {
-        // If the user has a valid session (JWT in cookie), return true
-        return ResponseEntity.ok(true);
+    @GetMapping("/is-authenticated")
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication != null && authentication.isAuthenticated()
+                && !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser")));
+        return authentication != null && authentication.isAuthenticated()
+                && !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser"));
     }
 
     
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping("/kurac-auth")
-    public void kurac(){
-        System.out.println("kurac-authorized");
+    public ResponseEntity<String> kurac(){
+        System.out.println("Kurac auth");
+        return ResponseEntity.ok("Kurac auth");
     }
 
     @GetMapping("/kurac-unauth")
-    public void kuracUnauthorized(){
-        System.out.println("kurac-unauthorized");
+    public ResponseEntity<String> kuracUnauthorized(){
+        System.out.println("Kurac unauth");
+        return ResponseEntity.ok("Kurac unauth");
     }
 
 

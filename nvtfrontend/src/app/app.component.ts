@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { FileService } from './shared/services/file-service/file.service';
 import { JwtService } from './shared/services/jwt-service/jwt.service';
 import { AuthService } from './auth/data-access/auth.service';
+import { error } from 'node:console';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet],
@@ -51,25 +52,43 @@ export class AppComponent implements OnInit{
     //   }
     // })
 
+    // this.userService.getPartialUserData().subscribe({
+    //   next: partialUserData => {
+    //     this.jwtService.setUser({data: partialUserData, profileImage: ""})
+    //   },
+    //   error: error => {
+    //     console.log(error)
+    //   }
+    // })
 
-    forkJoin({
-      profileImg: this.fileService.getProfileImage(),
-      partialUserData: this.userService.getPartialUserData()
-    }).subscribe({
-      next: ({profileImg, partialUserData}) => {
-        
-        console.log(partialUserData)
-        let imgUri: string = URL.createObjectURL(profileImg);
-        this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
 
-        console.log(imgUri)
+      // this.fileService.getProfileImage().subscribe({
+      //   next: kurac => {
+      //     console.log("neki kurac uspeo")
+      //   },error: error => {
+      //     console.log(error)
+      //   }
+      // })
+
+    //IZ NEKOG RAZLOGA OVO JE ZA REFRESH DA GA ODMAH VRATI NA HOME SCREEN
+    // forkJoin({
+    //   partialUserData: this.userService.getPartialUserData(),
+    //   profileImg: this.fileService.getProfileImage()
+      
+    // }).subscribe({
+    //   next: ({profileImg, partialUserData}) => {
         
-      },
-      error: () => {
-        // console.log(error)
-        // console.log("nesto ne valja u forku")
-      }
-    })
+    //     let imgUri: string = URL.createObjectURL(profileImg);
+    //     this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
+    //     console.log("APP COMPONENT")
+    //   },
+    //   error: (error) => {
+    //     console.log(error)
+    //     console.log("APP COMPONENT GRESKA")
+    //   }
+    // })
+
+  
 
 
     

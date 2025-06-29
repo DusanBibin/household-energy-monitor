@@ -11,4 +11,5 @@ public interface RealestateRepository extends JpaRepository<Realestate, Long> {
     @Query("select r from Realestate r")
     List<Realestate> getAllRealestates();
 
+
 }

@@ -41,10 +41,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt = extractJwtFromCookies(request);
         String userEmail;
 
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-resources") || path.startsWith("/webjars")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+
         if (jwt == null) {
             filterChain.doFilter(request, response);
             return;
         }
+
+//        if (jwt == null) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().write("Unauthorized: Missing JWT token");
+//            return;
+//        }
 
         try {
             userEmail = jwtService.extractUsername(jwt);
@@ -57,14 +72,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                    // ✅ RESTORING SUPERADMIN LOGIN CHECK
                     if (userDetails.getAuthorities().stream()
                             .anyMatch(auth -> auth.getAuthority().equals("SUPERADMIN"))) {
 
                         var superadmin = (SuperAdmin) userDetails;
                         boolean isFirstLogin = superadmin.isFirstLogin();
-
-                        if (isFirstLogin && !request.getRequestURI().equals("/api/v1/auth/change-superadmin-password")) {
+                        System.out.println(isFirstLogin);
+                        if (isFirstLogin && !(request.getRequestURI().equals("/api/v1/auth/change-superadmin-password")) && !(request.getRequestURI().equals("/api/v1/file/profile-img"))
+                        && !(request.getRequestURI().equals("/api/v1/user/partial-data"))) {
+                            System.out.println("DA LI JE OVO KURAC");
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.getWriter().write("Access Denied: You must change your password first.");
                             return;

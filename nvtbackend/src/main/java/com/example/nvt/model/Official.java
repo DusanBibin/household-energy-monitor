@@ -15,4 +15,9 @@ import lombok.experimental.SuperBuilder;
 //@Table(name = "official")
 public class Official extends User{
 
+    @Override
+    public String toString() {
+        return "Official{id=" + this.getId() + ", name=" + this.getEmail() + "}";
+
+    }
 }

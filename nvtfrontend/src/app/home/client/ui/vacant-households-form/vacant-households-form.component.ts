@@ -8,6 +8,7 @@ import { FilteredSuggestion } from '../../feature/vacant-households/vacant-house
 import { LocationDTO } from '../../../../shared/model';
 import { GoogleMap  } from '@angular/google-maps';
 import { environment } from '../../../../../environments/environment.development';
+import { hide } from '@popperjs/core';
 
 @Component({
   selector: 'app-vacant-households-form',
@@ -59,6 +60,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   highlightedRealestate: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
   selectedRealestateMarker: {doc: RealestateDoc, marker: google.maps.marker.AdvancedMarkerElement} | null = null;
   popupPosition = { x: 0, y: 0 };
+  apartmentSelectionPosition = {location: {x:0, y:0}, buildingSelected: false, clicked: false};
 
 
   isLoading = true;
@@ -104,7 +106,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     let upperBound = this.realestatePagination.totalPages;
     let lowerBound = 1;
 
-    console.log(this.realestatePagination.totalPages)
+    
 
     if(this.realestatePagination.currentPage - 4 < lowerBound){
       upperBound = Math.min(9, this.realestatePagination.totalPages)
@@ -154,7 +156,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         });
         
         this.realestates = [];
-        console.log(this.realestatesInput.length)
+        
 
 
 
@@ -234,17 +236,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       }
   }
 
-  routeDetailsPage(realestateId: number | null){
-    console.log("funkcija radi")
-    if(realestateId){
-      this.realestateIdE.emit(realestateId);
-    }else if(this.selectedRealestateMarker){
-      this.realestateIdE.emit(this.selectedRealestateMarker.doc.dbId)
-    }else{
-      console.log("nema realestate id")
-    }
-
-  }
+  
 
   paintMarker(marker: google.maps.marker.AdvancedMarkerElement, color: string): void{
     const markerElement = marker.content as HTMLElement;
@@ -321,10 +313,10 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       const northEast = bounds.getNorthEast(); 
       const southWest = bounds.getSouthWest(); 
 
-      console.log('Zoom Level:', zoom);
-      console.log('Bounding Box:');
-      console.log('Top Left (NW):', { lat: northEast.lat(), lng: southWest.lng() });
-      console.log('Bottom Right (SE):', { lat: southWest.lat(), lng: northEast.lng() });
+      // console.log('Zoom Level:', zoom);
+      // console.log('Bounding Box:');
+      // console.log('Top Left (NW):', { lat: northEast.lat(), lng: southWest.lng() });
+      // console.log('Bottom Right (SE):', { lat: southWest.lat(), lng: northEast.lng() });
       
       let topLeft: LocationDTO = {
         lon: southWest.lng(),
@@ -350,25 +342,16 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     }
   }
 
-  
-  selectSuggestion(suggestion: FilteredSuggestion) {
-    this.searchControl.setValue(suggestion.original);
-    this.showDropdown = false;
-    if(['CITY', 'MUNICIPALITY', 'REGION'].includes(suggestion.type)){
-      this.isSelectedSuggestion = true;
-      this.selectedSuggestion = suggestion;
-      this.searchAggregateMap();
-    }else{
-     this.routeDetailsPage(suggestion.dbId) 
-    }
 
-
-  }
 
   hideDropdown() {
+    
+  
     setTimeout(() => {
       this.showDropdown = false;
-    }, 100);
+    }, 100)
+  
+    
   }
 
 
@@ -385,6 +368,90 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   }
 
 
+  routeDetailsPage(realestateDoc: RealestateDoc, event: MouseEvent){
+    
+
+    this.apartmentSelectionPosition.location.x = event.clientX;
+    this.apartmentSelectionPosition.location.y = event.clientY;
+    
+    this.apartmentSelectionPosition.clicked = true;
+
+    console.log(this.apartmentSelectionPosition)
+    // if(realestateId){
+    //   this.realestateIdE.emit(realestateId);
+    // }else if(this.selectedRealestateMarker){
+    //   this.realestateIdE.emit(this.selectedRealestateMarker.doc.dbId)
+    // }else{
+    //   console.log("nema realestate id")
+    // }
+
+
+
+    // console.log(realestateDoc)
+    if(realestateDoc){
+      if(realestateDoc.type === 'BUILDING'){
+    
+        this.apartmentSelectionPosition.buildingSelected = true;
+      }else{
+        this.apartmentSelectionPosition.buildingSelected = false;
+      }
+      this.realestateIdE.emit(realestateDoc.dbId);
+    }else{
+      // console.log("Nema realestatea")
+    }
+
+  }
+
+
+  selectSuggestion(suggestion: FilteredSuggestion, event: MouseEvent) {
+
+
+    this.apartmentSelectionPosition.location.x = event.clientX;
+    this.apartmentSelectionPosition.location.y = event.clientY;
+    
+   
+    
+    if(['CITY', 'MUNICIPALITY', 'REGION'].includes(suggestion.type)){
+      this.searchControl.setValue(suggestion.original);
+      this.isSelectedSuggestion = true;
+      this.selectedSuggestion = suggestion;
+      this.searchAggregateMap();
+      this.showDropdown = false;
+    }else{
+      // this.routeDetailsPage(suggestion)
+
+      if(suggestion){
+        if(suggestion.type === 'BUILDING'){
+          this.apartmentSelectionPosition.clicked = true;
+          this.apartmentSelectionPosition.buildingSelected = true;
+        }else{
+          this.apartmentSelectionPosition.buildingSelected = false;
+          this.showDropdown = false;
+        }
+        this.realestateIdE.emit(suggestion.dbId);
+        
+      }else{
+        // console.log("Nema realestatea")
+      }
+    }
+
+
+  }
+
+
+  showApartmentSelection(event: MouseEvent){
+    console.log("showApartmentSelection")
+    // ovo uvek brise 
+
+
+    if(this.apartmentSelectionPosition.clicked === true) this.apartmentSelectionPosition.clicked = false;
+    else {
+      this.apartmentSelectionPosition.buildingSelected = false
+    }
+     
+  }
+
+  
 }
 
 interface Pagination {

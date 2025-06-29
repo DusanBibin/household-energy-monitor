@@ -47,7 +47,7 @@ export class SuperadminChangePasswordComponent {
         },
         error: (error) => {
           
-          if(error.status == 400) this.changePasswordResponse = {isError: true, error: error.error as ResponseMessage};
+          if([400, 401, 403].includes(error.status)) this.changePasswordResponse = {isError: true, error: error.error as ResponseMessage};
      
         }
         

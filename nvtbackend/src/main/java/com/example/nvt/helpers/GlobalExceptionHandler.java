@@ -26,30 +26,35 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value
             = InvalidAuthenticationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public @ResponseBody ResponseMessage
-    handleEmailNotConfirmedException(InvalidAuthenticationException ex)
+    handleInvalidAuthenticationException(InvalidAuthenticationException ex)
     {
         return new ResponseMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(value
-            = EmailNotConfirmedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody ResponseMessage
-    handleEmailNotConfirmedException(EmailNotConfirmedException ex)
-    {
-        return new ResponseMessage(ex.getMessage());
-    }
 
     @ExceptionHandler(value
             = InvalidAuthorizationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public @ResponseBody ResponseMessage
     handleInvalidAuthorizationException(InvalidAuthorizationException ex)
     {
         return new ResponseMessage(ex.getMessage());
     }
+
+
+
+
+//    @ExceptionHandler(value
+//            = EmailNotConfirmedException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public @ResponseBody ResponseMessage
+//    handleEmailNotConfirmedException(EmailNotConfirmedException ex)
+//    {
+//        return new ResponseMessage(ex.getMessage());
+//    }
+
 
     @ExceptionHandler(value
             = InvalidInputException.class)

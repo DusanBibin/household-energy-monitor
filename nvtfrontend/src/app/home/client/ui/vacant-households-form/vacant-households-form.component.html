@@ -1,5 +1,21 @@
-<div class="w-100 d-flex flex-column" style="height: 100%; ">
+<div class="w-100 d-flex flex-column" style="height: 100%;" (click)="showApartmentSelection($event)">
   
+  @if(apartmentSelectionPosition.buildingSelected){
+    <div
+    class="popup-card shadow-lg"
+    [ngStyle]="{
+      left: apartmentSelectionPosition.location.x + 'px',
+      top: apartmentSelectionPosition.location.y + 'px',
+      position: 'absolute',
+      zIndex: 1080
+    }">
+    <a>
+      <i class="bi me-2 bi-building"></i> some house lol
+    </a>
+  </div>
+  }
+  
+
   <div class="px-3">
     <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;  ">
       <label for="searchInput"></label>
@@ -11,7 +27,7 @@
         placeholder="Search for address, city, zipcode, municipality, or region"
         name="search-vacant"
         [formControl]="searchControl"
-        (focus)="showDropdown =true"
+        (focus)="showDropdown=true"
         (blur)="hideDropdown()"
       >
   
@@ -23,7 +39,8 @@
           @for (suggestion of filteredSuggestionsInput; track suggestion) {
             <li
               class="list-group-item list-group-item-action"
-              (click)="selectSuggestion(suggestion)">
+              style="cursor: pointer;"
+              (mousedown)="selectSuggestion(suggestion, $event)">
               <i class="bi me-2" [ngClass]="{
                 'bi-house-door': suggestion.type === 'HOUSE',
                 'bi-building': suggestion.type === 'BUILDING',
@@ -42,7 +59,7 @@
   </div>
   
 
-  <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"> 
+  <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"  > 
   
     <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
       
@@ -51,7 +68,7 @@
           </google-map>
           @if(selectedRealestateMarker){
             <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
-              <a (click)="routeDetailsPage(null)">
+              <a (click)="routeDetailsPage(selectedRealestateMarker.doc, $event)">
                 <i class="bi me-2" [ngClass]="{
                   'bi-house-door': selectedRealestateMarker.doc.type === 'HOUSE',
                   'bi-building': selectedRealestateMarker.doc.type === 'BUILDING',
@@ -91,7 +108,7 @@
 
 
                 <div class="col-sm-6" style="display: block; cursor: pointer;">
-                  <a (click)="routeDetailsPage(realestate.doc.dbId)" class="text-decoration-none text-reset">
+                  <a (click)="routeDetailsPage(realestate.doc, $event)" class="text-decoration-none text-reset">
                     <div [ngClass]="{'shadow-lg': realestate.doc.dbId == highlightedRealestate?.doc?.dbId}"
                     class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
                       <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide">

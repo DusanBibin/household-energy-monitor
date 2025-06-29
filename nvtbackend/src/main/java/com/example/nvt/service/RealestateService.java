@@ -3,6 +3,7 @@ package com.example.nvt.service;
 import com.example.nvt.DTO.RealestateImagePathsDTO;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.Realestate;
+import com.example.nvt.repository.HouseholdRepository;
 import com.example.nvt.repository.RealestateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public class RealestateService {
 
     private final RealestateRepository realestateRepository;
+
+    private final HouseholdRepository householdRepository;
 
     public List<RealestateImagePathsDTO> getImagePaths(List<Long> realestateIds) {
 
@@ -46,8 +49,8 @@ public class RealestateService {
         return realestateWrapper.get();
     }
 
-    public void getRealestateDetails(Long realestateId) {
+    public List<Long> getVacantRealestateHouseholdIds(Long realestateId) {
         Realestate realestate = findRealestateById(realestateId);
-
+        return householdRepository.findVacantRealestateHouseholdIds(realestateId);
     }
 }

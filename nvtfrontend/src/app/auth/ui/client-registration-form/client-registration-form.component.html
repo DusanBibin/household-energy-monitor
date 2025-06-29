@@ -1,9 +1,11 @@
-<div style="min-height: 100vh;" class="d-flex justify-content-center align-items-center p-4">
+<!-- <div style="min-height: 100vh;" class="d-flex justify-content-center align-items-center p-4"> -->
+
+<div class="w-100 d-flex p-3" style="height: 100%; overflow-y: scroll;">
     
-    <form [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
+    <form style="margin: auto;" [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
       
 
-      @if(this.router.url === '/home/admin-registration'){
+      @if(this.router.url === '/home/superadmin/admin-registration'){
             <h4 class="mb-4">Admin registration</h4>
       }
       @else {

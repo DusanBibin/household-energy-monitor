@@ -14,7 +14,7 @@ export class ClientService {
   
     
     searchVacantHousehold(query: String): Observable<(CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc)[]>{
-      return this.http.get<(CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc)[]>(environment.apiUrl + '/realestate/search?query=' + query);
+      return this.http.get<(CityDoc | MunicipalityDoc | RegionDoc | RealestateDoc)[]>(environment.apiUrl + '/realestate/search?query=' + query, {withCredentials: true});
     }
 
     aggregate(topLeft: LocationDTO, bottomRight: LocationDTO, zoomLevel: number, filterType?: string, filterDocId?: string): Observable<RealestateDoc[]>{
@@ -33,21 +33,20 @@ export class ClientService {
         params = params.set('filterDocId', filterDocId);
       }
 
-      return this.http.get<RealestateDoc[]>(environment.apiUrl + '/realestate/aggregate', { params })
+      return this.http.get<RealestateDoc[]>(environment.apiUrl + '/realestate/aggregate', { params, withCredentials: true} )
     }
 
 
     getRealestateImagePaths(realestateIds: number[]): Observable<RealestateImagePathsDTO[]>{
-      return this.http.post<RealestateImagePathsDTO[]>(environment.apiUrl + '/realestate/paged-realestate-image-paths', realestateIds)
+      return this.http.post<RealestateImagePathsDTO[]>(environment.apiUrl + '/realestate/paged-realestate-image-paths', realestateIds, {withCredentials: true})
+    }
+
+    getVacantRealestateHouseHolds(realestateId: number): Observable<number[]>{
+      return this.http.get<number[]>(environment.apiUrl + '/realestate/' + realestateId + '/households', {withCredentials: true})
     }
 
 
-    getRealestateDetails(realestateId: number): void{
-      console.log("i ovde smo usli")
-      this.http.get<void>(environment.apiUrl + '/realestate/' + realestateId).subscribe(() => {
-        console.log('Request successful!');
-      });
-    }
+    
 
 
   

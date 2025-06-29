@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of, map, catchError, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthService } from '../../../auth/data-access/auth.service';
 import { forkJoin } from 'rxjs';
@@ -15,7 +15,7 @@ export class JwtService {
   private userSubject = new BehaviorSubject<{ data: PartialUserData, profileImage: string } | null>(null);
   user$ = this.userSubject.asObservable(); // Observable for components to subscribe to
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private userService: UserService) {
     console.log("Auth service initialized")
   }
 
@@ -33,6 +33,24 @@ export class JwtService {
   // Check if user is logged in
   isLoggedIn(): boolean {
     return this.userSubject.value !== null;
+  }
+
+
+  isLoggedInCookie(): Observable<boolean> {
+    if (this.userSubject.value !== null) {
+      return of(true); // Already logged in (from memory)
+    }
+  
+    return this.userService.getPartialUserData().pipe(
+      tap(userData => this.userSubject.next({ data: userData, profileImage: '' })), // Set the data
+      map(() => true), // Successfully fetched
+      catchError(err => {
+        if (err.status === 401) {
+          return of(false); // Not logged in
+        }
+        return throwError(() => err); // Unexpected error
+      })
+    );
   }
 
   // Check if user has a specific role

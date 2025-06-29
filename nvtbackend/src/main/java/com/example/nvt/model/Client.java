@@ -26,4 +26,10 @@ public class Client extends User{
     @OneToMany
     private List<RealEstateRequest> realEstateRequests;
 
+
+    @Override
+    public String toString() {
+        return "Client{id=" + this.getId() + ", name=" + this.getEmail() + "}";
+
+    }
 }

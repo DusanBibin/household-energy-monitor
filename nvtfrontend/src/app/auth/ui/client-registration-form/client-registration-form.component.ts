@@ -47,7 +47,7 @@ export class ClientRegistrationFormComponent{
     protected router: Router
   ){
     
-    console.log(this.profileImg)
+ 
 
     this.data = {isError: false}
     this.registrationForm = this.fb.group({
@@ -90,25 +90,25 @@ export class ClientRegistrationFormComponent{
 
   registerClick(): void{
 
-    console.log("da li radi ovo")
+   
     this.registerClicked = true;
     this.loading = true;
 
     if(!this.profileImg) { this.isInvalidImg = true; this.imgErrMsg = "This field is required"}
 
     if(this.registrationForm.invalid || this.isInvalidImg){
-      console.log(this.registrationForm.errors)
+    
       this.loading = false;
-      console.log("verovatno ne lol")
+      
       return;
     }
 
-    console.log("jej radi")
+   
 
     let formData = new FormData();
     let registerData: RegisterRequestDTO = this.registrationForm.value;
 
-    console.log(registerData)
+    
 
 
     formData.append('formData',  new Blob([JSON.stringify(registerData)], { type: 'application/json' }))
@@ -185,7 +185,6 @@ export class ClientRegistrationFormComponent{
       this.croppedImgUrl = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl as string);
       if (event.blob) {
         this.profileImg = new File([event.blob], 'cropped-image.png', { type: 'image/png' });
-        console.log('Cropped Image File:', this.profileImg);
       } else {
         console.error('Image cropping failed: No Blob received.');
       }
@@ -196,7 +195,7 @@ export class ClientRegistrationFormComponent{
   }
 
   cropImage(){
-    console.log("iksdebro1")
+  
     if (this.cropDialog) {
       this.imgUrl = this.croppedImgUrl;
       this.modalService.dismissAll(); 
@@ -231,7 +230,6 @@ export class ClientRegistrationFormComponent{
 
 
   getControlError(name: string): string | null{
-    console.log("usli smo ovde")
     const control = this.registrationForm.get(name);
     
     if(!control) console.log("Control " + name + " doesn't exist");
@@ -245,7 +243,7 @@ export class ClientRegistrationFormComponent{
       return this.registrationForm.getError('passwordsMismatch');
     if(control?.hasError('backendError')) return control?.getError('backendError')
     
-    console.log("ovo nije dobro xd")
+
     return null;
   }
 

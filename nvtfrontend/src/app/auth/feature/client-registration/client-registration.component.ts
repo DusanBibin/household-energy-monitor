@@ -25,7 +25,8 @@ export class ClientRegistrationComponent {
   }
 
   handleRegisterData(event: {formData: FormData, email: string}){
-
+    console.log(this.jwtService.getUser())
+    console.log((this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN'])))
     if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))){
       this.authService.logout().subscribe({
         next: value => {
@@ -42,6 +43,8 @@ export class ClientRegistrationComponent {
       })
     }else this.registerClient(event.formData)
 
+    // this.registerClient(event.formData);
+
   }
 
 
@@ -53,11 +56,11 @@ export class ClientRegistrationComponent {
         if(!this.jwtService.hasRole(['SUPERADMIN'])) this.router.navigate(["/auth/login"])
 
         this.snackBar.openSnackBar(data.message);
-        console.log("I need the succsezzz")
+  
       },
       error: (error) =>{
-        console.log("z virus daym ")
-        if(error.status == 400) this.registerResponse = {isError: true, error: error.error as ResponseMessage}
+        console.log(error)
+        if([400, 401, 403].includes(error.status)) this.registerResponse = {isError: true, error: error.error as ResponseMessage}
       }
     })
   }
