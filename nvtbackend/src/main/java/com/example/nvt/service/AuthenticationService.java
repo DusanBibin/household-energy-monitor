@@ -63,7 +63,7 @@ public class AuthenticationService {
         jwtCookie.setHttpOnly(true);
         //jwtCookie.setSecure(true); // Use only on HTTPS
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(60); // PROMENITI I ZA JWT VREME ( VREME MORA BITI ISTO ZA OBA)
+        jwtCookie.setMaxAge(60 * 60 * 24); // PROMENITI I ZA JWT VREME ( VREME MORA BITI ISTO ZA OBA)
         jwtCookie.setAttribute("SameSite", "Strict"); // Prevent CSRF attacks
 
         response.addCookie(jwtCookie);

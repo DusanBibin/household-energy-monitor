@@ -14,15 +14,17 @@ import { AuthService } from '../auth/data-access/auth.service';
     styleUrl: './home.component.css',
     standalone: false
 })
-export class HomeComponent{
+export class HomeComponent implements OnInit{
   
   center: google.maps.LatLngLiteral = { lat: 23.0225, lng: 72.5714}
- 
+  protected navbarExpanded = false;
   protected partialUserData: PartialUserData;
   protected imgUri: string = "";
   data: any[] | null = null;
   loginResponse: ResponseData;
 
+  protected navbarVertical: boolean = false;
+  resizeListener: (() => void) | undefined;
 
 
   
@@ -46,7 +48,22 @@ export class HomeComponent{
       this.getData();
   }
 
+  ngOnDestroy(): void {
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+  }
+
   ngOnInit(): void {
+      this.checkScreenSize();
+      this.resizeListener = () => {
+        this.checkScreenSize();
+      }
+      window.addEventListener('resize', this.resizeListener);
+  }
+
+  checkScreenSize(): void {
+    this.navbarVertical = window.innerWidth > 768;
   }
 
 
