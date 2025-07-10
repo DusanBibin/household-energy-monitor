@@ -46,12 +46,12 @@ public class RealestateController {
     public List<RealestateImagePathsDTO> getImagePaths(@RequestBody List<Long> realestateIds) throws IOException {
         return realestateService.getImagePaths(realestateIds);
     }
-
-    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
-    @GetMapping("/{realestateId}/households")
-    public List<Long> getRealestateHouseholdIds(@PathVariable Long realestateId){
-        System.out.println(realestateId);
-
-        return realestateService.getVacantRealestateHouseholdIds(realestateId);
-    }
+//
+//    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
+//    @GetMapping("/{realestateId}/households")
+//    public List<String> getRealestateHouseholdIds(@PathVariable Long realestateId){
+//        System.out.println(realestateId);
+//
+//        return realestateService.getVacantRealestateHouseholdIds(realestateId);
+//    }
 }

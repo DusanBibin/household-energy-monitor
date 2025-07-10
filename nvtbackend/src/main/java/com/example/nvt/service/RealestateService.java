@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class RealestateService {
 
         List<RealestateImagePathsDTO> imagePaths = new ArrayList<>();
         for(Long id : realestateIds) {
-            Realestate realestate = findRealestateById(id);
+            Realestate realestate = getRealestateById(id);
 
 
 //            if(realestate.getImages().isEmpty()) throw new InvalidInputException("Realestate doesn't contain any images");
@@ -43,14 +44,14 @@ public class RealestateService {
     }
 
 
-    public Realestate findRealestateById(Long id){
+    public Realestate getRealestateById(Long id){
         Optional<Realestate> realestateWrapper = realestateRepository.findById(id);
         if(realestateWrapper.isEmpty()) throw new InvalidInputException("Realestate with id " + id + " not found");
         return realestateWrapper.get();
     }
 
-    public List<Long> getVacantRealestateHouseholdIds(Long realestateId) {
-        Realestate realestate = findRealestateById(realestateId);
-        return householdRepository.findVacantRealestateHouseholdIds(realestateId);
-    }
+//    public List<String> getVacantRealestateHouseholdIds(Long realestateId) {
+//        Realestate realestate = getRealestateById(realestateId);
+//        return householdRepository.findVacantRealestateHouseholdIds(realestateId).stream().map(Object::toString).collect(Collectors.toList());
+//    }
 }

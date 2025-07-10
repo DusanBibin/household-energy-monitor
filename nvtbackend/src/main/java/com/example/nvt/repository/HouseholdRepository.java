@@ -19,4 +19,7 @@ public interface HouseholdRepository extends JpaRepository<Household, Long> {
             " where r.id = :realestateId and h.householdOwner is null")
     List<Long> findVacantRealestateHouseholdIds(Long realestateId);
 
+    @Query("select h from Household h join Realestate r on h.realestate.id = r.id where r.id = :realestateId " +
+            "and h.householdOwner is null")
+    List<Household> getRealestateVacantApartments(Long realestateId);
 }

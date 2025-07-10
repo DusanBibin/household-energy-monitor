@@ -15,7 +15,7 @@ const routes: Routes = [
     )
 },
 {
-  path:'realestate/:id',
+  path:'realestate/:realestateId/household/:householdId',
   loadChildren:() =>
     import('../household-details/household-details.module').then(
       (m) => m.HouseholdDetailsModule

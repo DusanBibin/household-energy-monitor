@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 # Endpoint URL for the Spring Boot application
-ENDPOINT_URL = "http://localhost:8080/api/v1/household/script"
+ENDPOINT_URL = "http://localhost:8080/api/v1/realestate/household/script"
 
 # Python script to be executed for each ID
 SCRIPT_TO_RUN = "household.py"

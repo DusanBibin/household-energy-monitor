@@ -1,14 +1,16 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ClientService } from '../../data-access/client.service';
-import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc } from '../../data-access/model/client-model';
+import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, VacantApartmentDTO } from '../../data-access/model/client-model';
 import { FilteredSuggestion } from '../../feature/vacant-households/vacant-households.component';
 import { LocationDTO } from '../../../../shared/model';
 import { GoogleMap  } from '@angular/google-maps';
 import { environment } from '../../../../../environments/environment.development';
 import { hide } from '@popperjs/core';
+import { TextUtilServiceService } from '../../../../shared/services/text-util-service/text-util.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vacant-households-form',
@@ -29,6 +31,8 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   @Input() realestatesImagesMapInput: Map<Number, string[]> = new Map<number, string[]>();
   @Output() realestateIdsE = new EventEmitter<number[]>();
 
+
+  @Input() vacantRealestateApartmentsIds: VacantApartmentDTO[] = [];  
   @Output() realestateIdE = new EventEmitter<number>();
 
   
@@ -62,11 +66,45 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   popupPosition = { x: 0, y: 0 };
   apartmentSelectionPosition = {location: {x:0, y:0}, buildingSelected: false, clicked: false};
 
-
   isLoading = true;
   initialRealestates = true;
   initialImagesMap = true;
+  apartmentSelectionPopupSelected = false;
 
+  filteredVacantRealestateApartmentsIds: VacantApartmentDTO[] = [];
+  apartmentSearchControl = new FormControl('', [Validators.pattern(/^\d*$/)]);
+
+
+  selectedRealestate: FilteredSuggestion | RealestateDoc | null = null;
+
+  highlightApartmentNumber(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
+    this.apartmentSearchControl.setValue(input.value, { emitEvent: false });
+
+    
+    this.filteredVacantRealestateApartmentsIds = [];
+
+
+    let prefix = this.apartmentSearchControl.value;
+
+    if(prefix){
+      for(const apartment of this.vacantRealestateApartmentsIds){
+        if(apartment.apartmentNumber.startsWith(prefix)){
+
+          let apartmentNum = this.textService.highlightMatch(apartment.apartmentNumber, prefix);
+         
+          let apartmentDTO: VacantApartmentDTO = {
+            id: apartment.id,
+            apartmentNumber: apartmentNum
+          }
+
+          this.filteredVacantRealestateApartmentsIds.push(apartmentDTO);
+        }
+      }
+    }else this.filteredVacantRealestateApartmentsIds = this.vacantRealestateApartmentsIds
+    
+  }
 
   realestatePagination: Pagination = {
     currentPage: 0,
@@ -74,7 +112,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
     pages: []
   };
 
-  constructor(private ngZone: NgZone) {
+  constructor(private ngZone: NgZone, private textService: TextUtilServiceService, private router: Router) {
     this.searchControl.valueChanges
       .pipe(
         debounceTime(100), 
@@ -207,6 +245,25 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
               x: projection.clientX,
               y: projection.clientY
             };
+
+
+
+            if(projection.clientX + 250 >= window.innerWidth){
+              this.popupPosition.x = projection.clientX - 250;
+            }
+
+            if(projection.clientY + 44 >= window.innerHeight){
+              this.popupPosition.y = projection.clientY - 44;
+            }
+
+            // if(projection.clientX - 250 <= 0){
+            //   this.popupPosition.x = projection.clientX + 250;
+            // }
+
+            if(projection.clientY - 44 <= 0 ){
+              this.popupPosition.y = projection.clientY + 44;
+            }
+    
   
   
 
@@ -233,6 +290,14 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         this.changePage(this.realestatePagination.currentPage)
         
         this.isLoading = false;
+      }
+
+
+      if(changes['vacantRealestateApartmentsIds']){
+        console.log("UPALIO SE NGONCHANGES")
+        console.log(this.vacantRealestateApartmentsIds)
+
+        this.filteredVacantRealestateApartmentsIds = this.vacantRealestateApartmentsIds
       }
   }
 
@@ -373,10 +438,35 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
     this.apartmentSelectionPosition.location.x = event.clientX;
     this.apartmentSelectionPosition.location.y = event.clientY;
-    
-    this.apartmentSelectionPosition.clicked = true;
 
+
+    if(event.clientX + 250 >= window.innerWidth){
+      this.apartmentSelectionPosition.location.x = event.clientX - 250;
+    }
+
+    if(event.clientY + 250 >= window.innerHeight){
+      this.apartmentSelectionPosition.location.y = event.clientY - 250;
+    }
+
+    if(event.clientX - 250 <= 0){
+      this.apartmentSelectionPosition.location.x = event.clientX + 250;
+    }
+
+    if(event.clientY - 250 <= 0 ){
+      this.apartmentSelectionPosition.location.y = event.clientY + 250;
+    }
+    
+
+
+    this.apartmentSelectionPosition.clicked = true;
+    //250 px je zato sto je u vacant-households-form-component.html max-width i max-height 250px
     console.log(this.apartmentSelectionPosition)
+
+    
+    
+
+
+
     // if(realestateId){
     //   this.realestateIdE.emit(realestateId);
     // }else if(this.selectedRealestateMarker){
@@ -396,6 +486,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
         this.apartmentSelectionPosition.buildingSelected = false;
       }
       this.realestateIdE.emit(realestateDoc.dbId);
+      this.selectedRealestate = realestateDoc;
     }else{
       // console.log("Nema realestatea")
     }
@@ -429,7 +520,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
           this.showDropdown = false;
         }
         this.realestateIdE.emit(suggestion.dbId);
-        
+        this.selectedRealestate = suggestion;
       }else{
         // console.log("Nema realestatea")
       }
@@ -442,15 +533,39 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   showApartmentSelection(event: MouseEvent){
     console.log("showApartmentSelection")
     // ovo uvek brise 
+    
+    this.apartmentSearchControl.setValue("")
 
-
-    if(this.apartmentSelectionPosition.clicked === true) this.apartmentSelectionPosition.clicked = false;
-    else {
-      this.apartmentSelectionPosition.buildingSelected = false
+    if(this.apartmentSelectionPopupSelected){
+      this.apartmentSelectionPopupSelected = false;
+    }else{
+      
+      if(this.apartmentSelectionPosition.clicked === true) this.apartmentSelectionPosition.clicked = false;
+      else {
+        this.selectedRealestate = null
+        this.vacantRealestateApartmentsIds = []
+        console.log("building selected je false")
+        this.apartmentSelectionPosition.buildingSelected = false
+      }
     }
+
      
   }
 
+  clickPopup(event: MouseEvent){
+    console.log("click popup")
+    this.apartmentSelectionPopupSelected = true;
+  }
+
+  navigateHouseholdApartmentDetails(household: string){
+
+    let householdId = Number(household);
+    console.log("household id")
+    console.log(householdId)
+    console.log("realestateId")
+    console.log(this.selectedRealestate)
+    this.router.navigate(['/home/client/realestate', this.selectedRealestate?.dbId, 'household', householdId])
+  }
   
 }
 

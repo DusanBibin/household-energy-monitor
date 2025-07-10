@@ -57,6 +57,9 @@ services:
       # Mount the 'files' directory to serve user-uploaded content
       - ./nvtbackend/files:/files:ro
 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
     depends_on:
       - db
       - influxdb

@@ -1,17 +1,37 @@
-<div class="w-100 d-flex flex-column" style="height: 100%;" (click)="showApartmentSelection($event)">
+<div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: auto;" (click)="showApartmentSelection($event)">
   
-  @if(apartmentSelectionPosition.buildingSelected){
+  @if(apartmentSelectionPosition.buildingSelected && filteredVacantRealestateApartmentsIds){
     <div
-    class="popup-card shadow-lg"
+    class="popup-card shadow-lg d-flex flex-column" style="max-width: 250px; max-height: 250px; overflow:hidden;"
+    (click)="clickPopup($event)"
     [ngStyle]="{
       left: apartmentSelectionPosition.location.x + 'px',
       top: apartmentSelectionPosition.location.y + 'px',
       position: 'absolute',
       zIndex: 1080
     }">
-    <a>
-      <i class="bi me-2 bi-building"></i> some house lol
-    </a>
+      <div class="pb-3">Choose an apartment</div> 
+      <input
+        type="text"
+        class="form-control mb-3"
+        style="font-size: medium;"
+        name="search-vacant"
+        [formControl]="apartmentSearchControl"
+        (input)="highlightApartmentNumber($event)"
+      >
+
+
+      <ul class="list-group w-100 bg-white flex-grow-1 overflow-auto m-0 border">
+
+      @for (apartment of filteredVacantRealestateApartmentsIds; track i; let i = $index) {
+          <li
+            class="list-group-item list-group-item-action"
+            style="cursor: pointer;" [innerHTML]="apartment.apartmentNumber" (click)="navigateHouseholdApartmentDetails(apartment.apartmentNumber)">
+            
+          </li>
+        }
+        
+      </ul>
   </div>
   }
   
@@ -21,7 +41,7 @@
       <label for="searchInput"></label>
       <input
         type="text"
-        class="form-control py-3 px-4"
+        class="form-control py-3 ps-4 pe-5"
         id="searchInput"
         style="font-size: medium;"
         placeholder="Search for address, city, zipcode, municipality, or region"
@@ -30,6 +50,12 @@
         (focus)="showDropdown=true"
         (blur)="hideDropdown()"
       >
+      <i
+      class="bi bi-x-circle position-absolute text-secondary"
+      style="top: 65%; right: 16px; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem;"
+      *ngIf="searchControl.value"
+      (click)="searchControl.setValue('')"
+      ></i>
   
 
       @if((filteredSuggestionsInput.length > 0 && showDropdown)){

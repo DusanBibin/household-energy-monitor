@@ -1,9 +1,10 @@
 import { Component, Query } from '@angular/core';
-import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, RealestateImagePathsDTO } from '../../data-access/model/client-model';
+import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, RealestateImagePathsDTO, VacantApartmentDTO } from '../../data-access/model/client-model';
 import { ClientService } from '../../data-access/client.service';
 import { filter } from 'rxjs';
 import { LocationDTO } from '../../../../shared/model';
 import { Router } from '@angular/router';
+import { TextUtilServiceService } from '../../../../shared/services/text-util-service/text-util.service';
 
 @Component({
   selector: 'app-vacant-households',
@@ -17,15 +18,33 @@ export class VacantHouseholdsComponent {
   protected realestatePins: RealestateDoc[] = [];
   protected realestatesImagePaths: RealestateImagePathsDTO[] = [];
   protected realestateImagesMap: Map<number, string[]> = new Map<number, string[]>();
+  protected vacantRealestateApartmentsIds: VacantApartmentDTO[] = [];
 
-  constructor(private clientService: ClientService, private router: Router){
+  constructor(private clientService: ClientService, private router: Router, private textService: TextUtilServiceService){
   }
 
 
   handleRealestateNavigationDetails(realestateId: number){
+    console.log(realestateId)
+    console.log("REALESTATEASDF")
+
     this.clientService.getVacantRealestateHouseHolds(realestateId).subscribe({
       next: ids => {
         console.log(ids)
+
+        if(ids.length === 1){
+          let household = ids[0];
+          console.log("IMA JEDAN ID SAMO")
+          console.log(household)
+          this.router.navigate(['/home/client/realestate', realestateId, 'household', household.id])
+
+        }else if(ids.length > 1){
+          this.vacantRealestateApartmentsIds = ids;
+          
+        }else{
+          console.log("NEMA HOUSEHOLDOVA?")
+        }
+        
       },
       error: err => {
         console.log(err)
@@ -92,7 +111,7 @@ export class VacantHouseholdsComponent {
             id: `${(item as CityDoc).id}`,
             dbId: (item as CityDoc).dbId,
             original: `${(item as CityDoc).city}`,
-            highlighted: this.highlightMatch(`${(item as CityDoc).city}`, lowercaseValue),
+            highlighted: this.textService.highlightMatch(`${(item as CityDoc).city}`, lowercaseValue),
             type: 'CITY',
           };
         } else if ((item as MunicipalityDoc).municipality) {
@@ -102,7 +121,7 @@ export class VacantHouseholdsComponent {
             id: `${(item as MunicipalityDoc).id}`,
             dbId: (item as CityDoc).dbId,
             original: `${(item as MunicipalityDoc).municipality}`,
-            highlighted: this.highlightMatch(`${(item as MunicipalityDoc).municipality}`, lowercaseValue),
+            highlighted: this.textService.highlightMatch(`${(item as MunicipalityDoc).municipality}`, lowercaseValue),
             type: 'MUNICIPALITY',
           };
         } else if ((item as RegionDoc).region) {
@@ -111,7 +130,7 @@ export class VacantHouseholdsComponent {
             id: `${(item as RegionDoc).id}`,
             dbId: (item as CityDoc).dbId,
             original: `${(item as RegionDoc).region}`,
-            highlighted: this.highlightMatch(`${(item as RegionDoc).region}`, lowercaseValue),
+            highlighted: this.textService.highlightMatch(`${(item as RegionDoc).region}`, lowercaseValue),
             type: 'REGION',
           };
         } else {
@@ -120,7 +139,7 @@ export class VacantHouseholdsComponent {
             id: `${(item as RealestateDoc).id}`,
             dbId: (item as CityDoc).dbId,
             original: `${(item as RealestateDoc).address}`,
-            highlighted: this.highlightMatch(`${(item as RealestateDoc).address}`, lowercaseValue),
+            highlighted: this.textService.highlightMatch(`${(item as RealestateDoc).address}`, lowercaseValue),
             type: `${(item as RealestateDoc).type}`,
           };
         }
@@ -128,17 +147,9 @@ export class VacantHouseholdsComponent {
   }
 
 
-  highlightMatch(text: string, search: string): string {
-    
-    const words = search.trim().split(/\s+/).filter(word => word.length > 0);
+  
 
-    if (words.length === 0) return text; 
-
-    const regex = new RegExp(`(${words.join("|")})`, "gi");
-
-    return text.replace(regex, `<strong>$1</strong>`);
-    
-  }
+  
 
 }
 

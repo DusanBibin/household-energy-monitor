@@ -27,3 +27,8 @@ export interface RealestateImagePathsDTO{
   id: number,
   paths: string[]
 }
+
+export interface VacantApartmentDTO{
+  id: number,
+  apartmentNumber: string
+}

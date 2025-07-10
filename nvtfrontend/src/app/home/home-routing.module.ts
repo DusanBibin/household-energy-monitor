@@ -8,38 +8,24 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    // canActivate:[roleGuard],
-    // data: {roles: ['ADMIN', 'SUPERADMIN', 'CLIENT', 'OFFICIAL']},
     children: [
-      
-      {
-        path: '',
-        redirectTo: () => {
-          const jwtService = inject(JwtService);
-          
-          if(jwtService.hasRole(['SUPERADMIN'])) return 'superadmin'
-          if(jwtService.hasRole(['CLIENT'])) return 'client'
-          return ''
-        },
-        pathMatch: 'full'
-      },
       {
         path: 'superadmin',
+        canActivate: [roleGuard],
+        data: { roles: ['SUPERADMIN'] },
         loadChildren: () =>
           import('./superadmin/feature/superadmin-shell/superadmin-shell-routing.module').then(
             (m) => m.SuperadminShellRoutingModule
-          ),
-          canActivate: [roleGuard],
-          data: {roles: ['SUPERADMIN']}
+          )
       },
       {
         path:'client',
+        canActivate: [roleGuard],
+        data: { roles: ['CLIENT'] },
         loadChildren: () =>
           import('./client/feature/client-shell/client-shell-routing.module').then(
             (m) => m.ClientShellRoutingModule
-          ),
-          canActivate: [roleGuard],
-          data: {roles: ['CLIENT']}
+          )
       }
     ]
   }

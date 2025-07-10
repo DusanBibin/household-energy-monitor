@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit{
       }
   
      
-      this.getData();
+      this.getDataAndRedirect();
   }
 
   ngOnDestroy(): void {
@@ -55,11 +55,11 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.checkScreenSize();
-      this.resizeListener = () => {
-        this.checkScreenSize();
-      }
-      window.addEventListener('resize', this.resizeListener);
+    this.checkScreenSize();
+    this.resizeListener = () => this.checkScreenSize();
+    window.addEventListener('resize', this.resizeListener);
+  
+    this.getDataAndRedirect();
   }
 
   checkScreenSize(): void {
@@ -82,56 +82,72 @@ export class HomeComponent implements OnInit{
   }
 
   //IZ NEKOG RAZLOGA OVO JE DA SE PODACI U HOME SCREENU CUVAJU
-  getData(){
+  getDataAndRedirect(){
  
-    if(this.jwtService.isLoggedIn()){
+    if(!this.jwtService.isLoggedIn()) return;
     
     
-      this.jwtService.user$.subscribe(userData => {
-        
-        console.log("pokrecemo getData")
-        if (userData) {
-          
-        
-  
-          console.log("vec ima podataka u home component get data")
-          this.imgUri = userData.profileImage;
-          this.partialUserData = userData.data;
-        } 
-        else {
-          console.log("nema podataka u get data home component skidamo nove")
-          
-            
-          forkJoin({
-            profileImg: this.fileService.getProfileImage(),
-            partialUserData: this.userService.getPartialUserData()
-          }).subscribe({
-            next: ({profileImg, partialUserData}) => {
-              
-            
-              let imgUri: string = URL.createObjectURL(profileImg);
-              this.partialUserData = partialUserData;
-              this.imgUri = imgUri;
+    this.jwtService.user$.subscribe(userData => {
       
-              this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
-      
-              console.log("HOMECOMPONENT")
-              
-            },
-            error: (error) => {
-              console.log(error)
-              if([400, 401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
-              console.log("HOMECOMPONENT GRESKA")
-            }
-          })
+      console.log("pokrecemo getData")
+      if (userData) {
+        
+        console.log("vec ima podataka u home component get data")
+        this.imgUri = userData.profileImage;
+        this.partialUserData = userData.data;
+
+        if (this.router.url === '/home' || this.router.url === '/home/') {
+          this.redirectBasedOnRole(userData.data.role);
         }
-      })
-    }
+      } 
+      else {
+        console.log("nema podataka u get data home component skidamo nove")
+        
+          
+        forkJoin({
+          profileImg: this.fileService.getProfileImage(),
+          partialUserData: this.userService.getPartialUserData()
+        }).subscribe({
+          next: ({profileImg, partialUserData}) => {
+            
+          
+            let imgUri: string = URL.createObjectURL(profileImg);
+            this.partialUserData = partialUserData;
+            this.imgUri = imgUri;
     
-  
-  
-  
-  
+            this.jwtService.setUser({data: partialUserData, profileImage: imgUri})
+            
+
+            if (this.router.url === '/home' || this.router.url === '/home/') {
+              this.redirectBasedOnRole(partialUserData.role);
+            }
+            console.log("HOMECOMPONENT")
+            
+          },
+          error: (error) => {
+            console.log(error)
+            if([400, 401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
+            console.log("HOMECOMPONENT GRESKA")
+          }
+        })
+      }
+    })
+
+  }
+
+
+  private redirectBasedOnRole(role: string): void {
+    switch (role) {
+      case 'SUPERADMIN':
+        this.router.navigate(['home/superadmin']);
+        break;
+      case 'CLIENT':
+        this.router.navigate(['home/client']);
+        break;
+      default:
+        this.router.navigate(['auth/login']);
+        break;
+    }
   }
   
   

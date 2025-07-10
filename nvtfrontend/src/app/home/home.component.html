@@ -1,22 +1,27 @@
 <div class="vh-100">
     <div class="d-flex flex-column flex-md-row h-100">
-        <div class="bg-dark d-flex sticky-top" style="min-width: fit-content;">
+        <div class="bg-dark d-flex sticky-top py-2 px-2" style="min-width: fit-content;">
             <div
-            [ngClass]="{'max-width-vertical': navbarVertical}" 
-            class="d-flex flex-md-column flex-row flex-grow-1 align-items-center align-items-md-start text-white my-md-4 ms-md-4 m-3" style="overflow-y: scroll;">
+            [ngClass]="{
+                'max-width-vertical': navbarVertical,
+                'align-items': navbarExpanded,
+                'align-items-center': !navbarExpanded
+            }"
+        
+            class="d-flex flex-md-column flex-row flex-grow-1 text-white" style="overflow-y: scroll;">
                 <ul class="nav nav-pills flex-md-column flex-row flex-nowrap flex-shrink-1 flex-md-grow-0 flex-grow-1 mb-md-auto justify-content-space-between align-items-center align-items-sm-start" id="menu">
                     
 
                     @if(navbarVertical){
                         <li>
-                            <a (click)="navbarExpanded=!navbarExpanded" data-bs-toggle="collapse" class="nav-link mb-md-4 p-0 me-3" style="cursor: pointer;">
+                            <a (click)="navbarExpanded=!navbarExpanded" data-bs-toggle="collapse" class="nav-link" style="cursor: pointer;">
                                 <i class="fs-5 bi-list"></i></a>
                         </li>
                     }
 
                     @if(this.jwtService.hasRole(["SUPERADMIN"])) {
                         <li class="nav-item">
-                            <a routerLink="superadmin/admin-registration" routerLinkActive="active" class="nav-link mb-md-4 p-0 me-3">
+                            <a routerLink="superadmin/admin-registration" routerLinkActive="active" class="nav-link ">
                                 <i class="fs-5 bi-house"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Admin registration</span>
                             </a>
                         </li>
@@ -24,35 +29,35 @@
 
                     @if(this.jwtService.hasRole(["CLIENT"])){
                         <li>
-                            <a routerLink="client/vacant-households" routerLinkActive="active" class="nav-link mb-md-4 p-0 me-3">
+                            <a routerLink="client/vacant-households" routerLinkActive="active" class="nav-link ">
                                 <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households request</span> </a>
                         </li>
                     }
                     
                     <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link mb-md-4 p-0 me-3">
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link ">
                             <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 2</span> </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link mb-md-4 p-0 me-3">
+                        <a href="#" class="nav-link ">
                             <i class="fs-5 bi-table"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 3</span></a>
                     </li>
                     
                     <li>
-                        <a href="#" class="nav-link mb-md-4 p-0 me-3">
+                        <a href="#" class="nav-link ">
                             <i class="fs-5 bi-grid"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 4</span></a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link mb-md-4 p-0 me-3">
+                        <a href="#" class="nav-link">
                             <i class="fs-5 bi-people"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 5</span> </a>
                     </li>
                 </ul>
 
                 @if (partialUserData) {
-                    <div class="mt-md-auto ms-auto ms-md-0 flex-shrink-1">
+                    <div [ngClass]="{'ps-2': navbarExpanded}" class="pb-md-1">
 
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img [src]="imgUri" alt="profileImg" width="30" height="30" class="rounded-circle">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none " data-bs-toggle="dropdown" aria-expanded="false" style="height: 48px;">
+                            <img [src]="imgUri" alt="profileImg" width="35" height="35" class="rounded-circle">
                             <div class="d-none ms-2" [ngClass]="navbarExpanded ? ['d-md-flex', 'flex-column'] : []">
                                 <span>{{partialUserData.name}} {{partialUserData.lastname}}</span>
                                 <span>{{partialUserData.email}}</span>

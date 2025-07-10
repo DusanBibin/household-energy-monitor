@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
@@ -41,8 +41,8 @@ export class ClientService {
       return this.http.post<RealestateImagePathsDTO[]>(environment.apiUrl + '/realestate/paged-realestate-image-paths', realestateIds, {withCredentials: true})
     }
 
-    getVacantRealestateHouseHolds(realestateId: number): Observable<number[]>{
-      return this.http.get<number[]>(environment.apiUrl + '/realestate/' + realestateId + '/households', {withCredentials: true})
+    getVacantRealestateHouseHolds(realestateId: number): Observable<VacantApartmentDTO[]>{
+      return this.http.get<VacantApartmentDTO[]>(environment.apiUrl + '/realestate/' + realestateId + '/household', {withCredentials: true})
     }
 
 

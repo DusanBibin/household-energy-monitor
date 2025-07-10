@@ -25,32 +25,19 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
 
 
-  return forkJoin({
-    partialUserData: userService.getPartialUserData(),
-    profileImg: fileService.getProfileImage(),
-  }).pipe(
-    map(({ partialUserData, profileImg }) => {
-      const imgUri = URL.createObjectURL(profileImg);
-      jwtService.setUser({ data: partialUserData, profileImage: imgUri });
 
-      console.log("DOBILI SMO SLIKE I PARTIAL DATA")
+    const hasAccess = currentPath.toLowerCase().includes(allowedRole.toLowerCase()) && jwtService.hasRole([allowedRole]);
 
-      const hasAccess = currentPath.toLowerCase().includes(allowedRole.toLowerCase()) &&
-                        jwtService.hasRole([allowedRole]);
+    
+    console.log(hasAccess)
 
-      if (!hasAccess) {
-        router.navigate(['/home'], { replaceUrl: true });
-        return false;
-      }
-
-      return true;
-    }),
-    catchError(err => {
+    console.log("role guard")
+    if (!hasAccess) {
       router.navigate(['/home'], { replaceUrl: true });
+      return false;
+    }
 
-      console.log("NAISLI SMO NA GRESKE")
-      return of(false);
-    })
-  );
+    return true;
+  
 
 };
