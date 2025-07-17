@@ -27,8 +27,11 @@ public class Realestate {
     @OneToMany(mappedBy = "realestate", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Household> households;
 
+
+
+    //Realestate request postoji trenutno samo kao RequestType.CREATE
     @OneToOne
-    private RealEstateRequest request;
+    private RealestateRequest createRequest;
 
 
     @ElementCollection

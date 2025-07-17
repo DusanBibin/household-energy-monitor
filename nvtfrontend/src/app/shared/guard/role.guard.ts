@@ -23,15 +23,9 @@ export const roleGuard: CanActivateFn = (route, state) => {
     return false; 
   };
 
-
-
-
     const hasAccess = currentPath.toLowerCase().includes(allowedRole.toLowerCase()) && jwtService.hasRole([allowedRole]);
 
-    
-    console.log(hasAccess)
-
-    console.log("role guard")
+  
     if (!hasAccess) {
       router.navigate(['/home'], { replaceUrl: true });
       return false;

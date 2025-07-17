@@ -33,9 +33,11 @@ public class HouseholdController {
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
-    @GetMapping("/api/v1/realestate/{realestateId}/households/{householdId}")
-    public void  getHouseholdDetails(@PathVariable Long realestateId, @PathVariable Long householdId){
+    @GetMapping("/api/v1/realestate/{realestateId}/household/{householdId}")
+    public ResponseEntity<?> getHouseholdDetails(@PathVariable Long realestateId, @PathVariable Long householdId){
         System.out.println("getHouseholdDetails");
+        HouseholdDetailsDTO household = householdService.getHouseholdDetails(realestateId, householdId);
+        return ResponseEntity.ok(household);
     }
 
 
@@ -47,6 +49,9 @@ public class HouseholdController {
 
         return ResponseEntity.ok(households);
     }
+
+
+
 
 
 

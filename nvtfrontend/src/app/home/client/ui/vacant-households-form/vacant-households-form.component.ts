@@ -294,8 +294,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
 
       if(changes['vacantRealestateApartmentsIds']){
-        console.log("UPALIO SE NGONCHANGES")
-        console.log(this.vacantRealestateApartmentsIds)
+
 
         this.filteredVacantRealestateApartmentsIds = this.vacantRealestateApartmentsIds
       }
@@ -460,7 +459,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
     this.apartmentSelectionPosition.clicked = true;
     //250 px je zato sto je u vacant-households-form-component.html max-width i max-height 250px
-    console.log(this.apartmentSelectionPosition)
+   
 
     
     
@@ -531,7 +530,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
 
 
   showApartmentSelection(event: MouseEvent){
-    console.log("showApartmentSelection")
+  
     // ovo uvek brise 
     
     this.apartmentSearchControl.setValue("")
@@ -544,7 +543,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       else {
         this.selectedRealestate = null
         this.vacantRealestateApartmentsIds = []
-        console.log("building selected je false")
+       
         this.apartmentSelectionPosition.buildingSelected = false
       }
     }
@@ -553,18 +552,14 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   }
 
   clickPopup(event: MouseEvent){
-    console.log("click popup")
+   
     this.apartmentSelectionPopupSelected = true;
   }
 
-  navigateHouseholdApartmentDetails(household: string){
+  navigateHouseholdApartmentDetails(apartmentId: number){
 
-    let householdId = Number(household);
-    console.log("household id")
-    console.log(householdId)
-    console.log("realestateId")
-    console.log(this.selectedRealestate)
-    this.router.navigate(['/home/client/realestate', this.selectedRealestate?.dbId, 'household', householdId])
+ 
+    this.router.navigate(['/home/client/realestate', this.selectedRealestate?.dbId, 'household', apartmentId])
   }
   
 }

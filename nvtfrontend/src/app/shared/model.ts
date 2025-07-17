@@ -1,5 +1,6 @@
 
 export interface PartialUserData{
+  id: number,
   name: string,
   lastname: string,
   email: string,

@@ -17,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class RealEstateRequest {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class AssetRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,20 +26,18 @@ public class RealEstateRequest {
     @ManyToOne
     private Client requester;
 
-    @OneToOne
-    private Realestate realestate;
 
     @ManyToOne
     private Admin reviewingAdmin;
 
     @ElementCollection
-    @CollectionTable(name = "proof_realestate_img", joinColumns = @JoinColumn(name = "realestate_request_id"))
+    @CollectionTable(name = "proof_img", joinColumns = @JoinColumn(name = "proof_file_id"))
     @Column(name = "proof_img_url")
     private List<String> proof_images;
 
 
     @ElementCollection
-    @CollectionTable(name = "realestate_pdf", joinColumns = @JoinColumn(name = "realestate_request_id"))
+    @CollectionTable(name = "proof_pdf", joinColumns = @JoinColumn(name = "proof_file_id"))
     @Column(name = "proof_pdf_url")
     private List<String> proof_pdfs;
 

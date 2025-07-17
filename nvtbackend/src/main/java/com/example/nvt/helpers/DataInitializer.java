@@ -1,8 +1,6 @@
 package com.example.nvt.helpers;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.BulkRequest;
-import co.elastic.clients.elasticsearch.core.BulkResponse;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
 import com.example.nvt.model.*;
@@ -15,18 +13,10 @@ import com.example.nvt.repository.elastic.CityDocRepository;
 import com.example.nvt.repository.elastic.MunicipalityDocRepository;
 import com.example.nvt.repository.elastic.RealestateDocRepository;
 import com.example.nvt.repository.elastic.RegionDocRepository;
-import com.example.nvt.service.CityService;
 import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -34,7 +24,6 @@ import org.springframework.util.StopWatch;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
@@ -941,7 +930,7 @@ public class DataInitializer implements CommandLineRunner {
                     .profileImg("NEMA")
                     .emailConfirmed(true)
                     .realEstates(new ArrayList<>())
-                    .realEstateRequests(new ArrayList<>())
+                    .assetRequests(new ArrayList<>())
                     .households(new ArrayList<>())
                     .role(Role.CLIENT)
                     .build();

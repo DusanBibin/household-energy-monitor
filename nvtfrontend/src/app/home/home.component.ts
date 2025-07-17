@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit{
 
 
       this.partialUserData = {
+        id: 0,
         email: "",
         name: "",
         lastname: "",
@@ -89,10 +90,10 @@ export class HomeComponent implements OnInit{
     
     this.jwtService.user$.subscribe(userData => {
       
-      console.log("pokrecemo getData")
+    
       if (userData) {
         
-        console.log("vec ima podataka u home component get data")
+      
         this.imgUri = userData.profileImage;
         this.partialUserData = userData.data;
 
@@ -101,7 +102,7 @@ export class HomeComponent implements OnInit{
         }
       } 
       else {
-        console.log("nema podataka u get data home component skidamo nove")
+      
         
           
         forkJoin({
@@ -121,13 +122,13 @@ export class HomeComponent implements OnInit{
             if (this.router.url === '/home' || this.router.url === '/home/') {
               this.redirectBasedOnRole(partialUserData.role);
             }
-            console.log("HOMECOMPONENT")
+      
             
           },
           error: (error) => {
             console.log(error)
             if([400, 401, 403].includes(error.status)) this.loginResponse = {isError: true, error: error.error as ResponseMessage}
-            console.log("HOMECOMPONENT GRESKA")
+           
           }
         })
       }

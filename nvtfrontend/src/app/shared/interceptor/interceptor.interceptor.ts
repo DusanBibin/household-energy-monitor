@@ -26,7 +26,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
         console.log(req.url)
         if (req.url.includes('/user/partial-data') || req.url.includes('/file/profile-img')) {
           // ✅ Don't act on errors from auth endpoints
-          console.log("POPUSI MI KURAC")
           return throwError(() => error);
         }
 

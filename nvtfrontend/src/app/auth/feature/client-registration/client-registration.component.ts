@@ -25,8 +25,7 @@ export class ClientRegistrationComponent {
   }
 
   handleRegisterData(event: {formData: FormData, email: string}){
-    console.log(this.jwtService.getUser())
-    console.log((this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN'])))
+  
     if(!(this.jwtService.isLoggedIn() && this.jwtService.hasRole(['SUPERADMIN']))){
       this.authService.logout().subscribe({
         next: value => {

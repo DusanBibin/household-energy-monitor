@@ -1,3 +1,5 @@
+import { UserSummaryDTO } from "../../../../auth/data-access/model/auth-model";
+
 export interface RealestateDoc{
     id: string,
     dbId: number,
@@ -31,4 +33,22 @@ export interface RealestateImagePathsDTO{
 export interface VacantApartmentDTO{
   id: number,
   apartmentNumber: string
+}
+
+export interface HouseholdDetailsDTO{
+
+  user: UserSummaryDTO
+  addressStreet: string,
+  addressNum: string,
+  city: string,
+  municipality: string,
+  region: string,
+  realestateType: string,
+  lat: number,
+  lon: number,
+  totalFloors: number,
+  images: string[],
+  apartmentNum: number,
+  size: number
+
 }

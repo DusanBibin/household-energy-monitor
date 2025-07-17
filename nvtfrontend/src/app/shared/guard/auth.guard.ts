@@ -26,18 +26,18 @@ export const authGuard: CanActivateFn = (route, state) => {
     console.log("Not running in a browser environment.");
     return of(false);
   }
-  console.log("DA LI SMO USLI U AUTH GUARD")
+ 
 
 
   if (jwtService.isLoggedIn()) {
-    console.log("ULOGOVANI SMO AUTH GUARD")
+ 
     if (jwtService.hasRole(allowedRoles)) {
       if (
         jwtService.hasRole(['SUPERADMIN']) &&
         jwtService.isFirstSuperadminLogin() &&
         state.url !== "/auth/change-password"
       ) {
-        console.log("navigiramo na change password prvi put je admin")
+      
         router.navigate(['/auth/change-password'], { replaceUrl: true });
         return of(false);
       }
@@ -49,7 +49,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     }
     return of(true);
   } else {
-    console.log("NISMO ULOGOVANI AUTH GUARD")
+  
     
     // return authService.checkAuth().pipe(
     //   map((isAuthenticated) => {
@@ -102,11 +102,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       map(({partialUserData, profileImg }) => {
         let imgUri: string = URL.createObjectURL(profileImg);
         jwtService.setUser({ data: partialUserData, profileImage: imgUri });
-        console.log("Received user data in auth guard.");
-
-        console.log(partialUserData)
-        
-        console.log(jwtService.hasRole(allowedRoles))
+     
 
         if (jwtService.hasRole(allowedRoles)) {
           if (
@@ -128,9 +124,9 @@ export const authGuard: CanActivateFn = (route, state) => {
       }),
       catchError((error) => {
         console.error("Error retrieving user data in auth guard:", error);
-        console.log(currentPath)
+ 
         if (currentPath.includes('home')) {
-          console.log("ulazimo u auth")
+         
           router.navigate(['/auth'], { replaceUrl: true });
           return of(false);
         }

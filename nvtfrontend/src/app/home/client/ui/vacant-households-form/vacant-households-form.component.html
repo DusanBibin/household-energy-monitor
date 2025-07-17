@@ -26,7 +26,7 @@
       @for (apartment of filteredVacantRealestateApartmentsIds; track i; let i = $index) {
           <li
             class="list-group-item list-group-item-action"
-            style="cursor: pointer;" [innerHTML]="apartment.apartmentNumber" (click)="navigateHouseholdApartmentDetails(apartment.apartmentNumber)">
+            style="cursor: pointer;" [innerHTML]="apartment.apartmentNumber" (click)="navigateHouseholdApartmentDetails(apartment.id)">
             
           </li>
         }
@@ -84,7 +84,6 @@
     </div>
   </div>
   
-
   <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"  > 
   
     <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
@@ -139,27 +138,7 @@
                     class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
                       <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide">
 
-                      <!-- <div class="carousel-indicators">
-                        <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide-to="2" aria-label="Slide 3"></button>
-                      </div> -->
-
-                      <!-- <div class="carousel-inner">
-                        <div class="carousel-item active">
-                          <img src="realestate1.png" class="d-block w-100" alt="..." loading="lazy">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="realestate2.png" class="d-block w-100" alt="..." loading="lazy">
-                        </div>
-                        <div class="carousel-item">
-                          <img src="realestate3.png" class="d-block w-100" alt="..." loading="lazy">
-                        </div>
-                      </div> -->
                       
-                      
-
-
 
                       <div class="carousel-indicators">
                         @for (imagePath of realestate.imagePaths; track imagePath; let index = $index) {

@@ -25,22 +25,27 @@ public class RealestateService {
 
         if(realestateIds.isEmpty()) throw new InvalidInputException("The realestate IDs cannot be empty");
 
-        List<RealestateImagePathsDTO> imagePaths = new ArrayList<>();
+        List<RealestateImagePathsDTO> imagePathsDTO = new ArrayList<>();
         for(Long id : realestateIds) {
             Realestate realestate = getRealestateById(id);
 
+            List<String> imagePaths;
+            if(realestate.getImages().isEmpty()) {
+                imagePaths = List.of("/realestate/default/image/realestate1.png", "/realestate/default/image/realestate2.png", "/realestate/default/image/realestate3.png", "/realestate/default/image/realestate4.png");
+            }else{
+                imagePaths = realestate.getImages();
+            }
 
-//            if(realestate.getImages().isEmpty()) throw new InvalidInputException("Realestate doesn't contain any images");
 
             RealestateImagePathsDTO r = RealestateImagePathsDTO.builder()
                     .id(realestate.getId())
-                    .paths(List.of("/realestate/1/image/realestate1.png", "/realestate/1/image/realestate2.png", "/realestate/1/image/realestate3.png", "/realestate/1/image/realestate4.png"))
+                    .paths(imagePaths)
                     .build();
 
-            imagePaths.add(r);
+            imagePathsDTO.add(r);
         }
 
-        return imagePaths;
+        return imagePathsDTO;
     }
 
 

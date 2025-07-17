@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
@@ -45,7 +45,9 @@ export class ClientService {
       return this.http.get<VacantApartmentDTO[]>(environment.apiUrl + '/realestate/' + realestateId + '/household', {withCredentials: true})
     }
 
-
+    getHouseholdDetails(realestateId: number, householdId: number): Observable<HouseholdDetailsDTO>{
+      return this.http.get<HouseholdDetailsDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId , {withCredentials: true})
+    }
     
 
 

@@ -25,17 +25,15 @@ export class VacantHouseholdsComponent {
 
 
   handleRealestateNavigationDetails(realestateId: number){
-    console.log(realestateId)
-    console.log("REALESTATEASDF")
+   
 
     this.clientService.getVacantRealestateHouseHolds(realestateId).subscribe({
       next: ids => {
-        console.log(ids)
+      
 
         if(ids.length === 1){
           let household = ids[0];
-          console.log("IMA JEDAN ID SAMO")
-          console.log(household)
+          
           this.router.navigate(['/home/client/realestate', realestateId, 'household', household.id])
 
         }else if(ids.length > 1){

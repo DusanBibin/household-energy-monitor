@@ -14,4 +14,8 @@ export class FileService {
     return this.http.get(environment.apiUrl + '/file/profile-img', {responseType: 'blob'});
   }
 
+  getProfileImageParam(userId: number): Observable<Blob>{
+    return this.http.get(environment.apiUrl + '/file/profile-img/' + userId, {responseType: 'blob'});
+  }
+
 }

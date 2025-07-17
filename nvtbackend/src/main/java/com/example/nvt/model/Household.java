@@ -25,6 +25,10 @@ public class Household {
     @JoinColumn(name="realestate_id")
     private Realestate realestate;
 
+    //Household requests postoje trenutno samo kao RequestType.CLAIM
+    @OneToMany
+    private List<HouseholdRequest> claimRequests;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Client householdOwner;
 

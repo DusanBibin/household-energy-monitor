@@ -14,21 +14,22 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseholdDetailsDTO {
 
+    private UserSummaryDTO user;
 
-    //realestate data
-    private RealEstateType realEstateType;
-    private String region;
-    private String municipality;
+    private String addressStreet;
+    private String addressNum;
     private String city;
-    private String streetName;
-    private String addressNumber;
-    private Long totalFloors;
+    private String municipality;
+    private String region;
+    private String realestateType;
     private Double lat;
     private Double lon;
+    private Long totalFloors;
+    private List<String> images;
 
-    //household data
-    private boolean isVacant;
 
+    private Long apartmentNum;
+    private Double size;
 
 
 }

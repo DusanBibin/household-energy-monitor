@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.core.io.Resource;
@@ -37,6 +38,21 @@ public class FileController {
         System.out.println(filePath);
 
         System.out.println("USPESNO SMO VRATILI PROFILE-IMG");
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+
+    }
+
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
+    @GetMapping(value = "/profile-img/{userId}")
+    public ResponseEntity<?> getProfileImage(@PathVariable Long userId) {
+
+
+
+        String filePath = fileService.getSmallProfileImg(userId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Accel-Redirect", filePath);
+        System.out.println(filePath);
+
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
 
     }

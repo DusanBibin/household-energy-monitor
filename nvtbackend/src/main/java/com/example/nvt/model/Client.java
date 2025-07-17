@@ -2,7 +2,6 @@ package com.example.nvt.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,7 @@ public class Client extends User{
     private List<Household> households;
 
     @OneToMany
-    private List<RealEstateRequest> realEstateRequests;
+    private List<AssetRequest> assetRequests;
 
 
     @Override

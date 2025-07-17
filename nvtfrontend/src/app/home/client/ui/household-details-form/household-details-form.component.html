@@ -12,31 +12,105 @@
         </a>
         <h2 class="m-0">Household details</h2>
     </div>
- 
-    <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
+    
+
+    @if(householdDetails){
+        <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
         
-        <div class="row g-2 m-0 px-1">
+        <div class="row g-2 m-0 px-2 pb-3 pt-2">
             <div class="row g-0 m-0 px-1 pt-2">
-                <div class="p-2 rounded border shadow ">
-
-                    <h4 class="card-title m-0">Details</h4>
-                    
+                <div class="p-3 rounded border shadow ">
 
 
-                    <div class="row p-0 m-0" style="background-color: red;">
-                        <div class="col-lg-6 col-12 d-flex p-0 m-0" style="background-color: blue;">
-                            
+                    <div class="row p-0 m-0">
+                        <div  style="background-color: red;" class="col-lg-6 col-12 d-flex p-0 m-0">
+                            <dl class="m-0 col-12 row" >
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Address street</dt>
+                                        <dd>{{householdDetails.addressStreet}}</dd>
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Address number</dt>
+                                        <dd>{{householdDetails.addressNum}}</dd>
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">City</dt>
+                                        <dd>{{householdDetails.city}}</dd>
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Municipality</dt>
+                                        <dd>{{householdDetails.municipality}}</dd>
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Region</dt>
+                                        <dd>{{householdDetails.region}}</dd>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="col-lg-6 col-12">
+                                    
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Household type</dt>
+                                        @if(householdDetails.realestateType === "COMMERCE_SPACE"){
+                                            <dd>Commerce space</dd>
+                                        }@else if (householdDetails.realestateType === "BUILDING") {
+                                            <dd>Apartment</dd>
+                                        }@else if (householdDetails.realestateType === "COTTAGE") {
+                                            <dd>Cottage</dd>
+                                        }@else if (householdDetails.realestateType === "HOUSE") {
+                                            <dd>House</dd>
+                                        }
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Household size</dt>
+                                        <dd>{{householdDetails.size}} m²</dd>
+                                    </div>
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Total floors</dt>
+                                        <dd>{{householdDetails.totalFloors}}</dd>   
+                                    </div>
+                                    @if(householdDetails.apartmentNum){
+                                        <div class="mb-3">
+                                            <dt class="fs-4 fw-normal">Apartment number</dt>
+                                            <dd class="fs-6">{{householdDetails.apartmentNum}}</dd>    
+                                        </div>
+                                    }
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal mb-2">Owner</dt>
+                                        @if(householdDetails.user){
+                                            <div class="d-flex flex-row align-items-center pt-1">
+                                                <img [src]="householdDetails.user.profileImg" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                                <div class="d-flex flex-column">
+                                                    <span>{{householdDetails.user.name}} {{householdDetails.user.lastname}}</span>
+                                                    <span>{{householdDetails.user.email}}</span>
+                                                    
+                                                </div>
+                                            </div> 
+                                        }@else {
+                                            <dd class="fs-6">Vacant household</dd>    
+                                        }
+                                       
+                                    </div>
+                                </div>
 
 
+                                
 
 
+                               
+                               
+                               
+                               
+                                
+                                  
+                               
+                            </dl>
                         </div>
-                        <div class="col-lg-6 col-12 d-flex p-0 m-0" style="background-color: green;">jebem ti mamu</div>
+                        <div style="background-color: blue;" class="col-lg-6 col-12 d-flex p-0 m-0">iksdebro</div>
                     </div>
                     
-
-
-
 
                 </div>
             </div>    
@@ -46,51 +120,58 @@
                 <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
                     <h4 class="card-title m-0 pb-2">Map</h4>
                     <div id="mape" class="border border-1 border-dark" style="width: 100%; height: 100%">
-                        <google-map #googleMap width="100%" height="100%" [options]="mapOptions">        
+                        <google-map #googleMap width="100%" height="100%" [options]="mapOptions" >
+                            @if (markerPosition) {
+                                <map-advanced-marker [position]="markerPosition"></map-advanced-marker> 
+                            } 
                         </google-map>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-6 col-12 d-flex">
-                <!-- <div class="p-2 rounded border shadow d-flex flex-grow-1"> -->
                     <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
                         <h4 class="card-title m-0 pb-2">Gallery</h4>
                         <div id="carousel" class="carousel slide border border-1 border-dark">
 
                             <div class="carousel-indicators">
-                                <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel'"  data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel'"  data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                <button type="button" (click)="$event.stopPropagation()" [attr.data-bs-target]="'#carousel'"  data-bs-slide-to="2" aria-label="Slide 3"></button>
-                            </div>
-
-
-                            <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="realestate1.png" class="d-block w-100" alt="..." loading="lazy">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="realestate2.png" class="d-block w-100" alt="..." loading="lazy">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="realestate3.png" class="d-block w-100" alt="..." loading="lazy">
-                            </div>
-                            </div>
-
-
-                            <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="prev">
+                                @for (imagePath of householdDetails.images; track imagePath; let index = $index) {
+                                  <button type="button" (click)="$event.stopPropagation()" 
+                                    [attr.data-bs-target]="'#carousel'" 
+                                    [attr.data-bs-slide-to]="index" 
+                                    [attr.aria-label]="'Slide ' + index + 1"
+                                    
+                                    [class.active]="index === 0"
+                                    [attr.aria-current]="index === 0 ? 'true' : null"></button>
+                                }
+                              </div>
+        
+                              <div class="carousel-inner">
+                                @for (imagePath of householdDetails.images; track imagePath; let index = $index) {
+                                  <div class="carousel-item" [ngClass]="{'active':index === 0}">
+                                    <img [src]="ENVIRONMENT_URL + imagePath" class="d-block w-100" alt="..." loading="lazy">
+                                  </div>
+                                }
+                              </div>
+        
+                            
+        
+        
+        
+        
+                              <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="next">
+                              </button>
+                              <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
-                            </button>
+                              </button>
                         
                         </div>
                     </div>
 
-                <!-- </div> -->
+               
             </div>
 
             
@@ -103,8 +184,14 @@
             
         
 
-    </div>
-
+        </div>
+    }@else{
+        <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    }
 
 
 </div>
