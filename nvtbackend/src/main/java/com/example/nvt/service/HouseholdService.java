@@ -94,7 +94,6 @@ public class HouseholdService {
             householdDTO.setUser(summaryData);
         }
 
-
 //        UserSummaryDTO summaryData = UserSummaryDTO.builder()
 //        .id(200L)
 //        .name("Neki proba klijent")

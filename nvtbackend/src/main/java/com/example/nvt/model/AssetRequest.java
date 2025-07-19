@@ -4,10 +4,8 @@ package com.example.nvt.model;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,8 +13,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
+@ToString
 @Inheritance(strategy = InheritanceType.JOINED)
 public class AssetRequest {
     @Id

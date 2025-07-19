@@ -17,22 +17,25 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
 
-    private final String uploadDir = "files/users";
+    private final String uploadDirUsers = "files/users";
+    private final String uploadDirHouseholdRequests = "files/requests/households";
     private final UserService userService;
 
     public String saveProfileImg(MultipartFile file, Long userId) throws IOException {
 
         String contentType = file.getContentType();
-        if (!contentType.equals("image/jpeg") && !contentType.equals("image/png")) {
+        if (contentType == null || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
             throw new IllegalArgumentException("Only JPEG or PNG images are allowed");
         }
 
-        Path uploadPath = Paths.get(uploadDir, userId.toString());
+        Path uploadPath = Paths.get(uploadDirUsers, userId.toString());
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -62,6 +65,40 @@ public class FileService {
         return fileName;
     }
 
+
+
+
+    public String saveHouseholdRequestFile(MultipartFile file, Long requestId) throws IOException {
+
+        String contentType = file.getContentType();
+        if (contentType == null ||
+                !(contentType.equals("application/pdf") ||
+                        contentType.equals("image/jpeg") ||
+                        contentType.equals("image/png"))) {
+            throw new InvalidInputException("Only PDF, JPEG, and PNG files are allowed.");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uniqueFilename = UUID.randomUUID().toString() + extension;
+
+        Path uploadPath = Paths.get(uploadDirHouseholdRequests, requestId.toString());
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(uniqueFilename);
+
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        return filePath.toString();
+    }
+
+
+
+
+
+
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
         return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight, Scalr.OP_ANTIALIAS);
     }
@@ -69,9 +106,9 @@ public class FileService {
     public String getSmallProfileImg(Long id) {
 
         var user = userService.getUserById(id);
-        String imagePath = uploadDir + "/" +  user.getId() + "/small_" + user.getProfileImg();
+        String imagePath = uploadDirUsers + "/" +  user.getId() + "/small_" + user.getProfileImg();
 
-        if(!Files.exists(Paths.get(imagePath))) return "/" + uploadDir + "/DEFAULT.jpg";
+        if(!Files.exists(Paths.get(imagePath))) return "/" + uploadDirUsers + "/DEFAULT.jpg";
 
         return "/" + imagePath;
     }
@@ -109,5 +146,9 @@ public class FileService {
 
         return mediaType;
     }
+
+
+
+
 
 }

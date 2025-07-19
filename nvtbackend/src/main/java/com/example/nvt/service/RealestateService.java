@@ -19,7 +19,6 @@ public class RealestateService {
 
     private final RealestateRepository realestateRepository;
 
-    private final HouseholdRepository householdRepository;
 
     public List<RealestateImagePathsDTO> getImagePaths(List<Long> realestateIds) {
 
