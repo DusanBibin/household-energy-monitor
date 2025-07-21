@@ -1,6 +1,7 @@
 package com.example.nvt.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 public class HouseholdRequest extends AssetRequest{
-    @OneToOne
+    @ManyToOne
     private Household household;
 }
