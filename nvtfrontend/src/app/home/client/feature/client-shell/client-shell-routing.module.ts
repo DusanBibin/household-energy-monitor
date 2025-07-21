@@ -15,6 +15,13 @@ const routes: Routes = [
     )
 },
 {
+  path:'proba',
+  loadChildren: () =>
+    import('../proba/proba.module').then(
+      (m) => m.ProbaModule
+    )
+},
+{
   path:'realestate/:realestateId/household/:householdId',
   loadChildren:() =>
     import('../household-details/household-details.module').then(
