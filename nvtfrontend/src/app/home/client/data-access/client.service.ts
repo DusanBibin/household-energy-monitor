@@ -48,6 +48,16 @@ export class ClientService {
     getHouseholdDetails(realestateId: number, householdId: number): Observable<HouseholdDetailsDTO>{
       return this.http.get<HouseholdDetailsDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId , {withCredentials: true})
     }
+
+
+    createHouseholdClaim(realestateId: number, householdId: number, files: File[]){
+
+      const formData = new FormData();
+      files.forEach(file => formData.append('files', file))
+
+
+      return this.http.post(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request', formData, {withCredentials: true})
+    }
     
 
 

@@ -1,12 +1,21 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.DTO.HouseholdRequestDTO;
+import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
+import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.elastic.HouseholdRequestRepository;
+import com.example.nvt.specifications.HouseholdRequestSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +34,7 @@ public class HouseholdRequestService {
     private final HouseholdRequestRepository householdRequestRepository;
     private final FileService fileService;
     private final ClientService clientService;
+    private final UserService userService;
 
     public void createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
@@ -149,12 +159,76 @@ public class HouseholdRequestService {
 
     }
 
+    public HouseholdRequestDTO getHouseholdRequestDetails(Long userId, Long realestateId, Long householdId, Long requestId) {
+        Realestate realestate = realestateService.getRealestateById(realestateId);
+        Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
+
+        HouseholdRequest request = getRequestByIdAndHouseholdId(requestId, householdId);
 
 
+        return convertToDto(request);
+    }
 
 
+    public Page<HouseholdRequestPreviewDTO> getClientRequests(Long clientId, RequestStatus status, int page, int size,
+                                                              String sortField, String sortDir) {
+
+        Pageable pageable = PageRequest.of(page, size, sortDir.equalsIgnoreCase("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending());
 
 
+        Specification<HouseholdRequest> spec = Specification
+                .where(HouseholdRequestSpecifications.hasRequesterId(clientId));
+
+        if (status != null) {
+            spec = spec.and(HouseholdRequestSpecifications.hasRequestStatus(status));
+        }
+
+        Page<HouseholdRequest> resultPage = householdRequestRepository.findAll(spec, pageable);
+
+        return resultPage.map(this::convertToSummaryDto);
+
+    }
+
+
+    private HouseholdRequestDTO convertToDto(HouseholdRequest request){
+
+        return HouseholdRequestDTO.builder()
+                .id(request.getId())
+                .householdId(request.getHousehold().getId())
+                .realestateId(request.getHousehold().getRealestate().getId())
+                .denialReason(request.getDenialReason())
+                .requestProcessed(request.getRequestProcessed())
+                .requestSubmitted(request.getRequestSubmitted())
+                .requestStatus(request.getRequestStatus())
+                .proof_images(request.getProof_images())
+                .proof_pdfs(request.getProof_pdfs())
+                .requestType(request.getRequestType())
+                .requester(request.getRequester() != null ? userService.convertToDTO(request.getRequester()) : null)
+                .reviewingAdmin(request.getReviewingAdmin() != null ? userService.convertToDTO(request.getReviewingAdmin()) : null)
+                .build();
+    }
+
+    private HouseholdRequestPreviewDTO convertToSummaryDto(HouseholdRequest request) {
+        Realestate r = request.getHousehold().getRealestate();
+        City c = r.getCity();
+        Municipality m = c.getMunicipality();
+        Region rg = m.getRegion();
+
+        String address = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getName() + " " + m.getName() + " " + rg.getName();
+        HouseholdRequestPreviewDTO dto = HouseholdRequestPreviewDTO.builder()
+                .id(request.getId())
+
+                .requestStatus(request.getRequestStatus())
+
+                .address(address)
+                .requestSubmitted(request.getRequestSubmitted())
+                .requestProcessed(request.getRequestProcessed())
+                .householdId(request.getHousehold() != null ? request.getHousehold().getId() : null)
+                .realestateId(request.getHousehold() != null && request.getHousehold().getRealestate() != null
+                        ? request.getHousehold().getRealestate().getId() : null)
+                .build();
+        return dto;
+    }
 
 
 }

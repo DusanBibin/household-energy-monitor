@@ -23,7 +23,7 @@
 
 
                     <div class="row p-0 m-0">
-                        <div  style="background-color: red;" class="col-lg-6 col-12 d-flex p-0 m-0">
+                        <div class="col-12 d-flex p-0 m-0">
                             <dl class="m-0 col-12 row" >
                                 <div class="col-md-6 col-12">
                                     <div class="mb-3">
@@ -93,22 +93,19 @@
                                         }
                                        
                                     </div>
+                                   
+                                
                                 </div>
 
+                                <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
+                                    @if (true) {<span >Create household claim</span>}
+                                    <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->
+                                    
+                                </button>
 
-                                
-
-
-                               
-                               
-                               
-                               
-                                
-                                  
-                               
                             </dl>
                         </div>
-                        <div style="background-color: blue;" class="col-lg-6 col-12 d-flex p-0 m-0">iksdebro</div>
+                        <!-- <div style="background-color: blue;" class="col-lg-6 col-12 d-flex p-0 m-0">iksdebro</div> -->
                     </div>
                     
 
@@ -179,7 +176,39 @@
             
         </div>
 
-       
+        <ng-template #fileDialog let-modal>
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload documents for the household review</h1>
+              <button type="button" class="btn-close" aria-label="Close" (click)="resetAndDismiss(modal)"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                
+                @for (fileItem of files; track fileItem.id; let i = $index) {
+                    <div class="d-flex flex-row mb-3">
+                      <input
+                        accept=".pdf, image/png, image/jpeg"
+                        class="form-control me-3"
+                        type="file"
+                        [attr.id]="'fileInput' + i"
+                        (change)="onFileSelected($event, i)"
+                        style="margin: auto;"
+                      />
+                      @if (fileItem.file) {
+                        <button type="button" class="btn btn-primary" (click)="removeItem(i)">Remove</button>
+                      }
+                    </div>
+                }
+                  
+                    
+            
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="resetAndDismiss(modal)">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="submitClaimRequest(modal)">Submit</button>
+            </div>
+      </ng-template>
        
             
         

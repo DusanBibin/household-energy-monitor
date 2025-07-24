@@ -1,6 +1,7 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.exceptions.NotFoundException;
 import com.example.nvt.model.User;
 import com.example.nvt.repository.UserRepository;
@@ -35,5 +36,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
+
+    public UserSummaryDTO convertToDTO(User user){
+        return UserSummaryDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .lastname(user.getLastname())
+                .name(user.getFirstName())
+                .build();
+    }
 
 }

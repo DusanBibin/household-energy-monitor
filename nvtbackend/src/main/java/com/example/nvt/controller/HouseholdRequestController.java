@@ -1,11 +1,17 @@
 package com.example.nvt.controller;
 
 
+import com.example.nvt.DTO.HouseholdRequestDTO;
+import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
+import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.model.Admin;
 import com.example.nvt.model.Client;
+import com.example.nvt.model.User;
 import com.example.nvt.service.HouseholdRequestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +34,7 @@ public class HouseholdRequestController {
     }
 
     @PreAuthorize("hasAnyAuthority('SUPERADMIN', 'ADMIN')")
-    @PutMapping("/realestates/{realestateId}/households/{householdId}/requests/{requestId}/accept")
+    @PutMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}/accept")
     public void acceptHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
                                        @PathVariable Long householdId, @PathVariable Long requestId){
         householdRequestService.acceptHouseholdRequest(admin, realestateId, householdId, requestId);
@@ -36,13 +42,37 @@ public class HouseholdRequestController {
     }
 
     @PreAuthorize("hasAnyAuthority('SUPERADMIN', 'ADMIN')")
-    @PutMapping("/realestates/{realestateId}/households/{householdId}/requests/{requestId}/decline")
+    @PutMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}/decline")
     public void denyHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
                                        @PathVariable Long householdId, @PathVariable Long requestId, @RequestParam String denyReason){
         householdRequestService.denyHouseholdRequest(admin, realestateId, householdId, requestId, denyReason);
 
     }
 
+    @PreAuthorize("hasAuthority('CLIENT')")
+    @GetMapping("/api/v1/household-request")
+    public ResponseEntity<Page<HouseholdRequestPreviewDTO>> getClientRequests(
+            @AuthenticationPrincipal Client client,
+            @RequestParam(required = false) RequestStatus status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "requestSubmitted") String sortField,
+            @RequestParam(defaultValue = "desc") String sortDir
+    ) {
+        Page<HouseholdRequestPreviewDTO> result = householdRequestService.getClientRequests(
+                client.getId(), status, page, size, sortField, sortDir);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'SUPERADMIN')")
+    @GetMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}")
+    public ResponseEntity<HouseholdRequestDTO> getHouseholdRequestDetails(@AuthenticationPrincipal User user, @PathVariable Long realestateId,
+                                           @PathVariable Long householdId, @PathVariable Long requestId){
+
+        HouseholdRequestDTO dto = householdRequestService.getHouseholdRequestDetails(user.getId(), realestateId, householdId, requestId);
+        return ResponseEntity.ok(dto);
+    }
 
 
 

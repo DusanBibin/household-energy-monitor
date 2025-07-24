@@ -17,19 +17,24 @@ export class HouseholdDetailsComponent implements OnInit {
 
 
   householdDetails: HouseholdDetailsDTO | null = null;
+  realestateId: number;
+  householdId: number;
+
+
+
 
   constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService){
+    this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
+    this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
 
   }
 
   ngOnInit(): void {
     
     console.log(this.route.snapshot.paramMap)
-    const realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
-    const householdId = Number(this.route.snapshot.paramMap.get('householdId'));
 
 
-    this.clientService.getHouseholdDetails(realestateId, householdId).pipe(
+    this.clientService.getHouseholdDetails(this.realestateId, this.householdId).pipe(
       switchMap(householdDetails => {
         
     
@@ -61,7 +66,31 @@ export class HouseholdDetailsComponent implements OnInit {
     });
 
 
-    console.log(realestateId)
-    console.log(householdId )
+    console.log(this.realestateId)
+    console.log(this.householdId )
   }
+
+
+  createClaimRequest(files: { id: number, file: File | null }[]){
+
+    const filesOnly: File[] = files.filter(item => item.file !== null).map(item => item.file as File)
+
+
+    console.log(filesOnly)
+    console.log(this.realestateId)
+    console.log(this.householdId);
+
+    this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
+      next: () => {
+        console.log("I NEED DA SUCCESS")
+      },error: err => {
+        console.log(err)
+
+      }
+    })
+
+
+  }
+
+
 }
