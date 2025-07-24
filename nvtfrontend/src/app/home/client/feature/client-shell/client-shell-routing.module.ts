@@ -23,6 +23,13 @@ const routes: Routes = [
 
 },
 {
+  path:'household-requests',
+  loadChildren:() => 
+    import('../household-requests/household-requests.module').then(
+      (m) => m.HouseholdRequestsModule
+    )
+},
+{
   path: '**', // ako ne skonta ni jedan route
   redirectTo: 'vacant-households', // redirect na ''
 }

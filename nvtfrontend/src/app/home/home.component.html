@@ -30,27 +30,18 @@
                     @if(this.jwtService.hasRole(["CLIENT"])){
                         <li>
                             <a routerLink="client/vacant-households" routerLinkActive="active" class="nav-link ">
-                                <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households request</span> </a>
+                                <i class="fs-5 bi-house-add-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households</span> </a>
                         </li>
                     }
                     
-                    <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link ">
-                            <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 2</span> </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link ">
-                            <i class="fs-5 bi-table"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 3</span></a>
-                    </li>
-                    
-                    <li>
-                        <a href="#" class="nav-link ">
-                            <i class="fs-5 bi-grid"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 4</span></a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link">
-                            <i class="fs-5 bi-people"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Opcija 5</span> </a>
-                    </li>
+
+                    @if(this.jwtService.hasRole(["CLIENT"])){
+                        <li>
+                            <a routerLink="client/household-requests" routerLinkActive="active" class="nav-link ">
+                                <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households requests</span> </a>
+                        </li>
+                    }
+
                 </ul>
 
                 @if (partialUserData) {
