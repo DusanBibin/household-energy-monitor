@@ -4,6 +4,7 @@ package com.example.nvt.service;
 import com.example.nvt.DTO.HouseholdRequestDTO;
 import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
 import com.example.nvt.DTO.UserSummaryDTO;
+import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import com.example.nvt.exceptions.InvalidInputException;
@@ -172,7 +173,8 @@ public class HouseholdRequestService {
 
     public Page<HouseholdRequestPreviewDTO> getClientRequests(Long clientId, RequestStatus status, int page, int size,
                                                               String sortField, String sortDir) {
-
+        if(page < 0 ) page = 0;
+        if(size < 1) size = 10;
         Pageable pageable = PageRequest.of(page, size, sortDir.equalsIgnoreCase("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending());
 
 
@@ -213,9 +215,16 @@ public class HouseholdRequestService {
         City c = r.getCity();
         Municipality m = c.getMunicipality();
         Region rg = m.getRegion();
+        Household h =  request.getHousehold();
+
 
         String address = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getName() + " " + m.getName() + " " + rg.getName();
-        HouseholdRequestPreviewDTO dto = HouseholdRequestPreviewDTO.builder()
+
+        if(r.getType().equals(RealEstateType.BUILDING)) {
+            address = "Apartment " + h.getApartmentNum() + " " + address;
+        }
+
+        return HouseholdRequestPreviewDTO.builder()
                 .id(request.getId())
 
                 .requestStatus(request.getRequestStatus())
@@ -227,7 +236,6 @@ public class HouseholdRequestService {
                 .realestateId(request.getHousehold() != null && request.getHousehold().getRealestate() != null
                         ? request.getHousehold().getRealestate().getId() : null)
                 .build();
-        return dto;
     }
 
 

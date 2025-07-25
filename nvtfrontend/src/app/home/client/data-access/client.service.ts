@@ -4,6 +4,8 @@ import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePath
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
+import { PagedResponse } from '../ui/household-requests-list/household-requests-list.component';
+import { HouseholdRequestPreviewDTO } from './model/client-model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +59,23 @@ export class ClientService {
 
 
       return this.http.post(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request', formData, {withCredentials: true})
+    }
+
+
+    getClientRequests(status: string | null, page: number = 0, size: number = 10, sortField: string = 'requestSubmitted', sortDir: string = 'desc'
+    ): Observable<PagedResponse<HouseholdRequestPreviewDTO>> {
+
+      let params = new HttpParams()
+        .set('page', page)
+        .set('size', size)
+        .set('sortField', sortField)
+        .set('sortDir', sortDir);
+  
+      if (status) {
+        params = params.set('status', status);
+      }
+  
+      return this.http.get<PagedResponse<HouseholdRequestPreviewDTO>>(environment.apiUrl + "/household-request", { params, withCredentials: true }, );
     }
     
 

@@ -5,6 +5,7 @@ import { ClientService } from '../../data-access/client.service';
 import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { FileService } from '../../../../shared/services/file-service/file.service';
 import { switchMap, map, catchError, of } from 'rxjs';
+import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-household-details',
@@ -23,7 +24,7 @@ export class HouseholdDetailsComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService){
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService){
     this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
     this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
 
@@ -82,7 +83,7 @@ export class HouseholdDetailsComponent implements OnInit {
 
     this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
       next: () => {
-        console.log("I NEED DA SUCCESS")
+        this.snackService.openSnackBar("Successfully created new request")
       },error: err => {
         console.log(err)
 

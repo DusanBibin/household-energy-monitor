@@ -1,5 +1,6 @@
 package com.example.nvt.DTO;
 
+import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,5 @@ public class HouseholdRequestPreviewDTO {
     private RequestStatus requestStatus;
     private LocalDateTime requestSubmitted;
     private LocalDateTime requestProcessed;
-
+    private RealEstateType realEstateType;
 }

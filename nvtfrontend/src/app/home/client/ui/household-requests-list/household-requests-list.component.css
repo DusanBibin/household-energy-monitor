@@ -1,0 +1,3 @@
+.hover-shadow-lg:hover {
+    box-shadow: var(--bs-box-shadow-lg);
+}

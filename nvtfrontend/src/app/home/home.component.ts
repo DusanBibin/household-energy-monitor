@@ -150,6 +150,17 @@ export class HomeComponent implements OnInit{
         break;
     }
   }
+
+  navigate(){
+    this.router.navigate(['/home/client/household-requests'], {
+      queryParams: {
+        status: '',             
+        page: 1,
+        sortField: 'requestSubmitted',
+        sortDir: 'desc',
+      },
+    });
+  }
   
   
 }

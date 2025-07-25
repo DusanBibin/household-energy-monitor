@@ -52,3 +52,16 @@ export interface HouseholdDetailsDTO{
   size: number
 
 }
+
+export interface HouseholdRequestPreviewDTO {
+
+  id: number,
+  householdId: number,
+  realestateId: number,
+
+  address: string,
+  requestStatus: string,
+  requestSubmitted: Date,
+  requestProcessed: Date,
+  realEstateType: string
+}
