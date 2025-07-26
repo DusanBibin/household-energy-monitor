@@ -16,7 +16,7 @@
 
             
             <div class="d-flex border-bottom p-3">
-                <h5 class="m-0">Vacant households requests</h5>
+                <h5 class="m-0">Household claim requests</h5>
             </div>
         
         
@@ -58,7 +58,7 @@
         
             @if(requests.length === 0){
                 <div class="d-flex w-100 h-100 align-items-center justify-content-center" >
-                    You haven't made any requests
+                    No requests found
                 </div>
         
             }@else {
@@ -68,11 +68,17 @@
         
         
                     @for (req of requests; track req){
-                        <div class="p-2 mb-2 rounded border shadow d-flex flex-md-row justify-content-between flex-column" style="cursor: pointer;">
+                        <div (click)="navigateDetailsRequest(req.realestateId, req.householdId, req.id)" class="p-2 mb-2 rounded border shadow d-flex flex-md-row justify-content-between flex-column" style="cursor: pointer;">
             
                             <div>
                                 <div class="d-flex flex-row mb-1 "> 
-                                    <i class="bi me-2 bi-building"></i> 
+                                    <!-- <i class="bi me-2 bi-building"></i>  -->
+                                    <i class="bi me-2" [ngClass]="{
+                                        'bi-house-door': req.realEstateType === 'HOUSE',
+                                        'bi-building': req.realEstateType === 'BUILDING',
+                                        'bi-signpost': req.realEstateType === 'COTTAGE',
+                                        'bi-shop': req.realEstateType === 'COMMERCE_SPACE'
+                                      }"></i> 
                                     <p class="m-0" style="font-size: medium;">{{req.address}}</p>
                         
                                 </div>
@@ -82,8 +88,8 @@
                 
                 
                             <div class="d-flex flex-row flex-md-column gap-3 gap-md-0 mt-3 mt-md-0">
-                                <small class="m-0" >Subbmitted at: {{req.requestSubmitted | date: 'dd-MM-yyyy HH-mm-ss'}}</small>
-                                @if(req.requestProcessed) {<small class="m-0" >Processed at: {{req.requestProcessed  | date: 'dd-MM-yyyy HH-mm-ss'}}</small>}
+                                <small class="m-0" >Subbmitted at: {{req.requestSubmitted | date: 'dd/MM/yyyy HH:mm:ss'}}</small>
+                                @if(req.requestProcessed) {<small class="m-0" >Processed at: {{req.requestProcessed  | date: 'dd/MM/yyyy HH:mm:ss'}}</small>}
                             </div>
                         
                         </div>

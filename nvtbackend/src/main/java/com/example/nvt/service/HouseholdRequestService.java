@@ -193,9 +193,21 @@ public class HouseholdRequestService {
 
 
     private HouseholdRequestDTO convertToDto(HouseholdRequest request){
+        Realestate r = request.getHousehold().getRealestate();
+        City c = r.getCity();
+        Municipality m = c.getMunicipality();
+        Region rg = m.getRegion();
+        Household h =  request.getHousehold();
+
+        String address = r.getAddressStreet() + " " + r.getAddressNum() + " " + c.getName() + " " + m.getName() + " " + rg.getName();
+
+        if(r.getType().equals(RealEstateType.BUILDING)) {
+            address = "Apartment " + h.getApartmentNum() + " " + address;
+        }
 
         return HouseholdRequestDTO.builder()
                 .id(request.getId())
+                .address(address)
                 .householdId(request.getHousehold().getId())
                 .realestateId(request.getHousehold().getRealestate().getId())
                 .denialReason(request.getDenialReason())
@@ -228,7 +240,7 @@ public class HouseholdRequestService {
                 .id(request.getId())
 
                 .requestStatus(request.getRequestStatus())
-
+                .realEstateType(r.getType())
                 .address(address)
                 .requestSubmitted(request.getRequestSubmitted())
                 .requestProcessed(request.getRequestProcessed())

@@ -30,6 +30,13 @@ const routes: Routes = [
     )
 },
 {
+  path:'realestate/:realestateId/household/:householdId/household-request/:requestId',
+  loadChildren:() =>
+    import('../household-request-details/household-request-details.module').then(
+      (m) => m.HouseholdRequestDetailsModule
+    )
+},
+{
   path: '**', // ako ne skonta ni jedan route
   redirectTo: 'vacant-households', // redirect na ''
 }

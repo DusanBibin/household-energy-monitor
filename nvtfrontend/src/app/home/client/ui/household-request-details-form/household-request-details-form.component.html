@@ -2,15 +2,11 @@
    
  
     <div class="border-bottom p-3" style="background-color: white;">
-        <a href="#" class="d-flex flex-row align-items-center llink-offset-2 link-underline link-underline-opacity-0 link-dark link-opacity-50-hover">
-            <i class="bi-chevron-left h6 m-0"></i>
-            <p class="card-title ps-2 m-0">Go back to search</p>
-        </a>
-        <h3 class="m-0">Household details</h3>
+        <h3 class="m-0">Household claim request</h3>
     </div>
     
 
-    @if(householdDetails){
+    @if(true){
         <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
         
         <div class="row g-2 m-0 px-2 pb-3 pt-2">
@@ -24,30 +20,30 @@
                                 <div class="col-md-6 col-12">
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Address street</dt>
-                                        <dd>{{householdDetails.addressStreet}}</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Address number</dt>
-                                        <dd>{{householdDetails.addressNum}}</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">City</dt>
-                                        <dd>{{householdDetails.city}}</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Municipality</dt>
-                                        <dd>{{householdDetails.municipality}}</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Region</dt>
-                                        <dd>{{householdDetails.region}}</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     
                                 </div>
                                 
                                 <div class="col-lg-6 col-12">
                                     
-                                    <div class="mb-3">
+                                    <!-- <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Household type</dt>
                                         @if(householdDetails.realestateType === "COMMERCE_SPACE"){
                                             <dd>Commerce space</dd>
@@ -58,22 +54,22 @@
                                         }@else if (householdDetails.realestateType === "HOUSE") {
                                             <dd>House</dd>
                                         }
-                                    </div>
+                                    </div> -->
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Household size</dt>
-                                        <dd>{{householdDetails.size}} m²</dd>
+                                        <dd>neki kurac</dd>
                                     </div>
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Total floors</dt>
-                                        <dd>{{householdDetails.totalFloors}}</dd>   
+                                        <dd>neki kurac</dd>   
                                     </div>
-                                    @if(householdDetails.apartmentNum){
-                                        <div class="mb-3">
-                                            <dt class="fs-4 fw-normal">Apartment number</dt>
-                                            <dd class="fs-6">{{householdDetails.apartmentNum}}</dd>    
-                                        </div>
-                                    }
+                              
                                     <div class="mb-3">
+                                        <dt class="fs-4 fw-normal">Apartment number</dt>
+                                        <dd class="fs-6">Neki kurac</dd>    
+                                    </div>
+                                    
+                                    <!-- <div class="mb-3">
                                         <dt class="fs-4 fw-normal mb-2">Owner</dt>
                                         @if(householdDetails.user){
                                             <div class="d-flex flex-row align-items-center pt-1">
@@ -88,12 +84,12 @@
                                             <dd class="fs-6">Vacant household</dd>    
                                         }
                                        
-                                    </div>
+                                    </div> -->
                                    
                                 
                                 </div>
 
-                                <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
+                                <button class="btn btn-primary w-100" type="submit" [disabled]="false">
                                     @if (true) {<span >Create household claim</span>}
                                     <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->
                                     
@@ -101,78 +97,18 @@
 
                             </dl>
                         </div>
-                        <!-- <div style="background-color: blue;" class="col-lg-6 col-12 d-flex p-0 m-0">iksdebro</div> -->
                     </div>
                     
 
                 </div>
             </div>    
-            
-            <div class="col-lg-6 col-12 d-flex" style="aspect-ratio: 3 / 2;">
-                
-                <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
-                    <h4 class="card-title m-0 pb-2">Map</h4>
-                    <div id="mape" class="border border-1 border-dark" style="width: 100%; height: 100%">
-                        <google-map #googleMap width="100%" height="100%" [options]="mapOptions" >
-                            @if (markerPosition) {
-                                <map-advanced-marker [position]="markerPosition"></map-advanced-marker> 
-                            } 
-                        </google-map>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 col-12 d-flex">
-                    <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
-                        <h4 class="card-title m-0 pb-2">Gallery</h4>
-                        <div id="carousel" class="carousel slide border border-1 border-dark">
-
-                            <div class="carousel-indicators">
-                                @for (imagePath of householdDetails.images; track imagePath; let index = $index) {
-                                  <button type="button" (click)="$event.stopPropagation()" 
-                                    [attr.data-bs-target]="'#carousel'" 
-                                    [attr.data-bs-slide-to]="index" 
-                                    [attr.aria-label]="'Slide ' + index + 1"
-                                    
-                                    [class.active]="index === 0"
-                                    [attr.aria-current]="index === 0 ? 'true' : null"></button>
-                                }
-                              </div>
-        
-                              <div class="carousel-inner">
-                                @for (imagePath of householdDetails.images; track imagePath; let index = $index) {
-                                  <div class="carousel-item" [ngClass]="{'active':index === 0}">
-                                    <img [src]="ENVIRONMENT_URL + imagePath" class="d-block w-100" alt="..." loading="lazy">
-                                  </div>
-                                }
-                              </div>
-        
-                            
-        
-        
-        
-        
-                              <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel'"  data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
-                        
-                        </div>
-                    </div>
-
-               
-            </div>
 
             
             
             
         </div>
 
-        <ng-template #fileDialog let-modal>
+        <!-- <ng-template #fileDialog let-modal>
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload documents for the household review</h1>
               <button type="button" class="btn-close" aria-label="Close" (click)="resetAndDismiss(modal)"></button>
@@ -204,7 +140,7 @@
               <button type="button" class="btn btn-secondary" (click)="resetAndDismiss(modal)">Cancel</button>
               <button type="button" class="btn btn-primary" (click)="submitClaimRequest(modal)">Submit</button>
             </div>
-      </ng-template>
+      </ng-template> -->
        
             
         

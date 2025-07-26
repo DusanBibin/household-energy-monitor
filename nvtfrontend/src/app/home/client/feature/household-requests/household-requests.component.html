@@ -1,4 +1,6 @@
 <div class="w-100 h-100">
 
-    <app-household-requests-list></app-household-requests-list>
+    <app-household-requests-list 
+    [pagingDetailsInput]="pagingDetailsInput"
+    (pagingDetailsOutput)="handlePagingDetails($event)"></app-household-requests-list>
 </div>

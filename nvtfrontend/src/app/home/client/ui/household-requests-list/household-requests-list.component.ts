@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../data-access/client.service';
 import { error } from 'console';
 import { HouseholdRequestPreviewDTO } from '../../data-access/model/client-model';
+import { request } from 'http';
+
 
 @Component({
   selector: 'app-household-requests-list',
@@ -12,6 +14,9 @@ import { HouseholdRequestPreviewDTO } from '../../data-access/model/client-model
 })
 export class HouseholdRequestsListComponent {
 
+
+  @Input() pagingDetailsInput: PagedResponse<HouseholdRequestPreviewDTO> | null = null;
+  @Output() pagingDetailsOutput = new EventEmitter<PagingDetails>();
   
   status: string | null = null;
   sortField = 'requestSubmitted';
@@ -22,10 +27,9 @@ export class HouseholdRequestsListComponent {
   size = 10;
   totalPages = 0;
  
-  kurac: number[] = Array(20).fill(0);
   isLoading = true;
 
-  constructor(private route: ActivatedRoute, private clientService: ClientService){
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private router: Router){
     
   }
 
@@ -58,24 +62,36 @@ export class HouseholdRequestsListComponent {
     console.log(this.sortDir)
   }
 
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+
+      if(changes['pagingDetailsInput']){
+        console.log("change se dogodio")
+        console.log(this.pagingDetailsInput)
+        
+        if(this.pagingDetailsInput){
+          this.requests = this.pagingDetailsInput?.content
+          this.page = this.pagingDetailsInput?.number
+          this.totalPages = this.pagingDetailsInput.totalPages
+          this.isLoading = false;
+        } 
+
+      }
+  
+    }
+
+
+
   loadRequests(): void {
     this.isLoading = true;
     this.requests = [];
 
-    this.clientService.getClientRequests(this.status, this.page, 10, this.sortField, this.sortDir).subscribe({
-      next: (response: PagedResponse<HouseholdRequestPreviewDTO>) => {
-        this.requests = response.content;
-      
-        this.page = response.number;
-        this.totalPages = response.totalPages;
-        this.isLoading = false;
-        console.log(response)
 
-      }, error: error => {
-        console.log("neka greskaaa")
-        console.log(error)
-      }
-    })
+    let data: PagingDetails = { status: this.status, page: this.page, sortField: this.sortField, sortDir: this.sortDir}
+
+    this.pagingDetailsOutput.emit(data)
+
   }
 
 
@@ -100,10 +116,19 @@ export class HouseholdRequestsListComponent {
     }
   }
 
+  navigateDetailsRequest(realestateId: number, householdId: number, requestId: number){
+    this.router.navigate(['/home/client/realestate', realestateId, 'household', householdId, 'household-request', requestId])
+  }
+
 }
 
 
-
+export interface PagingDetails {
+  status: string | null,
+  page: number,
+  sortField: string,
+  sortDir: string
+}
 
 
 

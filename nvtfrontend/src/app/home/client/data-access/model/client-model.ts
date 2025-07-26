@@ -59,9 +59,31 @@ export interface HouseholdRequestPreviewDTO {
   householdId: number,
   realestateId: number,
 
+  
   address: string,
   requestStatus: string,
   requestSubmitted: Date,
   requestProcessed: Date,
   realEstateType: string
+}
+
+
+
+export interface HouseholdRequestDTO {
+
+  id: number,
+  householdId: number,
+  realestateId: number,
+  
+  address: string,
+  requester: UserSummaryDTO,
+  reviewingAdmin: UserSummaryDTO,
+  proof_images: string[],
+  proof_pdfs: string[],
+  requestStatus: string,
+  requestType: string,
+  requestSubmitted: Date,
+  requestProcessed: Date,
+  denialReason: string
+
 }

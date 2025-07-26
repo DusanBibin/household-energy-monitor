@@ -22,6 +22,8 @@ public class HouseholdRequestDTO {
     private UserSummaryDTO requester;
     private UserSummaryDTO reviewingAdmin;
 
+
+    private String address;
     private List<String> proof_images;
     private List<String> proof_pdfs;
     private RequestStatus requestStatus;

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
 import { PagedResponse } from '../ui/household-requests-list/household-requests-list.component';
 import { HouseholdRequestPreviewDTO } from './model/client-model';
+import { request } from 'http';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,11 @@ export class ClientService {
       }
   
       return this.http.get<PagedResponse<HouseholdRequestPreviewDTO>>(environment.apiUrl + "/household-request", { params, withCredentials: true }, );
+    }
+
+
+    getHouseholdRequestDetails(realestateId: number, householdId: number, requestId: number): Observable<HouseholdRequestDTO>{
+      return this.http.get<HouseholdRequestDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/' + requestId)
     }
     
 
