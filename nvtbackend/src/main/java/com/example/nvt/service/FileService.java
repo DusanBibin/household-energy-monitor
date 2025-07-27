@@ -1,6 +1,7 @@
 package com.example.nvt.service;
 
 import com.example.nvt.exceptions.InvalidInputException;
+import com.example.nvt.model.HouseholdRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
@@ -24,9 +25,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileService {
 
-    private final String uploadDirUsers = "files/users";
-    private final String uploadDirHouseholdRequests = "files/requests/households";
-    private final UserService userService;
+    public final String uploadDirUsers = "files/users";
+    public final String uploadDirHouseholdRequests = "files/requests/households";
+
 
     public String saveProfileImg(MultipartFile file, Long userId) throws IOException {
 
@@ -91,7 +92,7 @@ public class FileService {
 
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return filePath.toString();
+        return uniqueFilename;
     }
 
 
@@ -103,15 +104,8 @@ public class FileService {
         return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight, Scalr.OP_ANTIALIAS);
     }
 
-    public String getSmallProfileImg(Long id) {
 
-        var user = userService.getUserById(id);
-        String imagePath = uploadDirUsers + "/" +  user.getId() + "/small_" + user.getProfileImg();
 
-        if(!Files.exists(Paths.get(imagePath))) return "/" + uploadDirUsers + "/DEFAULT.jpg";
-
-        return "/" + imagePath;
-    }
 
     public Resource getFileResource(String filePath) {
 
@@ -146,8 +140,6 @@ public class FileService {
 
         return mediaType;
     }
-
-
 
 
 

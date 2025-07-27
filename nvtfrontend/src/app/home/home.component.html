@@ -59,7 +59,7 @@
 
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none " data-bs-toggle="dropdown" aria-expanded="false" style="height: 48px;">
                             <img [src]="imgUri" alt="profileImg" width="35" height="35" class="rounded-circle">
-                            <div class="d-none ms-2" [ngClass]="navbarExpanded ? ['d-md-flex', 'flex-column'] : []">
+                            <div class="d-none ms-2" [ngClass]="navbarExpanded ? ['d-md-flex', 'flex-column'] : []" style="overflow-x: scroll;">
                                 <span>{{partialUserData.name}} {{partialUserData.lastname}}</span>
                                 <span>{{partialUserData.email}}</span>
                             </div>

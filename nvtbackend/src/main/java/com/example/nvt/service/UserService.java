@@ -8,11 +8,14 @@ import com.example.nvt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    private final FileService fileService;
 
     public User getUserByEmail(String email){
 
@@ -45,6 +48,16 @@ public class UserService {
                 .lastname(user.getLastname())
                 .name(user.getFirstName())
                 .build();
+    }
+
+    public String getSmallProfileImg(Long id) {
+
+        var user = getUserById(id);
+        String imagePath = fileService.uploadDirUsers + "/" +  user.getId() + "/small_" + user.getProfileImg();
+
+        if(!Files.exists(Paths.get(imagePath))) return "/" + fileService.uploadDirUsers + "/DEFAULT.jpg";
+
+        return "/" + imagePath;
     }
 
 }

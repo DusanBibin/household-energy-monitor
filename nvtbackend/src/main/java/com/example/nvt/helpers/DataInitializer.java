@@ -115,7 +115,7 @@ public class DataInitializer implements CommandLineRunner {
 
 
         Client client1 = Client.builder()
-                .email("client1@gmail.com")
+                .email("dusanbibin2+client1@gmail.com")
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
@@ -128,7 +128,7 @@ public class DataInitializer implements CommandLineRunner {
         client1 = clientRepository.save(client1);
 
         Client client2 = Client.builder()
-                .email("client2@gmail.com")
+                .email("dusanbibin2+client2@gmail.com")
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0697817839")
@@ -922,7 +922,7 @@ public class DataInitializer implements CommandLineRunner {
         Client client = null;
 //        if(random.nextLong(100L) >= 10){
             client = Client.builder()
-                    .email("client" + clientCounter+ "@gmail.com")
+                    .email("dusanbibin2+" + "client" + clientCounter+ "@gmail.com")
                     .firstName("Ime" + clientCounter)
                     .lastname("Prezime" + clientCounter)
                     .phoneNumber("0697817839")

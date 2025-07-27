@@ -211,6 +211,7 @@ public class HouseholdRequestService {
                 .householdId(request.getHousehold().getId())
                 .realestateId(request.getHousehold().getRealestate().getId())
                 .denialReason(request.getDenialReason())
+                .realEstateType(r.getType())
                 .requestProcessed(request.getRequestProcessed())
                 .requestSubmitted(request.getRequestSubmitted())
                 .requestStatus(request.getRequestStatus())
@@ -251,4 +252,18 @@ public class HouseholdRequestService {
     }
 
 
+    public HouseholdRequest getRequestById(Long requestId) {
+        Optional<HouseholdRequest> wrapper = householdRequestRepository.findById(requestId);
+        if(wrapper.isEmpty()) throw new InvalidInputException("Request with this id doesn't exist");
+        return wrapper.get();
+    }
+
+    public String getHouseholdRequestFile(Long requestId, String fileName) {
+            HouseholdRequest request = getRequestById(requestId);
+
+            if(!(request.getProof_images().contains(fileName) || request.getProof_pdfs().contains(fileName))) throw new InvalidInputException("This file doesn't exist");
+
+            return "/" + fileService.uploadDirHouseholdRequests + "/" + request.getId() + "/" + fileName;
+
+    }
 }

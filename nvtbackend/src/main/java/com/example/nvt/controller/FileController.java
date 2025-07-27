@@ -4,6 +4,8 @@ package com.example.nvt.controller;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
 import com.example.nvt.model.User;
 import com.example.nvt.service.FileService;
+import com.example.nvt.service.HouseholdRequestService;
+import com.example.nvt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,8 @@ import org.springframework.core.io.Resource;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final FileService fileService;
-
+    private final HouseholdRequestService householdRequestService;
+    private final UserService userService;
 //    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping(value = "/profile-img")
     public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
@@ -32,7 +34,7 @@ public class FileController {
         if(user == null) throw new InvalidAuthenticationException("Not Authenticated");
 
         System.out.println("PROFILEIMG");
-        String filePath = fileService.getSmallProfileImg(user.getId());
+        String filePath = userService.getSmallProfileImg(user.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Accel-Redirect", filePath);
         System.out.println(filePath);
@@ -48,13 +50,28 @@ public class FileController {
 
 
 
-        String filePath = fileService.getSmallProfileImg(userId);
+        String filePath = userService.getSmallProfileImg(userId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Accel-Redirect", filePath);
         System.out.println(filePath);
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
 
+    }
+
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
+    @GetMapping(value = "/household-request/{requestId}/{fileName}")
+    public ResponseEntity<?> getHouseholdRequestFile(@PathVariable Long requestId, @PathVariable String fileName) {
+
+
+        String filePath = householdRequestService.getHouseholdRequestFile(requestId, fileName);
+        System.out.println(filePath);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Accel-Redirect", filePath); // internal path for Nginx
+        headers.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        headers.add("Content-Type", "application/octet-stream"); // generic binary stream
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
 }

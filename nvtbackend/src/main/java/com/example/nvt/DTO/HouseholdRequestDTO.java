@@ -1,6 +1,7 @@
 package com.example.nvt.DTO;
 
 
+import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class HouseholdRequestDTO {
     private List<String> proof_pdfs;
     private RequestStatus requestStatus;
     private RequestType requestType;
+    private RealEstateType realEstateType;
     private LocalDateTime requestSubmitted;
     private LocalDateTime requestProcessed;
     private String denialReason;

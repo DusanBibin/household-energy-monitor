@@ -2,11 +2,11 @@
    
  
     <div class="border-bottom p-3" style="background-color: white;">
-        <h3 class="m-0">Household claim request</h3>
+        <h5 class="m-0">Household claim request</h5>
     </div>
     
 
-    @if(true){
+    @if(requestDetails){
         <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
         
         <div class="row g-2 m-0 px-2 pb-3 pt-2">
@@ -18,82 +18,117 @@
                         <div class="col-12 d-flex p-0 m-0">
                             <dl class="m-0 col-12 row" >
                                 <div class="col-md-6 col-12">
+                                    
                                     <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Address street</dt>
-                                        <dd>neki kurac</dd>
+                                        <dt class="fs-4 fw-normal">Address</dt>
+                                        <div class="d-flex flex-row align-items-center">  
+                                            <a [routerLink]="['/home', 'client', 'realestate', requestDetails.realestateId, 'household', requestDetails.householdId]" class="d-flex flex-row align-items-center llink-offset-2 link-underline link-underline-opacity-0 link-dark link-opacity-50-hover">
+                                                <i class="bi me-2" [ngClass]="{
+                                                    'bi-house-door': requestDetails.realEstateType === 'HOUSE',
+                                                    'bi-building': requestDetails.realEstateType === 'BUILDING',
+                                                    'bi-signpost': requestDetails.realEstateType === 'COTTAGE',
+                                                    'bi-shop': requestDetails.realEstateType === 'COMMERCE_SPACE'
+                                                  }"></i> 
+                                                <p class="card-title ps-2 m-0">{{requestDetails.address}}</p>
+                                            </a>
+                                        </div>
+                                        
                                     </div>
                                     <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Address number</dt>
-                                        <dd>neki kurac</dd>
+                                        <dt class="fs-4 fw-normal">Request status</dt>
+                                        <dd>{{requestDetails.requestStatus}}</dd>
                                     </div>
                                     <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">City</dt>
-                                        <dd>neki kurac</dd>
+                                        <dt class="fs-4 fw-normal">Request type</dt>
+                                        <dd>{{requestDetails.requestType}}</dd>
                                     </div>
                                     <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Municipality</dt>
-                                        <dd>neki kurac</dd>
+                                        <dt class="fs-4 fw-normal">Request submitted time</dt>
+                                        <dd>{{requestDetails.requestSubmitted | date: 'dd/MM/yyyy HH:mm:ss'}}</dd>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <dt class="fs-4 fw-normal mb-2">Requester</dt>
+                                        
+                                        <div class="d-flex flex-row align-items-center pt-1">
+                                            <img [src]="envProfileImg + requestDetails.requester.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                            <div class="d-flex flex-column">
+                                                <span>{{requestDetails.requester.name}} {{requestDetails.requester.lastname}}</span>
+                                                <span>{{requestDetails.requester.email}}</span>
+                                                
+                                            </div>
+                                        </div> 
+                                       
                                     </div>
                                     <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Region</dt>
-                                        <dd>neki kurac</dd>
+
+                                        <dt class="fs-4 fw-normal mb-2">Request files</dt>
+
+                                        @for (filePath of requestDetails.proof_images; track filePath){
+                                            <div class="d-flex flex-row align-items-center pt-1">
+                                                <span class="me-3">{{filePath}}</span>
+                                                <a [href]="envRequestFile + requestDetails.id + '/' + filePath" download>
+                                                    <button class="btn btn-primary">Download</button>
+                                                </a>
+                                            </div> 
+                                        }
+                                        @for (filePath of requestDetails.proof_pdfs; track filePath){
+                                            <div class="d-flex flex-row align-items-center pt-1">
+                                                <span class="me-3">{{filePath}}</span>
+                                                <a [href]="envRequestFile + requestDetails.id + '/' + filePath" download>
+                                                    <button class="btn btn-primary">Download</button>
+                                                </a>
+                                            </div> 
+                                        }
+                                        
+                                       
                                     </div>
                                     
                                 </div>
                                 
-                                <div class="col-lg-6 col-12">
+
+                                @if(requestDetails.requestStatus !== 'PENDING'){
+                                    <div class="col-lg-6 col-12">
+                                        
                                     
-                                    <!-- <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Household type</dt>
-                                        @if(householdDetails.realestateType === "COMMERCE_SPACE"){
-                                            <dd>Commerce space</dd>
-                                        }@else if (householdDetails.realestateType === "BUILDING") {
-                                            <dd>Apartment</dd>
-                                        }@else if (householdDetails.realestateType === "COTTAGE") {
-                                            <dd>Cottage</dd>
-                                        }@else if (householdDetails.realestateType === "HOUSE") {
-                                            <dd>House</dd>
-                                        }
-                                    </div> -->
-                                    <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Household size</dt>
-                                        <dd>neki kurac</dd>
-                                    </div>
-                                    <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Total floors</dt>
-                                        <dd>neki kurac</dd>   
-                                    </div>
-                              
-                                    <div class="mb-3">
-                                        <dt class="fs-4 fw-normal">Apartment number</dt>
-                                        <dd class="fs-6">Neki kurac</dd>    
-                                    </div>
-                                    
-                                    <!-- <div class="mb-3">
-                                        <dt class="fs-4 fw-normal mb-2">Owner</dt>
-                                        @if(householdDetails.user){
+                                        <div class="mb-3">
+                                            <dt class="fs-4 fw-normal">Request processed time</dt>
+                                            <dd>{{requestDetails.requestProcessed | date: 'dd/MM/yyyy HH:mm:ss'}}</dd>
+                                        </div>
+                                        <div class="mb-3">
+                                            <dt class="fs-4 fw-normal mb-2">Reviewing admin</dt>
+                                            
                                             <div class="d-flex flex-row align-items-center pt-1">
-                                                <img [src]="householdDetails.user.profileImg" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                                <img [src]="envProfileImg + requestDetails.reviewingAdmin.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
                                                 <div class="d-flex flex-column">
-                                                    <span>{{householdDetails.user.name}} {{householdDetails.user.lastname}}</span>
-                                                    <span>{{householdDetails.user.email}}</span>
+                                                    <span>{{requestDetails.reviewingAdmin.name}} {{requestDetails.reviewingAdmin.lastname}}</span>
+                                                    <span>{{requestDetails.reviewingAdmin.email}}</span>
                                                     
                                                 </div>
                                             </div> 
-                                        }@else {
-                                            <dd class="fs-6">Vacant household</dd>    
+                                           
+                                        </div>
+                                  
+                                        @if(requestDetails.denialReason){
+                                            <div class="mb-3">
+                                                <dt class="fs-4 fw-normal">Decline reason</dt>
+                                                <dd class="fs-6">{{requestDetails.denialReason}}</dd>    
+                                            </div>
                                         }
                                        
-                                    </div> -->
-                                   
-                                
-                                </div>
-
-                                <button class="btn btn-primary w-100" type="submit" [disabled]="false">
-                                    @if (true) {<span >Create household claim</span>}
-                                    <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->
+                                        
+                                      
+                                       
                                     
-                                </button>
+                                    </div>
+                                }
+                               
+
+                                <!-- <button class="btn btn-primary w-100" type="submit" [disabled]="false">
+                                    @if (true) {<span >Create household claim</span>}
+                                    @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+                                    
+                                </button> -->
 
                             </dl>
                         </div>

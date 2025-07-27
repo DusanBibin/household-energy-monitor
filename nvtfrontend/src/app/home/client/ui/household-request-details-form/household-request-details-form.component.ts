@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
-
+import { HouseholdDetailsDTO, HouseholdRequestDTO } from '../../data-access/model/client-model';
+import { environment } from '../../../../../environments/environment.development';
 @Component({
   selector: 'app-household-request-details-form',
   standalone: false,
@@ -9,8 +9,10 @@ import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
 })
 export class HouseholdRequestDetailsFormComponent implements OnInit {
   
+  envProfileImg = environment.apiUrl + "/file/profile-img/"
+  envRequestFile = environment.apiUrl + "/file/household-request/"
   isLoading = true;
-  @Input() requestDetails: HouseholdDetailsDTO | null = null;
+  @Input() requestDetails: HouseholdRequestDTO | null = null;
 
   
   constructor(){
