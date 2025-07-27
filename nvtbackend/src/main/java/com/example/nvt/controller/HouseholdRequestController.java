@@ -1,6 +1,7 @@
 package com.example.nvt.controller;
 
 
+import com.example.nvt.DTO.HouseholdDetailsDTO;
 import com.example.nvt.DTO.HouseholdRequestDTO;
 import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
 import com.example.nvt.enumeration.RequestStatus;
@@ -28,9 +29,10 @@ public class HouseholdRequestController {
 
     @PreAuthorize("hasAuthority('CLIENT')")
     @PostMapping(value = "/api/v1/realestate/{realestateId}/household/{householdId}/household-request", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void createClaimRequest(@AuthenticationPrincipal Client client, @PathVariable Long realestateId,
-                                   @PathVariable Long householdId, @RequestParam(value = "files") List<MultipartFile> files){
-        householdRequestService.createClaimRequest(client, realestateId, householdId, files);
+    public ResponseEntity<HouseholdDetailsDTO> createClaimRequest(@AuthenticationPrincipal Client client, @PathVariable Long realestateId,
+                                                                  @PathVariable Long householdId, @RequestParam(value = "files") List<MultipartFile> files){
+        HouseholdDetailsDTO details = householdRequestService.createClaimRequest(client, realestateId, householdId, files);
+        return ResponseEntity.ok(details);
     }
 
     @PreAuthorize("hasAnyAuthority('SUPERADMIN', 'ADMIN')")

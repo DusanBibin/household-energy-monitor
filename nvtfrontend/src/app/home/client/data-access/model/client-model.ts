@@ -49,8 +49,10 @@ export interface HouseholdDetailsDTO{
   totalFloors: number,
   images: string[],
   apartmentNum: number,
-  size: number
-
+  size: number,
+  householdId: number,
+  realestateId: number,
+  pendingRequestId: number
 }
 
 export interface HouseholdRequestPreviewDTO {

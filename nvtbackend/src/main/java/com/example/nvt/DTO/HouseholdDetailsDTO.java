@@ -27,9 +27,11 @@ public class HouseholdDetailsDTO {
     private Long totalFloors;
     private List<String> images;
 
-
     private Long apartmentNum;
     private Double size;
 
+    private Long realestateId;
+    private Long householdId;
+    private Long pendingRequestId;
 
 }

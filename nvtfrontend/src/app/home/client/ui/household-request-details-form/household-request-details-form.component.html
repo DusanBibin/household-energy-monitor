@@ -22,15 +22,20 @@
                                     <div class="mb-3">
                                         <dt class="fs-4 fw-normal">Address</dt>
                                         <div class="d-flex flex-row align-items-center">  
-                                            <a [routerLink]="['/home', 'client', 'realestate', requestDetails.realestateId, 'household', requestDetails.householdId]" class="d-flex flex-row align-items-center llink-offset-2 link-underline link-underline-opacity-0 link-dark link-opacity-50-hover">
-                                                <i class="bi me-2" [ngClass]="{
-                                                    'bi-house-door': requestDetails.realEstateType === 'HOUSE',
-                                                    'bi-building': requestDetails.realEstateType === 'BUILDING',
-                                                    'bi-signpost': requestDetails.realEstateType === 'COTTAGE',
-                                                    'bi-shop': requestDetails.realEstateType === 'COMMERCE_SPACE'
-                                                  }"></i> 
-                                                <p class="card-title ps-2 m-0">{{requestDetails.address}}</p>
+                                           
+                                            <i class="bi me-2" [ngClass]="{
+                                                'bi-house-door': requestDetails.realEstateType === 'HOUSE',
+                                                'bi-building': requestDetails.realEstateType === 'BUILDING',
+                                                'bi-signpost': requestDetails.realEstateType === 'COTTAGE',
+                                                'bi-shop': requestDetails.realEstateType === 'COMMERCE_SPACE'
+                                                }"></i> 
+                                            <p class="card-title ps-2 m-0">{{requestDetails.address}}</p>
+                                    
+
+                                            <a class="ms-3" [routerLink]="['/home', 'client', 'realestate', requestDetails.realestateId, 'household', requestDetails.householdId]" >
+                                                <button class="btn btn-primary">View household</button>
                                             </a>
+
                                         </div>
                                         
                                     </div>

@@ -1,6 +1,7 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.DTO.HouseholdDetailsDTO;
 import com.example.nvt.DTO.HouseholdRequestDTO;
 import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
 import com.example.nvt.DTO.UserSummaryDTO;
@@ -37,7 +38,7 @@ public class HouseholdRequestService {
     private final ClientService clientService;
     private final UserService userService;
 
-    public void createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
+    public HouseholdDetailsDTO createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
 
         client = clientService.findClientById(client.getId());
@@ -92,6 +93,8 @@ public class HouseholdRequestService {
         client.getAssetRequests().add(request);
         client = clientService.saveClient(client);
 
+
+        return householdService.getHouseholdDetails(client, realestateId, householdId);
     }
 
 

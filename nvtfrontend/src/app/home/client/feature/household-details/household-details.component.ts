@@ -82,7 +82,8 @@ export class HouseholdDetailsComponent implements OnInit {
     console.log(this.householdId);
 
     this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
-      next: () => {
+      next: (newDetails) => {
+        this.householdDetails = newDetails;
         this.snackService.openSnackBar("Successfully created new request")
       },error: err => {
         console.log(err)

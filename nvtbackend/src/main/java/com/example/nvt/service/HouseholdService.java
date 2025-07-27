@@ -8,10 +8,12 @@ import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.exceptions.NotFoundException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRepository;
+import com.example.nvt.repository.elastic.HouseholdRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +22,7 @@ public class HouseholdService {
 
     private final HouseholdRepository householdRepository;
     private final RealestateService realestateService;
+    private final HouseholdRequestRepository householdRequestRepository;
 
     public Household saveHousehold(Household household) {
         return householdRepository.save(household);
@@ -54,7 +57,7 @@ public class HouseholdService {
         ).collect(Collectors.toList());
     }
 
-    public HouseholdDetailsDTO getHouseholdDetails(Long realestateId, Long householdId) {
+    public HouseholdDetailsDTO getHouseholdDetails(User user, Long realestateId, Long householdId) {
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = getHouseholdByIdAndRealestateId(realestateId, householdId);
         Client client = household.getHouseholdOwner();
@@ -69,13 +72,22 @@ public class HouseholdService {
             imagePaths = realestate.getImages();
         }
 
+        Long pendingRequestId = null;
+        if(user instanceof Client ) {
+            Optional<HouseholdRequest> wrapper = householdRequestRepository.getRequestByHouseholdIdAndClientId(householdId, user.getId());
+            if(wrapper.isPresent()) pendingRequestId = wrapper.get().getId();
+        }
+
 
         HouseholdDetailsDTO householdDTO = HouseholdDetailsDTO.builder()
+                .realestateId(realestate.getId())
+                .householdId(household.getId())
                 .realestateType(realestate.getType().toString())
                 .addressStreet(realestate.getAddressStreet())
                 .addressNum(realestate.getAddressNum())
                 .city(city.getName())
                 .municipality(municipality.getName())
+                .pendingRequestId(pendingRequestId)
                 .region(region.getName())
                 .totalFloors(realestate.getType() != RealEstateType.BUILDING ? realestate.getTotalFloors() : 1L)
                 .apartmentNum(realestate.getType() != RealEstateType.BUILDING ? null : household.getApartmentNum())

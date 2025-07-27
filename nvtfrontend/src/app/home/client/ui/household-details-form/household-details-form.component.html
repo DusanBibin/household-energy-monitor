@@ -8,7 +8,7 @@
         </a>
         <h3 class="m-0">Household details</h3>
     </div>
-    
+        
 
     @if(householdDetails){
         <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
@@ -89,15 +89,29 @@
                                         }
                                        
                                     </div>
-                                   
+                                    @if(householdDetails.pendingRequestId){
+                                        <div class="d-flex flex-row align-items-center pt-1">
+                                            
+
+
+                                            <div class="d-flex flex-row align-items-center pt-1">
+                                                <span class="me-3">You already have a request for this household</span>
+                                                <a [routerLink]="['/home', 'client', 'realestate', householdDetails.realestateId, 'household', householdDetails.householdId, 'household-request', householdDetails.pendingRequestId]" download>
+                                                    <button class="btn btn-primary">View request</button>
+                                                </a>
+                                            </div> 
+                                        </div> 
+                                    }
                                 
                                 </div>
-
-                                <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
-                                    @if (true) {<span >Create household claim</span>}
-                                    <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->
-                                    
-                                </button>
+                                
+                                @if(!householdDetails.pendingRequestId){
+                                    <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
+                                        <span >Create household claim</span>
+                                        <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->
+                                        
+                                    </button>
+                                }
 
                             </dl>
                         </div>
