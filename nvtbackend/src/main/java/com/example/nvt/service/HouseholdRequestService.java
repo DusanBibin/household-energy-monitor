@@ -117,12 +117,10 @@ public class HouseholdRequestService {
         return getRequestByHouseholdIdAndClientId(householdId, clientId).isPresent();
     }
 
-    public void acceptHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId) {
+    public HouseholdRequestDTO acceptHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
-
-
 
 
         HouseholdRequest request = getRequestByIdAndHouseholdId(requestId, householdId);
@@ -175,10 +173,12 @@ public class HouseholdRequestService {
             emailService.sendRequestUpdate(requester.getEmail(), requester.getFirstName(), address, req.getRequestStatus().equals(RequestStatus.ACCEPTED) ? "accepted" : "denied", req.getDenialReason());
         }
 
+
+        return convertToDto(request);
     }
 
 
-    public void denyHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId, String denialReason) {
+    public HouseholdRequestDTO denyHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId, String denialReason) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
@@ -210,6 +210,7 @@ public class HouseholdRequestService {
 
         emailService.sendRequestUpdate(requester.getEmail(), requester.getFirstName(), address, request.getRequestStatus().equals(RequestStatus.ACCEPTED) ? "accepted" : "denied", denialReason);
 
+        return convertToDto(request);
     }
 
     public HouseholdRequestDTO getHouseholdRequestDetails(Long userId, Long realestateId, Long householdId, Long requestId) {

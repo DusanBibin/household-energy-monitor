@@ -21,6 +21,6 @@ public interface HouseholdRequestRepository extends JpaRepository<HouseholdReque
     Optional<HouseholdRequest> getRequestByIdAndHouseholdId(Long requestId, Long householdId);
 
 
-    @Query("select hr from HouseholdRequest hr where hr.household.id = :householdId and hr.id != :requestId")
+    @Query("select hr from HouseholdRequest hr where hr.household.id = :householdId and hr.id != :requestId and hr.requestStatus = 0")
     List<HouseholdRequest> getAllPendingHouseholdRequests(Long householdId, Long requestId);
 }

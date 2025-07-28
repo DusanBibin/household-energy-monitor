@@ -82,15 +82,12 @@ export interface HouseholdRequestDTO {
   requestType: string,
   requestSubmitted: Date,
   realEstateType: string,
-
-  
-  requester: UserSummaryDTO,
-  reviewingAdmin: UserSummaryDTO,
   proof_images: string[],
   proof_pdfs: string[],
-
- 
- 
+  requester: UserSummaryDTO,
+  
+  
+  reviewingAdmin: UserSummaryDTO,
   requestProcessed: Date,
   denialReason: string
 

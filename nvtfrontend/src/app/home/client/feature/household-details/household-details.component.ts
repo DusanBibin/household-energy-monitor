@@ -80,27 +80,42 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
 
-  createClaimRequest(files: { id: number, file: File | null }[]){
-
-    const filesOnly: File[] = files.filter(item => item.file !== null).map(item => item.file as File)
-
-
-    console.log(filesOnly)
-    console.log(this.realestateId)
+  createClaimRequest(files: { id: number, file: File | null }[]) {
+    const MAX_SIZE_BYTES = 1 * 1024 * 1024 * 1024; // 1 GB 
+  
+    const filesOnly: File[] = files
+      .filter(item => item.file !== null)
+      .map(item => item.file as File);
+  
+ 
+    const hasTooBigFile = filesOnly.some(file => file.size > MAX_SIZE_BYTES);
+  
+    if (hasTooBigFile) {
+      console.log('One or more files exceed the 1 GB size limit');
+      this.snackService.openSnackBar("One or more files exceed the 1 GB size limit");
+      return; 
+    } else {
+      console.log('All files are within size limits');
+    }
+  
+    console.log(filesOnly);
+    console.log(this.realestateId);
     console.log(this.householdId);
-
+  
     this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
       next: (newDetails) => {
-        this.householdDetails = {isError: false, data: newDetails};
-        this.snackService.openSnackBar("Successfully created new request")
-      },error: err => {
-        console.log(err)
-
+        this.householdDetails = { isError: false, data: newDetails };
+        this.snackService.openSnackBar("Successfully created new request");
+      },
+      error: err => {
+        console.log(err);
+        if (err.status === 413) {
+          this.snackService.openSnackBar("The files for the request are too large");
+        }
       }
-    })
-
-
+    });
   }
+  
 
 
 }

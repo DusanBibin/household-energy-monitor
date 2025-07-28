@@ -37,18 +37,18 @@ public class HouseholdRequestController {
 
     @PreAuthorize("hasAnyAuthority('SUPERADMIN', 'ADMIN')")
     @PutMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}/accept")
-    public void acceptHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
+    public ResponseEntity<HouseholdRequestDTO> acceptHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
                                        @PathVariable Long householdId, @PathVariable Long requestId){
-        householdRequestService.acceptHouseholdRequest(admin, realestateId, householdId, requestId);
-
+        HouseholdRequestDTO dto = householdRequestService.acceptHouseholdRequest(admin, realestateId, householdId, requestId);
+        return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasAnyAuthority('SUPERADMIN', 'ADMIN')")
     @PutMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}/decline")
-    public void denyHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
-                                       @PathVariable Long householdId, @PathVariable Long requestId, @RequestParam String denyReason){
-        householdRequestService.denyHouseholdRequest(admin, realestateId, householdId, requestId, denyReason);
-
+    public ResponseEntity<HouseholdRequestDTO> denyHouseholdRequest(@AuthenticationPrincipal Admin admin, @PathVariable Long realestateId,
+                                       @PathVariable Long householdId, @PathVariable Long requestId, @RequestBody String denyReason){
+        HouseholdRequestDTO dto = householdRequestService.denyHouseholdRequest(admin, realestateId, householdId, requestId, denyReason);
+        return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'SUPERADMIN')")
