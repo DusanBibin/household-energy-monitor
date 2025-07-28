@@ -3,6 +3,7 @@ import { HouseholdDetailsDTO, HouseholdRequestDTO } from '../../data-access/mode
 import { environment } from '../../../../../environments/environment.development';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { Router } from '@angular/router';
+import { ResponseData } from '../../../../shared/model';
 @Component({
   selector: 'app-household-request-details-form',
   standalone: false,
@@ -14,7 +15,7 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
   envProfileImg = environment.apiUrl + "/file/profile-img/"
   envRequestFile = environment.apiUrl + "/file/household-request/"
   isLoading = true;
-  @Input() requestDetails: HouseholdRequestDTO | null = null;
+  @Input() requestDetails: ResponseData | null = null;
 
   
   constructor(protected jwtService: JwtService, private router: Router){
@@ -41,6 +42,6 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
     
     const role = this.jwtService.getRole()?.toLowerCase()
     
-    if(this.requestDetails){ this.router.navigate(['/home', role, 'realestate', this.requestDetails.realestateId, 'household', this.requestDetails.householdId]); }
+    if(this.requestDetails && !this.requestDetails.isError){ this.router.navigate(['/home', role, 'realestate', this.requestDetails.data.realestateId, 'household', this.requestDetails.data.householdId]); }
   }
 }

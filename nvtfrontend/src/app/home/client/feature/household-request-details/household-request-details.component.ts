@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../data-access/client.service';
 import { ActivatedRoute } from '@angular/router';
 import { HouseholdRequestDTO } from '../../data-access/model/client-model';
+import { ResponseData, ResponseMessage } from '../../../../shared/model';
+import { request } from 'http';
 @Component({
   selector: 'app-household-request-details',
   standalone: false,
@@ -12,7 +14,7 @@ export class HouseholdRequestDetailsComponent implements OnInit {
   realestateId: number;
   householdId: number;
   requestId: number;
-  requestDetails: HouseholdRequestDTO | null = null;
+  requestDetails: ResponseData | null = null;
 
   constructor(private clientService: ClientService, private route: ActivatedRoute){
     this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
@@ -23,46 +25,17 @@ export class HouseholdRequestDetailsComponent implements OnInit {
   ngOnInit(): void {
       this.clientService.getHouseholdRequestDetails(this.realestateId, this.householdId, this.requestId).subscribe({
         next: requestDetails => {
-          this.requestDetails = requestDetails
+          this.requestDetails = {isError: false, data: requestDetails};
           console.log(this.requestDetails)
 
         },error: err => {
-          console.log(err)
+          this.requestDetails = {isError: true, error: err.error as ResponseMessage}
         }
       })
   
 
 
-    // this.clientService.getHouseholdDetails(this.realestateId, this.householdId).pipe(
-    //   switchMap(householdDetails => {
-        
-    
-    //     if (householdDetails.user?.id) {
-    //       return this.fileService.getProfileImageParam(householdDetails.user.id).pipe(
-    //         map(profileImg => {
-    //           const imgUri = URL.createObjectURL(profileImg);
-    //           householdDetails.user.profileImg = imgUri;
-    //           console.log(householdDetails)
-    //           this.householdDetails = householdDetails;
-    //           return householdDetails;
-    //         }),
-    //         catchError(err => {
-    //           console.error('Error loading profile image:', err);
-    //           return of(householdDetails); 
-    //         })
-    //       );
-    //     }else this.householdDetails = householdDetails;
-    
-    //     return of(householdDetails); 
-    //   })
-    // ).subscribe({
-    //   next: updatedDetails => {
-    //     this.householdDetails = updatedDetails;
-    //   },
-    //   error: err => {
-    //     console.error('Error fetching household details:', err);
-    //   }
-    // });
+   
 
 
 

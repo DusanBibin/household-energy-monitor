@@ -45,7 +45,7 @@ export class ClientService {
     }
 
     getVacantRealestateHouseHolds(realestateId: number): Observable<VacantApartmentDTO[]>{
-      return this.http.get<VacantApartmentDTO[]>(environment.apiUrl + '/realestate/' + realestateId + '/household', {withCredentials: true})
+      return this.http.get<VacantApartmentDTO[]>(environment.apiUrl + '/realestate/' + realestateId + '/vacant-apartment-numbers', {withCredentials: true})
     }
 
     getHouseholdDetails(realestateId: number, householdId: number): Observable<HouseholdDetailsDTO>{

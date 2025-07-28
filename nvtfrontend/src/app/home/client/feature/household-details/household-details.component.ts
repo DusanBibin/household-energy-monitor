@@ -6,6 +6,7 @@ import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { FileService } from '../../../../shared/services/file-service/file.service';
 import { switchMap, map, catchError, of } from 'rxjs';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { ResponseData, ResponseMessage } from '../../../../shared/model';
 
 @Component({
   selector: 'app-household-details',
@@ -17,7 +18,7 @@ export class HouseholdDetailsComponent implements OnInit {
 
 
 
-  householdDetails: HouseholdDetailsDTO | null = null;
+  householdDetails: ResponseData | null = null;
   realestateId: number;
   householdId: number;
 
@@ -45,7 +46,7 @@ export class HouseholdDetailsComponent implements OnInit {
               const imgUri = URL.createObjectURL(profileImg);
               householdDetails.user.profileImg = imgUri;
               console.log(householdDetails)
-              this.householdDetails = householdDetails;
+              this.householdDetails = {isError: false, data: householdDetails}
               return householdDetails;
             }),
             catchError(err => {
@@ -53,15 +54,22 @@ export class HouseholdDetailsComponent implements OnInit {
               return of(householdDetails); 
             })
           );
-        }else this.householdDetails = householdDetails;
+        }else{      
+          this.householdDetails = {isError: false, data: householdDetails}
+        } 
     
         return of(householdDetails); 
       })
     ).subscribe({
       next: updatedDetails => {
-        this.householdDetails = updatedDetails;
+        
       },
       error: err => {
+       
+
+        this.householdDetails = {isError: true, error: err.error as ResponseMessage}
+
+
         console.error('Error fetching household details:', err);
       }
     });
@@ -83,7 +91,7 @@ export class HouseholdDetailsComponent implements OnInit {
 
     this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
       next: (newDetails) => {
-        this.householdDetails = newDetails;
+        this.householdDetails = {isError: false, data: newDetails};
         this.snackService.openSnackBar("Successfully created new request")
       },error: err => {
         console.log(err)

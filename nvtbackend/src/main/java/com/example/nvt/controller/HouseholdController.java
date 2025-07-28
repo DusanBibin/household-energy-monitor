@@ -44,7 +44,7 @@ public class HouseholdController {
 
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
-    @GetMapping("/api/v1/realestate/{realestateId}/household")
+    @GetMapping("/api/v1/realestate/{realestateId}/vacant-apartment-numbers")
     public ResponseEntity<?>  getRealestateApartmentNumbers(@PathVariable Long realestateId){
 
         List<VacantApartmentDTO> households = householdService.getRealestateVacantApartments(realestateId);

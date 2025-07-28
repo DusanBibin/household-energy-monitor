@@ -9,6 +9,7 @@ import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import com.example.nvt.exceptions.InvalidInputException;
+import com.example.nvt.exceptions.NotFoundException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.elastic.HouseholdRequestRepository;
 import com.example.nvt.specifications.HouseholdRequestSpecifications;
@@ -106,7 +107,7 @@ public class HouseholdRequestService {
 
     public HouseholdRequest getRequestByIdAndHouseholdId(Long requestId, Long householdId){
         Optional<HouseholdRequest> wrapper = householdRequestRepository.getRequestByIdAndHouseholdId(requestId, householdId);
-        if(wrapper.isEmpty()) throw new InvalidInputException("Request doesn't exist");
+        if(wrapper.isEmpty()) throw new NotFoundException("Request doesn't exist");
         return wrapper.get();
     }
 

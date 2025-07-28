@@ -6,7 +6,7 @@ import { environment } from '../../../../../environments/environment.development
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
-
+import { ResponseData } from '../../../../shared/model';
 
 @Component({
   selector: 'app-household-details-form',
@@ -17,7 +17,7 @@ import { JwtService } from '../../../../shared/services/jwt-service/jwt.service'
 export class HouseholdDetailsFormComponent implements OnChanges{
   protected ENVIRONMENT_URL = environment.url
 
-  @Input() householdDetails: HouseholdDetailsDTO | null = null;
+  @Input() householdDetails: ResponseData | null = null;
   @Output() requestClaimFiles = new EventEmitter<{ id: number, file: File | null }[]>();
 
   @ViewChild('fileDialog') fileDialog: TemplateRef<any> | null = null;
@@ -54,9 +54,9 @@ export class HouseholdDetailsFormComponent implements OnChanges{
       console.log("change se dogodio")
       console.log(this.householdDetails)
       
-      if(this.householdDetails){
-        let latitude = this.householdDetails.lat
-        let longitude = this.householdDetails.lon
+      if(this.householdDetails && !this.householdDetails.isError){
+        let latitude = this.householdDetails.data.lat
+        let longitude = this.householdDetails.data.lon
 
 
         this.markerPosition = {lat: latitude, lng: longitude}
