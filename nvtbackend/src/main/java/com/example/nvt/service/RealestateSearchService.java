@@ -32,6 +32,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -121,6 +122,17 @@ public class RealestateSearchService {
             realestateDocs.add(doc);
         }
         return realestateDocs;
+    }
+
+
+    public void updateRealestateVacancy(Long dbId){
+        Optional<RealestateDoc> optionalDoc = realestateDocRepository.findByDbId(dbId);
+
+        if (optionalDoc.isPresent()) {
+            RealestateDoc doc = optionalDoc.get();
+            doc.setVacant(false);
+            realestateDocRepository.save(doc);
+        }
     }
 
     public List<Object> search(String queryString) throws IOException {

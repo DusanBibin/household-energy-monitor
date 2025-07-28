@@ -68,7 +68,15 @@
         
         
                     @for (req of requests; track req){
-                        <div (click)="navigateDetailsRequest(req.realestateId, req.householdId, req.id)" class="p-2 mb-2 rounded border shadow d-flex flex-md-row justify-content-between flex-column" style="cursor: pointer;">
+                        <div (click)="navigateDetailsRequest(req.realestateId, req.householdId, req.id)"
+                        (mouseenter)="selectedId = req.id" 
+                        (mouseleave)="selectedId = 0" 
+                        class="p-2 mb-2 rounded border d-flex flex-md-row justify-content-between flex-column"
+                        [ngClass]="{
+                          'shadow-lg': selectedId === req.id,
+                          'shadow': selectedId !== req.id
+                        }"
+                        style="cursor: pointer;">
             
                             <div>
                                 <div class="d-flex flex-row mb-1 "> 

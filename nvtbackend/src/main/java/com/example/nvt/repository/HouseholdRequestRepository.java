@@ -1,4 +1,4 @@
-package com.example.nvt.repository.elastic;
+package com.example.nvt.repository;
 
 import com.example.nvt.model.HouseholdRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

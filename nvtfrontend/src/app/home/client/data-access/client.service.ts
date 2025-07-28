@@ -85,15 +85,12 @@ export class ClientService {
     }
 
 
-
-
-
-
     processHouseholdRequest(realestateId: number, householdId: number, requestId: number, isAccepted: boolean, denyReason: string | null): Observable<HouseholdRequestDTO>{
 
       let decision = "accept"
       if(!isAccepted) decision = "decline"
       return this.http.put<HouseholdRequestDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/' + requestId + "/" + decision, denyReason)
+  
     }
     
 

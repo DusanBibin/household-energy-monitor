@@ -8,7 +8,7 @@ import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.exceptions.NotFoundException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRepository;
-import com.example.nvt.repository.elastic.HouseholdRequestRepository;
+import com.example.nvt.repository.HouseholdRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -117,5 +117,10 @@ public class HouseholdService {
 //        householdDTO.setUser(summaryData);
 
         return householdDTO;
+    }
+
+
+    public long countUnownedHouseholds(Long realestateId){
+        return householdRepository.countUnownedHouseholds(realestateId);
     }
 }

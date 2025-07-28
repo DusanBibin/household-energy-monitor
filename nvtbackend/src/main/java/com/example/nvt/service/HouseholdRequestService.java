@@ -4,14 +4,13 @@ package com.example.nvt.service;
 import com.example.nvt.DTO.HouseholdDetailsDTO;
 import com.example.nvt.DTO.HouseholdRequestDTO;
 import com.example.nvt.DTO.HouseholdRequestPreviewDTO;
-import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.RequestStatus;
 import com.example.nvt.enumeration.RequestType;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.exceptions.NotFoundException;
 import com.example.nvt.model.*;
-import com.example.nvt.repository.elastic.HouseholdRequestRepository;
+import com.example.nvt.repository.HouseholdRequestRepository;
 import com.example.nvt.specifications.HouseholdRequestSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +39,7 @@ public class HouseholdRequestService {
     private final ClientService clientService;
     private final UserService userService;
     private final EmailService emailService;
+    private final RealestateSearchService realestateSearchService;
 
     public HouseholdDetailsDTO createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
@@ -141,6 +142,14 @@ public class HouseholdRequestService {
         request.setRequestProcessed(LocalDateTime.now());
 
 
+        try {
+            otherRequests.add(request);
+            otherRequests = householdRequestRepository.saveAll(otherRequests);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new InvalidInputException("The request has already been accepted by other admin moments ago");
+        }
+
+
         Client client = request.getRequester();
         client.getHouseholds().add(household);
 
@@ -153,9 +162,14 @@ public class HouseholdRequestService {
         household = householdService.saveHousehold(household);
         client =  clientService.saveClient(client);
 
+        if (realestate.getType() != RealEstateType.BUILDING ||
+                householdService.countUnownedHouseholds(realestateId) == 0) {
+            realestateSearchService.updateRealestateVacancy(realestateId);
+        }
 
-        otherRequests.add(request);
-        otherRequests = householdRequestRepository.saveAll(otherRequests);
+
+//        otherRequests.add(request);
+//        otherRequests = householdRequestRepository.saveAll(otherRequests);
 
 
         City c = realestate.getCity();

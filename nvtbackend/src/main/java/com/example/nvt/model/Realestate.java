@@ -28,8 +28,6 @@ public class Realestate {
     private List<Household> households;
 
 
-
-    //Realestate request postoji trenutno samo kao RequestType.CREATE
     @OneToOne
     private RealestateRequest createRequest;
 

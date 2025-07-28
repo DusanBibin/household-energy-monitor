@@ -47,4 +47,6 @@ public class AssetRequest {
     private LocalDateTime requestProcessed;
     private String denialReason;
 
+    @Version
+    private Integer version;
 }

@@ -30,6 +30,8 @@ export class HouseholdRequestsListComponent {
  
   isLoading = true;
 
+  selectedId = 0;
+
   constructor(private route: ActivatedRoute, private clientService: ClientService, private router: Router, private jwtService: JwtService){
     
   }
