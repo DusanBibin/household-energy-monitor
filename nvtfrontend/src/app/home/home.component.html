@@ -36,9 +36,11 @@
                     }
                     
 
+
+
                     @if(this.jwtService.hasRole(["CLIENT"])){
                         <li>
-                            <a [routerLink]="['/home/client/household-requests']" 
+                            <a [routerLink]="['/home','client','household-requests']" 
                                 [queryParams]="{
                                 status: '', 
                                 page: 1, 
@@ -47,7 +49,40 @@
                                 }"
                              routerLinkActive="active" class="nav-link">
                                 
-                            <!-- <a routerLink="client/household-requests" routerLinkActive="active" class="nav-link "> -->
+                 
+                                <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households requests</span> </a>
+                        </li>
+                    }
+
+
+                    @if(this.jwtService.hasRole(["ADMIN"])){
+                        <li>
+                            <a [routerLink]="['/home','admin','household-requests']" 
+                                [queryParams]="{
+                                status: '', 
+                                page: 1, 
+                                sortField: 'requestSubmitted', 
+                                sortDir: 'desc'
+                                }"
+                             routerLinkActive="active" class="nav-link">
+                                
+                 
+                                <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households requests</span> </a>
+                        </li>
+                    }
+
+                    @if(this.jwtService.hasRole(["SUPERADMIN"])){
+                        <li>
+                            <a [routerLink]="['/home','superadmin','household-requests']" 
+                                [queryParams]="{
+                                status: '', 
+                                page: 1, 
+                                sortField: 'requestSubmitted', 
+                                sortDir: 'desc'
+                                }"
+                             routerLinkActive="active" class="nav-link">
+                                
+                 
                                 <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households requests</span> </a>
                         </li>
                     }

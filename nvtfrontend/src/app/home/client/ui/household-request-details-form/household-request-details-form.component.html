@@ -32,7 +32,7 @@
                                             <p class="card-title ps-2 m-0">{{requestDetails.address}}</p>
                                     
 
-                                            <a class="ms-3" [routerLink]="['/home', 'client', 'realestate', requestDetails.realestateId, 'household', requestDetails.householdId]" >
+                                            <a class="ms-3" (click)="navigate()" >
                                                 <button class="btn btn-primary">View household</button>
                                             </a>
 
@@ -129,11 +129,7 @@
                                 }
                                
 
-                                <!-- <button class="btn btn-primary w-100" type="submit" [disabled]="false">
-                                    @if (true) {<span >Create household claim</span>}
-                                    @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-                                    
-                                </button> -->
+                                
 
                             </dl>
                         </div>

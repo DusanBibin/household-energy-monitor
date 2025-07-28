@@ -37,6 +37,7 @@ public class HouseholdRequestService {
     private final FileService fileService;
     private final ClientService clientService;
     private final UserService userService;
+    private final EmailService emailService;
 
     public HouseholdDetailsDTO createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
@@ -120,12 +121,15 @@ public class HouseholdRequestService {
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
 
+
+
+
         HouseholdRequest request = getRequestByIdAndHouseholdId(requestId, householdId);
 
         if(!request.getRequestStatus().equals(RequestStatus.PENDING)) throw new InvalidInputException("The request is already processed");
 
 
-        List<HouseholdRequest> otherRequests = householdRequestRepository.getAllPendingHouseholdRequests(householdId);
+        List<HouseholdRequest> otherRequests = householdRequestRepository.getAllPendingHouseholdRequests(householdId, request.getId());
         for(HouseholdRequest otherRequest : otherRequests){
             otherRequest.setRequestStatus(RequestStatus.REJECTED);
             otherRequest.setRequestProcessed(LocalDateTime.now());
@@ -137,9 +141,39 @@ public class HouseholdRequestService {
         request.setReviewingAdmin(admin);
         request.setRequestProcessed(LocalDateTime.now());
 
+
+        Client client = request.getRequester();
+        client.getHouseholds().add(household);
+
+        household.setHouseholdOwner(client);
+        if(!realestate.getType().equals(RealEstateType.BUILDING)){
+            realestate.setRealestateOwner(client);
+            client.getRealEstates().add(realestate);
+        }
+        realestate = realestateService.saveRealestate(realestate);
+        household = householdService.saveHousehold(household);
+        client =  clientService.saveClient(client);
+
+
         otherRequests.add(request);
         otherRequests = householdRequestRepository.saveAll(otherRequests);
-        //TODO DODATI EMAIL NOTIFIKACIJU
+
+
+        City c = realestate.getCity();
+        Municipality m = c.getMunicipality();
+        Region rg = m.getRegion();
+
+        String address = realestate.getAddressStreet() + " " + realestate.getAddressNum() + " " + c.getName() + " " + m.getName() + " " + rg.getName();
+
+        if(realestate.getType().equals(RealEstateType.BUILDING)) {
+            address = "Apartment " + household.getApartmentNum() + " " + address;
+        }
+
+        for(HouseholdRequest req:  otherRequests){
+            Client requester = req.getRequester();
+            emailService.sendRequestUpdate(requester.getEmail(), requester.getFirstName(), address, req.getRequestStatus().equals(RequestStatus.ACCEPTED) ? "accepted" : "denied", req.getDenialReason());
+        }
+
     }
 
 
@@ -159,7 +193,21 @@ public class HouseholdRequestService {
         request.setDenialReason(denialReason);
 
         request =  householdRequestRepository.save(request);
-        //TODO DODATI EMAIL NOTIFIKACIJU
+
+        City c = realestate.getCity();
+        Municipality m = c.getMunicipality();
+        Region rg = m.getRegion();
+        Client requester = request.getRequester();
+
+        String address = realestate.getAddressStreet() + " " + realestate.getAddressNum() + " " + c.getName() + " " + m.getName() + " " + rg.getName();
+
+        if(realestate.getType().equals(RealEstateType.BUILDING)) {
+            address = "Apartment " + household.getApartmentNum() + " " + address;
+        }
+
+
+
+        emailService.sendRequestUpdate(requester.getEmail(), requester.getFirstName(), address, request.getRequestStatus().equals(RequestStatus.ACCEPTED) ? "accepted" : "denied", denialReason);
 
     }
 
@@ -174,15 +222,17 @@ public class HouseholdRequestService {
     }
 
 
-    public Page<HouseholdRequestPreviewDTO> getClientRequests(Long clientId, RequestStatus status, int page, int size,
+    public Page<HouseholdRequestPreviewDTO> getClientRequests(User user, RequestStatus status, int page, int size,
                                                               String sortField, String sortDir) {
         if(page < 0 ) page = 0;
         if(size < 1) size = 10;
         Pageable pageable = PageRequest.of(page, size, sortDir.equalsIgnoreCase("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending());
 
+        Specification<HouseholdRequest> spec = Specification.where(null);
+        if(user instanceof Client){
+            spec = Specification.where(HouseholdRequestSpecifications.hasRequesterId(user.getId()));
+        }
 
-        Specification<HouseholdRequest> spec = Specification
-                .where(HouseholdRequestSpecifications.hasRequesterId(clientId));
 
         if (status != null) {
             spec = spec.and(HouseholdRequestSpecifications.hasRequestStatus(status));

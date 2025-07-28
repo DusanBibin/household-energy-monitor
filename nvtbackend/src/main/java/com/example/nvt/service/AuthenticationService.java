@@ -108,10 +108,9 @@ public class AuthenticationService {
 
     public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
 
-        System.out.println("ides u kurac registracija");
         if(!(user instanceof SuperAdmin superAdmin || user == null))
             throw new InvalidAuthorizationException("Invalid action");
-        System.out.println(user.getRole().toString());
+
         boolean emailConfirmed = false;
         Role role = Role.CLIENT;
 

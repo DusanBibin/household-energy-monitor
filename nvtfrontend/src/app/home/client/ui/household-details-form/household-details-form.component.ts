@@ -5,6 +5,7 @@ import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { environment } from '../../../../../environments/environment.development';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
 
 
-  constructor(private modalService: NgbModal, private snackService: SnackBarService){
+  constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){
 
   }
 
@@ -125,7 +126,8 @@ export class HouseholdDetailsFormComponent implements OnChanges{
     this.requestClaimFiles.emit(this.files);
     this.resetAndDismiss(modal)
   }
-  
+
+
   
 
  

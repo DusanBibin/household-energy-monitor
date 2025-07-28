@@ -51,10 +51,10 @@ public class HouseholdRequestController {
 
     }
 
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'SUPERADMIN')")
     @GetMapping("/api/v1/household-request")
     public ResponseEntity<Page<HouseholdRequestPreviewDTO>> getClientRequests(
-            @AuthenticationPrincipal Client client,
+            @AuthenticationPrincipal User user,
             @RequestParam(required = false) RequestStatus status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -62,7 +62,7 @@ public class HouseholdRequestController {
             @RequestParam(defaultValue = "desc") String sortDir
     ) {
         Page<HouseholdRequestPreviewDTO> result = householdRequestService.getClientRequests(
-                client.getId(), status, page, size, sortField, sortDir);
+                user, status, page, size, sortField, sortDir);
         return ResponseEntity.ok(result);
     }
 

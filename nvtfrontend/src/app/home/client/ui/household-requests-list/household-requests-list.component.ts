@@ -4,6 +4,7 @@ import { ClientService } from '../../data-access/client.service';
 import { error } from 'console';
 import { HouseholdRequestPreviewDTO } from '../../data-access/model/client-model';
 import { request } from 'http';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class HouseholdRequestsListComponent {
  
   isLoading = true;
 
-  constructor(private route: ActivatedRoute, private clientService: ClientService, private router: Router){
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private router: Router, private jwtService: JwtService){
     
   }
 
@@ -117,7 +118,8 @@ export class HouseholdRequestsListComponent {
   }
 
   navigateDetailsRequest(realestateId: number, householdId: number, requestId: number){
-    this.router.navigate(['/home/client/realestate', realestateId, 'household', householdId, 'household-request', requestId])
+    const role = this.jwtService.getRole()?.toLowerCase()
+    this.router.navigate(['/home',role,'realestate', realestateId, 'household', householdId, 'household-request', requestId])
   }
 
 }

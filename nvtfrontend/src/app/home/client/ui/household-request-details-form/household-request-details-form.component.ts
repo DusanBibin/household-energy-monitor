@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { HouseholdDetailsDTO, HouseholdRequestDTO } from '../../data-access/model/client-model';
 import { environment } from '../../../../../environments/environment.development';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-household-request-details-form',
   standalone: false,
@@ -15,7 +17,7 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
   @Input() requestDetails: HouseholdRequestDTO | null = null;
 
   
-  constructor(){
+  constructor(protected jwtService: JwtService, private router: Router){
 
   }
   
@@ -32,5 +34,13 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
           console.log("nije null request details")
         }
       }
-    }
+  }
+
+  navigate(){
+
+    
+    const role = this.jwtService.getRole()?.toLowerCase()
+    
+    if(this.requestDetails){ this.router.navigate(['/home', role, 'realestate', this.requestDetails.realestateId, 'household', this.requestDetails.householdId]); }
+  }
 }

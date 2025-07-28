@@ -59,6 +59,13 @@ export class JwtService {
     return user ? allowedRoles.includes(user.data.role) : false;
   }
 
+  getRole(): string | null {
+    const user = this.getUser();
+    console.log("adfasfdas")
+    console.log(user?.data.role.toLowerCase())
+    if(user) return user.data.role;
+    return 'kerin kurac'
+  }
   // Check if superadmin needs to change password
   isFirstSuperadminLogin(): boolean {
     const user = this.getUser();

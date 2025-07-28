@@ -1,11 +1,15 @@
 <div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: scroll;">
    
- 
+    
+    
     <div class="border-bottom p-3" style="background-color: white;">
-        <a [routerLink]="['/home/client/vacant-households']" class="d-flex flex-row align-items-center llink-offset-2 link-underline link-underline-opacity-0 link-dark link-opacity-50-hover">
-            <i class="bi-chevron-left h6 m-0"></i>
-            <p class="card-title ps-2 m-0">Go back to search</p>
-        </a>
+       
+        @if(this.jwtService.hasRole(['CLIENT'])){
+            <a [routerLink]="['/home/client/vacant-households']" class="d-flex flex-row align-items-center llink-offset-2 link-underline link-underline-opacity-0 link-dark link-opacity-50-hover">
+                <i class="bi-chevron-left h6 m-0"></i>
+                <p class="card-title ps-2 m-0">Go back to search</p>
+            </a>
+        } 
         <h3 class="m-0">Household details</h3>
     </div>
         
@@ -105,7 +109,7 @@
                                 
                                 </div>
                                 
-                                @if(!householdDetails.pendingRequestId){
+                                @if(!householdDetails.pendingRequestId && jwtService.hasRole(['CLIENT'])){
                                     <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
                                         <span >Create household claim</span>
                                         <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->

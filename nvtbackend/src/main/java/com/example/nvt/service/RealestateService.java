@@ -54,6 +54,10 @@ public class RealestateService {
         return realestateWrapper.get();
     }
 
+    public Realestate saveRealestate(Realestate realestate) {
+        return realestateRepository.save(realestate);
+    }
+
 //    public List<String> getVacantRealestateHouseholdIds(Long realestateId) {
 //        Realestate realestate = getRealestateById(realestateId);
 //        return householdRepository.findVacantRealestateHouseholdIds(realestateId).stream().map(Object::toString).collect(Collectors.toList());

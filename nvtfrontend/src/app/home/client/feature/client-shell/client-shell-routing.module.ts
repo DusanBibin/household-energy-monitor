@@ -14,14 +14,7 @@ const routes: Routes = [
       (m) => m.VacantHouseholdsModule
     )
 },
-{
-  path:'realestate/:realestateId/household/:householdId',
-  loadChildren:() =>
-    import('../household-details/household-details.module').then(
-      (m) => m.HouseholdDetailsModule
-    )
 
-},
 {
   path:'household-requests',
   loadChildren:() => 
@@ -35,6 +28,14 @@ const routes: Routes = [
     import('../household-request-details/household-request-details.module').then(
       (m) => m.HouseholdRequestDetailsModule
     )
+},
+{
+  path:'realestate/:realestateId/household/:householdId',
+  loadChildren:() =>
+    import('../household-details/household-details.module').then(
+      (m) => m.HouseholdDetailsModule
+    )
+
 },
 {
   path: '**', // ako ne skonta ni jedan route
