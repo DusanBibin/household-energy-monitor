@@ -36,40 +36,13 @@ export class HouseholdDetailsComponent implements OnInit {
     console.log(this.route.snapshot.paramMap)
 
 
-    this.clientService.getHouseholdDetails(this.realestateId, this.householdId).pipe(
-      switchMap(householdDetails => {
-        
-    
-        if (householdDetails.user?.id) {
-          return this.fileService.getProfileImageParam(householdDetails.user.id).pipe(
-            map(profileImg => {
-              const imgUri = URL.createObjectURL(profileImg);
-              householdDetails.user.profileImg = imgUri;
-              console.log(householdDetails)
-              this.householdDetails = {isError: false, data: householdDetails}
-              return householdDetails;
-            }),
-            catchError(err => {
-              console.error('Error loading profile image:', err);
-              return of(householdDetails); 
-            })
-          );
-        }else{      
-          this.householdDetails = {isError: false, data: householdDetails}
-        } 
-    
-        return of(householdDetails); 
-      })
-    ).subscribe({
-      next: updatedDetails => {
-        
+    this.clientService.getHouseholdDetails(this.realestateId, this.householdId).subscribe({
+      next: householdDetails => {
+        this.householdDetails = { isError: false, data: householdDetails };
+        console.log('Household details:', householdDetails);
       },
       error: err => {
-       
-
-        this.householdDetails = {isError: true, error: err.error as ResponseMessage}
-
-
+        this.householdDetails = { isError: true, error: err.error as ResponseMessage };
         console.error('Error fetching household details:', err);
       }
     });

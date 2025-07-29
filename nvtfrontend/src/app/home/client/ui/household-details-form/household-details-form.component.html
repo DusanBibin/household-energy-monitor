@@ -87,7 +87,7 @@
                                                 <dt class="fs-4 fw-normal mb-2">Owner</dt>
                                                 @if(householdDetails.data.user){
                                                     <div class="d-flex flex-row align-items-center pt-1">
-                                                        <img [src]="householdDetails.data.user.profileImg" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                                        <img [src]="envProfileImg+householdDetails.data.user.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
                                                         <div class="d-flex flex-column">
                                                             <span>{{householdDetails.data.user.name}} {{householdDetails.data.user.lastname}}</span>
                                                             <span>{{householdDetails.data.user.email}}</span>
@@ -115,7 +115,8 @@
                                         
                                         </div>
                                         
-                                        @if(!householdDetails.data.pendingRequestId && jwtService.hasRole(['CLIENT'])){
+                                        @if(jwtService.hasRole(['CLIENT']) && !householdDetails.data.pendingRequestId && householdDetails.data.user == null)
+{
                                             <button (click)="openFileDialog()" class="btn btn-primary w-100" type="submit" [disabled]="false">
                                                 <span >Create household claim</span>
                                                 <!-- @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} -->

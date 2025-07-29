@@ -16,7 +16,7 @@ import { ResponseData } from '../../../../shared/model';
 })
 export class HouseholdDetailsFormComponent implements OnChanges{
   protected ENVIRONMENT_URL = environment.url
-
+  envProfileImg = environment.apiUrl + "/file/profile-img/"
   @Input() householdDetails: ResponseData | null = null;
   @Output() requestClaimFiles = new EventEmitter<{ id: number, file: File | null }[]>();
 

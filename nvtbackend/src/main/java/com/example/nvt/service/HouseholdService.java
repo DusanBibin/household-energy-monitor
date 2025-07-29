@@ -99,6 +99,7 @@ public class HouseholdService {
 
         if(client != null){
             UserSummaryDTO summaryData = UserSummaryDTO.builder()
+                    .id(client.getId())
                     .name(client.getFirstName())
                     .lastname(client.getLastname())
                     .email(client.getEmail())

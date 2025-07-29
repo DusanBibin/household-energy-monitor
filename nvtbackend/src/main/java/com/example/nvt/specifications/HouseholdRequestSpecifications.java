@@ -12,4 +12,21 @@ public class HouseholdRequestSpecifications {
     public static Specification<HouseholdRequest> hasRequestStatus(RequestStatus status) {
         return (root, query, cb) -> cb.equal(root.get("requestStatus"), status);
     }
+
+
+    public static Specification<HouseholdRequest> hasHouseholdId(Long householdId) {
+        return (root, query, cb) ->
+                cb.equal(root.get("household").get("id"), householdId);
+    }
+
+    public static Specification<HouseholdRequest> hasStatus(RequestStatus status) {
+        return (root, query, cb) ->
+                cb.equal(root.get("requestStatus"), status);
+    }
+
+    public static Specification<HouseholdRequest> idNotEqual(Long id) {
+        return (root, query, cb) ->
+                cb.notEqual(root.get("id"), id);
+    }
+
 }

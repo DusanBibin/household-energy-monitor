@@ -335,4 +335,31 @@ public class HouseholdRequestService {
             return "/" + fileService.uploadDirHouseholdRequests + "/" + request.getId() + "/" + fileName;
 
     }
+
+    public Page<HouseholdRequestPreviewDTO> getConflictedPendingRequests(Long realestateId, Long householdId, Long requestId, User user, int page, int size) {
+
+
+        if(page < 0 ) page = 0;
+        if(size < 1) size = 10;
+
+
+        Realestate realestate = realestateService.getRealestateById(realestateId);
+        Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
+
+        HouseholdRequest request = getRequestByIdAndHouseholdId(requestId, householdId);
+        if(!request.getRequestStatus().equals(RequestStatus.PENDING)) throw new InvalidInputException("Request status for this request is not PENDING");
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("requestSubmitted").ascending());
+
+        Specification<HouseholdRequest> spec = Specification
+                .where(HouseholdRequestSpecifications.hasHouseholdId(householdId))
+                .and(HouseholdRequestSpecifications.hasStatus(RequestStatus.PENDING))
+                .and(HouseholdRequestSpecifications.idNotEqual(requestId));
+
+
+
+        Page<HouseholdRequest> resultPage = householdRequestRepository.findAll(spec, pageable);
+
+        return resultPage.map(this::convertToSummaryDto);
+    }
 }

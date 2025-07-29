@@ -80,11 +80,20 @@ export class ClientService {
     }
 
 
+    getConflictedPendingRequests(realestateId: number, householdId: number, requestId: number, page: number = 0, size: number = 10): Observable<PagedResponse<HouseholdRequestPreviewDTO>>{
+      let params = new HttpParams()
+        .set('page', page)
+        .set('size', size)
+    
+        return this.http.get<PagedResponse<HouseholdRequestPreviewDTO>>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/'  + requestId + "/conflicted-pending-requests", { params, withCredentials: true }, );
+    }
+
+
     getHouseholdRequestDetails(realestateId: number, householdId: number, requestId: number): Observable<HouseholdRequestDTO>{
       return this.http.get<HouseholdRequestDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/' + requestId)
     }
 
-
+      //TODO prebaciti u admin service 
     processHouseholdRequest(realestateId: number, householdId: number, requestId: number, isAccepted: boolean, denyReason: string | null): Observable<HouseholdRequestDTO>{
 
       let decision = "accept"

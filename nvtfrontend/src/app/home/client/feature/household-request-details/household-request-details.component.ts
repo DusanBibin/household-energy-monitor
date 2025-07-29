@@ -13,30 +13,45 @@ import { SnackBarService } from '../../../../shared/services/snackbar-service/sn
   styleUrl: './household-request-details.component.css'
 })
 export class HouseholdRequestDetailsComponent implements OnInit {
-  realestateId: number;
-  householdId: number;
-  requestId: number;
+  realestateId!: number;
+  householdId!: number;
+  requestId!: number;
   requestDetails: ResponseData | null = null;
+  pendingRequests: ResponseData | null = null;
 
   constructor(private clientService: ClientService, private route: ActivatedRoute, private snackBar: SnackBarService){
-    this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
-    this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
-    this.requestId = Number(this.route.snapshot.paramMap.get('requestId'));
+    
   }
 
   ngOnInit(): void {
-      this.clientService.getHouseholdRequestDetails(this.realestateId, this.householdId, this.requestId).subscribe({
-        next: requestDetails => {
-          this.requestDetails = {isError: false, data: requestDetails};
-          console.log(this.requestDetails)
+     
 
-        },error: err => {
-          this.requestDetails = {isError: true, error: err.error as ResponseMessage}
-        }
-      })
+      this.route.paramMap.subscribe(params => {
+        this.realestateId = Number(params.get('realestateId'));
+        this.householdId = Number(params.get('householdId'));
+        this.requestId = Number(params.get('requestId'));
+    
+        // Fetch data based on new params
+        this.fetchRequestDetails();
+        
+      });
   
   }
 
+  private fetchRequestDetails(): void {
+    this.clientService.getHouseholdRequestDetails(this.realestateId, this.householdId, this.requestId).subscribe({
+      next: requestDetails => {
+        this.requestDetails = { isError: false, data: requestDetails };
+  
+        let x = this.requestDetails.data as HouseholdRequestDTO
+        if(x.requestStatus === "PENDING") this.getPendingRequests(0);
+        
+      },
+      error: err => {
+        this.requestDetails = { isError: true, error: err.error as ResponseMessage };
+      }
+    });
+  }
 
   sendDecision(event:{isAccepted: boolean, reason: string | null} ){
     this.clientService.processHouseholdRequest(this.realestateId, this.householdId, this.requestId, event.isAccepted, event.reason).subscribe({
@@ -50,6 +65,27 @@ export class HouseholdRequestDetailsComponent implements OnInit {
         this.requestDetails = {isError: true, error: err.error as ResponseMessage}
       }
     })
+  }
+
+
+  getPendingRequests(page: number){
+    this.clientService.getConflictedPendingRequests(this.realestateId, this.householdId, this.requestId, page, 10).subscribe({
+      next: pendingRequests => {
+        console.log(pendingRequests)
+        this.pendingRequests = {isError: false, data: pendingRequests};
+        console.log(this.requestDetails)
+
+      },error: err => {
+        this.pendingRequests = {isError: true, error: err.error as ResponseMessage}
+      }
+    })
+  }
+
+
+
+  handlePendingRequestsPaging(event: {page: number}){
+    this.getPendingRequests(event.page)
+
   }
 
 }

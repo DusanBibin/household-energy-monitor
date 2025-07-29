@@ -3,5 +3,8 @@
     
         (requestDecision)="sendDecision($event)"
         [requestDetails]="requestDetails"
+
+        (pagingDetailsOutput)="handlePendingRequestsPaging($event)"
+        [pendingRequests]="pendingRequests"
     ></app-household-request-details-form>
 </div>

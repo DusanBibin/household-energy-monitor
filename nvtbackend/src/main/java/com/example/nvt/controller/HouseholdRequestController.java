@@ -51,7 +51,23 @@ public class HouseholdRequestController {
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPERADMIN')")
+    @GetMapping("/api/v1/realestate/{realestateId}/household/{householdId}/household-request/{requestId}/conflicted-pending-requests")
+    public ResponseEntity<Page<HouseholdRequestPreviewDTO>> getConflictedPendingRequests(
+            @AuthenticationPrincipal User user,
+            @RequestParam(required = false) RequestStatus status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @PathVariable Long realestateId,
+            @PathVariable Long householdId,
+            @PathVariable Long requestId
+    ) {
+        Page<HouseholdRequestPreviewDTO> result = householdRequestService.getConflictedPendingRequests(realestateId, householdId, requestId, user, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('CLIENT','ADMIN', 'SUPERADMIN')")
     @GetMapping("/api/v1/household-request")
     public ResponseEntity<Page<HouseholdRequestPreviewDTO>> getClientRequests(
             @AuthenticationPrincipal User user,
@@ -65,6 +81,7 @@ public class HouseholdRequestController {
                 user, status, page, size, sortField, sortDir);
         return ResponseEntity.ok(result);
     }
+
 
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'SUPERADMIN')")
