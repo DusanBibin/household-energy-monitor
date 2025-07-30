@@ -26,6 +26,9 @@ public class Client extends User{
     private List<AssetRequest> assetRequests;
 
 
+    @OneToMany
+    private List<Appointment> appointments;
+
     @Override
     public String toString() {
         return "Client{id=" + this.getId() + ", name=" + this.getEmail() + "}";
