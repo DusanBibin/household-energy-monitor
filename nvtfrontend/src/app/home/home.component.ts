@@ -139,6 +139,12 @@ export class HomeComponent implements OnInit{
 
   private redirectBasedOnRole(role: string): void {
     switch (role) {
+      case 'CLERK':
+        this.router.navigate(['home/clerk']);
+        break
+      case 'ADMIN':
+        this.router.navigate(['home/admin']);
+        break
       case 'SUPERADMIN':
         this.router.navigate(['home/superadmin']);
         break;
