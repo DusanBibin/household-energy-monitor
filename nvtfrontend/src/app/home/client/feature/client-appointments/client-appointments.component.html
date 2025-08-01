@@ -1,4 +1,8 @@
 <div class="w-100 h-100">
     <app-client-appointments-dumb [appointments]="appointments"
-    (calendarViewChanged)="onCalendarRangeChange($event)"></app-client-appointments-dumb>
+    [clerksData]="clerksData"
+    (calendarViewChanged)="onCalendarRangeChange($event)"
+    
+    (pagingDetailsOutput)="handleClerksPaging($event)"></app-client-appointments-dumb>
+
 </div>

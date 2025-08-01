@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../data-access/client.service';
 import { AppointmentDTO } from '../../data-access/model/client-model';
-
+import { ResponseData } from '../../../../shared/model';
 @Component({
   selector: 'app-client-appointments',
   standalone: false,
@@ -10,7 +10,7 @@ import { AppointmentDTO } from '../../data-access/model/client-model';
 })
 export class ClientAppointmentsComponent implements OnInit{
 
-
+  clerksData: ResponseData | null = null;
   appointments: AppointmentDTO[] = [];
 
   constructor(private clientService: ClientService){}
@@ -45,7 +45,8 @@ export class ClientAppointmentsComponent implements OnInit{
         },
         error: (err) => console.error('Failed to fetch appointments:', err)
       });
-  }
+      this.getClerks(0);
+    }
 
 
 
@@ -73,6 +74,27 @@ export class ClientAppointmentsComponent implements OnInit{
         },
         error: (err) => console.error('Failed to fetch appointments:', err)
       });
+
+    
+
+  }
+
+  handleClerksPaging(event: {page: number}){
+    this.getClerks(event.page);
   }
   
+
+
+  getClerks(page: number){
+    console.log("jel se ovo pali sranje get clerks")
+    this.clientService.getClerks(0, 10).subscribe({
+      next: clerks => {
+        this.clerksData = {isError: false, data: clerks};
+        console.log(clerks)
+        console.log("izes mis")
+      },error: (err) => {
+        console.log(err)
+      }
+    })
+  }
 }

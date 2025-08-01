@@ -8,6 +8,7 @@ import { PagedResponse } from '../ui/household-requests-list/household-requests-
 import { HouseholdRequestPreviewDTO } from './model/client-model';
 import { request } from 'http';
 import { start } from 'repl';
+import { UserSummaryDTO } from '../../../auth/data-access/model/auth-model';
 
 @Injectable({
   providedIn: 'root'
@@ -111,6 +112,11 @@ export class ClientService {
       .set('endDateTime', endDateTime.toISOString())
 
       return this.http.get<AppointmentDTO[]>(environment.apiUrl + '/appointment', { params, withCredentials: true });
+    }
+
+
+    getClerks(page: number = 0, size: number = 10): Observable<PagedResponse<UserSummaryDTO>>{
+      return this.http.get<PagedResponse<UserSummaryDTO>>(environment.apiUrl + '/clerk', { withCredentials: true }, );
     }
     
 
