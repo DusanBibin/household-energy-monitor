@@ -9,10 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -30,11 +28,9 @@ public class Appointment {
     @ManyToOne
     private Client client;
 
-    private LocalDate date;
+    private LocalDateTime startDateTime;
 
-    private LocalTime startTime;
-
-    private LocalTime endTime;
+    private LocalDateTime endDateTime;
 
     private boolean isPrivate;
 }

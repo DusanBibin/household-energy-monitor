@@ -38,6 +38,13 @@ const routes: Routes = [
 
 },
 {
+  path:'appointments',
+  loadChildren:() => 
+    import('../client-appointments/client-appointments.module').then(
+      (m) => m.ClientAppointmentsModule
+    )
+},
+{
   path: '**', // ako ne skonta ni jedan route
   redirectTo: 'vacant-households', // redirect na ''
 }

@@ -1,64 +1,69 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.DTO.AppointmentDTO;
 import com.example.nvt.exceptions.InvalidInputException;
-import com.example.nvt.model.Appointment;
-import com.example.nvt.model.Clerk;
-import com.example.nvt.model.Client;
+import com.example.nvt.model.*;
 import com.example.nvt.repository.AppointmentRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.nvt.specifications.AppointmentSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentService {
-
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
     private final ClientService clientService;
     private final ClerkService clerkService;
     private final AppointmentRepository appointmentRepository;
+    private final UserService userService;
 
-    public void createAppointment(Client client, Long clerkId, String dateString, String startTimeString) {
+    public AppointmentDTO createAppointment(Client client, Long clerkId, String startDateTimeString) {
+
+
+
+        LocalDateTime startDateTime;
+        try {
+            startDateTime = LocalDateTime.parse(startDateTimeString, formatter);
+        } catch (DateTimeParseException e) {
+            throw new InvalidInputException("Invalid date format. Use dd/MM/yyyy-HH:mm");
+        }
+
+
         client = clientService.findClientById(client.getId());
 
 
-        LocalDate date = LocalDate.now();
-        try{
-            date = LocalDate.parse(dateString); // Expects "YYYY-MM-DD"
-        }catch (DateTimeParseException e){
-            throw new InvalidInputException("Invalid date format");
+
+        if(!isValidAppointmentSlot(startDateTime)) throw new InvalidInputException("Start time is not valid");
+        if (startDateTime.isBefore(LocalDateTime.now().plusDays(1))) {
+            throw new InvalidInputException("Appointments must be scheduled at least 24 hours in advance.");
         }
 
-        LocalTime startTime = LocalTime.now();
-        try{
-            startTime = LocalTime.parse(startTimeString); // Expects "HH:mm"
-        }catch (DateTimeParseException e){
-            throw new InvalidInputException("Invalid time format");
-        }
-
-
-        if(!isValidAppointmentSlot(startTime)) throw new InvalidInputException("Start time is not valid");
-        if(date.isBefore(LocalDate.now())) throw new InvalidInputException("You can only make appointments for the future");
 
 
         Clerk clerk = clerkService.getClerkById(clerkId);
 
-        if(appointmentRepository.getExistingAppointment(clerkId, date, startTime).isPresent())
-            throw new InvalidInputException("Appointment for this time already exists");
+        if(appointmentRepository.getExistingAppointmentClerk(clerkId, startDateTime).isPresent())
+            throw new InvalidInputException("Appointment for this time for this clerk is already taken");
 
+        if(appointmentRepository.getExistingAppointmentClient(client.getId(), startDateTime).isPresent())
+            throw new InvalidInputException("You already have an appointment at this time at different clerk");
 
         Appointment appointment = Appointment.builder()
                 .clerk(clerk)
                 .client(client)
-                .date(date)
-                .startTime(startTime)
-                .endTime(startTime.plusMinutes(30))
+                .startDateTime(startDateTime)
+                .endDateTime(startDateTime.plusMinutes(30))
                 .isPrivate(false)
                 .build();
 
@@ -69,13 +74,17 @@ public class AppointmentService {
         client.getAppointments().add(appointment);
         client = clientService.saveClient(client);
 
+        return convertToAppointmentDto(appointment);
     }
 
     public Appointment saveAppointment(Appointment appointment){
          return appointmentRepository.save(appointment);
     }
 
-    public boolean isValidAppointmentSlot(LocalTime startTime) {
+    public boolean isValidAppointmentSlot(LocalDateTime startDateTime) {
+        // Extract the time part
+        LocalTime startTime = startDateTime.toLocalTime();
+
         // Define working hours
         LocalTime workStart = LocalTime.of(8, 0);
         LocalTime workEnd = LocalTime.of(16, 0);
@@ -94,7 +103,7 @@ public class AppointmentService {
             return false;
         }
 
-        // Must be on 30-minute boundary (e.g., 08:00, 08:30, etc.)
+        // Must be on a 30-minute boundary
         if (startTime.getMinute() % 30 != 0 || startTime.getSecond() != 0 || startTime.getNano() != 0) {
             return false;
         }
@@ -102,4 +111,35 @@ public class AppointmentService {
         return true;
     }
 
+
+    public Page<AppointmentDTO> getClientAppointments(Long clientId, int page, int size) {
+
+        if(page < 0 ) page = 0;
+        if(size < 1) size = 10;
+
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("startDateTime").ascending());
+
+        Specification<Appointment> spec = Specification
+                .where(AppointmentSpecifications.hasClientId(clientId))
+                .and(AppointmentSpecifications.isInTheFuture());
+
+
+        Page<Appointment> resultPage = appointmentRepository.findAll(spec, pageable);
+
+        return resultPage.map(this::convertToAppointmentDto);
+    }
+
+
+    private AppointmentDTO convertToAppointmentDto(Appointment appointment) {
+
+        return AppointmentDTO.builder()
+                .id(appointment.getId())
+                .clerk(userService.convertToDTO(appointment.getClerk()))
+                .client(userService.convertToDTO(appointment.getClient()))
+                .startDateTime(appointment.getStartDateTime())
+                .endDateTime(appointment.getEndDateTime())
+                .isPrivate(appointment.isPrivate())
+                .build();
+    }
 }
