@@ -14,10 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +85,12 @@ public class AppointmentService {
     }
 
     public boolean isValidAppointmentSlot(LocalDateTime startDateTime) {
+        // Reject weekends
+        DayOfWeek day = startDateTime.getDayOfWeek();
+        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+            return false;
+        }
+
         // Extract the time part
         LocalTime startTime = startDateTime.toLocalTime();
 
@@ -112,6 +121,7 @@ public class AppointmentService {
     }
 
 
+
     public Page<AppointmentDTO> getClientAppointments(Long clientId, int page, int size) {
 
         if(page < 0 ) page = 0;
@@ -131,6 +141,28 @@ public class AppointmentService {
     }
 
 
+    public static boolean isValidWeekRange(LocalDateTime start, LocalDateTime end) {
+        // 1. Check if start is before end
+        if (!start.isBefore(end)) {
+            return false;
+        }
+
+        // 2. Check if both are Mondays
+        if (start.getDayOfWeek() != DayOfWeek.MONDAY || end.getDayOfWeek() != DayOfWeek.MONDAY) {
+            return false;
+        }
+
+        // 3. Check if both times are exactly midnight (00:00:00)
+        if (!start.toLocalTime().equals(LocalTime.MIDNIGHT) ||
+                !end.toLocalTime().equals(LocalTime.MIDNIGHT)) {
+            return false;
+        }
+
+        // 4. Check if exactly 7 days apart
+        long daysBetween = ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate());
+        return daysBetween == 7;
+    }
+
     private AppointmentDTO convertToAppointmentDto(Appointment appointment) {
 
         return AppointmentDTO.builder()
@@ -141,5 +173,14 @@ public class AppointmentService {
                 .endDateTime(appointment.getEndDateTime())
                 .isPrivate(appointment.isPrivate())
                 .build();
+    }
+
+    public List<AppointmentDTO> getWeekAppointments(User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+
+        if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
+        List<Appointment> appointments = appointmentRepository.getWeekAppointments(user.getId(), startDateTime, endDateTime);
+        return appointments.stream()
+                .map(this::convertToAppointmentDto)
+                .toList();
     }
 }

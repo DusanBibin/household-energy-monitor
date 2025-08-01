@@ -44,7 +44,8 @@
                         </li>
                     }
                     
-
+                    
+                    
 
 
                     @if(this.jwtService.hasRole(["CLIENT"])){
@@ -77,6 +78,14 @@
                                 
                  
                                 <i class="fs-5 bi-house-up-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Vacant households requests</span> </a>
+                        </li>
+                    }
+
+                    @if(this.jwtService.hasRole(["CLIENT"])){
+                        <li class="nav-item">
+                            
+                            <a routerLink="client/appointments" routerLinkActive="active" class="nav-link ">
+                                <i class="fs-5 bi-calendar"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Find vacant households</span> </a>
                         </li>
                     }
 

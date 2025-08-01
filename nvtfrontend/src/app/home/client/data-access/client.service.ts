@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
 import { PagedResponse } from '../ui/household-requests-list/household-requests-list.component';
 import { HouseholdRequestPreviewDTO } from './model/client-model';
 import { request } from 'http';
+import { start } from 'repl';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +101,16 @@ export class ClientService {
       if(!isAccepted) decision = "decline"
       return this.http.put<HouseholdRequestDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/' + requestId + "/" + decision, denyReason)
   
+    }
+
+
+    getClientAppointments(startDateTime: Date, endDateTime: Date): Observable<AppointmentDTO[]>{
+
+      let params = new HttpParams()
+      .set('startDateTime', startDateTime.toISOString())
+      .set('endDateTime', endDateTime.toISOString())
+
+      return this.http.get<AppointmentDTO[]>(environment.apiUrl + '/appointment', { params, withCredentials: true });
     }
     
 

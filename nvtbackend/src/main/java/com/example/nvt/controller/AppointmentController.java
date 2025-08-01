@@ -5,10 +5,12 @@ import com.example.nvt.DTO.AppointmentDTO;
 import com.example.nvt.DTO.AuthRequestDTO;
 import com.example.nvt.DTO.PartialUserDataDTO;
 import com.example.nvt.model.Client;
+import com.example.nvt.model.User;
 import com.example.nvt.service.AppointmentService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import okhttp3.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,14 +41,25 @@ public class AppointmentController {
     }
 
 
+//    @PreAuthorize("hasAuthority('CLIENT')")
+//    @GetMapping("/appointment")
+//    public ResponseEntity<Page<AppointmentDTO>> getClientAppointments(@AuthenticationPrincipal Client client,
+//                                                                      @RequestParam(defaultValue = "0") int page,
+//                                                                      @RequestParam(defaultValue = "10") int size){
+//        Page<AppointmentDTO> appointments = appointmentService.getClientAppointments(client.getId(), page, size);
+//        return ResponseEntity.ok(appointments);
+//    }
+
+
+
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/appointment")
-    public ResponseEntity<Page<AppointmentDTO>> getClientAppointments(@AuthenticationPrincipal Client client,
-                                                                      @RequestParam(defaultValue = "0") int page,
-                                                                      @RequestParam(defaultValue = "10") int size){
-        Page<AppointmentDTO> appointments = appointmentService.getClientAppointments(client.getId(), page, size);
+    public ResponseEntity<List<AppointmentDTO>> getWeekAppointments(@AuthenticationPrincipal User user, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
+                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
+        List<AppointmentDTO> appointments = appointmentService.getWeekAppointments(user, startDateTime, endDateTime);
         return ResponseEntity.ok(appointments);
     }
+
 
 
 }

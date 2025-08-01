@@ -16,6 +16,10 @@ import { AuthService } from '../auth/data-access/auth.service';
 })
 export class HomeComponent implements OnInit{
   
+
+
+
+
   center: google.maps.LatLngLiteral = { lat: 23.0225, lng: 72.5714}
   protected navbarExpanded = false;
   protected partialUserData: PartialUserData;
@@ -56,6 +60,12 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+
+
+
+
+
     this.checkScreenSize();
     this.resizeListener = () => this.checkScreenSize();
     window.addEventListener('resize', this.resizeListener);
@@ -167,6 +177,28 @@ export class HomeComponent implements OnInit{
       },
     });
   }
+
+  navigateToClientAppointments() {
+    const now = new Date();
   
+    // Get this week's Monday
+    const mondayThisWeek = new Date(now);
+    const day = mondayThisWeek.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // Sunday = 0
+    mondayThisWeek.setDate(mondayThisWeek.getDate() + diff);
+    mondayThisWeek.setHours(0, 0, 0, 0);
+  
+    // Get next week's Monday
+    const mondayNextWeek = new Date(mondayThisWeek);
+    mondayNextWeek.setDate(mondayThisWeek.getDate() + 7);
+  
+    const start = mondayThisWeek.toISOString();
+    const end = mondayNextWeek.toISOString();
+  
+    this.router.navigate(
+      ['/home', 'client', 'appointments'],
+      { queryParams: { start, end } }
+    );
+  }
   
 }
