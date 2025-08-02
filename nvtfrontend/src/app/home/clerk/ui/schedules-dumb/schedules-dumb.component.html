@@ -1,12 +1,24 @@
 <div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: scroll;">
    
  
-    <div class="border-bottom p-3" style="background-color: white;">
-        <h5 class="m-0">Household claim request</h5>
+    <div class="border-bottom p-3 d-flex justify-content-between" style="background-color: white;">
+        <h5 class="m-0">Clerk appointments</h5>
+
+        @if (clerk) {
+            <div class="d-flex flex-row align-items-center pt-1">
+                <img [src]="envProfileImg + clerk.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                <div class="d-flex flex-column">
+                    <span>{{clerk.name}} {{clerk.lastname}}</span>
+                    <span>{{clerk.email}}</span>
+                </div>
+            </div> 
+        }
+        
     </div>
 
     <div class="w-100 p-3 d-flex flex-grow-1" style="overflow-y: scroll;">
         <full-calendar #calendar class="w-100 " [options]="calendarOptions"></full-calendar>
     </div>
+
     
 </div>

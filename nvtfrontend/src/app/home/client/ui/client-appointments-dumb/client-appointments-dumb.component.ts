@@ -10,6 +10,8 @@ import { PagedResponse } from '../household-requests-list/household-requests-lis
 import { UserSummaryDTO } from '../../../../auth/data-access/model/auth-model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment.development';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-appointments-dumb',
@@ -41,7 +43,7 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
 
-  constructor(private modalService: NgbModal){}
+  constructor(private modalService: NgbModal, protected jwtService: JwtService, private router: Router){}
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin],
@@ -106,7 +108,9 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
     calendarApi.removeAllEvents();
     console.log(this.appointments)
     const events = this.appointments.map(app => ({
-      title: app.clerk.name + " " + app.clerk.lastname,
+      title: this.jwtService.hasRole(['CLERK'])
+      ? `${app.clerk.name} ${app.clerk.lastname}`
+      : `${app.client.name} ${app.client.lastname}`,
       start: app.startDateTime,
       end: app.endDateTime,
       allDay: false
@@ -180,8 +184,9 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
     }
   }
 
-  navigateClerkAppointments(){
-
+  navigateClerkAppointments(clerkId: number, modal: any){
+    this.router.navigate(['/home','client','schedules', 'clerk', clerkId])
+    this.resetAndDismiss(modal)
   }
 
 }

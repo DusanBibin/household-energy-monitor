@@ -1,8 +1,19 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, ViewChild, SimpleChanges, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { CalendarOptions, EventInput, DatesSetArg } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { FullCalendarComponent, } from '@fullcalendar/angular';
 import enGbLocale from '@fullcalendar/core/locales/en-gb'
+import { AppointmentDTO } from '../../../client/data-access/model/client-model';
+import { end } from '@popperjs/core';
+import { PartialUserData, ResponseData } from '../../../../shared/model';
+import { PagedResponse } from '../../../client/ui/household-requests-list/household-requests-list.component';
+import { UserSummaryDTO } from '../../../../auth/data-access/model/auth-model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../../../environments/environment.development';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+import { Router } from '@angular/router';
+import { title } from 'process';
+import { EventClickArg } from '@fullcalendar/core';
 
 @Component({
   selector: 'app-schedules-dumb',
@@ -11,8 +22,23 @@ import enGbLocale from '@fullcalendar/core/locales/en-gb'
   styleUrl: './schedules-dumb.component.css'
 })
 export class SchedulesDumbComponent implements AfterViewInit{
+  envProfileImg = environment.apiUrl + "/file/profile-img/";
+
+
+  @Input() clerk: PartialUserData | null = null;
+
+  @Input() appointments: AppointmentDTO[] = [];
+  @Output() calendarViewChanged = new EventEmitter<{ start: Date, end: Date }>();
+
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+
+  selectedId = 0;
+  page = 0;
+  size = 10;
+  totalPages = 0;
+
+  constructor(private modalService: NgbModal, protected jwtService: JwtService, private router: Router) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin],
@@ -30,14 +56,13 @@ export class SchedulesDumbComponent implements AfterViewInit{
     allDaySlot: false,
     slotDuration: '00:30:00',
     slotLabelInterval: '01:00:00',
-    events: (fetchInfo, successCallback, failureCallback) => {
-      const events = this.generateTimeSlots(fetchInfo.start, fetchInfo.end);
-      successCallback(events);
-    },
+    slotMinTime: '08:00:00',
+    slotMaxTime: '16:00:00',
+    expandRows: true,
     datesSet: (arg: DatesSetArg) => {
-      const calendarApi = this.calendarComponent.getApi();
-      calendarApi.refetchEvents(); // refresh slots whenever week changes
-    }
+      this.onCalendarViewChange(arg);
+    },
+    eventClick: this.onCalendarSlotClick.bind(this)
   };
 
   ngAfterViewInit() {
@@ -47,45 +72,111 @@ export class SchedulesDumbComponent implements AfterViewInit{
     }, 20);
   }
 
-  private generateTimeSlots(startDate: Date, endDate: Date): EventInput[] {
-    const slots: EventInput[] = [];
-
-    const startHour = 8;
-    const endHour = 16;
-    const excludedStart = 12;
-    const excludedEnd = 12.5;
-
-    const current = new Date(startDate);
-    current.setHours(0, 0, 0, 0);
-
-    while (current < endDate) {
-      const day = current.getDay(); 
-
-      if (day >= 1 && day <= 5) { 
-        for (let time = startHour; time < endHour; time += 0.5) {
-          if (time >= excludedStart && time < excludedEnd) continue;
-
-          const slotStart = new Date(current);
-          const hour = Math.floor(time);
-          const minute = (time % 1) * 60;
-          slotStart.setHours(hour, minute, 0, 0);
-
-          const slotEnd = new Date(slotStart);
-          slotEnd.setMinutes(slotStart.getMinutes() + 30);
-
-          slots.push({
-            title: 'Available Slot',
-            start: slotStart.toISOString(),
-            end: slotEnd.toISOString(),
-            allDay: false
-          });
-        }
-      }
-
-      current.setDate(current.getDate() + 1);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['appointments']) {
+      this.updateCalendarEvents();
     }
 
+
+
+  
+  }
+
+  private updateCalendarEvents(): void {
+    const calendarApi = this.calendarComponent?.getApi();
+    if (!calendarApi) return;
+  
+    calendarApi.removeAllEvents();
+  
+    const calendarView = calendarApi.view;
+    const viewStart = new Date(calendarView.currentStart);
+    const viewEnd = new Date(calendarView.currentEnd);
+  
+    const appointmentEvents = this.appointments.map(app => ({
+      title: 'Not available',
+      start: app.startDateTime,
+      end: app.endDateTime,
+      color: 'red',
+      allDay: false
+    }));
+  
+    const blueSlots = this.generateBlueSlots(viewStart, viewEnd, this.appointments);
+    const allEvents = [...blueSlots, ...appointmentEvents];
+  
+    calendarApi.addEventSource(allEvents);
+  }
+
+  onCalendarSlotClick(arg: EventClickArg): void {
+    const event = arg.event;
+  
+    if (event.title === 'Available') {
+      const start = event.start;
+      const end = event.end;
+      
+      console.log('Clicked available slot:');
+      console.log('Start:', start);
+      console.log('End:', end);
+  
+      // 👉 Replace this with your actual logic (modal, navigation, etc.)
+      alert(`You clicked an available slot:\n${start?.toLocaleString()} - ${end?.toLocaleString()}`);
+    }
+  }
+  
+  
+
+  private generateBlueSlots(viewStart: Date, viewEnd: Date, appointments: AppointmentDTO[]): any[] {
+    const slots: any[] = [];
+    const now = new Date();
+    const startHour = 8;
+    const endHour = 16;
+    const lunchStart = 12;
+    const lunchEnd = 12.5;
+  
+    const current = new Date(viewStart);
+    current.setHours(0, 0, 0, 0);
+  
+    while (current < viewEnd) {
+      const day = current.getDay();
+      if (day >= 1 && day <= 5) {
+        for (let time = startHour; time < endHour; time += 0.5) {
+          if (time >= lunchStart && time < lunchEnd) continue;
+  
+          const slotStart = new Date(current);
+          slotStart.setHours(Math.floor(time), (time % 1) * 60, 0, 0);
+          const slotEnd = new Date(slotStart);
+          slotEnd.setMinutes(slotStart.getMinutes() + 30);
+  
+          if (slotEnd <= now) continue; // Skip slots in the past
+  
+          const overlaps = appointments.some(app => {
+            const appStart = new Date(app.startDateTime);
+            const appEnd = new Date(app.endDateTime);
+            return slotStart < appEnd && slotEnd > appStart;
+          });
+  
+          if (!overlaps) {
+            slots.push({
+              title: 'Available',
+              start: slotStart.toISOString(),
+              end: slotEnd.toISOString(),
+              color: '#007bff',
+              allDay: false
+            });
+          }
+        }
+      }
+      current.setDate(current.getDate() + 1);
+    }
+  
     return slots;
   }
- 
+  
+  
+
+  onCalendarViewChange(arg: DatesSetArg): void {
+    this.calendarViewChanged.emit({ start: arg.start, end: arg.end });
+  }
+
+
+
 }

@@ -1,3 +1,6 @@
 <div class="w-100 h-100">
-    <app-schedules-dumb></app-schedules-dumb>
+    <app-schedules-dumb
+    [appointments]="appointments"
+    [clerk]="clerk"
+    (calendarViewChanged)="onCalendarRangeChange($event)"></app-schedules-dumb>
 </div>

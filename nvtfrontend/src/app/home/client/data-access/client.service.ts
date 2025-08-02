@@ -121,5 +121,15 @@ export class ClientService {
     
 
 
+    getClerkAppointments(clerkId: number, startDateTime: Date, endDateTime: Date): Observable<AppointmentDTO[]>{
+
+      let params = new HttpParams()
+      .set('startDateTime', startDateTime.toISOString())
+      .set('endDateTime', endDateTime.toISOString())
+
+      return this.http.get<AppointmentDTO[]>(environment.apiUrl + '/clerk/' + clerkId + '/appointment', { params, withCredentials: true })
+    }
+
+
   
 }

@@ -36,13 +36,13 @@
                     }
 
 
-                    @if(this.jwtService.hasRole(["CLERK"])){
+                    <!-- @if(this.jwtService.hasRole(["CLERK"])){
                         <li class="nav-item">
                             
                             <a routerLink="clerk/schedules" routerLinkActive="active" class="nav-link ">
                                 <i class="fs-5 bi-zoom-in"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Find vacant households</span> </a>
                         </li>
-                    }
+                    } -->
                     
                     
                     
@@ -85,6 +85,14 @@
                         <li class="nav-item">
                             
                             <a routerLink="client/appointments" routerLinkActive="active" class="nav-link ">
+                                <i class="fs-5 bi-calendar"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Find vacant households</span> </a>
+                        </li>
+                    }
+
+                    @if(this.jwtService.hasRole(["CLERK"])){
+                        <li class="nav-item">
+                            
+                            <a routerLink="clerk/appointments" routerLinkActive="active" class="nav-link ">
                                 <i class="fs-5 bi-calendar"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">Find vacant households</span> </a>
                         </li>
                     }

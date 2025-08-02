@@ -1,6 +1,5 @@
 package com.example.nvt.repository;
 
-import com.example.nvt.DTO.AppointmentDTO;
 import com.example.nvt.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -21,6 +20,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
 
     @Query("SELECT a FROM Appointment a WHERE a.client.id = :clientId AND a.startDateTime >= :start" +
             " AND a.startDateTime < :end ORDER BY a.startDateTime ASC")
-    List<Appointment> getWeekAppointments(Long clientId, LocalDateTime start, LocalDateTime end);
+    List<Appointment> getWeekAppointmentsClient(Long clientId, LocalDateTime start, LocalDateTime end);
 
+
+    @Query("SELECT a FROM Appointment a WHERE a.clerk.id = :clerkId AND a.startDateTime >= :start" +
+            " AND a.startDateTime < :end ORDER BY a.startDateTime ASC")
+    List<Appointment> getWeekAppointmentsClerk(Long clerkId, LocalDateTime start, LocalDateTime end);
 }

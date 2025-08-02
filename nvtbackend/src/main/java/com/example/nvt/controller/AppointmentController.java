@@ -52,7 +52,7 @@ public class AppointmentController {
 
 
 
-    @PreAuthorize("hasAuthority('CLIENT')")
+    @PreAuthorize("hasAnyAuthority('CLIENT','CLERK')")
     @GetMapping("/appointment")
     public ResponseEntity<List<AppointmentDTO>> getWeekAppointments(@AuthenticationPrincipal User user, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
@@ -60,6 +60,14 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
-
+    @PreAuthorize("hasAuthority('CLIENT')")
+    @GetMapping("/clerk/{clerkId}/appointment")
+    public ResponseEntity<List<AppointmentDTO>> getWeekAppointmentsClerk(@AuthenticationPrincipal Client client,
+                                                                         @PathVariable Long clerkId,
+                                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
+                                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
+        List<AppointmentDTO> appointments = appointmentService.getWeekAppointmentsClerk(client,clerkId, startDateTime, endDateTime);
+        return ResponseEntity.ok(appointments);
+    }
 
 }

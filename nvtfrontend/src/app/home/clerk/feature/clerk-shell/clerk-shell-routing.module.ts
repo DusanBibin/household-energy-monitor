@@ -2,14 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  
   {
-    path:'schedules',
-    loadChildren:() =>
-      import('../../../clerk/feature/schedules/schedules.module').then(
-        (m) => m.SchedulesModule
+    path:'appointments',
+    loadChildren:() => 
+      import('../../../client/feature/client-appointments/client-appointments.module').then(
+        (m) => m.ClientAppointmentsModule
       )
-  
   },
 ];
 

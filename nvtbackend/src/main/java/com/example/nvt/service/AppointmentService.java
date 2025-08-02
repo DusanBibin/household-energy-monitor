@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -178,9 +179,30 @@ public class AppointmentService {
     public List<AppointmentDTO> getWeekAppointments(User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
-        List<Appointment> appointments = appointmentRepository.getWeekAppointments(user.getId(), startDateTime, endDateTime);
+        List<Appointment> appointments = new ArrayList<>();
+        if(user instanceof Client) appointments = appointmentRepository.getWeekAppointmentsClient(user.getId(), startDateTime, endDateTime);
+        if(user instanceof Clerk)  appointments = appointmentRepository.getWeekAppointmentsClerk(user.getId(), startDateTime, endDateTime);
+
         return appointments.stream()
                 .map(this::convertToAppointmentDto)
+                .toList();
+    }
+
+
+
+    public List<AppointmentDTO> getWeekAppointmentsClerk(Client client, Long clerkId, LocalDateTime startDateTime,
+                                                         LocalDateTime endDateTime) {
+        Clerk clerk = clerkService.getClerkById(clerkId);
+
+
+        if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
+        List<Appointment> appointments = appointmentRepository.getWeekAppointmentsClerk(clerkId, startDateTime, endDateTime);
+
+        return appointments.stream()
+                .map(appointment -> AppointmentDTO.builder()
+                        .startDateTime(appointment.getStartDateTime())
+                        .endDateTime(appointment.getEndDateTime())
+                        .build())
                 .toList();
     }
 }

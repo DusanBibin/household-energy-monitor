@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../data-access/client.service';
 import { AppointmentDTO } from '../../data-access/model/client-model';
 import { ResponseData } from '../../../../shared/model';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 @Component({
   selector: 'app-client-appointments',
   standalone: false,
@@ -13,7 +14,7 @@ export class ClientAppointmentsComponent implements OnInit{
   clerksData: ResponseData | null = null;
   appointments: AppointmentDTO[] = [];
 
-  constructor(private clientService: ClientService){}
+  constructor(private clientService: ClientService, private jwtService: JwtService){}
 
   ngOnInit(): void {
     const today = new Date();
@@ -45,7 +46,7 @@ export class ClientAppointmentsComponent implements OnInit{
         },
         error: (err) => console.error('Failed to fetch appointments:', err)
       });
-      this.getClerks(0);
+      if(this.jwtService.hasRole(['CLIENT'])) this.getClerks(0);
     }
 
 

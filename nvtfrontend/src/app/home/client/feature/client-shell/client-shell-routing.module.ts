@@ -14,7 +14,6 @@ const routes: Routes = [
       (m) => m.VacantHouseholdsModule
     )
 },
-
 {
   path:'household-requests',
   loadChildren:() => 
@@ -35,13 +34,19 @@ const routes: Routes = [
     import('../household-details/household-details.module').then(
       (m) => m.HouseholdDetailsModule
     )
-
 },
 {
   path:'appointments',
   loadChildren:() => 
     import('../client-appointments/client-appointments.module').then(
       (m) => m.ClientAppointmentsModule
+    )
+},
+{
+  path:'schedules/clerk/:clerkId',
+  loadChildren:() =>
+    import('../../../clerk/feature/schedules/schedules.module').then(
+      (m) => m.SchedulesModule
     )
 },
 {
