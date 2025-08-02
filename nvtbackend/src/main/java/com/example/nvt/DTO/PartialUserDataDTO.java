@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PartialUserDataDTO {
+    private Long id;
     private String name;
     private String lastname;
     private String email;

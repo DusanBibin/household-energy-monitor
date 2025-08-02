@@ -50,6 +50,8 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionRepository regionRepository;
     private final MunicipalityRepository municipalityRepository;
 
+
+    private final ClerkRepository clerkRepository;
     private final RealestateDocRepository realestateDocRepository;
     private final RegionDocRepository regionDocRepository;
     private final MunicipalityDocRepository municipalityDocRepository;
@@ -519,6 +521,13 @@ public class DataInitializer implements CommandLineRunner {
         stopWatch.stop();
         System.out.println("DONE");
 
+
+
+
+
+
+
+
         stopWatch.start("Initializing households");
         System.out.println("Initializing households...");
 
@@ -529,6 +538,63 @@ public class DataInitializer implements CommandLineRunner {
 
         stopWatch.stop();
         System.out.println("DONE");
+
+
+
+        stopWatch.start("Initializing clerks");
+        System.out.println("Initializing clerks...");
+
+
+
+        String clerkPass = passwordEncoder.encode("clerk1");
+        Clerk clerk1 = Clerk.builder()
+                .email("dusanbibin2+clerk1@gmail.com")
+                .firstName("Clerk1")
+                .lastname("Prezime")
+                .phoneNumber("0691817839")
+                .password(clerkPass)
+                .verification(new Verification())
+                .profileImg("NEMA")
+                .emailConfirmed(true)
+                .appointments(new ArrayList<>())
+                .role(Role.CLERK)
+                .build();
+        clerk1 = clerkRepository.save(clerk1);
+
+        Clerk clerk2 = Clerk.builder()
+                .email("dusanbibin2+clerk2@gmail.com")
+                .firstName("Clerk2")
+                .lastname("Prezime")
+                .phoneNumber("0691817839")
+                .password(clerkPass)
+                .verification(new Verification())
+                .profileImg("NEMA")
+                .emailConfirmed(true)
+                .appointments(new ArrayList<>())
+                .role(Role.CLERK)
+                .build();
+        clerk2 = clerkRepository.save(clerk2);
+
+        Clerk clerk3 = Clerk.builder()
+                .email("dusanbibin2+clerk3@gmail.com")
+                .firstName("Clerk3")
+                .lastname("Prezime")
+                .phoneNumber("0691817839")
+                .password(clerkPass)
+                .verification(new Verification())
+                .profileImg("NEMA")
+                .emailConfirmed(true)
+                .appointments(new ArrayList<>())
+                .role(Role.CLERK)
+                .build();
+        clerk3 = clerkRepository.save(clerk3);
+
+
+
+        stopWatch.stop();
+        System.out.println("DONE");
+
+
         System.out.println(stopWatch.prettyPrint());
     }
 

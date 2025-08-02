@@ -15,5 +15,8 @@ export class UserService {
     return this.http.get<PartialUserData>(environment.apiUrl + '/user/partial-data');
   }
 
-  
+
+  getUserData(userId: number): Observable<PartialUserData>{
+    return this.http.get<PartialUserData>(environment.apiUrl + '/user/' + userId);
+  }
 }

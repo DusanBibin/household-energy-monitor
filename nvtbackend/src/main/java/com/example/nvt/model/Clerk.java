@@ -1,23 +1,22 @@
 package com.example.nvt.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-//@Table(name = "official")
-public class Official extends User{
+public class Clerk extends User{
 
-    @Override
-    public String toString() {
-        return "Official{id=" + this.getId() + ", name=" + this.getEmail() + "}";
+    @OneToMany
+    private List<Appointment> appointments;
 
-    }
 }

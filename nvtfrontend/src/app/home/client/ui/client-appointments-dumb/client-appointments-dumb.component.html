@@ -1,0 +1,92 @@
+<div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: scroll;">
+   
+ 
+    <div class="border-bottom p-3 d-flex justify-content-between" style="background-color: white;">
+        <h5 class="m-0">Appointments</h5>
+        @if(this.jwtService.hasRole(['CLIENT'])) {<button (click)="openClerkDialog()" class="btn btn-primary">Create new appointment</button>}
+    </div>
+
+    <div class="w-100 p-3 d-flex flex-grow-1" style="overflow-y: scroll;">
+        <full-calendar #calendar class="w-100 " [options]="calendarOptions"></full-calendar>
+    </div>
+
+
+
+
+    <ng-template #clerksDialog let-modal>
+        <div class="modal-header">
+          <a>Clerks</a>
+          <button type="button" class="btn-close" aria-label="Close" (click)="resetAndDismiss(modal)"></button>
+        </div>
+        <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="min-height: 200px;">
+            <!-- <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div> -->
+            @if(isLoadingClerks){
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }@else{
+                <div class="h-100 w-100" style="overflow-y: scroll; margin: 0;"> 
+                    @if(clerks){
+                        @for (clerk of clerks.content; track clerk){
+                            <div (click)="navigateClerkAppointments(clerk.id, modal)"
+                            (mouseenter)="selectedId = clerk.id" 
+                            (mouseleave)="selectedId = 0" 
+                            class="p-2 mb-2 rounded border d-flex flex-md-row justify-content-between flex-column"
+                            [ngClass]="{
+                            'shadow-lg': selectedId === clerk.id,
+                            'shadow': selectedId !== clerk.id
+                            }"
+                            style="cursor: pointer;">
+                
+                                <div class="d-flex flex-row align-items-center pt-1">
+                                    <img [src]="envProfileImg + clerk.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                    <div class="d-flex flex-column">
+                                        <span>{{clerk.name}} {{clerk.lastname}}</span>
+                                        <span>{{clerk.email}}</span>
+                                        
+                                    </div>
+                                </div> 
+                    
+                            </div>
+                        }
+                    }
+                </div>
+                @if (totalPages > 1) {
+                    <div class="d-flex justify-content-center align-items-center border-top">
+                        <nav aria-label="Pagination" class="pt-4">
+                            <ul class="pagination">
+                        
+                            <li class="page-item" [class.disabled]="page === 0">
+                                <a class="page-link" role="button" (click)="goPrevious()">Previous</a>
+                            </li>
+                            
+        
+                            <li 
+                                class="page-item" 
+                                [class.active]="page === i"
+                                role="button" 
+                                *ngFor="let p of [].constructor(totalPages); let i = index"
+                                (click)="goToPage(i)">
+                                <a class="page-link">{{ i + 1 }}</a>
+                            </li>
+                        
+                            <li class="page-item" [class.disabled]="page === totalPages - 1">
+                                <a class="page-link" role="button" (click)="goNext()">Next</a>
+                            </li>
+                        
+                            </ul>
+                        </nav>
+                        </div>
+                }
+            }
+            
+              
+            
+
+        </div>
+    
+    </ng-template>
+    
+</div>

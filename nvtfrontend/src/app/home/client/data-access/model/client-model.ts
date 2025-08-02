@@ -1,3 +1,4 @@
+import { Time } from "@angular/common";
 import { UserSummaryDTO } from "../../../../auth/data-access/model/auth-model";
 
 export interface RealestateDoc{
@@ -91,6 +92,14 @@ export interface HouseholdRequestDTO {
   requestProcessed: Date,
   denialReason: string
 
+}
 
-  
+
+export interface AppointmentDTO{
+  id: number,
+  clerk: UserSummaryDTO,
+  client: UserSummaryDTO,
+  startDateTime: Date,
+  endDateTime: Date,
+  isPrivate: boolean
 }

@@ -26,4 +26,6 @@ public class ClientService {
     public Client findClientById(Long clientId) {
         return clientRepository.findById(clientId).orElseThrow(() -> new InvalidInputException("Client with this id does not exist"));
     }
+
+
 }

@@ -35,6 +35,15 @@ const routes: Routes = [
           import('./admin/feature/admin-shell/admin-shell-routing.module').then(
             (m) => m.AdminShellRoutingModule
           )
+      },
+      {
+        path:'clerk',
+        canActivate: [roleGuard],
+        data: { roles: ['CLERK'] },
+        loadChildren: () =>
+          import('./clerk/feature/clerk-shell/clerk-shell-routing.module').then(
+            (m) => m.ClerkShellRoutingModule
+          )
       }
     ]
   }

@@ -47,6 +47,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         return of(false);
       }
     }
+    console.log("prosli smo auth guard")
     return of(true);
   } else {
   

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
 import { PagedResponse } from '../ui/household-requests-list/household-requests-list.component';
 import { HouseholdRequestPreviewDTO } from './model/client-model';
 import { request } from 'http';
+import { start } from 'repl';
+import { UserSummaryDTO } from '../../../auth/data-access/model/auth-model';
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +103,44 @@ export class ClientService {
       return this.http.put<HouseholdRequestDTO>(environment.apiUrl + '/realestate/' + realestateId + '/household/' + householdId + '/household-request/' + requestId + "/" + decision, denyReason)
   
     }
+
+
+    getClientAppointments(startDateTime: Date, endDateTime: Date): Observable<AppointmentDTO[]>{
+
+      let params = new HttpParams()
+      .set('startDateTime', startDateTime.toISOString())
+      .set('endDateTime', endDateTime.toISOString())
+
+      return this.http.get<AppointmentDTO[]>(environment.apiUrl + '/appointment', { params, withCredentials: true });
+    }
+
+
+    getClerks(page: number = 0, size: number = 10): Observable<PagedResponse<UserSummaryDTO>>{
+      return this.http.get<PagedResponse<UserSummaryDTO>>(environment.apiUrl + '/clerk', { withCredentials: true }, );
+    }
     
+
+
+    getClerkAppointments(clerkId: number, startDateTime: Date, endDateTime: Date): Observable<AppointmentDTO[]>{
+
+      let params = new HttpParams()
+      .set('startDateTime', startDateTime.toISOString())
+      .set('endDateTime', endDateTime.toISOString())
+
+      return this.http.get<AppointmentDTO[]>(environment.apiUrl + '/clerk/' + clerkId + '/appointment', { params, withCredentials: true })
+    }
+
+
+
+    createAppointment(clerkId: number, startDateTime: string): Observable<AppointmentDTO> {
+      const params = new HttpParams().set('startDateTime', startDateTime);
+    
+      return this.http.post<AppointmentDTO>(
+        `${environment.apiUrl}/clerk/${clerkId}/appointment`,
+        {}, // empty body
+        { params, withCredentials: true }
+      );
+    }
 
 
   

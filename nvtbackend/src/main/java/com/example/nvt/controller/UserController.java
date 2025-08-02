@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +34,26 @@ public class UserController {
         if(user == null) throw new InvalidAuthenticationException("Not Authenticated");
 
         PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
+
+        if(user instanceof SuperAdmin superAdmin){
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+        System.out.println("USPESNO SMO VRATILI PARTIAL DATA");
+        return ResponseEntity.ok().body(data);
+    }
+
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<?> getSummaryData(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getFirstName())
                 .lastname(user.getLastname())
