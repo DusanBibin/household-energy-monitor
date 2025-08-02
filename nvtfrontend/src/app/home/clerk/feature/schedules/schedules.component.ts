@@ -17,7 +17,6 @@ import { SnackBarService } from '../../../../shared/services/snackbar-service/sn
 export class SchedulesComponent {
   
   clerkId: number = 0;
-  clerksData: ResponseData | null = null;
   appointments: AppointmentDTO[] = [];
   clerk: PartialUserData | null = null;
 
@@ -108,17 +107,6 @@ export class SchedulesComponent {
       event.end.getDate(),
       0, 0, 0, 0
     ));
-
-    this.clientService.getClientAppointments(start, end)
-      .subscribe({
-        next: (res) => {
-          this.appointments = res;
-        
-          console.log("Fetched appointments for updated calendar range.");
-        },
-        error: (err) => console.error('Failed to fetch appointments:', err)
-      });
-
       
     console.log(start)
     console.log(end)

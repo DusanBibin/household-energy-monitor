@@ -25,25 +25,25 @@ import { DatePipe } from '@angular/common';
 export class SchedulesDumbComponent implements AfterViewInit{
   envProfileImg = environment.apiUrl + "/file/profile-img/";
 
-
   @Input() clerk: PartialUserData | null = null;
-  selectedDate: {startDate: Date, endDate: Date} | null = null;
   @Input() appointments: AppointmentDTO[] = [];
+
   @Output() calendarViewChanged = new EventEmitter<{ start: Date, end: Date }>();
-
-
-  @Output() appointmentDataEmmitter = new EventEmitter<{clerkId: number, startDate: string}>();
-
+  @Output() appointmentDataEmmitter = new EventEmitter<{ clerkId: number, startDate: string }>();
 
   @ViewChild('appointmentDialog') appointmentDialog: TemplateRef<any> | null = null;
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
-  selectedId = 0;
-  page = 0;
-  size = 10;
-  totalPages = 0;
+  selectedDate: { startDate: Date, endDate: Date } | null = null;
 
-  constructor(private modalService: NgbModal, protected jwtService: JwtService, private router: Router, private datePipe: DatePipe) {}
+  isLoadingCalendar: boolean = false;
+
+  constructor(
+    private modalService: NgbModal,
+    protected jwtService: JwtService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin],
@@ -74,29 +74,32 @@ export class SchedulesDumbComponent implements AfterViewInit{
     setTimeout(() => {
       const calendarApi = this.calendarComponent.getApi();
       calendarApi.updateSize();
-    }, 20);
+    }, 5000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['appointments']) {
+    if (
+      changes['appointments'] &&
+      this.appointments &&
+      this.clerk &&
+      this.calendarComponent
+    ) {
       this.updateCalendarEvents();
+      console.log(this.appointments)
+      this.isLoadingCalendar = false;
     }
-
-
-
-  
   }
 
   private updateCalendarEvents(): void {
     const calendarApi = this.calendarComponent?.getApi();
-    if (!calendarApi) return;
-  
+    if (!calendarApi || !this.clerk) return;
+
     calendarApi.removeAllEvents();
-  
+
     const calendarView = calendarApi.view;
     const viewStart = new Date(calendarView.currentStart);
     const viewEnd = new Date(calendarView.currentEnd);
-  
+
     const appointmentEvents = this.appointments.map(app => ({
       title: 'Not available',
       start: app.startDateTime,
@@ -104,39 +107,12 @@ export class SchedulesDumbComponent implements AfterViewInit{
       color: 'red',
       allDay: false
     }));
-  
+
     const blueSlots = this.generateBlueSlots(viewStart, viewEnd, this.appointments);
     const allEvents = [...blueSlots, ...appointmentEvents];
-  
+
     calendarApi.addEventSource(allEvents);
   }
-
-  onCalendarSlotClick(arg: EventClickArg): void {
-    const event = arg.event;
-  
-    if (event.title === 'Available') {
-      const start = event.start;
-      const end = event.end;
-
-      if(start && end) this.selectedDate = {startDate: start, endDate: end }
-      
-     
-      console.log('Clicked available slot:');
-      console.log('Start:', start);
-      console.log('End:', end);
-      
-      // 👉 Replace this with your actual logic (modal, navigation, etc.)
-      if (this.appointmentDialog) {
-        this.modalService.open(this.appointmentDialog, {
-          centered: true,
-          scrollable: true,
-          backdrop: 'static',
-        });
-      }
-    }
-  }
-  
-  
 
   private generateBlueSlots(viewStart: Date, viewEnd: Date, appointments: AppointmentDTO[]): any[] {
     const slots: any[] = [];
@@ -145,29 +121,29 @@ export class SchedulesDumbComponent implements AfterViewInit{
     const endHour = 16;
     const lunchStart = 12;
     const lunchEnd = 12.5;
-  
+
     const current = new Date(viewStart);
     current.setHours(0, 0, 0, 0);
-  
+
     while (current < viewEnd) {
       const day = current.getDay();
       if (day >= 1 && day <= 5) {
         for (let time = startHour; time < endHour; time += 0.5) {
           if (time >= lunchStart && time < lunchEnd) continue;
-  
+
           const slotStart = new Date(current);
           slotStart.setHours(Math.floor(time), (time % 1) * 60, 0, 0);
           const slotEnd = new Date(slotStart);
           slotEnd.setMinutes(slotStart.getMinutes() + 30);
-  
-          if (slotEnd <= now) continue; // Skip slots in the past
-  
+
+          if (slotEnd <= now) continue;
+
           const overlaps = appointments.some(app => {
             const appStart = new Date(app.startDateTime);
             const appEnd = new Date(app.endDateTime);
             return slotStart < appEnd && slotEnd > appStart;
           });
-  
+
           if (!overlaps) {
             slots.push({
               title: 'Available',
@@ -181,28 +157,46 @@ export class SchedulesDumbComponent implements AfterViewInit{
       }
       current.setDate(current.getDate() + 1);
     }
-  
+
     return slots;
   }
-  
-  
 
-  onCalendarViewChange(arg: DatesSetArg): void {
-    this.calendarViewChanged.emit({ start: arg.start, end: arg.end });
-  }
+  onCalendarSlotClick(arg: EventClickArg): void {
+    const event = arg.event;
 
+    if (event.title === 'Available') {
+      const start = event.start;
+      const end = event.end;
 
-  createAppointment(modal: any){
-    modal.dismiss('Cancel click')
+      if (start && end) {
+        this.selectedDate = { startDate: start, endDate: end };
+      }
 
-
-    if(this.clerk && this.selectedDate){
-
-      const formattedDate = this.datePipe.transform(this.selectedDate.startDate, 'dd/MM/yyyy-HH:mm');
-      if(formattedDate) this.appointmentDataEmmitter.emit({clerkId: this.clerk.id, startDate: formattedDate});
+      if (this.appointmentDialog) {
+        this.modalService.open(this.appointmentDialog, {
+          centered: true,
+          scrollable: true,
+          backdrop: 'static',
+        });
+      }
     }
   }
 
+  onCalendarViewChange(arg: DatesSetArg): void {
+    this.isLoadingCalendar = true;
+    this.calendarViewChanged.emit({ start: arg.start, end: arg.end });
+  }
+
+  createAppointment(modal: any) {
+    modal.dismiss('Cancel click');
+
+    if (this.clerk && this.selectedDate) {
+      const formattedDate = this.datePipe.transform(this.selectedDate.startDate, 'dd/MM/yyyy-HH:mm');
+      if (formattedDate) {
+        this.appointmentDataEmmitter.emit({ clerkId: this.clerk.id, startDate: formattedDate });
+      }
+    }
+  }
 
 
 }
