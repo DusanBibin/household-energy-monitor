@@ -131,5 +131,17 @@ export class ClientService {
     }
 
 
+
+    createAppointment(clerkId: number, startDateTime: string): Observable<AppointmentDTO> {
+      const params = new HttpParams().set('startDateTime', startDateTime);
+    
+      return this.http.post<AppointmentDTO>(
+        `${environment.apiUrl}/clerk/${clerkId}/appointment`,
+        {}, // empty body
+        { params, withCredentials: true }
+      );
+    }
+
+
   
 }

@@ -20,5 +20,20 @@
         <full-calendar #calendar class="w-100 " [options]="calendarOptions"></full-calendar>
     </div>
 
+
+    <ng-template #appointmentDialog let-modal>
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm appointment selection</h1>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        @if(selectedDate && clerk){<div class="modal-body d-flex justify-content-center align-items-center">
+             Are you sure you want to create appointment with {{clerk.name}} {{clerk.lastname}} with start at {{selectedDate.startDate  | date: 'dd/MM/yyyy HH:mm' }} and end at {{selectedDate.endDate  | date: 'dd/MM/yyyy HH:mm' }}
+
+        </div>}
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="createAppointment(modal)">Submit</button>
+        </div>
+  </ng-template>
     
 </div>

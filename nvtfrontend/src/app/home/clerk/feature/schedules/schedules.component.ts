@@ -5,6 +5,8 @@ import { PartialUserData, ResponseData } from '../../../../shared/model';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { ActivatedRoute, Route } from '@angular/router';
 import { UserService } from '../../../../shared/services/user-service/user.service';
+import { app } from '../../../../../../server';
+import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-schedules',
@@ -19,7 +21,8 @@ export class SchedulesComponent {
   appointments: AppointmentDTO[] = [];
   clerk: PartialUserData | null = null;
 
-  constructor(private clientService: ClientService, private jwtService: JwtService, private route: ActivatedRoute, private userService: UserService){}
+  constructor(private clientService: ClientService, private jwtService: JwtService, private route: ActivatedRoute, 
+    private userService: UserService, private snackBar: SnackBarService){}
 
   ngOnInit(): void {
 
@@ -127,6 +130,24 @@ export class SchedulesComponent {
       }
     })
     
+
+
+  }
+
+
+
+  handleAppointmentCreate(event: {clerkId: number, startDate: string}){
+
+    console.log("IZES MI KURAC VISE JEBEM TI MAMU")
+    console.log(event.startDate)
+    this.clientService.createAppointment(event.clerkId, event.startDate).subscribe({
+      next: appointment => {
+        console.log(appointment)
+        this.snackBar.openSnackBar("Appointment successfully created")
+      },error: err => {
+        console.log(err)
+      }
+    })
 
 
   }

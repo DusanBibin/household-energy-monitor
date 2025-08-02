@@ -14,6 +14,7 @@ import { JwtService } from '../../../../shared/services/jwt-service/jwt.service'
 import { Router } from '@angular/router';
 import { title } from 'process';
 import { EventClickArg } from '@fullcalendar/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-schedules-dumb',
@@ -26,11 +27,15 @@ export class SchedulesDumbComponent implements AfterViewInit{
 
 
   @Input() clerk: PartialUserData | null = null;
-
+  selectedDate: {startDate: Date, endDate: Date} | null = null;
   @Input() appointments: AppointmentDTO[] = [];
   @Output() calendarViewChanged = new EventEmitter<{ start: Date, end: Date }>();
 
 
+  @Output() appointmentDataEmmitter = new EventEmitter<{clerkId: number, startDate: string}>();
+
+
+  @ViewChild('appointmentDialog') appointmentDialog: TemplateRef<any> | null = null;
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   selectedId = 0;
@@ -38,7 +43,7 @@ export class SchedulesDumbComponent implements AfterViewInit{
   size = 10;
   totalPages = 0;
 
-  constructor(private modalService: NgbModal, protected jwtService: JwtService, private router: Router) {}
+  constructor(private modalService: NgbModal, protected jwtService: JwtService, private router: Router, private datePipe: DatePipe) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin],
@@ -112,13 +117,22 @@ export class SchedulesDumbComponent implements AfterViewInit{
     if (event.title === 'Available') {
       const start = event.start;
       const end = event.end;
+
+      if(start && end) this.selectedDate = {startDate: start, endDate: end }
       
+     
       console.log('Clicked available slot:');
       console.log('Start:', start);
       console.log('End:', end);
-  
+      
       // 👉 Replace this with your actual logic (modal, navigation, etc.)
-      alert(`You clicked an available slot:\n${start?.toLocaleString()} - ${end?.toLocaleString()}`);
+      if (this.appointmentDialog) {
+        this.modalService.open(this.appointmentDialog, {
+          centered: true,
+          scrollable: true,
+          backdrop: 'static',
+        });
+      }
     }
   }
   
@@ -175,6 +189,18 @@ export class SchedulesDumbComponent implements AfterViewInit{
 
   onCalendarViewChange(arg: DatesSetArg): void {
     this.calendarViewChanged.emit({ start: arg.start, end: arg.end });
+  }
+
+
+  createAppointment(modal: any){
+    modal.dismiss('Cancel click')
+
+
+    if(this.clerk && this.selectedDate){
+
+      const formattedDate = this.datePipe.transform(this.selectedDate.startDate, 'dd/MM/yyyy-HH:mm');
+      if(formattedDate) this.appointmentDataEmmitter.emit({clerkId: this.clerk.id, startDate: formattedDate});
+    }
   }
 
 

@@ -2,5 +2,6 @@
     <app-schedules-dumb
     [appointments]="appointments"
     [clerk]="clerk"
+    (appointmentDataEmmitter)="handleAppointmentCreate($event)"
     (calendarViewChanged)="onCalendarRangeChange($event)"></app-schedules-dumb>
 </div>

@@ -108,7 +108,7 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
     calendarApi.removeAllEvents();
     console.log(this.appointments)
     const events = this.appointments.map(app => ({
-      title: this.jwtService.hasRole(['CLERK'])
+      title: this.jwtService.hasRole(['CLIENT'])
       ? `${app.clerk.name} ${app.clerk.lastname}`
       : `${app.client.name} ${app.client.lastname}`,
       start: app.startDateTime,
