@@ -27,6 +27,8 @@ export class SchedulesDumbComponent implements AfterViewInit{
 
   @Input() clerk: PartialUserData | null = null;
   @Input() appointments: AppointmentDTO[] = [];
+  @Input() newAppointmentUpdate: AppointmentDTO | null = null;
+
 
   @Output() calendarViewChanged = new EventEmitter<{ start: Date, end: Date }>();
   @Output() appointmentDataEmmitter = new EventEmitter<{ clerkId: number, startDate: string }>();
@@ -88,6 +90,38 @@ export class SchedulesDumbComponent implements AfterViewInit{
       console.log(this.appointments)
       this.isLoadingCalendar = false;
     }
+
+
+    if(changes['newAppointmentUpdate'] && this.newAppointmentUpdate){
+      console.log(this.newAppointmentUpdate)  
+      const calendarApi = this.calendarComponent?.getApi();
+      if (!calendarApi) return;
+
+      const { startDateTime, endDateTime } = this.newAppointmentUpdate;
+
+      // Remove overlapping blue slots
+      calendarApi.getEvents().forEach(event => {
+        if (
+          event.title === 'Available' &&
+          event.start &&
+          event.end &&
+          new Date(startDateTime) < event.end &&
+          new Date(endDateTime) > event.start
+        ) {
+          event.remove();
+        }
+      });
+
+      // Add new red event
+      calendarApi.addEvent({
+        title: 'Not available',
+        start: startDateTime,
+        end: endDateTime,
+        color: 'red',
+        allDay: false
+      });
+      }
+
   }
 
   private updateCalendarEvents(): void {

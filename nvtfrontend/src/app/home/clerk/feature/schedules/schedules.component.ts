@@ -20,6 +20,8 @@ export class SchedulesComponent {
   appointments: AppointmentDTO[] = [];
   clerk: PartialUserData | null = null;
 
+  newAppointmentUpdate: AppointmentDTO | null = null;
+
   constructor(private clientService: ClientService, private jwtService: JwtService, private route: ActivatedRoute, 
     private userService: UserService, private snackBar: SnackBarService){}
 
@@ -131,6 +133,7 @@ export class SchedulesComponent {
     this.clientService.createAppointment(event.clerkId, event.startDate).subscribe({
       next: appointment => {
         console.log(appointment)
+        this.newAppointmentUpdate = appointment;
         this.snackBar.openSnackBar("Appointment successfully created")
       },error: err => {
         console.log(err)
