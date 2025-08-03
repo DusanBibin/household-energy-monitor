@@ -34,6 +34,8 @@ services:
       INFLUXDB_DB: my_database
     ports:
       - "8086:8086"
+    volumes:
+      - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -84,7 +86,3 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
-
-
-# volumes:
-#   influxdb-data:
