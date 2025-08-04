@@ -43,16 +43,17 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
 
   protected files: { id: number, file: File | null }[] = [{ id: Date.now(), file: null }];
-
+  isDaily = false;
   
 
   @Input() chartData: ConsumptionDTO[] | null = null;
-  @Output() changeMonthEmitter =  new EventEmitter<{ isForward: boolean}>();
-
+  @Output() changeMonthsEmitter =  new EventEmitter<{ isForward: boolean}>();
+  @Output() changeDailyEmitter = new EventEmitter<Date | null>();
 
   constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){}
   
   chartOption: any;
+  lineChartOption: any;
   ngOnInit(): void {
     this.chartOption = {
       title: {
@@ -110,17 +111,23 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
         const months = this.chartData.map(d => d.datetime);
         const kwhValues = this.chartData.map(d => d.kwh);
-
+        
+        let title = 'Monthly Electricity Consumption Sum(kWh)'
+        if(this.chartData.length > 12) title = "Daily Electricity Consumption Sum(kWh)"
         // update the chart option
         this.chartOption = {
+          title: {
+            text: title, 
+            left: 'center',
+            top: 10
+          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              type: 'shadow'  // shows a shadow over the bar hovered
+              type: 'shadow'  
             },
             formatter: (params: any) => {
-              // params is an array because trigger:'axis' returns all series on that axis,
-              // but here we only have 1 series, so params[0] is the one.
+           
               const param = params[0];
               return `${param.name}<br/>${param.seriesName}: ${param.data}`;
             }
@@ -144,9 +151,34 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
 
   changeMonth(isForward: boolean){
-    this.changeMonthEmitter.emit({isForward});
+    this.changeMonthsEmitter.emit({isForward});
   }
 
+
+  onChartClick(event: any): void {
+    // The clicked bar's data
+    if(!this.isDaily){
+      const clickedMonth = event.name;      // e.g., "2024-10"
+      const value = event.data;             // e.g., 230.38
+      const seriesName = event.seriesName;  // e.g., "kWh"
+    
+      console.log('Bar clicked:', clickedMonth, value);
+    
+    
+      const date = new Date(`${clickedMonth}-01`); 
+      console.log(date)
+      this.changeDailyEmitter.emit(date)
+      this.isDaily = true;
+    }
+    
+  }
+
+
+  changeMonthly(){
+    this.changeDailyEmitter.emit(null);
+    this.isDaily = false;
+  }
+  
 
 
 

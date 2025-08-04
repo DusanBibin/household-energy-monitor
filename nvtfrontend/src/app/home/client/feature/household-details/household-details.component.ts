@@ -125,6 +125,8 @@ export class HouseholdDetailsComponent implements OnInit {
     this.loadData();
   }
 
+  
+
   private getTodayYM() {
     const d = new Date();
     return { year: d.getFullYear(), month: d.getMonth() + 1 };
@@ -133,6 +135,26 @@ export class HouseholdDetailsComponent implements OnInit {
   handleMonthChange(event: {isForward:boolean}){
     if(event.isForward) this.nextMonth();
     else this.prevMonth();
+  }
+
+
+
+  handleToDailyChange(date: Date | null){
+    if(date){
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; 
+  
+      this.clientService.getDaily(1, year, month).subscribe({
+        next: values => {
+          this.chartData = values;
+        },error: err => {
+          console.log(err)
+        }
+      })
+    }else{
+      this.loadData()
+    }
+   
   }
 
 

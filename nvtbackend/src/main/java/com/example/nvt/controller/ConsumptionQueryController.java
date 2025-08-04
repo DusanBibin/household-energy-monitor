@@ -47,14 +47,20 @@ public class ConsumptionQueryController {
         YearMonth end = start.plusMonths(1);
         YearMonth begin = start.minusMonths(11);
 
-        ZonedDateTime from = begin.atDay(1).atStartOfDay(ZoneId.systemDefault());
-        ZonedDateTime to   = end.atDay(1).atStartOfDay(ZoneId.systemDefault());
+        System.out.println(begin);
+        System.out.println(end);
+
+        ZonedDateTime from = begin.atDay(1).atStartOfDay(ZoneOffset.UTC);
+        ZonedDateTime to   = end.atDay(1).atStartOfDay(ZoneOffset.UTC);
+
+        System.out.println(from);
+        System.out.println(to);
 
         String flux = String.format("""
                 from(bucket: "%s")
                   |> range(start: %s, stop: %s)
                   |> filter(fn:(r) => r._measurement == "electricity_consumption" and r.householdId == "%d" and r._field == "kWh")
-                  |> aggregateWindow(every: 1mo, fn: sum)
+                  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
                   |> yield(name: "sum")
                 """,
                 BUCKET,
@@ -105,14 +111,15 @@ public class ConsumptionQueryController {
         LocalDate startDate = ym.atDay(1);
         LocalDate endDate = ym.atEndOfMonth().plusDays(1);
 
-        ZonedDateTime from = startDate.atStartOfDay(ZoneId.systemDefault());
-        ZonedDateTime to = endDate.atStartOfDay(ZoneId.systemDefault());
+
+        ZonedDateTime from = startDate.atStartOfDay(ZoneOffset.UTC);
+        ZonedDateTime to = endDate.atStartOfDay(ZoneOffset.UTC);
 
         String flux = String.format("""
             from(bucket: "%s")
               |> range(start: %s, stop: %s)
               |> filter(fn:(r) => r._measurement == "electricity_consumption" and r.householdId == "%d" and r._field == "kWh")
-              |> aggregateWindow(every: 1d, fn: sum)
+              |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")
               |> yield(name: "sum")
             """,
                 BUCKET,

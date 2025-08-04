@@ -3,8 +3,8 @@
      [householdDetails]="householdDetails" 
      (requestClaimFiles)="createClaimRequest($event)"
      
-     
-     (changeMonthEmitter)="handleMonthChange($event)"
+     (changeDailyEmitter)="handleToDailyChange($event)"
+     (changeMonthsEmitter)="handleMonthChange($event)"
      [chartData]="chartData"
      
      
