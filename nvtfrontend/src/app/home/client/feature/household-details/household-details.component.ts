@@ -27,6 +27,10 @@ export class HouseholdDetailsComponent implements OnInit {
   chartData: ConsumptionDTO[] = [];
 
 
+
+  lineChartData: ConsumptionDTO[] = [];
+
+
   constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService){
     this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
     this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
@@ -35,6 +39,7 @@ export class HouseholdDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.loadLineChartData('1h');
     console.log(this.route.snapshot.paramMap)
 
 
@@ -94,11 +99,23 @@ export class HouseholdDetailsComponent implements OnInit {
 
   loadData(): void {
     const { year, month } = this.currentYM;
-    this.clientService.getMonthly(1, year, month).subscribe({
+    this.clientService.getMonthly(this.householdId, year, month).subscribe({
       next: values => {
         this.chartData = values;
       },error: err => {
         console.log(err);
+      }
+    })
+  }
+
+
+  loadLineChartData(period: string): void {
+    this.clientService.getConsumptionByPeriod(this.householdId, period).subscribe({
+      next: values => {
+        this.lineChartData = values;
+        console.log(this.lineChartData);
+      }, error: err => {
+        console.log(err)
       }
     })
   }
@@ -144,7 +161,7 @@ export class HouseholdDetailsComponent implements OnInit {
       const year = date.getFullYear();
       const month = date.getMonth() + 1; 
   
-      this.clientService.getDaily(1, year, month).subscribe({
+      this.clientService.getDaily(this.householdId, year, month).subscribe({
         next: values => {
           this.chartData = values;
         },error: err => {
@@ -156,6 +173,22 @@ export class HouseholdDetailsComponent implements OnInit {
     }
    
   }
+
+  handlePeriodChange(period: string){
+    this.loadLineChartData(period);
+  }
+
+
+  handleDateRange(event: {from: string, to: string}){
+    this.clientService.getConsumptionByDateRange(this.householdId, event.from, event.to).subscribe({
+      next: values => {
+        this.lineChartData = values
+      },error: err => {
+        console.log(err)
+      }
+    })
+  }
+
 
 
 }

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HouseholdDetailsFormRoutingModule } from './household-details-form-routing.module';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { HouseholdDetailsFormComponent } from './household-details-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxEchartsModule, provideEchartsCore } from 'ngx-echarts';
 
 @NgModule({
@@ -14,7 +14,8 @@ import { NgxEchartsModule, provideEchartsCore } from 'ngx-echarts';
     HouseholdDetailsFormRoutingModule,
     ReactiveFormsModule,
     GoogleMapsModule,
-    NgxEchartsModule
+    NgxEchartsModule,
+    FormsModule
   ],
   exports: [HouseholdDetailsFormComponent],
   providers: [

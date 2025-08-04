@@ -124,4 +124,10 @@ public class HouseholdService {
     public long countUnownedHouseholds(Long realestateId){
         return householdRepository.countUnownedHouseholds(realestateId);
     }
+
+    public Household getHouseholdByIdAndClientId(Long id, Long householdId) {
+        var householdWrapper = householdRepository.findByHouseholdIdAndClientId(id, householdId);
+        if(householdWrapper.isEmpty()) throw new NotFoundException("Household not found");
+        return householdWrapper.get();
+    }
 }

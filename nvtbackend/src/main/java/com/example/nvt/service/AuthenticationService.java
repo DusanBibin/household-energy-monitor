@@ -69,6 +69,7 @@ public class AuthenticationService {
         response.addCookie(jwtCookie);
 
         PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getFirstName())
                 .lastname(user.getLastname())
@@ -78,7 +79,7 @@ public class AuthenticationService {
         if(user instanceof SuperAdmin superAdmin){
             data.setFirstLogin(superAdmin.isFirstLogin());
         }
-
+        System.out.println(data);
         return data;
     }
 

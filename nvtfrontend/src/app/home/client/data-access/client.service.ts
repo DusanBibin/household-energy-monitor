@@ -149,21 +149,31 @@ export class ClientService {
 
     getMonthly(householdId: number, year: number, month: number): Observable<ConsumptionDTO[]> {
       let params = new HttpParams()
-        .set('householdId', householdId)
         .set('startYear', year)
         .set('startMonth', month);
-      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/monthly', { params });
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/household/' + householdId +  '/monthly', { params });
     }
   
     getDaily(householdId: number, year: number, month: number): Observable<ConsumptionDTO[]> {
       let params = new HttpParams()
-        .set('householdId', householdId)
         .set('year', year)
         .set('month', month);
-      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/daily', { params });
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/household/' + householdId + '/daily', { params });
     }
 
 
+
+    getConsumptionByPeriod(householdId: number, period: string): Observable<ConsumptionDTO[]> {
+      const params = new HttpParams().set('period', period);
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/household/' + householdId + '/consumption', { params });
+    }
+  
+    getConsumptionByDateRange(householdId: number, from: string, to: string): Observable<ConsumptionDTO[]> {
+      const params = new HttpParams()
+        .set('from', from)
+        .set('to', to);
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/household/' + householdId + '/consumption', { params });
+    }
 
 
   

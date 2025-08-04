@@ -7,7 +7,9 @@
      (changeMonthsEmitter)="handleMonthChange($event)"
      [chartData]="chartData"
      
-     
+     (periodEmitter)="handlePeriodChange($event)"
+     [lineChartData]="lineChartData"
+     (dateRangeEmitter)="handleDateRange($event)"
      
      ></app-household-details-form>
 </div>

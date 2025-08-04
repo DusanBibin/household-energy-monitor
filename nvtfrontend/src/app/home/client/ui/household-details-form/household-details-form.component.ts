@@ -45,6 +45,7 @@ export class HouseholdDetailsFormComponent implements OnChanges{
   protected files: { id: number, file: File | null }[] = [{ id: Date.now(), file: null }];
   isDaily = false;
   
+  chartOption: any;
 
   @Input() chartData: ConsumptionDTO[] | null = null;
   @Output() changeMonthsEmitter =  new EventEmitter<{ isForward: boolean}>();
@@ -52,27 +53,18 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
   constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){}
   
-  chartOption: any;
+  
   lineChartOption: any;
+
+  fromDate?: string
+  toDate?: string
+  @Output() periodEmitter = new EventEmitter<string>();
+  @Input() lineChartData: ConsumptionDTO[] | null = null;
+  
+  @Output() dateRangeEmitter = new EventEmitter<{from: string, to: string}>();
+
   ngOnInit(): void {
-    this.chartOption = {
-      title: {
-        text: 'Example Bar Chart'
-      },
-      tooltip: {},
-      legend: {
-        data: ['Sales']
-      },
-      xAxis: {
-        data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
-      },
-      yAxis: {},
-      series: [{
-        name: 'Sales',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20]
-      }]
-    };
+     
   }
 
   // Makes chart responsive
@@ -147,6 +139,40 @@ export class HouseholdDetailsFormComponent implements OnChanges{
         };
       }
     }
+
+
+    if(changes['lineChartData'] && this.lineChartData){
+    
+        const xAxis = this.lineChartData.map(d => d.datetime);
+        const kwhValues = this.lineChartData.map(d => d.kwh);
+        
+
+
+        this.lineChartOption = {
+          title: {
+            text: 'Consumption Over Time'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: {
+            type: 'category',
+            data: xAxis,
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              name: 'kWh',
+              type: 'line',
+              data: kwhValues,
+              smooth: true
+            }
+          ]
+      };
+      
+    }
   }
 
 
@@ -178,9 +204,45 @@ export class HouseholdDetailsFormComponent implements OnChanges{
     this.changeDailyEmitter.emit(null);
     this.isDaily = false;
   }
+
+
+
+  loadByPeriod(period: string){
+    this.periodEmitter.emit(period)
+  }
   
 
+  loadByDateRange() {
+    console.log(this.fromDate)
+    console.log(this.toDate)
 
+    
+
+    if (this.fromDate && this.toDate) {
+      const from = new Date(this.fromDate);
+      const to = new Date(this.toDate);
+  
+      if (from > to) {
+        this.snackService.openSnackBar("The 'From' date must be before the 'To' date.");
+        return;
+      }
+  
+      // Calculate difference in milliseconds
+      const diffMs = to.getTime() - from.getTime();
+      const oneYearMs = 365 * 24 * 60 * 60 * 1000; // 365 days in ms
+  
+      if (diffMs > oneYearMs) {
+        this.snackService.openSnackBar("Date range cannot be greater than 1 year.");
+        return;
+      }
+  
+      const fromDateTime = `${this.fromDate}T00:00:00Z`;
+      const toDateTime = `${this.toDate}T23:59:59Z`;
+      this.dateRangeEmitter.emit({ from: fromDateTime, to: toDateTime });
+    } else {
+      this.snackService.openSnackBar("Both dates must be present for this");
+    }
+  }
 
 
 

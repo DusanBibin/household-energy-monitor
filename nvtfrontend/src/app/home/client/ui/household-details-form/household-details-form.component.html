@@ -190,30 +190,60 @@
                                 </div>
                             </div>   
                     </div>
-                    <div class="row g-0 m-0 px-1 pt-2 mb-2">
-        
-                            <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
-                                <h4 class="card-title m-0 pb-2">Electricity consumption</h4>
-                                <div echarts
-                                    [options]="chartOption"
-                                    class="chart"
-                                    (chartClick)="onChartClick($event)"
-                                    (chartInit)="onChartInit($event)">
-                                </div>
-                                <div class="d-flex justify-content-center gap-2">
-
-                                    @if(isDaily){
-                                        <button class="btn btn-primary" type="submit" (click)="changeMonthly()">Back</button>
-                                    }@else {
-                                        <button class="btn btn-primary" type="submit" (click)="changeMonth(false)">Backward</button>
-                                        <button class="btn btn-primary" type="submit" (click)="changeMonth(true)">Forward</button>
-                                    }
-                                    
-                                </div>
-                            </div>
+                 
+                    @if(this.jwtService.hasRole(['CLIENT']) && this.householdDetails.data.user.id === this.jwtService.getId()){
                         
-                    </div>   
-                  
+                    
+                        <div class="row g-0 m-0 px-1 pt-2 mb-2">
+            
+                                <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
+                                    <h4 class="card-title m-0 pb-2">Electricity consumption</h4>
+                                    <div echarts
+                                        [options]="chartOption"
+                                        class="chart"
+                                        (chartClick)="onChartClick($event)"
+                                        (chartInit)="onChartInit($event)">
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+
+                                        @if(isDaily){
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonthly()">Back</button>
+                                        }@else {
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonth(false)">Backward</button>
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonth(true)">Forward</button>
+                                        }
+                                        
+                                    </div>
+                                    <div echarts
+                                        [options]="lineChartOption"
+                                        class="chart"
+                                        (chartInit)="onChartInit($event)">
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1h')">Last 1 Hour</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('6h')">Last 6 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('12h')">Last 12 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('24h')">Last 24 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('7d')">Last 7 Days</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1m')">Last Month</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('3m')">Last 3 Months</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1y')">Last Year</button>
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                        <label>From:
+                                        <input type="date" [(ngModel)]="fromDate">
+                                        </label>
+                                        <label>To:
+                                        <input type="date" [(ngModel)]="toDate">
+                                        </label>
+                                        <button class="btn btn-primary" (click)="loadByDateRange()">Load Date Range</button>
+                                    </div>
+                                    
+
+                                </div>
+                            
+                        </div>   
+                    }
                     
                 </div>
 
