@@ -1,3 +1,13 @@
 <div class="w-100 h-100">
-     <app-household-details-form [householdDetails]="householdDetails" (requestClaimFiles)="createClaimRequest($event)"></app-household-details-form>
+     <app-household-details-form 
+     [householdDetails]="householdDetails" 
+     (requestClaimFiles)="createClaimRequest($event)"
+     
+     
+     (changeMonthEmitter)="handleMonthChange($event)"
+     [chartData]="chartData"
+     
+     
+     
+     ></app-household-details-form>
 </div>

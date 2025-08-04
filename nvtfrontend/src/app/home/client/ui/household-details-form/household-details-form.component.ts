@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GoogleMap } from '@angular/google-maps';
-import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
+import { ConsumptionDTO, HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { environment } from '../../../../../environments/environment.development';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { ResponseData } from '../../../../shared/model';
+
 
 @Component({
   selector: 'app-household-details-form',
@@ -43,15 +44,48 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
   protected files: { id: number, file: File | null }[] = [{ id: Date.now(), file: null }];
 
+  
+
+  @Input() chartData: ConsumptionDTO[] | null = null;
+  @Output() changeMonthEmitter =  new EventEmitter<{ isForward: boolean}>();
 
 
-  constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){
-
+  constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){}
+  
+  chartOption: any;
+  ngOnInit(): void {
+    this.chartOption = {
+      title: {
+        text: 'Example Bar Chart'
+      },
+      tooltip: {},
+      legend: {
+        data: ['Sales']
+      },
+      xAxis: {
+        data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
+      },
+      yAxis: {},
+      series: [{
+        name: 'Sales',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+      }]
+    };
   }
+
+  // Makes chart responsive
+  onChartInit(ec: any) {
+    window.addEventListener('resize', () => {
+      ec.resize();
+    });
+  }
+
+
 
   ngOnChanges(changes: SimpleChanges){
     if(changes['householdDetails']){
-      console.log("change se dogodio")
+     
       console.log(this.householdDetails)
       
       if(this.householdDetails && !this.householdDetails.isError){
@@ -68,7 +102,93 @@ export class HouseholdDetailsFormComponent implements OnChanges{
         };
       }
     }
+
+
+    if(changes['chartData'] && this.chartData){
+      if(this.chartData.length != 0){
+        console.log(this.chartData)
+
+        const months = this.chartData.map(d => d.datetime);
+        const kwhValues = this.chartData.map(d => d.kwh);
+
+        // update the chart option
+        this.chartOption = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'  // shows a shadow over the bar hovered
+            },
+            formatter: (params: any) => {
+              // params is an array because trigger:'axis' returns all series on that axis,
+              // but here we only have 1 series, so params[0] is the one.
+              const param = params[0];
+              return `${param.name}<br/>${param.seriesName}: ${param.data}`;
+            }
+          },
+          xAxis: {
+            type: 'category',
+            data: months
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            name: 'kWh',
+            type: 'bar',
+            data: kwhValues
+          }]
+        };
+      }
+    }
   }
+
+
+  changeMonth(isForward: boolean){
+    this.changeMonthEmitter.emit({isForward});
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   onFileSelected(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;

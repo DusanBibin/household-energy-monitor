@@ -7,6 +7,7 @@ import { FileService } from '../../../../shared/services/file-service/file.servi
 import { switchMap, map, catchError, of } from 'rxjs';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { ResponseData, ResponseMessage } from '../../../../shared/model';
+import { ConsumptionDTO } from '../../data-access/model/client-model';
 
 @Component({
   selector: 'app-household-details',
@@ -21,8 +22,9 @@ export class HouseholdDetailsComponent implements OnInit {
   householdDetails: ResponseData | null = null;
   realestateId: number;
   householdId: number;
-
-
+              
+  currentYM: { year: number, month: number } = this.getTodayYM();     
+  chartData: ConsumptionDTO[] = [];
 
 
   constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService){
@@ -32,7 +34,7 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.loadData();
     console.log(this.route.snapshot.paramMap)
 
 
@@ -89,6 +91,49 @@ export class HouseholdDetailsComponent implements OnInit {
     });
   }
   
+
+  loadData(): void {
+    const { year, month } = this.currentYM;
+    this.clientService.getMonthly(1, year, month).subscribe({
+      next: values => {
+        this.chartData = values;
+      },error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+  nextMonth(): void {
+    // move forward by 1 month
+    if (this.currentYM.month === 12) {
+      this.currentYM.year++;
+      this.currentYM.month = 1;
+    } else {
+      this.currentYM.month++;
+    }
+    this.loadData();
+  }
+
+  prevMonth(): void {
+    // move backward by 1 month
+    if (this.currentYM.month === 1) {
+      this.currentYM.year--;
+      this.currentYM.month = 12;
+    } else {
+      this.currentYM.month--;
+    }
+    this.loadData();
+  }
+
+  private getTodayYM() {
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() + 1 };
+  }
+
+  handleMonthChange(event: {isForward:boolean}){
+    if(event.isForward) this.nextMonth();
+    else this.prevMonth();
+  }
 
 
 }

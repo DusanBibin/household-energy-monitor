@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO, ConsumptionDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
@@ -141,6 +141,29 @@ export class ClientService {
         { params, withCredentials: true }
       );
     }
+
+
+
+
+
+
+    getMonthly(householdId: number, year: number, month: number): Observable<ConsumptionDTO[]> {
+      let params = new HttpParams()
+        .set('householdId', householdId)
+        .set('startYear', year)
+        .set('startMonth', month);
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/monthly', { params });
+    }
+  
+    getDaily(householdId: number, year: number, month: number): Observable<ConsumptionDTO[]> {
+      let params = new HttpParams()
+        .set('householdId', householdId)
+        .set('year', year)
+        .set('month', month);
+      return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/daily', { params });
+    }
+
+
 
 
   
