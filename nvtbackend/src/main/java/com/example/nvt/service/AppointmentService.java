@@ -7,6 +7,7 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.AppointmentRepository;
 import com.example.nvt.specifications.AppointmentSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,7 +72,12 @@ public class AppointmentService {
                 .isPrivate(false)
                 .build();
 
-        appointment = saveAppointment(appointment);
+        try {
+            appointment = saveAppointment(appointment);
+        } catch (DataIntegrityViolationException e) {
+            // This happens if the DB unique constraint fails
+            throw new InvalidInputException("Appointment slot already taken");
+        }
         clerk.getAppointments().add(appointment);
         clerk = clerkService.saveClerk(clerk);
 

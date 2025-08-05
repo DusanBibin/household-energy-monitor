@@ -1,10 +1,7 @@
 package com.example.nvt.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Builder
+@Table(
+        name = "appointment",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"clerk_id", "start_date_time"})
+)
 public class Appointment {
     @Id
     @GeneratedValue

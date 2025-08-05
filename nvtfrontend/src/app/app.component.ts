@@ -66,7 +66,7 @@ export class AppComponent implements OnInit{
 
       // this.fileService.getProfileImage().subscribe({
       //   next: kurac => {
-      //     console.log("neki kurac uspeo")
+
       //   },error: error => {
       //     console.log(error)
       //   }

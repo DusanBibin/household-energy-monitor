@@ -29,7 +29,7 @@ export class SchedulesComponent {
 
 
     const clerkId = Number(this.route.snapshot.paramMap.get('clerkId'));
-    console.log("izes mi kurac")
+    
     console.log(clerkId)
     this.clerkId = clerkId;
 
@@ -128,7 +128,7 @@ export class SchedulesComponent {
 
   handleAppointmentCreate(event: {clerkId: number, startDate: string}){
 
-    console.log("IZES MI KURAC VISE JEBEM TI MAMU")
+  
     console.log(event.startDate)
     this.clientService.createAppointment(event.clerkId, event.startDate).subscribe({
       next: appointment => {
