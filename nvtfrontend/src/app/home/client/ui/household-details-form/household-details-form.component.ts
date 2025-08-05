@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GoogleMap } from '@angular/google-maps';
-import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
+import { ConsumptionDTO, HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { environment } from '../../../../../environments/environment.development';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { ResponseData } from '../../../../shared/model';
+
 
 @Component({
   selector: 'app-household-details-form',
@@ -42,16 +43,42 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
 
   protected files: { id: number, file: File | null }[] = [{ id: Date.now(), file: null }];
+  isDaily = false;
+  
+  chartOption: any;
 
+  @Input() chartData: ConsumptionDTO[] | null = null;
+  @Output() changeMonthsEmitter =  new EventEmitter<{ isForward: boolean}>();
+  @Output() changeDailyEmitter = new EventEmitter<Date | null>();
 
+  constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){}
+  
+  
+  lineChartOption: any;
 
-  constructor(private modalService: NgbModal, private snackService: SnackBarService, protected jwtService: JwtService){
+  fromDate?: string
+  toDate?: string
+  @Output() periodEmitter = new EventEmitter<string>();
+  @Input() lineChartData: ConsumptionDTO[] | null = null;
+  
+  @Output() dateRangeEmitter = new EventEmitter<{from: string, to: string}>();
 
+  ngOnInit(): void {
+     
   }
+
+  // Makes chart responsive
+  onChartInit(ec: any) {
+    window.addEventListener('resize', () => {
+      ec.resize();
+    });
+  }
+
+
 
   ngOnChanges(changes: SimpleChanges){
     if(changes['householdDetails']){
-      console.log("change se dogodio")
+     
       console.log(this.householdDetails)
       
       if(this.householdDetails && !this.householdDetails.isError){
@@ -68,7 +95,194 @@ export class HouseholdDetailsFormComponent implements OnChanges{
         };
       }
     }
+
+
+    if(changes['chartData'] && this.chartData){
+      if(this.chartData.length != 0){
+        console.log(this.chartData)
+
+        const months = this.chartData.map(d => d.datetime);
+        const kwhValues = this.chartData.map(d => d.kwh);
+        
+        let title = 'Monthly Electricity Consumption Sum(kWh)'
+        if(this.chartData.length > 12) title = "Daily Electricity Consumption Sum(kWh)"
+        // update the chart option
+        this.chartOption = {
+          title: {
+            text: title, 
+            left: 'center',
+            top: 10
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'  
+            },
+            formatter: (params: any) => {
+           
+              const param = params[0];
+              return `${param.name}<br/>${param.seriesName}: ${param.data}`;
+            }
+          },
+          xAxis: {
+            type: 'category',
+            data: months
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            name: 'kWh',
+            type: 'bar',
+            data: kwhValues
+          }]
+        };
+      }
+    }
+
+
+    if(changes['lineChartData'] && this.lineChartData){
+        console.log("imamo line chart data promenu jej")
+        const xAxis = this.lineChartData.map(d => d.datetime);
+        const kwhValues = this.lineChartData.map(d => d.kwh);
+        
+
+        
+        this.lineChartOption = {
+          title: {
+            text: 'Consumption Over Time'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: {
+            type: 'category',
+            data: xAxis,
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              name: 'kWh',
+              type: 'line',
+              data: kwhValues,
+              smooth: true
+            }
+          ]
+      };
+      
+    }
   }
+
+
+  changeMonth(isForward: boolean){
+    this.changeMonthsEmitter.emit({isForward});
+  }
+
+
+  onChartClick(event: any): void {
+    // The clicked bar's data
+    if(!this.isDaily){
+      const clickedMonth = event.name;      // e.g., "2024-10"
+      const value = event.data;             // e.g., 230.38
+      const seriesName = event.seriesName;  // e.g., "kWh"
+    
+      console.log('Bar clicked:', clickedMonth, value);
+    
+    
+      const date = new Date(`${clickedMonth}-01`); 
+      console.log(date)
+      this.changeDailyEmitter.emit(date)
+      this.isDaily = true;
+    }
+    
+  }
+
+
+  changeMonthly(){
+    this.changeDailyEmitter.emit(null);
+    this.isDaily = false;
+  }
+
+
+
+  loadByPeriod(period: string){
+    this.periodEmitter.emit(period)
+  }
+  
+
+  loadByDateRange() {
+    console.log(this.fromDate)
+    console.log(this.toDate)
+
+    
+
+    if (this.fromDate && this.toDate) {
+      const from = new Date(this.fromDate);
+      const to = new Date(this.toDate);
+  
+      if (from > to) {
+        this.snackService.openSnackBar("The 'From' date must be before the 'To' date.");
+        return;
+      }
+  
+      // Calculate difference in milliseconds
+      const diffMs = to.getTime() - from.getTime();
+      const oneYearMs = 365 * 24 * 60 * 60 * 1000; // 365 days in ms
+  
+      if (diffMs > oneYearMs) {
+        this.snackService.openSnackBar("Date range cannot be greater than 1 year.");
+        return;
+      }
+  
+      const fromDateTime = `${this.fromDate}T00:00:00Z`;
+      const toDateTime = `${this.toDate}T23:59:59Z`;
+      this.dateRangeEmitter.emit({ from: fromDateTime, to: toDateTime });
+    } else {
+      this.snackService.openSnackBar("Both dates must be present for this");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   onFileSelected(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;

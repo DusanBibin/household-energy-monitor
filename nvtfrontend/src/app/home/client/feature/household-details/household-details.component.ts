@@ -7,6 +7,11 @@ import { FileService } from '../../../../shared/services/file-service/file.servi
 import { switchMap, map, catchError, of } from 'rxjs';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { ResponseData, ResponseMessage } from '../../../../shared/model';
+import { ConsumptionDTO } from '../../data-access/model/client-model';
+import { WebsocketService } from '../../../../shared/services/websocket-service/websocket.service';
+import { Subscription } from 'rxjs';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+
 
 @Component({
   selector: 'app-household-details',
@@ -21,17 +26,58 @@ export class HouseholdDetailsComponent implements OnInit {
   householdDetails: ResponseData | null = null;
   realestateId: number;
   householdId: number;
+              
+  currentYM: { year: number, month: number } = this.getTodayYM();     
+  chartData: ConsumptionDTO[] = [];
 
 
 
+  lineChartData: ConsumptionDTO[] = [];
 
-  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService){
+  private wsSubscription: Subscription | null = null;
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService,
+     private webSocketService: WebsocketService, private jwtService: JwtService){
     this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
     this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
 
   }
 
+  unsubscribe(){
+    if (this.wsSubscription) {
+      this.wsSubscription.unsubscribe();
+    }
+    this.webSocketService.unsubscribe();
+  }
+
+  subscribe(){
+    this.wsSubscription = this.webSocketService.subscribeToHousehold(this.householdId)
+    .subscribe(data => {
+      console.log('Received data:', data);
+      let record: ConsumptionDTO = data as ConsumptionDTO
+      this.lineChartData = [...this.lineChartData, record];
+      console.log(record)
+      console.log(this.lineChartData)
+      
+    });
+  }
+
+  ngOnDestroy() {
+   this.unsubscribe()
+  }
+
   ngOnInit(): void {
+
+
+
+    
+
+    // if(this.householdDetails?.data.user.id === this.jwtService.getId()){
+      this.loadData();
+      this.loadLineChartData('1h');
+  
+  
+      this.subscribe()
+    // }
     
     console.log(this.route.snapshot.paramMap)
 
@@ -89,6 +135,102 @@ export class HouseholdDetailsComponent implements OnInit {
     });
   }
   
+
+  loadData(): void {
+    const { year, month } = this.currentYM;
+    this.clientService.getMonthly(this.householdId, year, month).subscribe({
+      next: values => {
+        this.chartData = values;
+      },error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+
+  loadLineChartData(period: string): void {
+    this.clientService.getConsumptionByPeriod(this.householdId, period).subscribe({
+      next: values => {
+        this.lineChartData = values;
+        console.log(this.lineChartData);
+      }, error: err => {
+        console.log(err)
+      }
+    })
+  }
+
+  nextMonth(): void {
+    // move forward by 1 month
+    if (this.currentYM.month === 12) {
+      this.currentYM.year++;
+      this.currentYM.month = 1;
+    } else {
+      this.currentYM.month++;
+    }
+    this.loadData();
+  }
+
+  prevMonth(): void {
+    // move backward by 1 month
+    if (this.currentYM.month === 1) {
+      this.currentYM.year--;
+      this.currentYM.month = 12;
+    } else {
+      this.currentYM.month--;
+    }
+    this.loadData();
+  }
+
+  
+
+  private getTodayYM() {
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() + 1 };
+  }
+
+  handleMonthChange(event: {isForward:boolean}){
+    if(event.isForward) this.nextMonth();
+    else this.prevMonth();
+  }
+
+
+
+  handleToDailyChange(date: Date | null){
+    if(date){
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; 
+  
+      this.clientService.getDaily(this.householdId, year, month).subscribe({
+        next: values => {
+          this.chartData = values;
+        },error: err => {
+          console.log(err)
+        }
+      })
+    }else{
+      this.loadData()
+    }
+   
+  }
+
+  handlePeriodChange(period: string){
+    if(period === "1h") this.unsubscribe()
+    else this.subscribe()
+    this.loadLineChartData(period);
+  }
+
+
+  handleDateRange(event: {from: string, to: string}){
+    this.unsubscribe()
+    this.clientService.getConsumptionByDateRange(this.householdId, event.from, event.to).subscribe({
+      next: values => {
+        this.lineChartData = values
+      },error: err => {
+        console.log(err)
+      }
+    })
+  }
+
 
 
 }

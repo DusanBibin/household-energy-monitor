@@ -34,6 +34,7 @@ public class UserController {
         if(user == null) throw new InvalidAuthenticationException("Not Authenticated");
 
         PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getFirstName())
                 .lastname(user.getLastname())

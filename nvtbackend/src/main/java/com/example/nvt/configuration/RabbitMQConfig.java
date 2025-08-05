@@ -10,7 +10,11 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Bean
-    public Queue myQueue() {
+    public Queue queueHeartbeats() {
         return new Queue("neki_queue", true); // 'true' makes the queue durable
     }
+
+    @Bean
+    public Queue queueValues() {return new Queue("values", true);}
+
 }

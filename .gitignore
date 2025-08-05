@@ -74,3 +74,4 @@ nvtfrontend/e2e/*.map
 .DS_Store
 
 scripts/venv/
+nvtbackend/data/influxdb

@@ -23,7 +23,7 @@
         }@else {
             <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
         
-                <div class="row g-2 m-0 px-2 pb-3 pt-2">
+                <div class="row g-2 m-0 px-2 pb-1 pt-2">
                     <div class="row g-0 m-0 px-1 pt-2">
                         <div class="p-3 rounded border shadow ">
         
@@ -135,6 +135,7 @@
                     
                     <div class="col-lg-6 col-12 d-flex" style="aspect-ratio: 3 / 2;">
                         
+                       
                         <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
                             <h4 class="card-title m-0 pb-2">Map</h4>
                             <div id="mape" class="border border-1 border-dark" style="width: 100%; height: 100%">
@@ -187,16 +188,91 @@
                                       </button>
                                 
                                 </div>
-                            </div>
-        
-                       
+                            </div>   
                     </div>
-        
+                 
+                    @if(this.jwtService.hasRole(['CLIENT']) && this.householdDetails.data.user.id === this.jwtService.getId()){
+                        
                     
-                    
+                        <div class="row g-0 m-0 px-1 pt-2 mb-2">
+            
+                                <div class="p-2 rounded border shadow d-flex flex-grow-1 flex-column">
+                                    <h4 class="card-title m-0 pb-2">Electricity consumption</h4>
+                                    <div echarts
+                                        [options]="chartOption"
+                                        class="chart"
+                                        (chartClick)="onChartClick($event)"
+                                        (chartInit)="onChartInit($event)">
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+
+                                        @if(isDaily){
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonthly()">Back</button>
+                                        }@else {
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonth(false)">Backward</button>
+                                            <button class="btn btn-primary" type="submit" (click)="changeMonth(true)">Forward</button>
+                                        }
+                                        
+                                    </div>
+                                    <div echarts
+                                        [options]="lineChartOption"
+                                        class="chart"
+                                        (chartInit)="onChartInit($event)">
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1h')">Last 1 Hour</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('6h')">Last 6 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('12h')">Last 12 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('24h')">Last 24 Hours</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('7d')">Last 7 Days</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1m')">Last Month</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('3m')">Last 3 Months</button>
+                                        <button class="btn btn-primary" (click)="loadByPeriod('1y')">Last Year</button>
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                        <label>From:
+                                        <input type="date" [(ngModel)]="fromDate">
+                                        </label>
+                                        <label>To:
+                                        <input type="date" [(ngModel)]="toDate">
+                                        </label>
+                                        <button class="btn btn-primary" (click)="loadByDateRange()">Load Date Range</button>
+                                    </div>
+                                    
+
+                                </div>
+                            
+                        </div>   
+                    }
                     
                 </div>
+
+               
+                
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <ng-template #fileDialog let-modal>
                     <div class="modal-header">
                       <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload documents for the household review</h1>
@@ -234,7 +310,9 @@
                     
                 
         
-                </div>
+            </div>
+
+            
         }
        
     }@else{

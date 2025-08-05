@@ -8,10 +8,10 @@ ENDPOINT_URL = "http://localhost:8080/api/v1/realestate/household/script"
 # Python script to be executed for each ID
 SCRIPT_TO_RUN = "household.py"
 
-def fetch_ids():
+def fetch_ids(id_number):
     """Fetch the list of IDs from the Spring Boot endpoint."""
     try:
-        response = requests.get(ENDPOINT_URL)
+        response = requests.get(ENDPOINT_URL + "/" + str(id_number))
         response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
         return response.json()  # Assuming the endpoint returns a JSON array of integers
     except requests.RequestException as e:
@@ -35,9 +35,20 @@ def run_scripts_for_ids(ids):
         sys.exit(1)
 
 if __name__ == "__main__":
-    # Fetch the list of IDs
-    ids = fetch_ids()
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <number>")
+        sys.exit(1)
+    
+    try:
+        id_number = int(sys.argv[1])
+    except ValueError:
+        print("Please provide a valid integer as the parameter.")
+        sys.exit(1)
 
+
+    ids = fetch_ids(id_number)
+    print("Chosen household ids are:")
+    print(ids)
     if not isinstance(ids, list) or not all(isinstance(id, int) for id in ids):
         print("Invalid response from the server. Expected a list of integers.")
         sys.exit(1)

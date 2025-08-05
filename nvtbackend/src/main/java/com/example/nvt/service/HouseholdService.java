@@ -10,6 +10,7 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRepository;
 import com.example.nvt.repository.HouseholdRequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,13 +24,15 @@ public class HouseholdService {
     private final HouseholdRepository householdRepository;
     private final RealestateService realestateService;
     private final HouseholdRequestRepository householdRequestRepository;
+    private final UserService userService;
 
     public Household saveHousehold(Household household) {
         return householdRepository.save(household);
     }
 
-    public List<Long> getAllHouseholdIds() {
-        return householdRepository.getAllHouseholdIds();
+    public List<Long> getAllHouseholdIds(int householdsNum) {
+
+        return householdRepository.getHouseholdIds(PageRequest.of(0, householdsNum));
     }
 
 
@@ -123,5 +126,11 @@ public class HouseholdService {
 
     public long countUnownedHouseholds(Long realestateId){
         return householdRepository.countUnownedHouseholds(realestateId);
+    }
+
+    public Household getHouseholdByIdAndClientId(Long id, Long householdId) {
+        var householdWrapper = householdRepository.findByHouseholdIdAndClientId(id, householdId);
+        if(householdWrapper.isEmpty()) throw new NotFoundException("Household not found");
+        return householdWrapper.get();
     }
 }

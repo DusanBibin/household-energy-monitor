@@ -13,24 +13,34 @@ import com.example.nvt.repository.elastic.CityDocRepository;
 import com.example.nvt.repository.elastic.MunicipalityDocRepository;
 import com.example.nvt.repository.elastic.RealestateDocRepository;
 import com.example.nvt.repository.elastic.RegionDocRepository;
+import com.influxdb.Cancellable;
+import com.influxdb.client.*;
+import com.influxdb.client.domain.WritePrecision;
+import com.influxdb.client.write.Point;
+import com.influxdb.client.write.events.WriteErrorEvent;
+import com.influxdb.client.write.events.WriteSuccessEvent;
+import com.influxdb.query.FluxRecord;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.influxdb.client.domain.TemplateKind.BUCKET;
 import static java.lang.Long.parseLong;
 
 @Component
@@ -58,6 +68,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CityDocRepository cityDocRepository;
     private final ElasticsearchClient elasticsearchClient;
 
+    private final InfluxDBClient influxDBClient;
 
     private StopWatch stopWatch = new StopWatch();
 
@@ -69,12 +80,36 @@ public class DataInitializer implements CommandLineRunner {
 
     Long clientCounter = 3L;
 
-    private static final Random random = new Random();
-
-
     private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
 
+
+
+
+
+
+    // Base consumption values in kWh (for a typical household)
+    private static final double BASE_NIGHT_CONSUMPTION = 0.1;
+    private static final double BASE_DAY_CONSUMPTION = 0.3;
+    private static final double PEAK_HOUR_MULTIPLIER = 1.3;
+
+    // Seasonal multipliers
+    private static final double WINTER_MULTIPLIER = 1.3;
+    private static final double SUMMER_MULTIPLIER = 1.4;
+    private static final double SPRING_MULTIPLIER = 0.9;
+    private static final double FALL_MULTIPLIER = 0.8;
+
+    // Appliance usage probabilities
+    private static final double WEEKDAY_DAY_PROBABILITY = 0.7;
+    private static final double WEEKEND_DAY_PROBABILITY = 0.9;
+    private static final double WEEKDAY_NIGHT_PROBABILITY = 0.3;
+    private static final double WEEKEND_NIGHT_PROBABILITY = 0.5;
+
+
+
+
+    // Smaller random appliance spikes (0–2 kWh instead of 0–3 kWh)
+    private static final double MAX_RANDOM_USAGE = 0.5;
     @Override
     //@Transactional
     public void run(String... args) throws Exception {
@@ -83,7 +118,8 @@ public class DataInitializer implements CommandLineRunner {
         //initCitiesMunicipalitiesRegions();
         
         initializeData();
-
+//        generateHistoricalData();
+        //generateHistoricalDataToCsv();
     }
 
     protected void initializeData(){
@@ -528,6 +564,8 @@ public class DataInitializer implements CommandLineRunner {
 
 
 
+
+
         stopWatch.start("Initializing households");
         System.out.println("Initializing households...");
 
@@ -538,6 +576,22 @@ public class DataInitializer implements CommandLineRunner {
 
         stopWatch.stop();
         System.out.println("DONE");
+
+
+
+
+
+        stopWatch.start("Initializing influxDb data");
+        System.out.println("Initializing influxDb data...");
+
+
+//        OVDE IDE INFLUXDB
+
+
+        stopWatch.stop();
+        System.out.println("DONE");
+
+
 
 
 
@@ -1035,6 +1089,161 @@ public class DataInitializer implements CommandLineRunner {
         return (long)(random.nextInt(range[1] - range[0] + 1) + range[0]);
     }
 
+    public void generateHistoricalDataToCsv() {
+        String csvFilePath = "electricity_compact.csv";
+        List<Long> householdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath))) {
+            // Write CSV header (measurement is specified once in the import command)
+            writer.write("householdId,kWh,_time\n");
+
+            LocalDateTime start = LocalDateTime.now().minusYears(3);
+            LocalDateTime end = LocalDateTime.now();
+
+            for (Long householdId : householdIds) {
+                LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
+
+                while (!current.isAfter(end)) {
+                    double consumption = generateHourlyConsumption(current);
+
+                    // Write compact CSV line
+                    writer.write(String.format(
+                            "%d,%.3f,%s\n",  // Removed measurement from each row
+                            householdId,
+                            consumption,
+                            current.toInstant(ZoneOffset.UTC)
+                    ));
+
+                    current = current.plusHours(1);
+                }
+                if (householdId % 100 == 0) {
+                    System.out.printf("Progress: %d/%d households\n",
+                            householdIds.indexOf(householdId)+1,
+                            householdIds.size());
+                }
+            }
+            System.out.println("Compact CSV generated: " + csvFilePath);
+            System.out.printf("Total rows: ~%,d\n",
+                    householdIds.size() * ChronoUnit.HOURS.between(start, end));
+        } catch (IOException e) {
+            System.err.println("Error writing CSV: " + e.getMessage());
+        }
+    }
+
+
+
+    public void generateHistoricalData() {
+        String bucket = "nvt";
+        String org = "nvt";
+        List<Long> occupiedHouseholdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
+
+        try (WriteApi writeApi = influxDBClient.getWriteApi()) {
+
+            LocalDateTime start = LocalDateTime.now().minusYears(3);
+            LocalDateTime end = LocalDateTime.now();
+
+            for (Long householdId : occupiedHouseholdIds) {
+                LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
+
+                while (!current.isAfter(end)) {
+                    double consumption = generateHourlyConsumption(current);
+
+                    Point point = Point
+                            .measurement("electricity_consumption")
+                            .addTag("householdId", householdId.toString())
+                            .addField("kWh", consumption)
+                            .time(current.toInstant(ZoneOffset.UTC), WritePrecision.NS);
+
+                    writeApi.writePoint(bucket, org, point);
+
+                    current = current.plusHours(1);
+                }
+                System.out.println("Finished backfilling household " + householdId);
+            }
+
+
+        }
+    }
+
+
+
+    public static double generateHourlyConsumption(LocalDateTime dateTime) {
+        int hour = dateTime.getHour();
+        boolean isWeekend = dateTime.getDayOfWeek().getValue() >= 6;
+        boolean isDaytime = isDaytime(hour, dateTime.getMonthValue());
+
+        double consumption = isDaytime ? BASE_DAY_CONSUMPTION : BASE_NIGHT_CONSUMPTION;
+
+        // Peak hours (7–9 AM, 5–9 PM)
+        if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 21)) {
+            consumption *= PEAK_HOUR_MULTIPLIER;
+        }
+
+        // Seasonal adjustment
+        consumption *= getSeasonalMultiplier(dateTime.getMonthValue());
+
+        // Random usage (scaled by probability)
+        double usageProbability = isWeekend ?
+                (isDaytime ? WEEKEND_DAY_PROBABILITY : WEEKEND_NIGHT_PROBABILITY) :
+                (isDaytime ? WEEKDAY_DAY_PROBABILITY : WEEKDAY_NIGHT_PROBABILITY);
+
+        double randomUsage = Math.random() * MAX_RANDOM_USAGE * usageProbability;
+        consumption += randomUsage;
+
+        // Ensure it never goes below a realistic minimum (e.g., fridge)
+        return Math.max(consumption, 0.05); // 0.05 kWh = 50W (absolute minimum)
+    }
+
+    private static boolean isDaytime(int hour, int month) {
+        // Simplified day/night calculation based on season
+        int sunrise, sunset;
+
+        if (month >= 11 || month <= 2) { // Winter
+            sunrise = 7;
+            sunset = 17;
+        } else if (month >= 3 && month <= 5) { // Spring
+            sunrise = 6;
+            sunset = 19;
+        } else if (month >= 6 && month <= 8) { // Summer
+            sunrise = 5;
+            sunset = 21;
+        } else { // Fall
+            sunrise = 6;
+            sunset = 18;
+        }
+
+        return hour >= sunrise && hour < sunset;
+    }
+
+    private static double getSeasonalMultiplier(int month) {
+        if (month >= 11 || month <= 2) { // Winter (Nov-Feb)
+            return WINTER_MULTIPLIER;
+        } else if (month >= 3 && month <= 5) { // Spring (Mar-May)
+            return SPRING_MULTIPLIER;
+        } else if (month >= 6 && month <= 8) { // Summer (Jun-Aug)
+            return SUMMER_MULTIPLIER;
+        } else { // Fall (Sep-Oct)
+            return FALL_MULTIPLIER;
+        }
+    }
+
+
+
+
+
+
+
+
+//        try (WriteApi writeApi = influxDBClient.getWriteApi()) {
+//            Point p = Point.measurement("test_measurement")
+//                    .addTag("testTag", "123")
+//                    .addField("value", 42)
+//                    .time(Instant.now(), WritePrecision.NS);
+//
+//            writeApi.writePoint(bucket, org, p);
+//            writeApi.flush();
+//
+//            System.out.println("Test point written");
+//        }
 
 }

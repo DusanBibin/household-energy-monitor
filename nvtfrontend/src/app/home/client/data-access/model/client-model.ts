@@ -103,3 +103,8 @@ export interface AppointmentDTO{
   endDateTime: Date,
   isPrivate: boolean
 }
+
+export interface ConsumptionDTO{
+  datetime: string,
+  kwh: number
+}

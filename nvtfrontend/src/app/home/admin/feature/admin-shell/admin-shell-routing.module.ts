@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '**', // ako ne skonta ni jedan route
+    redirectTo: 'household-requests', // redirect na ''
+  },
+  {
     path:'household-requests',
     loadChildren:() => 
       import('../../../client/feature/household-requests/household-requests.module').then(
@@ -24,6 +28,10 @@ const routes: Routes = [
       )
   
   },
+  {
+    path: '**', // ako ne skonta ni jedan route
+    redirectTo: 'household-requests', // redirect na ''
+  }
 ];
 
 @NgModule({

@@ -26,10 +26,10 @@ public class HouseholdController {
 
     private final HouseholdService householdService;
 
-    @GetMapping("api/v1/realestate/household/script")
-    public ResponseEntity<?> getAllHouseholdIds() {
+    @GetMapping("api/v1/realestate/household/script/{householdsNum}")
+    public ResponseEntity<?> getAllHouseholdIds(@PathVariable int householdsNum) {
 
-        List<Long> householdIds = householdService.getAllHouseholdIds();
+        List<Long> householdIds = householdService.getAllHouseholdIds(householdsNum);
 
         return ResponseEntity.ok(householdIds);
     }

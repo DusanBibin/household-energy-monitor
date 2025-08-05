@@ -11,7 +11,7 @@ public class InfluxDBConfig {
     @Bean
     public InfluxDBClient customInfluxDBConfig() {
         String url = "http://localhost:8086";
-        String token = "4bkMeBSwq720tcQDjYxKFmS7H-fsRH7Bzmx8aSkgiryMRKFxhP3ij0EnY6BGsnelO71Paj7-5_Pujkw24H3u_A==";
+        String token = "uKpwc864TxyzE38IkIzYUZFU4ELjdHkZFO83tnBFMdMXx6eqjAUFOlbRbWzYRorLK9i9w6zqpQojmi2hutv6Zw==";
         String org = "nvt";
         return InfluxDBClientFactory.create(url, token.toCharArray(), org);
     }
