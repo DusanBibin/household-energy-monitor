@@ -8,6 +8,10 @@ import { switchMap, map, catchError, of } from 'rxjs';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { ResponseData, ResponseMessage } from '../../../../shared/model';
 import { ConsumptionDTO } from '../../data-access/model/client-model';
+import { WebsocketService } from '../../../../shared/services/websocket-service/websocket.service';
+import { Subscription } from 'rxjs';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+
 
 @Component({
   selector: 'app-household-details',
@@ -30,16 +34,51 @@ export class HouseholdDetailsComponent implements OnInit {
 
   lineChartData: ConsumptionDTO[] = [];
 
-
-  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService){
+  private wsSubscription: Subscription | null = null;
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService,
+     private webSocketService: WebsocketService, private jwtService: JwtService){
     this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
     this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
 
   }
 
+  unsubscribe(){
+    if (this.wsSubscription) {
+      this.wsSubscription.unsubscribe();
+    }
+    this.webSocketService.unsubscribe();
+  }
+
+  subscribe(){
+    this.wsSubscription = this.webSocketService.subscribeToHousehold(this.householdId)
+    .subscribe(data => {
+      console.log('Received data:', data);
+      let record: ConsumptionDTO = data as ConsumptionDTO
+      this.lineChartData = [...this.lineChartData, record];
+      console.log(record)
+      console.log(this.lineChartData)
+      
+    });
+  }
+
+  ngOnDestroy() {
+   this.unsubscribe()
+  }
+
   ngOnInit(): void {
-    this.loadData();
-    this.loadLineChartData('1h');
+
+
+
+    
+
+    // if(this.householdDetails?.data.user.id === this.jwtService.getId()){
+      this.loadData();
+      this.loadLineChartData('1h');
+  
+  
+      this.subscribe()
+    // }
+    
     console.log(this.route.snapshot.paramMap)
 
 
@@ -175,11 +214,14 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
   handlePeriodChange(period: string){
+    if(period === "1h") this.unsubscribe()
+    else this.subscribe()
     this.loadLineChartData(period);
   }
 
 
   handleDateRange(event: {from: string, to: string}){
+    this.unsubscribe()
     this.clientService.getConsumptionByDateRange(this.householdId, event.from, event.to).subscribe({
       next: values => {
         this.lineChartData = values

@@ -3,12 +3,20 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '**', // ako ne skonta ni jedan route
+    redirectTo: 'appointments', // redirect na ''
+  },
+  {
     path:'appointments',
     loadChildren:() => 
       import('../../../client/feature/client-appointments/client-appointments.module').then(
         (m) => m.ClientAppointmentsModule
       )
   },
+  {
+    path: '**', // ako ne skonta ni jedan route
+    redirectTo: 'appointments', // redirect na ''
+  }
 ];
 
 @NgModule({

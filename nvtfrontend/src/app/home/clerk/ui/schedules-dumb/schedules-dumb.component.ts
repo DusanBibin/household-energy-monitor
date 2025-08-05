@@ -170,7 +170,9 @@ export class SchedulesDumbComponent implements AfterViewInit{
           const slotEnd = new Date(slotStart);
           slotEnd.setMinutes(slotStart.getMinutes() + 30);
 
-          if (slotEnd <= now) continue;
+          const hoursDifference = (slotStart.getTime() - now.getTime()) / (1000 * 60 * 60);
+          if (slotEnd <= now || hoursDifference < 24) continue;
+          // if (slotEnd <= now) continue;
 
           const overlaps = appointments.some(app => {
             const appStart = new Date(app.startDateTime);

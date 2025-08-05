@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface HouseholdRepository extends JpaRepository<Household, Long> {
 
 
-    @Query("select h.id from Household h")
-    List<Long> getAllHouseholdIds();
+    @Query("select h.id from Household h where h.householdOwner is not null")
+    List<Long> getHouseholdIds(Pageable pageable);
 
     @Query("select h from Household h")
     List<Household> getAllHouseholds();

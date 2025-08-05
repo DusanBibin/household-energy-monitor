@@ -142,12 +142,12 @@ export class HouseholdDetailsFormComponent implements OnChanges{
 
 
     if(changes['lineChartData'] && this.lineChartData){
-    
+        console.log("imamo line chart data promenu jej")
         const xAxis = this.lineChartData.map(d => d.datetime);
         const kwhValues = this.lineChartData.map(d => d.kwh);
         
 
-
+        
         this.lineChartOption = {
           title: {
             text: 'Consumption Over Time'

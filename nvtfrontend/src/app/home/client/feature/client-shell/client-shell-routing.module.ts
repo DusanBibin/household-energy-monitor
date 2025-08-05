@@ -43,13 +43,6 @@ const routes: Routes = [
     )
 },
 {
-  path:'proba',
-  loadChildren:() => 
-    import('../proba/proba.module').then(
-      (m) => m.ProbaModule
-    )
-},
-{
   path:'schedules/clerk/:clerkId',
   loadChildren:() =>
     import('../../../clerk/feature/schedules/schedules.module').then(
