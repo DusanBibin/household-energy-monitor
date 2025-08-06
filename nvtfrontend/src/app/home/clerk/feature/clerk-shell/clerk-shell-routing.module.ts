@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '**', // ako ne skonta ni jedan route
-    redirectTo: 'appointments', // redirect na ''
+    path: '',
+    redirectTo: 'appointments',
+    pathMatch: 'full'
   },
   {
     path:'appointments',

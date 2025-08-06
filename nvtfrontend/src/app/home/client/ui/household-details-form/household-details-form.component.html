@@ -191,7 +191,7 @@
                             </div>   
                     </div>
                  
-                    @if(this.jwtService.hasRole(['CLIENT']) && this.householdDetails.data.user.id === this.jwtService.getId()){
+                    @if(this.jwtService.hasRole(['CLIENT']) && this.householdDetails.data.user && this.householdDetails.data.user.id === this.jwtService.getId()){
                         
                     
                         <div class="row g-0 m-0 px-1 pt-2 mb-2">

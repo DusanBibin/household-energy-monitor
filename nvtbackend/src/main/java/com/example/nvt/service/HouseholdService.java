@@ -25,6 +25,7 @@ public class HouseholdService {
     private final RealestateService realestateService;
     private final HouseholdRequestRepository householdRequestRepository;
     private final UserService userService;
+    private final FileService fileService;
 
     public Household saveHousehold(Household household) {
         return householdRepository.save(household);
@@ -122,6 +123,10 @@ public class HouseholdService {
 
         return householdDTO;
     }
+
+
+
+
 
 
     public long countUnownedHouseholds(Long realestateId){

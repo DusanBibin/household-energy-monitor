@@ -121,7 +121,12 @@ export class HouseholdRequestsListComponent {
 
   navigateDetailsRequest(realestateId: number, householdId: number, requestId: number){
     const role = this.jwtService.getRole()?.toLowerCase()
+    console.log(role)
+    console.log(realestateId)
+    console.log(householdId)
+    console.log(requestId)
     this.router.navigate(['/home',role,'realestate', realestateId, 'household', householdId, 'household-request', requestId])
+    console.log("da li ulazimo ovde")
   }
 
 }

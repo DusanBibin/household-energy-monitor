@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,6 +42,8 @@ public class HouseholdRequestService {
     private final EmailService emailService;
     private final RealestateSearchService realestateSearchService;
 
+
+    @Transactional
     public HouseholdDetailsDTO createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
 
@@ -118,6 +121,7 @@ public class HouseholdRequestService {
         return getRequestByHouseholdIdAndClientId(householdId, clientId).isPresent();
     }
 
+    @Transactional
     public HouseholdRequestDTO acceptHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
@@ -191,7 +195,7 @@ public class HouseholdRequestService {
         return convertToDto(request);
     }
 
-
+    @Transactional
     public HouseholdRequestDTO denyHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId, String denialReason) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
@@ -328,6 +332,7 @@ public class HouseholdRequestService {
     }
 
     public String getHouseholdRequestFile(Long requestId, String fileName) {
+
             HouseholdRequest request = getRequestById(requestId);
 
             if(!(request.getProof_images().contains(fileName) || request.getProof_pdfs().contains(fileName))) throw new InvalidInputException("This file doesn't exist");

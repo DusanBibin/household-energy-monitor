@@ -71,13 +71,13 @@ export class HouseholdDetailsComponent implements OnInit {
 
     
 
-    // if(this.householdDetails?.data.user.id === this.jwtService.getId()){
+    if(this.householdDetails?.data.user.id === this.jwtService.getId()){
       this.loadData();
       this.loadLineChartData('1h');
   
   
       this.subscribe()
-    // }
+    }
     
     console.log(this.route.snapshot.paramMap)
 
@@ -151,7 +151,20 @@ export class HouseholdDetailsComponent implements OnInit {
   loadLineChartData(period: string): void {
     this.clientService.getConsumptionByPeriod(this.householdId, period).subscribe({
       next: values => {
-        this.lineChartData = values;
+        this.lineChartData = values.map(item => {
+          const date = new Date(item.datetime);
+          const year = date.getFullYear();
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
+          const day = date.getDate().toString().padStart(2, '0');
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const seconds = date.getSeconds().toString().padStart(2, '0');
+  
+          return {
+            datetime: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+            kwh: item.kwh
+          };
+        });
         console.log(this.lineChartData);
       }, error: err => {
         console.log(err)

@@ -62,7 +62,7 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
       }
 
       if(changes['pendingRequests']){
-        if(this.pendingRequests){
+        if(this.pendingRequests && this.jwtService.hasRole(['ADMIN', 'SUPERADMIN'])){
           
 
 

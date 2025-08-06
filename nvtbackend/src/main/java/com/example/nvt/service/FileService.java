@@ -27,6 +27,7 @@ public class FileService {
 
     public final String uploadDirUsers = "files/users";
     public final String uploadDirHouseholdRequests = "files/requests/households";
+    public final String uploadDirRealestates = "files/realestates";
 
 
     public String saveProfileImg(MultipartFile file, Long userId) throws IOException {

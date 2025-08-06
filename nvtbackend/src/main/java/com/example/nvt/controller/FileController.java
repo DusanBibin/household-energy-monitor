@@ -3,9 +3,7 @@ package com.example.nvt.controller;
 
 import com.example.nvt.exceptions.InvalidAuthenticationException;
 import com.example.nvt.model.User;
-import com.example.nvt.service.FileService;
-import com.example.nvt.service.HouseholdRequestService;
-import com.example.nvt.service.UserService;
+import com.example.nvt.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +24,7 @@ public class FileController {
 
     private final HouseholdRequestService householdRequestService;
     private final UserService userService;
+    private final RealestateService realestateService;
 //    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping(value = "/profile-img")
     public ResponseEntity<?> getProfileImage(@AuthenticationPrincipal User user) {
@@ -67,11 +66,28 @@ public class FileController {
         String filePath = householdRequestService.getHouseholdRequestFile(requestId, fileName);
         System.out.println(filePath);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Accel-Redirect", filePath); // internal path for Nginx
+        headers.add("X-Accel-Redirect", filePath);
         headers.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        headers.add("Content-Type", "application/octet-stream"); // generic binary stream
+        headers.add("Content-Type", "application/octet-stream");
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
+
+
+    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
+    @GetMapping(value = "/realestate/{realestateId}/{fileName}")
+    public ResponseEntity<?> getRealestateImage(@PathVariable Long realestateId, @PathVariable String fileName) {
+
+
+        String filePath = realestateService.getRealestateImage(realestateId, fileName);
+        System.out.println(filePath);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Accel-Redirect", filePath);
+        headers.add("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        headers.add("Content-Type", "application/octet-stream");
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+    }
+
 
 }

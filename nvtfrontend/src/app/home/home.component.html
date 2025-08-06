@@ -89,6 +89,19 @@
                         </li>
                     }
 
+                    @if(this.jwtService.hasRole(["CLIENT"])){
+                        <li class="nav-item">
+                            <a [routerLink]="['/home','client','realestates']" 
+                                [queryParams]="{
+                                    page: 1
+                                }"
+                             routerLinkActive="active" class="nav-link">
+                                
+                 
+                            <i class="fs-5 bi-house-fill"></i><span class="ms-1 d-none " [ngClass]="{'d-md-inline': navbarExpanded}">My realestates</span> </a>
+                        </li>
+                    }
+
                     @if(this.jwtService.hasRole(["CLERK"])){
                         <li class="nav-item">
                             
@@ -127,10 +140,10 @@
                             
                         </a>
                         <ul  class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" style="cursor: pointer;">Profile</a></li>
+                            <!-- <li><a class="dropdown-item" style="cursor: pointer;">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
-                            </li>
+                            </li> -->
                             <li><a class="dropdown-item" style="cursor: pointer;" (click)="signOut()">Sign out</a></li>
                         </ul>
                     </div>

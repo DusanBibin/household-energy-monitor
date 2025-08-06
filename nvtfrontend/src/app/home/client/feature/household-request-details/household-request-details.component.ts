@@ -6,6 +6,7 @@ import { ResponseData, ResponseMessage } from '../../../../shared/model';
 import { request } from 'http';
 import { error } from 'console';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 @Component({
   selector: 'app-household-request-details',
   standalone: false,
@@ -19,7 +20,7 @@ export class HouseholdRequestDetailsComponent implements OnInit {
   requestDetails: ResponseData | null = null;
   pendingRequests: ResponseData | null = null;
 
-  constructor(private clientService: ClientService, private route: ActivatedRoute, private snackBar: SnackBarService){
+  constructor(private clientService: ClientService, private route: ActivatedRoute, private snackBar: SnackBarService, private jwtService: JwtService){
     
   }
 
@@ -31,7 +32,7 @@ export class HouseholdRequestDetailsComponent implements OnInit {
         this.householdId = Number(params.get('householdId'));
         this.requestId = Number(params.get('requestId'));
     
-        // Fetch data based on new params
+      
         this.fetchRequestDetails();
         
       });
@@ -44,7 +45,7 @@ export class HouseholdRequestDetailsComponent implements OnInit {
         this.requestDetails = { isError: false, data: requestDetails };
   
         let x = this.requestDetails.data as HouseholdRequestDTO
-        if(x.requestStatus === "PENDING") this.getPendingRequests(0);
+        if(x.requestStatus === "PENDING" && this.jwtService.hasRole(['ADMIN', 'SUPERADMIN'])) this.getPendingRequests(0);
         
       },
       error: err => {

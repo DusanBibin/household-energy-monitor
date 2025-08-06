@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO, ConsumptionDTO } from './model/client-model';
+import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO, ConsumptionDTO, RealestateSummaryDTO } from './model/client-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LocationDTO } from '../../../shared/model';
@@ -173,6 +173,15 @@ export class ClientService {
         .set('from', from)
         .set('to', to);
       return this.http.get<ConsumptionDTO[]>(environment.apiUrl + '/household/' + householdId + '/consumption', { params });
+    }
+
+
+    getRealestates(page: number, size: number): Observable<PagedResponse<RealestateSummaryDTO>>{
+      let params = new HttpParams()
+        .set('page', page)
+        .set('size', size)
+
+        return this.http.get<PagedResponse<RealestateSummaryDTO>>(environment.apiUrl + '/realestate', { params, withCredentials: true });
     }
 
 

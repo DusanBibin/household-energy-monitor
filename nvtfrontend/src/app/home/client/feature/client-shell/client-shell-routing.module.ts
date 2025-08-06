@@ -15,6 +15,13 @@ const routes: Routes = [
     )
 },
 {
+  path:'realestates',
+  loadChildren: () =>
+    import('../realestate-list/realestate-list.module').then(
+      (m) => m.RealestateListModule
+    )
+},
+{
   path:'household-requests',
   loadChildren:() => 
     import('../household-requests/household-requests.module').then(

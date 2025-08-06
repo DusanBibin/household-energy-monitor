@@ -1,12 +1,19 @@
 package com.example.nvt.controller;
 
 import com.example.nvt.DTO.RealestateImagePathsDTO;
+import com.example.nvt.DTO.RealestateSummaryDTO;
+import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.enumeration.FilterType;
+import com.example.nvt.model.Client;
+import com.example.nvt.model.User;
 import com.example.nvt.model.elastic.RealestateDoc;
 import com.example.nvt.service.RealestateSearchService;
 import com.example.nvt.service.RealestateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,6 +53,22 @@ public class RealestateController {
     public List<RealestateImagePathsDTO> getImagePaths(@RequestBody List<Long> realestateIds) throws IOException {
         return realestateService.getImagePaths(realestateIds);
     }
+
+
+    @PreAuthorize("hasAuthority('CLIENT')")
+    @GetMapping()
+    public ResponseEntity<Page<RealestateSummaryDTO>> getRealestateSummaries(@AuthenticationPrincipal User user,
+                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "10") int size){
+
+        Page<RealestateSummaryDTO> realestates = realestateService.getRealestateSummaries(user, page, size);
+        return ResponseEntity.ok(realestates);
+
+    }
+
+
+
+
 //
 //    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
 //    @GetMapping("/{realestateId}/households")

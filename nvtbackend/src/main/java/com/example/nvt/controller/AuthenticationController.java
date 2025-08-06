@@ -88,20 +88,6 @@ public class AuthenticationController {
                 && !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser"));
     }
 
-    
-    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
-    @GetMapping("/kurac-auth")
-    public ResponseEntity<String> kurac(){
-        System.out.println("Kurac auth");
-        return ResponseEntity.ok("Kurac auth");
-    }
-
-    @GetMapping("/kurac-unauth")
-    public ResponseEntity<String> kuracUnauthorized(){
-        System.out.println("Kurac unauth");
-        return ResponseEntity.ok("Kurac unauth");
-    }
-
 
 
 

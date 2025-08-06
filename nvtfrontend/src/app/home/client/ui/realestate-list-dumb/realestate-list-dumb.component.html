@@ -1,0 +1,191 @@
+<div class="w-100 h-100" (click)="registerClick($event)">
+
+    
+    @if(apartmentSelectionPosition.buildingSelected){
+        <div
+        (click)="clickPopup($event)"
+        class="popup-card shadow-lg d-flex flex-column" style="max-width: 250px; max-height: 250px; overflow:hidden; background-color: white;"
+        
+        [ngStyle]="{
+          left: apartmentSelectionPosition.location.x + 'px',
+          top: apartmentSelectionPosition.location.y + 'px',
+          position: 'absolute',
+          zIndex: 1080
+        }">
+          <div class="pb-3">Choose an apartment</div> 
+          <input
+            type="text"
+            class="form-control mb-3"
+            style="font-size: medium;"
+            name="search-vacant"
+    
+            [formControl]="apartmentSearchControl"
+            (input)="highlightApartmentNumber($event)"  
+          >
+
+
+
+          <ul class="list-group w-100 bg-white flex-grow-1 overflow-auto m-0 border">
+    
+          @for (apartment of filteredVacantRealestateApartmentsIds; track i; let i = $index) {
+              <li
+                class="list-group-item list-group-item-action"
+                style="cursor: pointer;" [innerHTML]="apartment.apartmentNumber"  (click)="navigateHouseholdDetails(apartment.id)">
+              </li>
+            }
+            
+          </ul>
+      </div>
+      }
+   
+    @if(isLoading){
+        <div class="d-flex w-100 h-100 align-items-center justify-content-center" >
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }@else {
+        
+      
+            
+     
+        <div class="w-100 h-100 d-flex flex-column">
+
+            
+            <div class="d-flex border-bottom p-3">
+                <h5 class="m-0">My realestates</h5>
+            </div>
+        
+            @if(realestates && realestates.length === 0){
+                <div class="d-flex w-100 h-100 align-items-center justify-content-center" >
+                    You don't have any realestates
+                </div>
+        
+            }@else {
+               
+                <div class="d-flex flex-column flex-grow-1 px-2 pt-2" style="overflow-y: scroll;" >
+        
+        
+        
+                    @for (realestate of realestates; track realestate){
+                        <div class="col-md-6 col-lg-4" style="display: block; cursor: pointer;"
+                            (click)="routeDetailsPage(realestate, $event)"
+                            (mouseenter)="selectedId = realestate.realestateId" 
+                            (mouseleave)="selectedId = 0" 
+                            [ngClass]="{
+                                'shadow-lg': selectedId === realestate.realestateId,
+                                'shadow': selectedId !== realestate.realestateId
+                            }" >
+                            
+                            <a class="text-decoration-none text-reset">
+                              <div
+                              class="p-2 rounded border shadow ">
+                                <div id="{{'carousel' + realestate.realestateId}}" class="carousel slide">
+          
+                                
+          
+                                <div class="carousel-indicators">
+                                  @for (imagePath of realestate.images; track imagePath; let index = $index) {
+                                    <button type="button" (click)="$event.stopPropagation()" 
+                                      [attr.data-bs-target]="'#carousel' + realestate.realestateId" 
+                                      [attr.data-bs-slide-to]="index" 
+                                      [attr.aria-label]="'Slide ' + index + 1"
+                                      
+                                      [class.active]="index === 0"
+                                      [attr.aria-current]="index === 0 ? 'true' : null"></button>
+                                  }
+                                </div>
+          
+                                <div class="carousel-inner">
+                                  @for (imagePath of realestate.images; track imagePath; let index = $index) {
+                                    <div class="carousel-item" [ngClass]="{'active':index === 0}">
+                                      <img [src]="ENVIRONMENT_URL + '/' + realestate.realestateId + '/' + imagePath" class="d-block w-100" alt="..." loading="lazy">
+                                    </div>
+                                  }
+                                </div>
+          
+                              
+          
+          
+          
+          
+                                <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + realestate.realestateId"  data-bs-slide="prev">
+                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + realestate.realestateId"  data-bs-slide="next">
+                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Next</span>
+                                </button>
+                                
+                                </div>
+                                <div >
+                                <i class="bi me-2" [ngClass]="{
+                                  'bi-house-door': realestate.type === 'HOUSE',
+                                  'bi-building': realestate.type === 'BUILDING',
+                                  'bi-signpost': realestate.type === 'COTTAGE',
+                                  'bi-shop': realestate.type === 'COMMERCE_SPACE'
+                                }">
+                                </i>
+                                @if(realestate.type === 'HOUSE'){<strong>Residential House</strong>}
+                                @if(realestate.type === 'BUILDING'){<strong>Apartment Building</strong>}
+                                @if(realestate.type === 'COTTAGE'){<strong>Cottage</strong>}
+                                @if(realestate.type === 'COMMERCE_SPACE'){<strong>Commerce Space</strong>}
+                                <br>
+                                {{realestate.address}}
+                                </div>
+                              </div>
+                            </a>
+                          </div>
+                    }
+                    
+            
+                </div>
+            
+            
+                
+                @if (totalPages > 1) {
+                    <div class="d-flex justify-content-center align-items-center border-top">
+                        <nav aria-label="Pagination" class="pt-4">
+                            <ul class="pagination">
+                        
+                            <li class="page-item" [class.disabled]="page === 0">
+                                <a class="page-link" role="button" (click)="goPrevious()">Previous</a>
+                            </li>
+                            
+        
+                            <li 
+                                class="page-item" 
+                                [class.active]="page === i"
+                                role="button" 
+                                *ngFor="let p of [].constructor(totalPages); let i = index"
+                                (click)="goToPage(i)">
+                                <a class="page-link">{{ i + 1 }}</a>
+                            </li>
+                        
+                            <li class="page-item" [class.disabled]="page === totalPages - 1">
+                                <a class="page-link" role="button" (click)="goNext()">Next</a>
+                            </li>
+                        
+                            </ul>
+                        </nav>
+                        </div>
+                }
+                
+            }
+            
+            
+            
+                
+   
+            
+        
+            
+        </div>
+        
+    
+    }
+   
+
+
+</div>

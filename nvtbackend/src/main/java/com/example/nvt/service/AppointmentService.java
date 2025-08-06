@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -33,6 +34,8 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
 
+
+    @Transactional
     public AppointmentDTO createAppointment(Client client, Long clerkId, String startDateTimeString) {
 
 
@@ -75,7 +78,7 @@ public class AppointmentService {
         try {
             appointment = saveAppointment(appointment);
         } catch (DataIntegrityViolationException e) {
-            // This happens if the DB unique constraint fails
+
             throw new InvalidInputException("Appointment slot already taken");
         }
         clerk.getAppointments().add(appointment);

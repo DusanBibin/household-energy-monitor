@@ -108,3 +108,22 @@ export interface ConsumptionDTO{
   datetime: string,
   kwh: number
 }
+
+
+
+
+export interface HouseholdSummaryDTO {
+    id: number,
+    apartmentNumber: string
+}
+
+
+
+export interface RealestateSummaryDTO {
+    realestateId: number,
+    type: string;
+    householdSummaries: HouseholdSummaryDTO[];
+    address: string,
+    images : string[]
+}
+

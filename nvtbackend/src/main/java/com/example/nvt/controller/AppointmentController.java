@@ -41,16 +41,6 @@ public class AppointmentController {
     }
 
 
-//    @PreAuthorize("hasAuthority('CLIENT')")
-//    @GetMapping("/appointment")
-//    public ResponseEntity<Page<AppointmentDTO>> getClientAppointments(@AuthenticationPrincipal Client client,
-//                                                                      @RequestParam(defaultValue = "0") int page,
-//                                                                      @RequestParam(defaultValue = "10") int size){
-//        Page<AppointmentDTO> appointments = appointmentService.getClientAppointments(client.getId(), page, size);
-//        return ResponseEntity.ok(appointments);
-//    }
-
-
 
     @PreAuthorize("hasAnyAuthority('CLIENT','CLERK')")
     @GetMapping("/appointment")

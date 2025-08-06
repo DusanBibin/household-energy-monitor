@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -107,6 +108,7 @@ public class AuthenticationService {
 
     }
 
+    @Transactional
     public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
 
         if(!(user instanceof SuperAdmin superAdmin || user == null))
