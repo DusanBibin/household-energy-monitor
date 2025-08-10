@@ -1,6 +1,7 @@
 package com.example.nvt.service;
 
 import com.example.nvt.DTO.ConsumptionDTO;
+import com.example.nvt.configuration.InfluxProperties;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.Client;
 import com.example.nvt.model.Household;
@@ -22,10 +23,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ConsumptionQueryService {
     private final HouseholdService householdService;
-
+    private final InfluxProperties influxProperties;
     private final InfluxDBClient influxDBClient;
-    private static String BUCKET = "nvt";
-    private static String ORG = "nvt";
 
     public List<ConsumptionDTO> getYearlyConsumption(Client client, Long householdId, Integer startYear, Integer startMonth) {
 
@@ -49,11 +48,11 @@ public class ConsumptionQueryService {
         String flux = String.format("""
                 from(bucket: "%s")
                   |> range(start: %s, stop: %s)
-                  |> filter(fn:(r) => r._measurement == "electricity_consumption" and r.householdId == "%d" and r._field == "kWh")
+                  |> filter(fn:(r) => r._measurement == "E" and r.hId == "%d" and r._field == "kWh")
                   |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
                   |> yield(name: "sum")
                 """,
-                BUCKET,
+                influxProperties.getBucket(),
                 from.toInstant(),
                 to.toInstant(),
                 householdId
@@ -61,7 +60,7 @@ public class ConsumptionQueryService {
 
         QueryApi queryApi = influxDBClient.getQueryApi();
 
-        List<FluxTable> tables = queryApi.query(flux, ORG);
+        List<FluxTable> tables = queryApi.query(flux, influxProperties.getOrg());
         Map<YearMonth, Double> aggregated = new HashMap<>();
 
         for (FluxTable table : tables) {
@@ -105,18 +104,18 @@ public class ConsumptionQueryService {
         String flux = String.format("""
             from(bucket: "%s")
               |> range(start: %s, stop: %s)
-              |> filter(fn:(r) => r._measurement == "electricity_consumption" and r.householdId == "%d" and r._field == "kWh")
+              |> filter(fn:(r) => r._measurement == "E" and r.hId == "%d" and r._field == "kWh")
               |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")
               |> yield(name: "sum")
             """,
-                BUCKET,
+                influxProperties.getBucket(),
                 from.toInstant(),
                 to.toInstant(),
                 householdId
         );
 
         QueryApi queryApi = influxDBClient.getQueryApi();
-        List<FluxTable> tables = queryApi.query(flux, ORG);
+        List<FluxTable> tables = queryApi.query(flux, influxProperties.getOrg());
 
         Map<LocalDate, Double> aggregated = new HashMap<>();
         for (FluxTable table : tables) {
@@ -184,11 +183,11 @@ public class ConsumptionQueryService {
         return String.format("""
                 from(bucket: "%s")
                   |> range(start: %s, stop: %s)
-                  |> filter(fn: (r) => r._measurement == "electricity_consumption" and r.householdId == "%d" and r._field == "kWh")
+                  |> filter(fn: (r) => r._measurement == "E" and r.hId == "%d" and r._field == "kWh")
                   |> aggregateWindow(every: %s, fn: mean, createEmpty: false)
                   |> yield(name: "mean")
                 """,
-                BUCKET,
+                influxProperties.getBucket(),
                 start.toString(),
                 end.toString(),
                 householdId,
@@ -208,10 +207,17 @@ public class ConsumptionQueryService {
         Instant start;
         Instant end;
 
-        // Calculate start & end based on input
+
         if (period != null && !period.isEmpty()) {
-            end = Instant.now();
+
+
+            //
+
+//            end = Instant.now();
+            end = getMostRecentValue(householdId);
             start = parsePeriodToInstant(period, end);
+            System.out.println(end);
+            System.out.println(start);
             if (start == null) {
                 throw new InvalidInputException("Start date is missing");
             }
@@ -234,7 +240,7 @@ public class ConsumptionQueryService {
         String flux = buildFluxQuery(householdId, start, end, downsampleInterval);
 
         QueryApi queryApi = influxDBClient.getQueryApi();
-        List<FluxTable> tables = queryApi.query(flux, ORG);
+        List<FluxTable> tables = queryApi.query(flux, influxProperties.getOrg());
 
         List<ConsumptionDTO> result = new ArrayList<>();
 
@@ -252,5 +258,48 @@ public class ConsumptionQueryService {
         return result;
     }
 
+    //OVA FUNKCIJA JE SAMO ZA SIMULACIJU JER POSTO SIMULIRANO VREME IDE U BUDUCNOST U ODNOSU NA PRAVO VREME OVO UZIMA ZADNJU VREDNOST
+    //ZAPISANU U INFLUXDB KAKO BI MOGLI DA KORISTIMO LAST 6 HOURS VREME RECIMO
+    public Instant getMostRecentValue(Long householdId) {
 
+        String str = String.format("""
+            from(bucket: "%s")
+              |> range(start: 2023-01-01T00:00:00Z, stop: 2260-01-01T00:00:00Z)
+              |> filter(fn: (r) => r["_measurement"] == "E")
+              |> filter(fn: (r) => r["_field"] == "kWh")
+              |> filter(fn: (r) => r["hId"] == "%d")
+              |> sort(columns: ["_time"], desc: true)
+              |> limit(n: 1)
+            """,
+                influxProperties.getBucket(), householdId
+        );
+
+        QueryApi queryApi = influxDBClient.getQueryApi();
+        List<FluxTable> tables = queryApi.query(str, influxProperties.getOrg());
+
+
+        Instant instantTime = Instant.now();
+        for (FluxTable table : tables) {
+            for (FluxRecord record : table.getRecords()) {
+
+                System.out.println("Record values:");
+                for (String key : record.getValues().keySet()) {
+                    System.out.println(key + " = " + record.getValueByKey(key));
+                }
+
+
+                Object timeObj = record.getValueByKey("_time");
+                if (timeObj instanceof Instant) {
+                    instantTime = (Instant) timeObj;
+                    System.out.println("Record time as Instant: " + instantTime);
+
+                } else if (timeObj instanceof String) {
+                    instantTime = Instant.parse((String) timeObj);
+                    System.out.println("Record time as Instant: " + instantTime);
+                }
+            }
+        }
+
+        return instantTime.plusSeconds(60);
+    }
 }

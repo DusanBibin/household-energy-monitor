@@ -1,6 +1,7 @@
 package com.example.nvt.helpers;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import com.example.nvt.configuration.InfluxProperties;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
 import com.example.nvt.model.*;
@@ -69,6 +70,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ElasticsearchClient elasticsearchClient;
 
     private final InfluxDBClient influxDBClient;
+    private final InfluxProperties influxProperties;
 
     private StopWatch stopWatch = new StopWatch();
 
@@ -223,9 +225,9 @@ public class DataInitializer implements CommandLineRunner {
         stopWatch.start("Initializing clients");
         System.out.println("Initializing clients...");
         //lite 15921
-        //regular 7466128
+        //regular 7467936
         List<Client> clients = new ArrayList<>();
-        for(int i = 0; i < 15921; i++) {
+        for(int i = 0; i < 19521; i++) {
             Client client = createClient();
             clients.add(client);
 
@@ -1094,8 +1096,8 @@ public class DataInitializer implements CommandLineRunner {
         List<Long> householdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath))) {
-            // Write CSV header (measurement is specified once in the import command)
-            writer.write("householdId,kWh,_time\n");
+
+            writer.write("id,kWh,_time\n");
 
             LocalDateTime start = LocalDateTime.now().minusYears(3);
             LocalDateTime end = LocalDateTime.now();
@@ -1133,9 +1135,9 @@ public class DataInitializer implements CommandLineRunner {
 
 
     public void generateHistoricalData() {
-        String bucket = "nvt";
-        String org = "nvt";
-        List<Long> occupiedHouseholdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
+//        String bucket = "nvt";
+//        String org = "nvt";
+        List<Long> occupiedHouseholdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1));
 
         try (WriteApi writeApi = influxDBClient.getWriteApi()) {
 
@@ -1149,12 +1151,12 @@ public class DataInitializer implements CommandLineRunner {
                     double consumption = generateHourlyConsumption(current);
 
                     Point point = Point
-                            .measurement("electricity_consumption")
-                            .addTag("householdId", householdId.toString())
+                            .measurement("E")
+                            .addTag("hId", householdId.toString())
                             .addField("kWh", consumption)
                             .time(current.toInstant(ZoneOffset.UTC), WritePrecision.NS);
 
-                    writeApi.writePoint(bucket, org, point);
+                    writeApi.writePoint(influxProperties.getBucket(), influxProperties.getOrg(), point);
 
                     current = current.plusHours(1);
                 }

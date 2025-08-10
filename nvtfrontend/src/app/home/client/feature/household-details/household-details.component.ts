@@ -54,6 +54,7 @@ export class HouseholdDetailsComponent implements OnInit {
     .subscribe(data => {
       console.log('Received data:', data);
       let record: ConsumptionDTO = data as ConsumptionDTO
+
       this.lineChartData = [...this.lineChartData, record];
       console.log(record)
       console.log(this.lineChartData)
@@ -70,14 +71,10 @@ export class HouseholdDetailsComponent implements OnInit {
 
 
     
+    console.log("sta se ovde dogadja")
+    console.log(this.householdDetails?.data.user.id === this.jwtService.getId())
 
-    if(this.householdDetails?.data.user.id === this.jwtService.getId()){
-      this.loadData();
-      this.loadLineChartData('1h');
-  
-  
-      this.subscribe()
-    }
+    
     
     console.log(this.route.snapshot.paramMap)
 
@@ -85,6 +82,22 @@ export class HouseholdDetailsComponent implements OnInit {
     this.clientService.getHouseholdDetails(this.realestateId, this.householdId).subscribe({
       next: householdDetails => {
         this.householdDetails = { isError: false, data: householdDetails };
+
+        if(this.householdDetails){
+          if(this.householdDetails.data){
+            if(this.householdDetails.data.user){
+              if(this.householdDetails?.data.user.id === this.jwtService.getId()){
+                console.log("Da li dobijamo podatke")
+                this.loadData();
+                this.loadLineChartData('1h');
+            
+            
+                this.subscribe()
+              }
+            }
+          }
+        }
+        
         console.log('Household details:', householdDetails);
       },
       error: err => {
@@ -227,8 +240,8 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
   handlePeriodChange(period: string){
-    if(period === "1h") this.unsubscribe()
-    else this.subscribe()
+    if(period === "1h") this.subscribe()
+    else this.unsubscribe()
     this.loadLineChartData(period);
   }
 

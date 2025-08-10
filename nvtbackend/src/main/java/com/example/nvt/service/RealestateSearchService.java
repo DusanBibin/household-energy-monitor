@@ -88,7 +88,9 @@ public class RealestateSearchService {
         Aggregation geoTileGridAggregation = Aggregation.of(a -> a
                 .geotileGrid(g -> g
                         .field("location")
-                        .precision(3 + zoomLevel))
+                        .precision(3 + zoomLevel)
+                        .size(250))
+
                 .aggregations("top_realestates", agg -> agg
                         .topHits(th -> th
                                 .size(1)
@@ -106,7 +108,7 @@ public class RealestateSearchService {
                 .index("realestate")
                 .query( q-> q.bool(boolQuery))
                 .aggregations("grid", geoTileGridAggregation)
-                .size(500)
+                .size(0)
         );
 
 

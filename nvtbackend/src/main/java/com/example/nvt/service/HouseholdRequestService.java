@@ -246,10 +246,14 @@ public class HouseholdRequestService {
                                                               String sortField, String sortDir) {
         if(page < 0 ) page = 0;
         if(size < 1) size = 10;
+        System.out.println(user.getId());
+        user = userService.getUserById(user.getId());
+
         Pageable pageable = PageRequest.of(page, size, sortDir.equalsIgnoreCase("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending());
 
         Specification<HouseholdRequest> spec = Specification.where(null);
         if(user instanceof Client){
+            System.out.println("Da li smo usli ovde");
             spec = Specification.where(HouseholdRequestSpecifications.hasRequesterId(user.getId()));
         }
 
@@ -259,7 +263,7 @@ public class HouseholdRequestService {
         }
 
         Page<HouseholdRequest> resultPage = householdRequestRepository.findAll(spec, pageable);
-
+        System.out.println("resultPage = " + resultPage);
         return resultPage.map(this::convertToSummaryDto);
 
     }

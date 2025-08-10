@@ -41,8 +41,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"   # Messaging port
-      - "15672:15672" # Management UI port
+      - "5672:5672"  
+      - "15672:15672" 
     environment:
       RABBITMQ_DEFAULT_USER: nvt
       RABBITMQ_DEFAULT_PASS: 123
@@ -58,6 +58,8 @@ services:
 
       # Mount the 'files' directory to serve user-uploaded content
       - ./nvtbackend/files:/files:ro
+
+      - ./nvtfrontend/dist/nvtfrontend/browser:/usr/share/nginx/html:ro
 
     extra_hosts:
       - "host.docker.internal:host-gateway"

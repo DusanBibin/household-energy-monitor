@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,42 +46,34 @@ public class RabbitMQListener {
             JsonNode jsonNode = objectMapper.readTree(message);
 
             String householdId = jsonNode.get("household_id").asText();
-
-
-            long currentTimestamp = System.currentTimeMillis();
-            lastHeartbeatTimestamp.set(currentTimestamp);
-
-
-
-
-
-            String timestamp = jsonNode.get("timestamp").asText();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    .withZone(ZoneOffset.UTC);
-
-            Instant instant;
-            try {
-
-                long epochSeconds = Long.parseLong(timestamp);
-                instant = Instant.ofEpochSecond(epochSeconds);
-            } catch (NumberFormatException e) {
-
-                LocalDateTime localDateTime = LocalDateTime.parse(timestamp, formatter);
-                instant = localDateTime.toInstant(ZoneOffset.UTC);
-            }
-
-            String formattedTimestamp = DateTimeFormatter.ISO_INSTANT.format(instant);
+            String timestamp = jsonNode.get("timestamp").asText(); // e.g. "2025-08-09T14:30:00"
             double consumption = jsonNode.get("consumption").asDouble();
 
+            System.out.println(householdId);
+            System.out.println(timestamp);
+            System.out.println(consumption);
+
+            LocalDateTime localDateTime = LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            ZoneId zoneId = ZoneId.systemDefault();
+            Instant instant = localDateTime.atZone(zoneId).toInstant();
+
+            try (WriteApi writeApi = influxDBClient.getWriteApi()) {
+                Point point = Point.measurement("E")
+                        .addTag("hId", householdId)
+                        .addField("kWh", consumption)
+                        .time(instant, WritePrecision.NS);
+                writeApi.writePoint("nvt", "nvt", point);
+                writeApi.flush();
+            }
 
 
 
-            ConsumptionDTO consumptionDTO = ConsumptionDTO.builder()
-                    .kWh(consumption)
-                    .datetime(formattedTimestamp).build();
-            System.out.println(consumptionDTO);
-            messagingTemplate.convertAndSend("/consumption-realtime/" + householdId, consumptionDTO);
+//
+//            ConsumptionDTO consumptionDTO = ConsumptionDTO.builder()
+//                    .kWh(consumption)
+//                    .datetime(formattedTimestamp).build();
+//            System.out.println(consumptionDTO);
+//            messagingTemplate.convertAndSend("/consumption-realtime/" + householdId, consumptionDTO);
 
 
         } catch (Exception e) {
@@ -88,14 +81,7 @@ public class RabbitMQListener {
             e.printStackTrace();
         }
     }
-    //                try (WriteApi writeApi = influxDBClient.getWriteApi()) {
-//                    Point point = Point.measurement("electricity_consumption")
-//                            .addTag("householdId", householdId)
-//                            .addField("kWh", consumption)
-//                            .time(timestampMillis, WritePrecision.MS);
-//                    writeApi.writePoint("nvt", "nvt", point);
-//                    writeApi.flush();
-//                }
+
     public long getLastHeartbeatTimestamp() {
         return lastHeartbeatTimestamp.get();
     }

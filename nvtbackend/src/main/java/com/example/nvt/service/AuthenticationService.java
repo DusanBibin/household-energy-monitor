@@ -7,10 +7,7 @@ import com.example.nvt.exceptions.EmailNotConfirmedException;
 import com.example.nvt.exceptions.InvalidAuthenticationException;
 import com.example.nvt.exceptions.InvalidAuthorizationException;
 import com.example.nvt.exceptions.InvalidInputException;
-import com.example.nvt.model.Client;
-import com.example.nvt.model.SuperAdmin;
-import com.example.nvt.model.User;
-import com.example.nvt.model.Verification;
+import com.example.nvt.model.*;
 import com.example.nvt.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -132,17 +129,33 @@ public class AuthenticationService {
         if(userService.emailAlreadyExists(request.getEmail())) throw new InvalidInputException("User with this email already exists");
 
 
-        var newUser = Client.builder()
-                .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1) )
-                .lastname(request.getLastname().substring(0, 1).toUpperCase() + request.getLastname().substring(1))
-                .email(request.getEmail().toLowerCase())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .phoneNumber(request.getPhone())
-                .emailConfirmed(emailConfirmed)
-                .role(role)
-                .build();
 
-        newUser = (Client) userService.saveUser(newUser);
+        User newUser;
+
+        if (role == Role.ADMIN) {
+            newUser = Admin.builder()
+                    .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1) )
+                    .lastname(request.getLastname().substring(0, 1).toUpperCase() + request.getLastname().substring(1))
+                    .email(request.getEmail().toLowerCase())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .phoneNumber(request.getPhone())
+                    .emailConfirmed(emailConfirmed)
+                    .role(role)
+                    .build();
+        } else {
+            newUser = Client.builder()
+                    .firstName(request.getName().substring(0, 1).toUpperCase() + request.getName().substring(1) )
+                    .lastname(request.getLastname().substring(0, 1).toUpperCase() + request.getLastname().substring(1))
+                    .email(request.getEmail().toLowerCase())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .phoneNumber(request.getPhone())
+                    .emailConfirmed(emailConfirmed)
+                    .role(role)
+                    .build();
+        }
+
+
+        newUser = userService.saveUser(newUser);
 
         String filePath = "";
         try {

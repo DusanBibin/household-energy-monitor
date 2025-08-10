@@ -143,7 +143,7 @@ def send_consumption():
                 consumption_value = generate_hourly_consumption(simulated_time)
                 consumption_message = {
                     "household_id": household_id,
-                    "timestamp": simulated_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "timestamp": simulated_time.strftime("%Y-%m-%dT%H:%M:%S"),
                     "consumption": round(consumption_value, 3)
                 }
                 channel.basic_publish(
