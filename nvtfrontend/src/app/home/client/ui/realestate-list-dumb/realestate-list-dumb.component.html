@@ -63,22 +63,25 @@
         
             }@else {
                
-                <div class="d-flex flex-column flex-grow-1 px-2 pt-2" style="overflow-y: scroll;" >
+                <div class="d-flex flex-column flex-grow-1" style="overflow-y: scroll;" >
         
-        
+                  <div class="container-fluid g-0 p-3">
+                    <div class="row g-3">
         
                     @for (realestate of realestates; track realestate){
-                        <div class="col-md-6 col-lg-4" style="display: block; cursor: pointer;"
-                            (click)="routeDetailsPage(realestate, $event)"
-                            (mouseenter)="selectedId = realestate.realestateId" 
-                            (mouseleave)="selectedId = 0" 
-                            [ngClass]="{
-                                'shadow-lg': selectedId === realestate.realestateId,
-                                'shadow': selectedId !== realestate.realestateId
-                            }" >
+                        <div class="col-md-6 col-lg-4 col-xl-3" style="display: block; cursor: pointer;"
+
+                        
                             
-                            <a class="text-decoration-none text-reset">
-                              <div
+                            >
+                            
+                            <a (click)="routeDetailsPage(realestate, $event)" class="text-decoration-none text-reset">
+                              <div (mouseenter)="selectedId = realestate.realestateId" 
+                                    (mouseleave)="selectedId = 0" 
+                                    [ngClass]="{
+                                        'shadow-lg': selectedId === realestate.realestateId,
+                                        'shadow': selectedId !== realestate.realestateId
+                                    }"
                               class="p-2 rounded border shadow ">
                                 <div id="{{'carousel' + realestate.realestateId}}" class="carousel slide">
           
@@ -138,6 +141,10 @@
                             </a>
                           </div>
                     }
+
+                  </div>
+
+                </div>
                     
             
                 </div>

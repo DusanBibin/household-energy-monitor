@@ -41,7 +41,7 @@ public class RabbitMQListener {
     @RabbitListener(queues = "values")
     public void listenValues(String message) {
         try {
-            // Parse incoming JSON
+
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(message);
 

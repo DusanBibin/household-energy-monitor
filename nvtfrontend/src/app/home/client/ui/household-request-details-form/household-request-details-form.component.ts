@@ -105,6 +105,7 @@ export class HouseholdRequestDetailsFormComponent implements OnInit {
 
 
   resetAndDismiss(modal: any): void {
+    this.isLoadingDecision = false;
     modal.dismiss('Cancel click');
   }
 
