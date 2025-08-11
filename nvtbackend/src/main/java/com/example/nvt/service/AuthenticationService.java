@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Random;
 
 @Service
@@ -121,7 +123,12 @@ public class AuthenticationService {
         }
 
         Random random = new Random();
-        String code = String.format("%05d", random.nextInt(100000));
+
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[16];
+        secureRandom.nextBytes(randomBytes);
+
+        String code = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
 
         if(!request.getPassword().equals(request.getRepeatPassword()))
             throw new InvalidInputException("Passwords do not match");
@@ -175,12 +182,13 @@ public class AuthenticationService {
         return message;
     }
 
-    public void verifyUser(String verificationCode) {
+    public String verifyUser(String verificationCode) {
 
         var client = clientService.findClientByValidValidation(verificationCode);
-
+        if(client.isEmailConfirmed()) throw new InvalidInputException("This user is already verified");
         client.setEmailConfirmed(true);
         userRepository.save(client);
 
+        return client.getEmail();
     }
 }

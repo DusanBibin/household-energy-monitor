@@ -50,8 +50,8 @@ public class AuthenticationController {
     @GetMapping(value = "/activate/{idActivation}")
     public ResponseEntity<?> activateUserEmail(@PathVariable("idActivation") String verificationCode) {
 
-        authService.verifyUser(verificationCode);
-        return ResponseEntity.ok(new ResponseMessage("Account activated"));
+        return ResponseEntity.ok(
+                new ResponseMessage(authService.verifyUser(verificationCode)));
     }
 
     

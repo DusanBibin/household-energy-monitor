@@ -29,6 +29,12 @@ const routes: Routes = [
       import('../client-registration/client-registration.module').then(
         (m) => m.ClientRegistrationModule
       )
+  },{
+    path:'verification/:verificationCode',
+    loadChildren: () =>
+      import('../verification/verification.module').then(
+        (m) => m.VerificationModule
+      )
   }
 ];
 

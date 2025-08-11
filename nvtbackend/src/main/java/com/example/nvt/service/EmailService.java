@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class EmailService {
 
-    @Value("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")
+    @Value("${spring.sendgrid.api-key}")
     private String SENDGRID_API_KEY;
 
     private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e707779b69ff472aa8e1a3f9c2773d5d";
@@ -41,7 +41,7 @@ public class EmailService {
 
         String subject = "Verify email address";
         personalization.addDynamicTemplateData("firstName", user.getFirstName());
-        personalization.addDynamicTemplateData("verificationLink", "http://localhost:8080/api/v1/auth/activate/".concat(user.getVerification().getVerificationCode()));
+        personalization.addDynamicTemplateData("verificationLink", "http://localhost:4200/auth/verification/".concat(user.getVerification().getVerificationCode()));
         mail.setTemplateId(VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID);
 
         mail.setSubject(subject);

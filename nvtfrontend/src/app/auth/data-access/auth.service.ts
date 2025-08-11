@@ -35,6 +35,11 @@ export class AuthService {
     return this.http.get<boolean>(environment.apiUrl + '/auth/is-authenticated')
   }
 
+
+  verifyAccount(validationCode: string): Observable<string>{
+    return this.http.get<string>(environment.apiUrl + '/auth/activate/' + validationCode)
+  }
+
 }
 
 

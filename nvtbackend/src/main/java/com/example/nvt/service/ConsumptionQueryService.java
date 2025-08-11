@@ -264,7 +264,7 @@ public class ConsumptionQueryService {
 
         String str = String.format("""
             from(bucket: "%s")
-              |> range(start: 2023-01-01T00:00:00Z, stop: 2260-01-01T00:00:00Z)
+              |> range(start: 2024-01-01T00:00:00Z, stop: 2262-01-01T00:00:00Z)
               |> filter(fn: (r) => r["_measurement"] == "E")
               |> filter(fn: (r) => r["_field"] == "kWh")
               |> filter(fn: (r) => r["hId"] == "%d")
@@ -282,20 +282,15 @@ public class ConsumptionQueryService {
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
 
-                System.out.println("Record values:");
-                for (String key : record.getValues().keySet()) {
-                    System.out.println(key + " = " + record.getValueByKey(key));
-                }
+
 
 
                 Object timeObj = record.getValueByKey("_time");
                 if (timeObj instanceof Instant) {
                     instantTime = (Instant) timeObj;
-                    System.out.println("Record time as Instant: " + instantTime);
 
                 } else if (timeObj instanceof String) {
                     instantTime = Instant.parse((String) timeObj);
-                    System.out.println("Record time as Instant: " + instantTime);
                 }
             }
         }

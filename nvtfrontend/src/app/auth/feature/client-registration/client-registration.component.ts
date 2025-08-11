@@ -30,8 +30,6 @@ export class ClientRegistrationComponent {
       this.authService.logout().subscribe({
         next: value => {
           this.jwtService.setUser(null);
-          this.router.navigate(["/auth/login"])
-          this.snackBar.openSnackBar("Password change successful")
 
           this.registerClient(event.formData);
           
