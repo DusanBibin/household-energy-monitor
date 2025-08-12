@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClientService } from '../../data-access/client.service';
 import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
 import { FileService } from '../../../../shared/services/file-service/file.service';
-import { switchMap, map, catchError, of } from 'rxjs';
+import { switchMap, map, catchError, of, Cons } from 'rxjs';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { ResponseData, ResponseMessage } from '../../../../shared/model';
 import { ConsumptionDTO } from '../../data-access/model/client-model';
@@ -53,9 +53,15 @@ export class HouseholdDetailsComponent implements OnInit {
     this.wsSubscription = this.webSocketService.subscribeToHousehold(this.householdId)
     .subscribe(data => {
       console.log('Received data:', data);
-      let record: ConsumptionDTO = data as ConsumptionDTO
+      let v: ConsumptionDTO = data as ConsumptionDTO;
 
-      this.lineChartData = [...this.lineChartData, record];
+      let record: ConsumptionDTO = {
+        datetime: v.datetime.replace(/T/g, ' '),
+        kwh: data.kwh 
+      }
+
+      if(this.lineChartData.length == 3) this.lineChartData = [...this.lineChartData.slice(1), record];
+      else this.lineChartData = [...this.lineChartData, record];
       console.log(record)
       console.log(this.lineChartData)
       
@@ -89,7 +95,7 @@ export class HouseholdDetailsComponent implements OnInit {
               if(this.householdDetails?.data.user.id === this.jwtService.getId()){
                 console.log("Da li dobijamo podatke")
                 this.loadData();
-                this.loadLineChartData('1h');
+                this.loadLineChartData('3h');
             
             
                 this.subscribe()
@@ -240,7 +246,7 @@ export class HouseholdDetailsComponent implements OnInit {
   }
 
   handlePeriodChange(period: string){
-    if(period === "1h") this.subscribe()
+    if(period === "3h") this.subscribe()
     else this.unsubscribe()
     this.loadLineChartData(period);
   }

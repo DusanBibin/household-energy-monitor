@@ -68,12 +68,12 @@ public class RabbitMQListener {
 
 
 
-//
-//            ConsumptionDTO consumptionDTO = ConsumptionDTO.builder()
-//                    .kWh(consumption)
-//                    .datetime(formattedTimestamp).build();
-//            System.out.println(consumptionDTO);
-//            messagingTemplate.convertAndSend("/consumption-realtime/" + householdId, consumptionDTO);
+
+            ConsumptionDTO consumptionDTO = ConsumptionDTO.builder()
+                    .kWh(consumption)
+                    .datetime(localDateTime.toString()).build();
+            System.out.println(consumptionDTO);
+            messagingTemplate.convertAndSend("/consumption-realtime/" + householdId, consumptionDTO);
 
 
         } catch (Exception e) {
