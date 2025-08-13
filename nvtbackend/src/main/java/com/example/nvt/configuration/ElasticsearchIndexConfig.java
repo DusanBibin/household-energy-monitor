@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
 import co.elastic.clients.elasticsearch.indices.IndexSettings;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +25,22 @@ public class ElasticsearchIndexConfig {
     private static final String INDEX_MUNICIPALITY = "municipality";
     private static final String INDEX_REGION = "region";
 
+    private final ApplicationArguments args;
+
     @PostConstruct
     public void initialize() throws IOException {
 
 
-        initializeIndexes();
-        System.out.println("iksde");
+        if (this.args.containsOption("initMode")) {
+            initializeIndexes();
+            System.out.println("iksde");
+        }
+
 
     }
 
 
-    private void initializeIndexes()  throws IOException {
+    public void initializeIndexes()  throws IOException {
         boolean realestateExists = esClient.indices().exists(e -> e.index(INDEX_REALESTATE)).value();
         boolean cityExists = esClient.indices().exists(e -> e.index(INDEX_CITY)).value();
         boolean municipalityExists = esClient.indices().exists(e -> e.index(INDEX_MUNICIPALITY)).value();

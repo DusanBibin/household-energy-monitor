@@ -29,12 +29,18 @@ services:
     image: influxdb:2.7
     container_name: influxdb
     environment:
-      INFLUXDB_ADMIN_USER: nvt
-      INFLUXDB_ADMIN_PASSWORD: 123
-      INFLUXDB_DB: my_database
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: nvt
+      DOCKER_INFLUXDB_INIT_PASSWORD: sifra123
+      DOCKER_INFLUXDB_INIT_ORG: nvt
+      DOCKER_INFLUXDB_INIT_BUCKET: nvt
+      DOCKER_INFLUXDB_INIT_RETENTION: 0
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: CTL_htkm6HgdUY8K9yRFdfb74-R5mE6e6GMUkRd2eYn5zXWaS9O3ubtj3-l8g13S-Qc04xIqAcVsyXUzuLvwaQ==
     ports:
       - "8086:8086"
     volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
       - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
 
   rabbitmq:
@@ -98,3 +104,5 @@ services:
 
 volumes:
   redis_data:
+  influxdb-data:
+  influxdb-config:

@@ -1,6 +1,7 @@
 package com.example.nvt.helpers;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import com.example.nvt.configuration.ElasticsearchIndexConfig;
 import com.example.nvt.configuration.InfluxProperties;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.enumeration.Role;
@@ -24,6 +25,7 @@ import com.influxdb.query.FluxRecord;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -87,9 +89,6 @@ public class DataInitializer implements CommandLineRunner {
 
 
 
-
-
-
     // Base consumption values in kWh (for a typical household)
     private static final double BASE_NIGHT_CONSUMPTION = 0.1;
     private static final double BASE_DAY_CONSUMPTION = 0.3;
@@ -107,21 +106,45 @@ public class DataInitializer implements CommandLineRunner {
     private static final double WEEKDAY_NIGHT_PROBABILITY = 0.3;
     private static final double WEEKEND_NIGHT_PROBABILITY = 0.5;
 
-
-
-
     // Smaller random appliance spikes (0–2 kWh instead of 0–3 kWh)
     private static final double MAX_RANDOM_USAGE = 0.5;
+
+    private final ElasticsearchIndexConfig elasticsearchIndexConfig;
+    private final ApplicationArguments args;
+
+    private String realestatesFile;
+    private String householdsFile;
+    private int clientNumber;
     @Override
     //@Transactional
     public void run(String... args) throws Exception {
 
         passwordUniversal = passwordEncoder.encode("sifra123");
         //initCitiesMunicipalitiesRegions();
-        
-        initializeData();
-//        generateHistoricalData();
-        //generateHistoricalDataToCsv();
+
+
+        if (this.args.containsOption("fullData")) {
+            realestatesFile = "REALESTATES.csv";
+            householdsFile = "HOUSEHOLDS.csv";
+            clientNumber = 7467936;
+        } else {
+            realestatesFile = "REALESTATES_LITE.csv";
+            householdsFile = "HOUSEHOLDS_LITE.csv";
+            clientNumber = 15921;
+        }
+
+        if (this.args.containsOption("initMode")) {
+            initializeData();
+        } else {
+            System.out.println("No init mode provided — skipping initialization");
+        }
+
+
+//        initializeData();
+//        generateHistoricalData()
+//        generateHistoricalDataToCsv();
+//        generateHistoricalDataToLp();
+
     }
 
     protected void initializeData(){
@@ -146,8 +169,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0692817839")
-                .password(passwordEncoder.encode("admin1"))
-                .verification(new Verification())
+                .password(passwordUniversal)
                 .profileImg("dijamantmann.jpg")
                 .emailConfirmed(true)
                 .role(Role.ADMIN).build();
@@ -159,8 +181,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
-                .password(passwordEncoder.encode("client1"))
-                .verification(new Verification())
+                .password(passwordUniversal)
                 .profileImg("dijamantmann.jpg")
                 .emailConfirmed(true)
                 .role(Role.CLIENT)
@@ -172,8 +193,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Ime")
                 .lastname("Prezime")
                 .phoneNumber("0697817839")
-                .password(passwordEncoder.encode("client2"))
-                .verification(new Verification())
+                .password(passwordUniversal)
                 .profileImg("NEMA")
                 .emailConfirmed(true)
                 .role(Role.CLIENT)
@@ -227,7 +247,7 @@ public class DataInitializer implements CommandLineRunner {
         //lite 15921
         //regular 7467936
         List<Client> clients = new ArrayList<>();
-        for(int i = 0; i < 19521; i++) {
+        for(int i = 0; i < clientNumber; i++) {
             Client client = createClient();
             clients.add(client);
 
@@ -257,7 +277,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Initializing realestates...");
 
 
-        filePath = "/docker-entrypoint-initdb.d/REALESTATES_LITE.csv";
+        filePath = "/docker-entrypoint-initdb.d/" + realestatesFile;
         sql = "COPY realestate(id, city_id, lat, lon, address_street, address_num, type, realestate_owner_id, total_floors, apartment_per_floor_num, is_vacant) FROM '" + filePath + "' DELIMITER ',' CSV";
         jdbcTemplate.execute(sql);
         seqName = jdbcTemplate.queryForObject("SELECT pg_get_serial_sequence('realestate', 'id')", String.class);
@@ -485,7 +505,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Initializing realestates index...");
 
         List<RealestateDoc> realestates = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("data/REALESTATES_LITE.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data/" + realestatesFile))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",", 11);
@@ -571,7 +591,7 @@ public class DataInitializer implements CommandLineRunner {
         stopWatch.start("Initializing households");
         System.out.println("Initializing households...");
 
-        filePath = "/docker-entrypoint-initdb.d/HOUSEHOLDS_LITE.csv";
+        filePath = "/docker-entrypoint-initdb.d/" + householdsFile;
         sql = "COPY household(realestate_id, household_owner_id, apartment_num, size) FROM '" + filePath + "' DELIMITER ',' CSV";
         jdbcTemplate.execute(sql);
 //
@@ -602,13 +622,12 @@ public class DataInitializer implements CommandLineRunner {
 
 
 
-        String clerkPass = passwordEncoder.encode("clerk1");
         Clerk clerk1 = Clerk.builder()
                 .email("dusanbibin2+clerk1@gmail.com")
                 .firstName("Clerk1")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
-                .password(clerkPass)
+                .password(passwordUniversal)
                 .verification(new Verification())
                 .profileImg("NEMA")
                 .emailConfirmed(true)
@@ -622,7 +641,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Clerk2")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
-                .password(clerkPass)
+                .password(passwordUniversal)
                 .verification(new Verification())
                 .profileImg("NEMA")
                 .emailConfirmed(true)
@@ -636,7 +655,7 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Clerk3")
                 .lastname("Prezime")
                 .phoneNumber("0691817839")
-                .password(clerkPass)
+                .password(passwordUniversal)
                 .verification(new Verification())
                 .profileImg("NEMA")
                 .emailConfirmed(true)
@@ -1135,9 +1154,7 @@ public class DataInitializer implements CommandLineRunner {
 
 
     public void generateHistoricalData() {
-//        String bucket = "nvt";
-//        String org = "nvt";
-        List<Long> occupiedHouseholdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1));
+        List<Long> occupiedHouseholdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
 
         try (WriteApi writeApi = influxDBClient.getWriteApi()) {
 
@@ -1166,6 +1183,54 @@ public class DataInitializer implements CommandLineRunner {
 
         }
     }
+
+    public void generateHistoricalDataToLp() {
+        String lpFilePath = "electricity_compact.lp";
+        List<Long> householdIds = householdRepository.getAllOwnedHouseholds(PageRequest.of(0, 1000));
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(lpFilePath))) {
+
+            LocalDateTime start = LocalDateTime.now().minusYears(3);
+            LocalDateTime end = LocalDateTime.now();
+
+            for (Long householdId : householdIds) {
+                LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
+
+                while (!current.isAfter(end)) {
+                    double consumption = generateHourlyConsumption(current);
+
+                    // Convert LocalDateTime -> nanoseconds since epoch (UTC)
+                    long tsNano = current.toInstant(ZoneOffset.UTC).toEpochMilli() * 1_000_000;
+
+                    // Write InfluxDB line protocol
+                    // Example: E,hId=123 kWh=4.567 1672531200000000000
+                    String lpLine = String.format(
+                            "E,hId=%d kWh=%.3f %d",
+                            householdId,
+                            consumption,
+                            tsNano
+                    );
+                    writer.write(lpLine);
+                    writer.newLine();
+
+                    current = current.plusHours(1);
+                }
+
+                if (householdId % 100 == 0) {
+                    System.out.printf("Progress: %d/%d households\n",
+                            householdIds.indexOf(householdId) + 1,
+                            householdIds.size());
+                }
+            }
+
+            System.out.println("Line Protocol file generated: " + lpFilePath);
+            System.out.printf("Total rows: ~%,d\n",
+                    householdIds.size() * ChronoUnit.HOURS.between(start, end));
+        } catch (IOException e) {
+            System.err.println("Error writing LP: " + e.getMessage());
+        }
+    }
+
 
 
 
@@ -1231,21 +1296,5 @@ public class DataInitializer implements CommandLineRunner {
 
 
 
-
-
-
-
-
-//        try (WriteApi writeApi = influxDBClient.getWriteApi()) {
-//            Point p = Point.measurement("test_measurement")
-//                    .addTag("testTag", "123")
-//                    .addField("value", 42)
-//                    .time(Instant.now(), WritePrecision.NS);
-//
-//            writeApi.writePoint(bucket, org, p);
-//            writeApi.flush();
-//
-//            System.out.println("Test point written");
-//        }
 
 }
