@@ -1,6 +1,7 @@
 package com.example.nvt.helpers;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.example.nvt.configuration.ElasticsearchIndexConfig;
 import com.example.nvt.configuration.InfluxProperties;
 import com.example.nvt.enumeration.RealEstateType;
@@ -69,7 +70,7 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionDocRepository regionDocRepository;
     private final MunicipalityDocRepository municipalityDocRepository;
     private final CityDocRepository cityDocRepository;
-    private final ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchClient esClient;
 
     private final InfluxDBClient influxDBClient;
     private final InfluxProperties influxProperties;
@@ -134,6 +135,26 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (this.args.containsOption("initMode")) {
+
+
+            boolean exists = false;
+            while (!exists) {
+                try {
+                    BooleanResponse response = esClient.indices().exists(e -> e.index("realestate"));
+                    if (response.value()) {
+                        exists = true;
+                        System.out.println("Index 'realestate' exists! Continuing...");
+                    } else {
+                        System.out.println("Index 'realestate' not found. Retrying in 2s...");
+                        Thread.sleep(2000);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error checking index existence. Retrying in 2s...");
+                    Thread.sleep(2000);
+                }
+            }
+
+
             initializeData();
         } else {
             System.out.println("No init mode provided — skipping initialization");

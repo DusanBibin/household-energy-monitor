@@ -1,10 +1,11 @@
 package com.example.nvt.configuration;
-
+import co.elastic.clients.elasticsearch.core.PingRequest;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.mapping.*;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
 import co.elastic.clients.elasticsearch.indices.IndexSettings;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -28,15 +29,35 @@ public class ElasticsearchIndexConfig {
     private final ApplicationArguments args;
 
     @PostConstruct
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, InterruptedException {
 
-
+        waitForElasticsearch();
         if (this.args.containsOption("initMode")) {
             initializeIndexes();
             System.out.println("iksde");
         }
 
 
+    }
+
+
+    private void waitForElasticsearch() throws InterruptedException {
+        boolean connected = false;
+        while (!connected) {
+            try {
+                BooleanResponse response = esClient.ping();
+                if (response.value()) {
+                    connected = true;
+                    System.out.println("Elasticsearch is available!");
+                } else {
+                    System.out.println("Elasticsearch ping failed, retrying...");
+                    Thread.sleep(2000);
+                }
+            } catch (Exception e) {
+                System.out.println("Elasticsearch not ready yet, retrying in 2s...");
+                Thread.sleep(2000);
+            }
+        }
     }
 
 
