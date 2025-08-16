@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { HouseholdSummaryDTO, RealestateSummaryDTO } from '../../data-access/model/client-model';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { PagedResponse } from '../household-requests-list/household-requests-list.component';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';

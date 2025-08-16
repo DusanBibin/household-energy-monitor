@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { RealestateDoc, CityDoc, MunicipalityDoc, RegionDoc, RealestateImagePathsDTO, VacantApartmentDTO, HouseholdDetailsDTO, HouseholdRequestDTO, AppointmentDTO, ConsumptionDTO, RealestateSummaryDTO } from './model/client-model';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { LocationDTO } from '../../../shared/model';
 import { PagedResponse } from '../ui/household-requests-list/household-requests-list.component';
 import { HouseholdRequestPreviewDTO } from './model/client-model';

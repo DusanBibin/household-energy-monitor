@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, T
 import { Subject } from 'rxjs';
 import { GoogleMap } from '@angular/google-maps';
 import { ConsumptionDTO, HouseholdDetailsDTO } from '../../data-access/model/client-model';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';

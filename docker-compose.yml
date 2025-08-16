@@ -1,19 +1,27 @@
 services:
-  # app:
-  
-  #   image: 'docker-spring-boot-postgres:latest'
-  #   build:
-  #     context: ./nvtbackend
-  #   volumes:
-  #     - ./src:/app/src  # Maps local src folder to container's src folder
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgresdb
-  #     SPRING_DATASOURCE_USERNAME: nvt
-  #     SPRING_DATASOURCE_PASSWORD: 123
-  #   depends_on:
-  #     - db
+  backend:
+    build:
+      context: ./nvtbackend   # Path where your Dockerfile is
+      dockerfile: Dockerfile
+    container_name: nvt-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_started
+      influxdb:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+    command: ["--initMode"]
+    volumes:
+      - ./nvtbackend/data:/app/data
+      - ./nvtbackend/files:/app/files
+      
   db:
     image: postgres
     environment:
@@ -58,14 +66,15 @@ services:
     container_name: nginx
     ports:
       - "80:80" # Expose Nginx on port 80
+      - "443:443"
     volumes:
       # Mount Nginx configuration file
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-
       # Mount the 'files' directory to serve user-uploaded content
       - ./nvtbackend/files:/files:ro
-
       - ./nvtfrontend/dist/nvtfrontend/browser:/usr/share/nginx/html:ro
+
+      - ./certs:/etc/nginx/certs:ro
 
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -74,6 +83,7 @@ services:
       - db
       - influxdb
       - rabbitmq
+      - backend
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     container_name: elasticsearch
@@ -86,6 +96,10 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 || exit 1"]
+      interval: 10s
+      retries: 5
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.0

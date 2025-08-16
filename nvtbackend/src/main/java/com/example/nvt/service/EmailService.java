@@ -39,9 +39,13 @@ public class EmailService {
         Mail mail = new Mail();
         mail.setFrom(from);
 
+
+
+        String link = "https://192.168.1.102/auth/verification/".concat(user.getVerification().getVerificationCode());
+
         String subject = "Verify email address";
         personalization.addDynamicTemplateData("firstName", user.getFirstName());
-        personalization.addDynamicTemplateData("verificationLink", "http://localhost:4200/auth/verification/".concat(user.getVerification().getVerificationCode()));
+        personalization.addDynamicTemplateData("verificationLink", link);
         mail.setTemplateId(VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID);
 
         mail.setSubject(subject);
@@ -56,6 +60,10 @@ public class EmailService {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        System.out.println("iksdebro1");
+        System.out.println(link);
+        System.out.println("iksdebro2");
     }
 
     public void sendRequestUpdate(String email, String firstName, String address, String status, String reason) {

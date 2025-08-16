@@ -9,7 +9,7 @@ import { PartialUserData, ResponseData } from '../../../../shared/model';
 import { PagedResponse } from '../../../client/ui/household-requests-list/household-requests-list.component';
 import { UserSummaryDTO } from '../../../../auth/data-access/model/auth-model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { Router } from '@angular/router';
 import { title } from 'process';

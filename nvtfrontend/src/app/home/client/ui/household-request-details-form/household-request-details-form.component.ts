@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { HouseholdDetailsDTO, HouseholdRequestDTO, HouseholdRequestPreviewDTO } from '../../data-access/model/client-model';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
 import { Router } from '@angular/router';
 import { ResponseData } from '../../../../shared/model';

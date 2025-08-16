@@ -7,7 +7,7 @@ import { CityDoc, MunicipalityDoc, RegionDoc, RealestateDoc, VacantApartmentDTO 
 import { FilteredSuggestion } from '../../feature/vacant-households/vacant-households.component';
 import { LocationDTO } from '../../../../shared/model';
 import { GoogleMap  } from '@angular/google-maps';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { hide } from '@popperjs/core';
 import { TextUtilServiceService } from '../../../../shared/services/text-util-service/text-util.service';
 import { Router } from '@angular/router';
@@ -49,6 +49,7 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
   center: google.maps.LatLngLiteral = { lat: 44.215341185649585, lng: 20.83940393242209 };
   mapOptions: google.maps.MapOptions = {
     zoom: 7,
+    gestureHandling: 'greedy',
     center: this.center,
     streetViewControl: false, 
     mapTypeControl: false,

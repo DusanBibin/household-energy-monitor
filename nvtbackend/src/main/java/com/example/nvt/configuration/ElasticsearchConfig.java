@@ -1,6 +1,7 @@
 package com.example.nvt.configuration;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.HttpHost;
@@ -12,10 +13,22 @@ import org.springframework.context.annotation.Configuration;
 public class ElasticsearchConfig {
 
     @Bean
-    public ElasticsearchClient elasticsearchClient() {
-        RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
-        ElasticsearchTransport transport = new RestClientTransport(restClient, new co.elastic.clients.json.jackson.JacksonJsonpMapper());
-        return new ElasticsearchClient(transport);
+    public ElasticsearchClient elasticsearchClient() throws InterruptedException {
+        while (true) {
+            try {
+                RestClient restClient = RestClient.builder(new HttpHost("elasticsearch", 9200)).build();
+                ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+                ElasticsearchClient client = new ElasticsearchClient(transport);
+
+                if (client.ping().value()) {
+                    System.out.println("Connected to Elasticsearch!");
+                    return client;
+                }
+            } catch (Exception e) {
+                System.out.println("Waiting for Elasticsearch... retrying in 2s");
+                Thread.sleep(2000);
+            }
+        }
     }
 
 

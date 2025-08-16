@@ -4,7 +4,7 @@ import { Client, IMessage } from '@stomp/stompjs';
 import { StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client'
 import { Observable, Subject } from 'rxjs';
-
+import { environment} from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,13 +14,14 @@ export class WebsocketService {
   private subscription: StompSubscription | null = null;
   private messageSubject = new Subject<any>();
 
+
   constructor() {
     this.client = new Client({
-      brokerURL: 'ws://localhost:8080/ws', // your WebSocket endpoint
+      brokerURL: 'ws://' + environment.ip + ':8080/ws', // your WebSocket endpoint
       connectHeaders: {},
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws') // SockJS fallback if needed
+      webSocketFactory: () => new SockJS('http://' + environment.ip +':8080/ws') // SockJS fallback if needed
     });
 
     this.client.onConnect = (frame) => {
