@@ -53,7 +53,7 @@ public class FileService {
         BufferedImage resizedImage;
 
         if(originalImage.getWidth() < 128 || originalImage.getHeight() < 128) throw new InvalidInputException("Image is too small");
-        if(originalImage.getWidth() >= 128 || originalImage.getHeight() >= 128) resizedImage = resizeImage(originalImage, 256, 256);
+        if(originalImage.getWidth() >= 256 || originalImage.getHeight() >= 256) resizedImage = resizeImage(originalImage, 256, 256);
         else resizedImage = originalImage;
 
         BufferedImage resizedSmallImage = resizeImage(originalImage, 100, 100);

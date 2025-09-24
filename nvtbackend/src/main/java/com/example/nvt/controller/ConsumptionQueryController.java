@@ -37,7 +37,7 @@ public class ConsumptionQueryController {
             @RequestParam Integer startMonth) {
 
 
-        List<ConsumptionDTO> consumptionDTOList = consumptionQueryService.getYearlyConsumption(client, householdId, startYear, startMonth);
+        List<ConsumptionDTO> consumptionDTOList = consumptionQueryService.getYearlyConsumption(client.getId(), householdId, startYear, startMonth);
 
         return ResponseEntity.ok(consumptionDTOList);
 
@@ -52,7 +52,7 @@ public class ConsumptionQueryController {
             @RequestParam int month) {
 
 
-        List<ConsumptionDTO> consumptionDTOList = consumptionQueryService.getMonthlyConsumption(client, householdId, year, month);
+        List<ConsumptionDTO> consumptionDTOList = consumptionQueryService.getMonthlyConsumption(client.getId(), householdId, year, month);
 
 
         return ResponseEntity.ok(consumptionDTOList);
@@ -68,7 +68,7 @@ public class ConsumptionQueryController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
 
 
-        List<ConsumptionDTO> consumption = consumptionQueryService.getConsumption(householdId, client, period, from, to);
+        List<ConsumptionDTO> consumption = consumptionQueryService.getConsumption(householdId, client.getId(), period, from, to);
 
         return ResponseEntity.ok(consumption);
     }

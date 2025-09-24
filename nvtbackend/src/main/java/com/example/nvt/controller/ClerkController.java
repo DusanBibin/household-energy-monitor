@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class ClerkController {
+
     private final ClerkService clerkService;
 
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/clerk")
-    public ResponseEntity<Page<UserSummaryDTO>> getClientAppointments(@AuthenticationPrincipal Client client,
+    public ResponseEntity<Page<UserSummaryDTO>> getClerks(@AuthenticationPrincipal Client client,
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size){
         Page<UserSummaryDTO> clerks = clerkService.getClerks( page, size);

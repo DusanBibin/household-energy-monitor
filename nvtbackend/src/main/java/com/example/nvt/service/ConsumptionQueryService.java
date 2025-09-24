@@ -26,10 +26,10 @@ public class ConsumptionQueryService {
     private final InfluxProperties influxProperties;
     private final InfluxDBClient influxDBClient;
 
-    public List<ConsumptionDTO> getYearlyConsumption(Client client, Long householdId, Integer startYear, Integer startMonth) {
+    public List<ConsumptionDTO> getYearlyConsumption(Long clientId, Long householdId, Integer startYear, Integer startMonth) {
 
 
-        Household household = householdService.getHouseholdByIdAndClientId(client.getId(), householdId);
+        Household household = householdService.getHouseholdByIdAndClientId(clientId, householdId);
         YearMonth start = (startYear == null || startMonth == null)
                 ? YearMonth.now()
                 : YearMonth.of(startYear, startMonth);
@@ -89,9 +89,9 @@ public class ConsumptionQueryService {
         return result;
     }
 
-    public List<ConsumptionDTO> getMonthlyConsumption(Client client, Long householdId, int year, int month) {
+    public List<ConsumptionDTO> getMonthlyConsumption(Long clientId, Long householdId, int year, int month) {
 
-        Household household = householdService.getHouseholdByIdAndClientId(client.getId(), householdId);
+        Household household = householdService.getHouseholdByIdAndClientId(clientId, householdId);
 
         YearMonth ym = YearMonth.of(year, month);
         LocalDate startDate = ym.atDay(1);
@@ -196,9 +196,11 @@ public class ConsumptionQueryService {
 
     }
 
-    public List<ConsumptionDTO> getConsumption(Long householdId, Client client, String period, Instant from, Instant to) {
 
-        Household household = householdService.getHouseholdByIdAndClientId(client.getId(), householdId);
+    //ne treba jer mnogo ima razlicitih mogucnosti parametara
+    public List<ConsumptionDTO> getConsumption(Long householdId, Long clientId, String period, Instant from, Instant to) {
+
+        Household household = householdService.getHouseholdByIdAndClientId(clientId, householdId);
 
         if ((period == null || period.isEmpty()) && (from == null || to == null)) {
             throw new InvalidInputException("Parameters are mising");

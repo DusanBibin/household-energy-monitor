@@ -77,10 +77,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                         var superadmin = (SuperAdmin) userDetails;
                         boolean isFirstLogin = superadmin.isFirstLogin();
-                        System.out.println(isFirstLogin);
+
                         if (isFirstLogin && !(request.getRequestURI().equals("/api/v1/auth/change-superadmin-password")) && !(request.getRequestURI().equals("/api/v1/file/profile-img"))
                         && !(request.getRequestURI().equals("/api/v1/user/partial-data"))) {
-                            System.out.println("DA LI JE OVO KURAC");
+
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.getWriter().write("Access Denied: You must change your password first.");
                             return;

@@ -2,6 +2,7 @@ package com.example.nvt.service;
 
 
 import com.example.nvt.model.SuperAdmin;
+import com.example.nvt.model.User;
 import com.example.nvt.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,6 +26,9 @@ public class JwtService {
     private static final String SECRET_KEY = "73b65149d2e77ab667711a01e6e68a89a75e8e506faead08c8c3f50d80a00d38";
     private final UserRepository userRepository;
 
+
+    private final Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -34,35 +38,57 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails, Long id){
+//    public String generateToken(UserDetails userDetails, Long id){
+//
+//        HashMap<String, Object> claims = new HashMap<>();
+//        claims.put("id", id);
+//        return generateToken(claims, userDetails);
+//    }
+//
+//    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+//
+//        if("SUPERADMIN".equals(userDetails.getAuthorities().iterator().next().getAuthority())){
+//            var user = userRepository.findByEmail(userDetails.getUsername())
+//                    .orElseThrow();
+//            if(user instanceof SuperAdmin superAdmin){
+//                if(superAdmin.isFirstLogin()) extraClaims.put("isFirstLogin", true);
+//                else extraClaims.put("isFirstLogin", false);
+//
+//            }
+//        }
+//
+//        extraClaims.put("role", userDetails.getAuthorities());
+//        return Jwts
+//                .builder()
+//                .setClaims(extraClaims)
+//                .setSubject(userDetails.getUsername())
+//                .setIssuedAt(new Date(System.currentTimeMillis()))
+//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // PROMENITI I ZA COOKIE VREME ( VREME MORA BITI ISTO ZA OBA)
+//                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+//                .compact();
+//    }
 
+    public String generateToken(User user) {
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("id", id);
-        return generateToken(claims, userDetails);
-    }
+        claims.put("id", user.getId());
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
-
-        if("SUPERADMIN".equals(userDetails.getAuthorities().iterator().next().getAuthority())){
-            var user = userRepository.findByEmail(userDetails.getUsername())
-                    .orElseThrow();
-            if(user instanceof SuperAdmin superAdmin){
-                if(superAdmin.isFirstLogin()) extraClaims.put("isFirstLogin", true);
-                else extraClaims.put("isFirstLogin", false);
-
-            }
+        // Include SUPERADMIN first login if applicable
+        if (user instanceof SuperAdmin superAdmin) {
+            claims.put("isFirstLogin", superAdmin.isFirstLogin());
         }
 
-        extraClaims.put("role", userDetails.getAuthorities());
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // PROMENITI I ZA COOKIE VREME ( VREME MORA BITI ISTO ZA OBA)
+        // Include role
+        claims.put("role", user.getRole().name());
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(user.getEmail())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 1 day
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     private Claims extractAllClaims(String token){
         return Jwts
@@ -73,9 +99,13 @@ public class JwtService {
                 .getBody();
     }
 
+//    private Key getSignInKey() {
+//        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
+
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return key; // always returns precomputed key
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails){

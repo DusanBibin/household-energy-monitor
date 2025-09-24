@@ -37,7 +37,6 @@ public class HouseholdController {
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping("/api/v1/realestate/{realestateId}/household/{householdId}")
     public ResponseEntity<?> getHouseholdDetails(@AuthenticationPrincipal User user, @PathVariable Long realestateId, @PathVariable Long householdId){
-        System.out.println("getHouseholdDetails");
         HouseholdDetailsDTO household = householdService.getHouseholdDetails(user, realestateId, householdId);
         return ResponseEntity.ok(household);
     }
