@@ -35,8 +35,8 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDTO> createAppointment(@AuthenticationPrincipal Client client, @PathVariable Long clerkId,
                                                             @RequestParam String startDateTime){
 
-
         AppointmentDTO appointment = appointmentService.createAppointment(client, clerkId, startDateTime);
+        System.out.println("Klijent sa id: " + client.getId() + " je uzeo appointment za " + appointment.getStartDateTime());
         return ResponseEntity.ok(appointment);
     }
 
@@ -49,6 +49,7 @@ public class AppointmentController {
         List<AppointmentDTO> appointments = appointmentService.getWeekAppointments(user, startDateTime, endDateTime);
         return ResponseEntity.ok(appointments);
     }
+
 
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/clerk/{clerkId}/appointment")

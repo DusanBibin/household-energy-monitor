@@ -25,10 +25,18 @@ public class ClerkService {
         return wrapper.get();
     }
 
+    public Clerk getClerkByIdForUpdate(Long clerkId){
+        Optional<Clerk> wrapper = clerkRepository.findByIdForUpdate(clerkId);
+        if(wrapper.isEmpty()) throw new InvalidInputException("Clerk with this id doesn't exist");
+        return wrapper.get();
+    }
+
     public Clerk saveClerk(Clerk clerk) {
         return clerkRepository.save(clerk);
     }
 
+
+    //CACHEABLE
     public Page<UserSummaryDTO> getClerks(int page, int size) {
 
         Page<Clerk> clerksPage = clerkRepository.findAll(PageRequest.of(page, size));

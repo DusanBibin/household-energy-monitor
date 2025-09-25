@@ -10,6 +10,7 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRepository;
 import com.example.nvt.repository.RealestateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class RealestateService {
     private final RealestateRepository realestateRepository;
     private final FileService fileService;
 
+//    @Cacheable(value = "realestateImagePaths", key = "#realestateId")
     public List<RealestateImagePathsDTO> getImagePaths(List<Long> realestateIds) {
 
         if(realestateIds.isEmpty()) throw new InvalidInputException("The realestate IDs cannot be empty");
@@ -64,7 +66,7 @@ public class RealestateService {
         return realestateRepository.save(realestate);
     }
 
-
+    @Cacheable(value = "realestateSingleImage", key = "#realestateId + '_' + #fileName")
     public String getRealestateImage(Long realestateId, String fileName) {
 
         Realestate realestate =  getRealestateById(realestateId);
@@ -83,12 +85,16 @@ public class RealestateService {
 
     }
 
-    public Page<RealestateSummaryDTO> getRealestateSummaries(User user, int page, int size) {
+//    @Cacheable(
+//            value = "realestateSummaries",
+//            key = "#userId + '_' + #page + '_' + #size"
+//    )
+    public Page<RealestateSummaryDTO> getRealestateSummaries(Long userId, int page, int size) {
 
         if(page < 0 ) page = 0;
         if(size < 1) size = 10;
 
-        Page<Realestate> realestates = realestateRepository.getRealestatesByClientId(user.getId(), PageRequest.of(page, size));
+        Page<Realestate> realestates = realestateRepository.getRealestatesByClientId(userId, PageRequest.of(page, size));
 
 
         return realestates.map(realestate -> {
@@ -103,7 +109,7 @@ public class RealestateService {
 
             List<HouseholdSummaryDTO> householdSummaries = realestate.getHouseholds().stream()
                     .filter(h -> h.getHouseholdOwner() != null
-                            && h.getHouseholdOwner().getId().equals(user.getId()))
+                            && h.getHouseholdOwner().getId().equals(userId))
                     .map(h -> HouseholdSummaryDTO.builder()
                             .id(h.getId())
                             .apartmentNumber(

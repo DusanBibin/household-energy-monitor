@@ -89,7 +89,7 @@ public class RealestateSearchService {
                 .geotileGrid(g -> g
                         .field("location")
                         .precision(3 + zoomLevel)
-                        .size(250))
+                        .size(200))
 
                 .aggregations("top_realestates", agg -> agg
                         .topHits(th -> th

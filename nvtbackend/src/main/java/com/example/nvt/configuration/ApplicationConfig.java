@@ -40,9 +40,14 @@ public class ApplicationConfig {
         return authProvider;
     }
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
+//
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10); // lower strength → faster hashing
     }
 
     @Bean

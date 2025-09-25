@@ -29,42 +29,22 @@ public class UserController {
 //    @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping(value = "/partial-data")
     public ResponseEntity<?> getUserData(@AuthenticationPrincipal User user) {
-        System.out.println("GETUSERDATA");
 
         if(user == null) throw new InvalidAuthenticationException("Not Authenticated");
 
-        PartialUserDataDTO data = PartialUserDataDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .name(user.getFirstName())
-                .lastname(user.getLastname())
-                .role(user.getRole())
-                .build();
-
-        if(user instanceof SuperAdmin superAdmin){
-            data.setFirstLogin(superAdmin.isFirstLogin());
-        }
-        System.out.println("USPESNO SMO VRATILI PARTIAL DATA");
-        return ResponseEntity.ok().body(data);
+        return ResponseEntity.ok(userService.getPartialUserData(user));
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")
     @GetMapping(value = "/{userId}")
     public ResponseEntity<?> getSummaryData(@PathVariable Long userId) {
-        User user = userService.getUserById(userId);
 
-        PartialUserDataDTO data = PartialUserDataDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .name(user.getFirstName())
-                .lastname(user.getLastname())
-                .role(user.getRole())
-                .build();
+        return ResponseEntity.ok(userService.getPartialUserData(userId));
 
-        if(user instanceof SuperAdmin superAdmin){
-            data.setFirstLogin(superAdmin.isFirstLogin());
-        }
-        System.out.println("USPESNO SMO VRATILI PARTIAL DATA");
-        return ResponseEntity.ok().body(data);
     }
+
+
+
+
+
 }

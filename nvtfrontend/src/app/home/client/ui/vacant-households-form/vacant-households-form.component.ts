@@ -378,10 +378,10 @@ export class VacantHouseholdsFormComponent implements AfterViewInit, OnChanges{
       const northEast = bounds.getNorthEast(); 
       const southWest = bounds.getSouthWest(); 
 
-      // console.log('Zoom Level:', zoom);
-      // console.log('Bounding Box:');
-      // console.log('Top Left (NW):', { lat: northEast.lat(), lng: southWest.lng() });
-      // console.log('Bottom Right (SE):', { lat: southWest.lat(), lng: northEast.lng() });
+      console.log('Zoom Level:', zoom);
+      console.log('Bounding Box:');
+      console.log('Top Left (NW):', { lat: northEast.lat(), lng: southWest.lng() });
+      console.log('Bottom Right (SE):', { lat: southWest.lat(), lng: northEast.lng() });
       
       let topLeft: LocationDTO = {
         lon: southWest.lng(),

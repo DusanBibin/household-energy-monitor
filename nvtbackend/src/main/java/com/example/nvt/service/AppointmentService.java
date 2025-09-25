@@ -2,6 +2,7 @@ package com.example.nvt.service;
 
 
 import com.example.nvt.DTO.AppointmentDTO;
+import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.AppointmentRepository;
@@ -34,11 +35,11 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
 
-
+    //CACHE PUT
     @Transactional
     public AppointmentDTO createAppointment(Client client, Long clerkId, String startDateTimeString) {
 
-
+        Appointment appointment = null;
 
         LocalDateTime startDateTime;
         try {
@@ -51,23 +52,21 @@ public class AppointmentService {
         client = clientService.findClientById(client.getId());
 
 
-
-        if(!isValidAppointmentSlot(startDateTime)) throw new InvalidInputException("Start time is not valid");
+        if (!isValidAppointmentSlot(startDateTime)) throw new InvalidInputException("Start time is not valid");
         if (startDateTime.isBefore(LocalDateTime.now().plusDays(1))) {
             throw new InvalidInputException("Appointments must be scheduled at least 24 hours in advance.");
         }
 
 
-
         Clerk clerk = clerkService.getClerkById(clerkId);
 
-        if(appointmentRepository.getExistingAppointmentClerk(clerkId, startDateTime).isPresent())
+        if (appointmentRepository.getExistingAppointmentClerk(clerkId, startDateTime).isPresent())
             throw new InvalidInputException("Appointment for this time for this clerk is already taken");
 
-        if(appointmentRepository.getExistingAppointmentClient(client.getId(), startDateTime).isPresent())
+        if (appointmentRepository.getExistingAppointmentClient(client.getId(), startDateTime).isPresent())
             throw new InvalidInputException("You already have an appointment at this time at different clerk");
 
-        Appointment appointment = Appointment.builder()
+        appointment = Appointment.builder()
                 .clerk(clerk)
                 .client(client)
                 .startDateTime(startDateTime)
@@ -75,23 +74,27 @@ public class AppointmentService {
                 .isPrivate(false)
                 .build();
 
-        try {
-            appointment = saveAppointment(appointment);
-        } catch (DataIntegrityViolationException e) {
 
-            throw new InvalidInputException("Appointment slot already taken");
-        }
+        appointment = saveAppointment(appointment);
+
         clerk.getAppointments().add(appointment);
         clerk = clerkService.saveClerk(clerk);
 
         client.getAppointments().add(appointment);
         client = clientService.saveClient(client);
 
+
         return convertToAppointmentDto(appointment);
     }
 
     public Appointment saveAppointment(Appointment appointment){
-         return appointmentRepository.save(appointment);
+
+        try {
+            return appointmentRepository.saveAndFlush(appointment);
+        } catch (DataIntegrityViolationException e) {
+            throw new InvalidInputException("This time slot has just been taken by another client");
+        }
+
     }
 
     public boolean isValidAppointmentSlot(LocalDateTime startDateTime) {
@@ -185,6 +188,8 @@ public class AppointmentService {
                 .build();
     }
 
+
+    //CACHABLE
     public List<AppointmentDTO> getWeekAppointments(User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
         if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
@@ -198,7 +203,7 @@ public class AppointmentService {
     }
 
 
-
+    //CACHABLE
     public List<AppointmentDTO> getWeekAppointmentsClerk(Client client, Long clerkId, LocalDateTime startDateTime,
                                                          LocalDateTime endDateTime) {
         Clerk clerk = clerkService.getClerkById(clerkId);
@@ -208,10 +213,19 @@ public class AppointmentService {
         List<Appointment> appointments = appointmentRepository.getWeekAppointmentsClerk(clerkId, startDateTime, endDateTime);
 
         return appointments.stream()
-                .map(appointment -> AppointmentDTO.builder()
+                .map(appointment -> {
+                    Clerk cle = appointment.getClerk();
+                    Client cli = appointment.getClient();
+
+                    return AppointmentDTO.builder()
+                        .id(appointment.getId())
+                        .clerk(new UserSummaryDTO(cle.getId(), cle.getEmail(), cle.getFirstName(), cle.getLastname()))
+                        .client(new UserSummaryDTO(cli.getId(), cli.getEmail(), cli.getFirstName(), cli.getLastname()))
                         .startDateTime(appointment.getStartDateTime())
                         .endDateTime(appointment.getEndDateTime())
-                        .build())
+                        .build();
+                    })
+
                 .toList();
     }
 }

@@ -15,7 +15,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,74 +41,6 @@ public class AuthenticationService {
     private final FileService fileService;
     private final ClientService clientService;
     private final UserRepository userRepository;
-
-    public PartialUserDataDTO authenticate(AuthRequestDTO request, HttpServletResponse response) {
-        System.out.println(request);
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        }catch (AuthenticationException e){
-            System.out.println(e.getMessage());
-            throw new InvalidAuthenticationException("Email or password is invalid");
-        }
-
-        var user = userService.getUserByEmail(request.getEmail());
-
-        if(!user.isEmailConfirmed() ) throw new InvalidAuthorizationException("Email not confirmed for this user");
-
-        var jwtToken = jwtService.generateToken(user, user.getId());
-
-        Cookie jwtCookie = new Cookie("jwt", jwtToken);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(60 * 60 * 24); // PROMENITI I ZA JWT VREME ( VREME MORA BITI ISTO ZA OBA)
-        jwtCookie.setAttribute("SameSite", "None"); // Prevent CSRF attacks
-
-        response.addCookie(jwtCookie);
-
-        PartialUserDataDTO data = PartialUserDataDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .name(user.getFirstName())
-                .lastname(user.getLastname())
-                .role(user.getRole())
-                .build();
-
-        if(user instanceof SuperAdmin superAdmin){
-            data.setFirstLogin(superAdmin.isFirstLogin());
-        }
-        System.out.println(data);
-        return data;
-    }
-
-
-    public void  changeSuperadminPassword(SuperadminPasswordChangeDTO request, User user) {
-
-
-        if(!request.getNewPassword().equals(request.getRepeatPassword()))
-            throw new InvalidInputException("Passwords do not match");
-
-        if(passwordEncoder.matches(request.getNewPassword(), user.getPassword()))
-            throw new InvalidAuthorizationException("You cannot set the previous password to be current one");
-
-        if(user instanceof SuperAdmin superAdmin){
-            if(!superAdmin.isFirstLogin())
-                throw new InvalidAuthorizationException("You already changed your temporary password");
-        }
-
-        String newPassword = passwordEncoder.encode(request.getNewPassword());
-
-        SuperAdmin superAdmin = (SuperAdmin) user;
-        superAdmin.setFirstLogin(false);
-        superAdmin.setPassword(newPassword);
-        userService.saveUser(user);
-
-    }
 
     @Transactional
     public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
@@ -174,13 +109,85 @@ public class AuthenticationService {
         newUser.setVerification(new Verification(code, LocalDateTime.now().plusDays(1)));
         newUser.setProfileImg(filePath);
         userService.saveUser(newUser);
-
+        System.out.println("ZAVRSEN OBICAN KOD POCINJE SLANJE MEJLA");
         String message = "Registration successful. Validation email sent to ".concat(request.getEmail());
         if(!emailConfirmed) emailService.sendVerificationEmail(newUser);
         else message = "Admin registration successful";
 
+        System.out.println("ZAVRSENO SLANJE MEJLA");
         return message;
     }
+
+
+    public PartialUserDataDTO authenticate(AuthRequestDTO request, HttpServletResponse response) {
+        long start = System.currentTimeMillis();
+
+        Authentication authentication;
+        try {
+            long authStart = System.currentTimeMillis();
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+//            System.out.println("Authentication time: " + (System.currentTimeMillis() - authStart) + " ms");
+        } catch (AuthenticationException e) {
+            throw new InvalidAuthenticationException("Email or password is invalid");
+        }
+
+        long jwtStart = System.currentTimeMillis();
+        User user = (User) authentication.getPrincipal();
+        var jwtToken = jwtService.generateToken(user);
+//        System.out.println("JWT generation time: " + (System.currentTimeMillis() - jwtStart) + " ms");
+
+        Cookie jwtCookie = new Cookie("jwt", jwtToken);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(60 * 60 * 24);
+        jwtCookie.setAttribute("SameSite", "Strict");
+        response.addCookie(jwtCookie);
+
+        long dtoStart = System.currentTimeMillis();
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
+        if(user instanceof SuperAdmin superAdmin){
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+//        System.out.println("DTO build time: " + (System.currentTimeMillis() - dtoStart) + " ms");
+
+//        System.out.println("Total authenticate method time: " + (System.currentTimeMillis() - start) + " ms");
+        return data;
+    }
+
+
+
+    public void  changeSuperadminPassword(SuperadminPasswordChangeDTO request, User user) {
+
+
+        if(!request.getNewPassword().equals(request.getRepeatPassword()))
+            throw new InvalidInputException("Passwords do not match");
+
+        if(passwordEncoder.matches(request.getNewPassword(), user.getPassword()))
+            throw new InvalidAuthorizationException("You cannot set the previous password to be current one");
+
+        if(user instanceof SuperAdmin superAdmin){
+            if(!superAdmin.isFirstLogin())
+                throw new InvalidAuthorizationException("You already changed your temporary password");
+        }
+
+        String newPassword = passwordEncoder.encode(request.getNewPassword());
+
+        SuperAdmin superAdmin = (SuperAdmin) user;
+        superAdmin.setFirstLogin(false);
+        superAdmin.setPassword(newPassword);
+        userService.saveUser(user);
+
+    }
+
+
 
     public String verifyUser(String verificationCode) {
 

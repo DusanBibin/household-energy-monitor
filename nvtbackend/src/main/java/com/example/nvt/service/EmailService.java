@@ -12,6 +12,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class EmailService {
     private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e707779b69ff472aa8e1a3f9c2773d5d";
     private static final String REQUEST_STATUS_UPDATE_TEMPLATE_ID = "d-a66753ad11da4e6fa4891c3d49ece978";
 
+    @Async
     public void sendVerificationEmail(User user) {
         Email from = new Email("mobilnebackendtest@gmail.com");
 
@@ -66,6 +68,7 @@ public class EmailService {
         System.out.println("iksdebro2");
     }
 
+    @Async
     public void sendRequestUpdate(String email, String firstName, String address, String status, String reason) {
         Email from = new Email("mobilnebackendtest@gmail.com");
 

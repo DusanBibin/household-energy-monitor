@@ -142,11 +142,6 @@ export class ClientService {
       );
     }
 
-
-
-
-
-
     getMonthly(householdId: number, year: number, month: number): Observable<ConsumptionDTO[]> {
       let params = new HttpParams()
         .set('startYear', year)

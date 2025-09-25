@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long>, JpaSpecificationExecutor<Appointment> {
 
 
+
     @Query("select a from Appointment a where a.clerk.id = :clerkId and a.startDateTime =:startDateTime")
     Optional<Appointment> getExistingAppointmentClerk(Long clerkId, LocalDateTime startDateTime);
 

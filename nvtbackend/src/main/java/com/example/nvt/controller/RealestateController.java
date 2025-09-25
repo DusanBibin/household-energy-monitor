@@ -61,7 +61,7 @@ public class RealestateController {
                                                                             @RequestParam(defaultValue = "0") int page,
                                                                             @RequestParam(defaultValue = "10") int size){
 
-        Page<RealestateSummaryDTO> realestates = realestateService.getRealestateSummaries(user, page, size);
+        Page<RealestateSummaryDTO> realestates = realestateService.getRealestateSummaries(user.getId(), page, size);
         return ResponseEntity.ok(realestates);
 
     }

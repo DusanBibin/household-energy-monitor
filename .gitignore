@@ -75,3 +75,6 @@ nvtfrontend/e2e/*.map
 
 scripts/venv/
 nvtbackend/data/influxdb
+
+__pycache__/
+*.pyc
