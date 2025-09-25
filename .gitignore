@@ -78,3 +78,8 @@ nvtbackend/data/influxdb
 
 __pycache__/
 *.pyc
+
+
+*.key
+*.crt
+certs/
