@@ -13,6 +13,9 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRequestRepository;
 import com.example.nvt.specifications.HouseholdRequestSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +48,11 @@ public class HouseholdRequestService {
 
 
     @Transactional
+    @CacheEvict(
+            value = "householdDetailsCache",
+            key = "#realestateId + '_' + #householdId",
+            beforeInvocation = true
+    )
     public HouseholdDetailsDTO createClaimRequest(Client client, Long realestateId, Long householdId, List<MultipartFile> files) {
 
 
@@ -122,6 +131,16 @@ public class HouseholdRequestService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(
+                    value = "householdRequestDetailsCache",
+                    key = "#realestateId + '_' + #householdId + '_' + #requestId"
+            ),
+            @CacheEvict(
+                    value = "householdDetailsCache",
+                    key = "#realestateId + '_' + #householdId"
+            )
+    })
     public HouseholdRequestDTO acceptHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
@@ -196,6 +215,16 @@ public class HouseholdRequestService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(
+                    value = "householdRequestDetailsCache",
+                    key = "#realestateId + '_' + #householdId + '_' + #requestId"
+            ),
+            @CacheEvict(
+                    value = "householdDetailsCache",
+                    key = "#realestateId + '_' + #householdId"
+            )
+    })
     public HouseholdRequestDTO denyHouseholdRequest(Admin admin, Long realestateId, Long householdId, Long requestId, String denialReason) {
 
         Realestate realestate = realestateService.getRealestateById(realestateId);
@@ -231,7 +260,12 @@ public class HouseholdRequestService {
         return convertToDto(request);
     }
 
-    public HouseholdRequestDTO getHouseholdRequestDetails(Long userId, Long realestateId, Long householdId, Long requestId) {
+    @Cacheable(
+            value = "householdRequestDetailsCache",
+            key = "#realestateId + '_' + #householdId + '_' + #requestId"
+    )
+    public HouseholdRequestDTO getHouseholdRequestDetails(Long realestateId, Long householdId, Long requestId) {
+        System.out.println("da li smo usli ovde bez kesiranja");
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = householdService.getHouseholdByIdAndRealestateId(realestateId, householdId);
 
@@ -242,12 +276,12 @@ public class HouseholdRequestService {
     }
 
 
-    public Page<HouseholdRequestPreviewDTO> getClientRequests(User user, RequestStatus status, int page, int size,
+    public Page<HouseholdRequestPreviewDTO> getClientRequests(Long userId, RequestStatus status, int page, int size,
                                                               String sortField, String sortDir) {
         if(page < 0 ) page = 0;
         if(size < 1) size = 10;
-        System.out.println(user.getId());
-        user = userService.getUserById(user.getId());
+        System.out.println(userId);
+        User user = userService.getUserById(userId);
 
         Pageable pageable = PageRequest.of(page, size, sortDir.equalsIgnoreCase("desc") ? Sort.by(sortField).descending() : Sort.by(sortField).ascending());
 
@@ -292,8 +326,12 @@ public class HouseholdRequestService {
                 .requestProcessed(request.getRequestProcessed())
                 .requestSubmitted(request.getRequestSubmitted())
                 .requestStatus(request.getRequestStatus())
-                .proof_images(request.getProof_images())
-                .proof_pdfs(request.getProof_pdfs())
+                .proof_images(request.getProof_images() != null
+                        ? new ArrayList<>(request.getProof_images())
+                        : Collections.emptyList())
+                .proof_pdfs(request.getProof_pdfs() != null
+                        ? new ArrayList<>(request.getProof_pdfs())
+                        : Collections.emptyList())
                 .requestType(request.getRequestType())
                 .requester(request.getRequester() != null ? userService.convertToDTO(request.getRequester()) : null)
                 .reviewingAdmin(request.getReviewingAdmin() != null ? userService.convertToDTO(request.getReviewingAdmin()) : null)

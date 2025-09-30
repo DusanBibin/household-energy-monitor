@@ -10,7 +10,10 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.HouseholdRepository;
 import com.example.nvt.repository.HouseholdRequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +27,7 @@ public class HouseholdService {
     private final HouseholdRepository householdRepository;
     private final RealestateService realestateService;
     private final HouseholdRequestRepository householdRequestRepository;
-    private final UserService userService;
-    private final FileService fileService;
+
 
     public Household saveHousehold(Household household) {
         return householdRepository.save(household);
@@ -61,7 +63,16 @@ public class HouseholdService {
         ).collect(Collectors.toList());
     }
 
+
+    @Cacheable(
+            value = "householdDetailsCache",
+            key = "#realestateId + '_' + #householdId"
+    )
     public HouseholdDetailsDTO getHouseholdDetails(User user, Long realestateId, Long householdId) {
+
+
+        System.out.println("household details without caching");
+
         Realestate realestate = realestateService.getRealestateById(realestateId);
         Household household = getHouseholdByIdAndRealestateId(realestateId, householdId);
         Client client = household.getHouseholdOwner();

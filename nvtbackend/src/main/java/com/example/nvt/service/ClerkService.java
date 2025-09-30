@@ -1,15 +1,18 @@
 package com.example.nvt.service;
 
 
+import com.example.nvt.DTO.PagedResponse;
 import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.Clerk;
 import com.example.nvt.repository.ClerkRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,11 +39,31 @@ public class ClerkService {
     }
 
 
-    //CACHEABLE
-    public Page<UserSummaryDTO> getClerks(int page, int size) {
+
+    @Cacheable(
+            value = "clerksPageCache",
+            key = "#page + '_' + #size"
+    )
+    public PagedResponse<UserSummaryDTO> getClerks(int page, int size) {
+
+        if (page < 0) page = 0;
+        if (size < 1) size = 10;
 
         Page<Clerk> clerksPage = clerkRepository.findAll(PageRequest.of(page, size));
 
-        return clerksPage.map(userService::convertToDTO);
+
+        List<UserSummaryDTO> dtos = clerksPage.getContent()
+                .stream()
+                .map(userService::convertToDTO)
+                .toList();
+
+
+        return PagedResponse.<UserSummaryDTO>builder()
+                .content(dtos)
+                .page(clerksPage.getNumber())
+                .size(clerksPage.getSize())
+                .totalElements(clerksPage.getTotalElements())
+                .totalPages(clerksPage.getTotalPages())
+                .build();
     }
 }

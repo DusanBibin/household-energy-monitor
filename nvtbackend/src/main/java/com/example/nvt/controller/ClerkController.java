@@ -1,6 +1,7 @@
 package com.example.nvt.controller;
 
 
+import com.example.nvt.DTO.PagedResponse;
 import com.example.nvt.DTO.UserSummaryDTO;
 import com.example.nvt.model.Client;
 import com.example.nvt.service.ClerkService;
@@ -23,10 +24,13 @@ public class ClerkController {
 
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/clerk")
-    public ResponseEntity<Page<UserSummaryDTO>> getClerks(@AuthenticationPrincipal Client client,
+    public ResponseEntity<PagedResponse<UserSummaryDTO>> getClerks(@AuthenticationPrincipal Client client,
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size){
-        Page<UserSummaryDTO> clerks = clerkService.getClerks( page, size);
+
+
+        System.out.println("Da li ulazimo ovde");
+        PagedResponse<UserSummaryDTO> clerks = clerkService.getClerks( page, size);
         return ResponseEntity.ok(clerks);
     }
 

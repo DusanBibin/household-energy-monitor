@@ -219,7 +219,7 @@
                                         class="chart"
                                         (chartInit)="onChartInit($event)">
                                     </div>
-                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                    <div class="d-flex justify-content-center gap-2 pb-4 flex-wrap">
                                         <button class="btn btn-primary" (click)="loadByPeriod('3h')">Last 3 Hours</button>
                                         <button class="btn btn-primary" (click)="loadByPeriod('6h')">Last 6 Hours</button>
                                         <button class="btn btn-primary" (click)="loadByPeriod('12h')">Last 12 Hours</button>
@@ -229,7 +229,7 @@
                                         <button class="btn btn-primary" (click)="loadByPeriod('3m')">Last 3 Months</button>
                                         <button class="btn btn-primary" (click)="loadByPeriod('1y')">Last Year</button>
                                     </div>
-                                    <div class="d-flex justify-content-center gap-2 pb-4">
+                                    <div class="d-flex justify-content-center gap-2 pb-4 flex-wrap">
                                         <label>From:
                                         <input type="date" [(ngModel)]="fromDate">
                                         </label>
