@@ -46,7 +46,7 @@ export class ClientAppointmentsComponent implements OnInit{
         },
         error: (err) => console.error('Failed to fetch appointments:', err)
       });
-      if(this.jwtService.hasRole(['CLIENT'])) this.getClerks(0);
+      // if(this.jwtService.hasRole(['CLIENT'])) this.getClerks(0);
     }
 
 
@@ -88,6 +88,7 @@ export class ClientAppointmentsComponent implements OnInit{
 
   getClerks(page: number){
     console.log("jel se ovo pali sranje get clerks")
+    console.trace()
     this.clientService.getClerks(0, 10).subscribe({
       next: clerks => {
         this.clerksData = {isError: false, data: clerks};

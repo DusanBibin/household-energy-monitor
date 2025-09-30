@@ -10,6 +10,7 @@ import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,11 @@ public class ConsumptionQueryService {
     private final InfluxProperties influxProperties;
     private final InfluxDBClient influxDBClient;
 
+    @Cacheable(
+            value = "yearlyConsumptionCache",
+            key = "{#clientId, #householdId, #startYear, #startMonth}",
+            cacheManager = "cacheManagerFix"
+    )
     public List<ConsumptionDTO> getYearlyConsumption(Long clientId, Long householdId, Integer startYear, Integer startMonth) {
 
 
@@ -197,7 +203,12 @@ public class ConsumptionQueryService {
     }
 
 
-    //ne treba jer mnogo ima razlicitih mogucnosti parametara
+    @Cacheable(
+            value = "consumptionCache",
+            key = "{#householdId, #clientId, #period}",
+            condition = "#period == '1m' || #period == '3m' || #period == '1y'",
+            cacheManager = "cacheManagerFix"
+    )
     public List<ConsumptionDTO> getConsumption(Long householdId, Long clientId, String period, Instant from, Instant to) {
 
         Household household = householdService.getHouseholdByIdAndClientId(clientId, householdId);

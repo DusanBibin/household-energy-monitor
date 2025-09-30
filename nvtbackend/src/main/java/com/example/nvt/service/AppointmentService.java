@@ -8,12 +8,17 @@ import com.example.nvt.model.*;
 import com.example.nvt.repository.AppointmentRepository;
 import com.example.nvt.specifications.AppointmentSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,21 +40,34 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
 
-    //CACHE PUT
+//    @Caching(evict = {
+//            @CacheEvict(
+//                    value = "weekAppointmentsCache",
+//                    key = "#clientId + '_' + #startDateTime.toLocalDate()"
+//            ),
+//            @CacheEvict(
+//                    value = "weekAppointmentsCache",
+//                    key = "#clerkId + '_' + #startDateTime.toLocalDate()"
+//            )
+//    })
+
+
+
     @Transactional
-    public AppointmentDTO createAppointment(Client client, Long clerkId, String startDateTimeString) {
+    public AppointmentDTO createAppointment(Long clientId, Long clerkId, LocalDateTime startDateTime) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Client client = (Client) authentication.getPrincipal();
+
 
         Appointment appointment = null;
 
-        LocalDateTime startDateTime;
-        try {
-            startDateTime = LocalDateTime.parse(startDateTimeString, formatter);
-        } catch (DateTimeParseException e) {
-            throw new InvalidInputException("Invalid date format. Use dd/MM/yyyy-HH:mm");
-        }
+//        LocalDateTime startDateTime;
+//        try {
+//            startDateTime = LocalDateTime.parse(startDateTimeString, formatter);
+//        } catch (DateTimeParseException e) {
+//            throw new InvalidInputException("Invalid date format. Use dd/MM/yyyy-HH:mm");
+//        }
 
-
-        client = clientService.findClientById(client.getId());
 
 
         if (!isValidAppointmentSlot(startDateTime)) throw new InvalidInputException("Start time is not valid");
@@ -65,6 +83,8 @@ public class AppointmentService {
 
         if (appointmentRepository.getExistingAppointmentClient(client.getId(), startDateTime).isPresent())
             throw new InvalidInputException("You already have an appointment at this time at different clerk");
+
+        client = clientService.findClientById(clientId);
 
         appointment = Appointment.builder()
                 .clerk(clerk)
@@ -189,25 +209,33 @@ public class AppointmentService {
     }
 
 
-    //CACHABLE
-    public List<AppointmentDTO> getWeekAppointments(User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public List<AppointmentDTO> getWeekAppointments(Long userId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
 
+        System.out.println("Appointmenti u nedelji bez keshiranja");
         if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
         List<Appointment> appointments = new ArrayList<>();
-        if(user instanceof Client) appointments = appointmentRepository.getWeekAppointmentsClient(user.getId(), startDateTime, endDateTime);
-        if(user instanceof Clerk)  appointments = appointmentRepository.getWeekAppointmentsClerk(user.getId(), startDateTime, endDateTime);
+        if(user instanceof Client) appointments = appointmentRepository.getWeekAppointmentsClient(userId, startDateTime, endDateTime);
+        if(user instanceof Clerk)  appointments = appointmentRepository.getWeekAppointmentsClerk(userId, startDateTime, endDateTime);
 
-        return appointments.stream()
+
+        List<AppointmentDTO> dtos = appointments.stream()
                 .map(this::convertToAppointmentDto)
                 .toList();
+
+        return dtos;
     }
 
 
-    //CACHABLE
-    public List<AppointmentDTO> getWeekAppointmentsClerk(Client client, Long clerkId, LocalDateTime startDateTime,
+//    @Cacheable(
+//            value = "weekAppointmentsCache",
+//            key = "#clerkId + '_' + #startDateTime.toLocalDate()"
+//    )
+    public List<AppointmentDTO> getWeekAppointmentsClerk(Long clerkId, LocalDateTime startDateTime,
                                                          LocalDateTime endDateTime) {
         Clerk clerk = clerkService.getClerkById(clerkId);
-
+        System.out.println("Appointmenti u nedelji bez keshiranja za clerka ");
 
         if(!isValidWeekRange(startDateTime, endDateTime)) throw new InvalidInputException("Invalid week range specified");
         List<Appointment> appointments = appointmentRepository.getWeekAppointmentsClerk(clerkId, startDateTime, endDateTime);

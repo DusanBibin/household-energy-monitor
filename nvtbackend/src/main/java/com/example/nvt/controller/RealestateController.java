@@ -1,5 +1,6 @@
 package com.example.nvt.controller;
 
+import com.example.nvt.DTO.PagedResponse;
 import com.example.nvt.DTO.RealestateImagePathsDTO;
 import com.example.nvt.DTO.RealestateSummaryDTO;
 import com.example.nvt.DTO.UserSummaryDTO;
@@ -57,11 +58,11 @@ public class RealestateController {
 
     @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping()
-    public ResponseEntity<Page<RealestateSummaryDTO>> getRealestateSummaries(@AuthenticationPrincipal User user,
-                                                                            @RequestParam(defaultValue = "0") int page,
-                                                                            @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<PagedResponse<RealestateSummaryDTO>> getRealestateSummaries(@AuthenticationPrincipal User user,
+                                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                                      @RequestParam(defaultValue = "10") int size){
 
-        Page<RealestateSummaryDTO> realestates = realestateService.getRealestateSummaries(user.getId(), page, size);
+        PagedResponse<RealestateSummaryDTO> realestates = realestateService.getRealestateSummaries(user.getId(), page, size);
         return ResponseEntity.ok(realestates);
 
     }

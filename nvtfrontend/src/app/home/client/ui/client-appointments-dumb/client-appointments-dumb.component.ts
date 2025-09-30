@@ -142,7 +142,7 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
   loadRequests(): void {
     this.isLoadingClerks = true
     this.clerksData = null;
-
+    
 
     this.pagingDetailsOutput.emit({page: this.page})
 
@@ -176,6 +176,7 @@ export class ClientAppointmentsDumbComponent implements OnChanges{
   openClerkDialog(){
     if (this.clerksDialog) {
       
+      this.loadRequests();
       this.modalService.open(this.clerksDialog, {
         centered: true,
         scrollable: true,

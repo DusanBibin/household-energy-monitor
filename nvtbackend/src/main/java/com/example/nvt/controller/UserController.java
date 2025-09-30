@@ -32,7 +32,7 @@ public class UserController {
 
         if(user == null) throw new InvalidAuthenticationException("Not Authenticated");
 
-        return ResponseEntity.ok(userService.getPartialUserData(user));
+        return ResponseEntity.ok(userService.getPartialUserData(user.getId()));
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT', 'ADMIN', 'OFFICIAL', 'SUPERADMIN')")

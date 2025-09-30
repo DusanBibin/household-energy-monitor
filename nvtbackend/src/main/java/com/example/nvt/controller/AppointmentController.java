@@ -4,6 +4,7 @@ package com.example.nvt.controller;
 import com.example.nvt.DTO.AppointmentDTO;
 import com.example.nvt.DTO.AuthRequestDTO;
 import com.example.nvt.DTO.PartialUserDataDTO;
+import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.Client;
 import com.example.nvt.model.User;
 import com.example.nvt.service.AppointmentService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -35,7 +38,15 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDTO> createAppointment(@AuthenticationPrincipal Client client, @PathVariable Long clerkId,
                                                             @RequestParam String startDateTime){
 
-        AppointmentDTO appointment = appointmentService.createAppointment(client, clerkId, startDateTime);
+        LocalDateTime start;
+        try {
+            start = LocalDateTime.parse(startDateTime, DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm"));
+        } catch (DateTimeParseException e) {
+            throw new InvalidInputException("Invalid date format. Use dd/MM/yyyy-HH:mm");
+        }
+
+
+        AppointmentDTO appointment = appointmentService.createAppointment(client.getId(), clerkId, start);
         System.out.println("Klijent sa id: " + client.getId() + " je uzeo appointment za " + appointment.getStartDateTime());
         return ResponseEntity.ok(appointment);
     }
@@ -46,7 +57,7 @@ public class AppointmentController {
     @GetMapping("/appointment")
     public ResponseEntity<List<AppointmentDTO>> getWeekAppointments(@AuthenticationPrincipal User user, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
-        List<AppointmentDTO> appointments = appointmentService.getWeekAppointments(user, startDateTime, endDateTime);
+        List<AppointmentDTO> appointments = appointmentService.getWeekAppointments(user.getId(), startDateTime, endDateTime);
         return ResponseEntity.ok(appointments);
     }
 
@@ -57,7 +68,7 @@ public class AppointmentController {
                                                                          @PathVariable Long clerkId,
                                                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
-        List<AppointmentDTO> appointments = appointmentService.getWeekAppointmentsClerk(client,clerkId, startDateTime, endDateTime);
+        List<AppointmentDTO> appointments = appointmentService.getWeekAppointmentsClerk(clerkId, startDateTime, endDateTime);
         return ResponseEntity.ok(appointments);
     }
 

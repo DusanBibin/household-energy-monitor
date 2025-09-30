@@ -1,9 +1,6 @@
 package com.example.nvt.service;
 
-import com.example.nvt.DTO.HouseholdApartmentDTO;
-import com.example.nvt.DTO.HouseholdSummaryDTO;
-import com.example.nvt.DTO.RealestateImagePathsDTO;
-import com.example.nvt.DTO.RealestateSummaryDTO;
+import com.example.nvt.DTO.*;
 import com.example.nvt.enumeration.RealEstateType;
 import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
@@ -89,24 +86,25 @@ public class RealestateService {
 //            value = "realestateSummaries",
 //            key = "#userId + '_' + #page + '_' + #size"
 //    )
-    public Page<RealestateSummaryDTO> getRealestateSummaries(Long userId, int page, int size) {
+    public PagedResponse<RealestateSummaryDTO> getRealestateSummaries(Long userId, int page, int size) {
 
-        if(page < 0 ) page = 0;
-        if(size < 1) size = 10;
+        if (page < 0) page = 0;
+        if (size < 1) size = 10;
 
-        Page<Realestate> realestates = realestateRepository.getRealestatesByClientId(userId, PageRequest.of(page, size));
+        Page<Realestate> realestates = realestateRepository.getRealestatesByClientId(
+                userId,
+                PageRequest.of(page, size)
+        );
 
-
-        return realestates.map(realestate -> {
+        List<RealestateSummaryDTO> summaries = realestates.getContent().stream().map(realestate -> {
             City c = realestate.getCity();
             Municipality m = c.getMunicipality();
             Region r = m.getRegion();
 
-            String address = realestate.getAddressStreet() + " " + realestate.getAddressNum() + " " + c.getZipCode() +
-                    " " + c.getName() + " " + m.getName() + " "  + r.getName();
+            String address = realestate.getAddressStreet() + " " + realestate.getAddressNum() + " " +
+                    c.getZipCode() + " " + c.getName() + " " + m.getName() + " " + r.getName();
 
-
-
+            // Force materialization of households into DTO-safe list
             List<HouseholdSummaryDTO> householdSummaries = realestate.getHouseholds().stream()
                     .filter(h -> h.getHouseholdOwner() != null
                             && h.getHouseholdOwner().getId().equals(userId))
@@ -114,22 +112,37 @@ public class RealestateService {
                             .id(h.getId())
                             .apartmentNumber(
                                     realestate.getType() == RealEstateType.BUILDING
-                                            ? h.getApartmentNum().toString()
+                                            ? String.valueOf(h.getApartmentNum())
                                             : null
                             )
                             .build())
                     .toList();
 
+
+            List<String> images = realestate.getImages() != null
+                    ? List.copyOf(realestate.getImages())
+                    : List.of();
+
             return RealestateSummaryDTO.builder()
                     .realestateId(realestate.getId())
                     .type(realestate.getType())
                     .householdSummaries(householdSummaries)
-                    .images(realestate.getImages())
                     .address(address)
-                    .images(realestate.getImages())
+                    .images(images)
                     .build();
-        });
+        }).toList();
+
+        return PagedResponse.<RealestateSummaryDTO>builder()
+                .content(summaries)
+                .page(realestates.getNumber())
+                .size(realestates.getSize())
+                .totalElements(realestates.getTotalElements())
+                .totalPages(realestates.getTotalPages())
+                .build();
     }
+
+
+
 
 
 

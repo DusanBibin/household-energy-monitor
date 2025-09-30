@@ -78,7 +78,7 @@ public class HouseholdRequestController {
             @RequestParam(defaultValue = "desc") String sortDir
     ) {
         Page<HouseholdRequestPreviewDTO> result = householdRequestService.getClientRequests(
-                user, status, page, size, sortField, sortDir);
+                user.getId(), status, page, size, sortField, sortDir);
         return ResponseEntity.ok(result);
     }
 
@@ -89,7 +89,7 @@ public class HouseholdRequestController {
     public ResponseEntity<HouseholdRequestDTO> getHouseholdRequestDetails(@AuthenticationPrincipal User user, @PathVariable Long realestateId,
                                            @PathVariable Long householdId, @PathVariable Long requestId){
 
-        HouseholdRequestDTO dto = householdRequestService.getHouseholdRequestDetails(user.getId(), realestateId, householdId, requestId);
+        HouseholdRequestDTO dto = householdRequestService.getHouseholdRequestDetails( realestateId, householdId, requestId);
         return ResponseEntity.ok(dto);
     }
 
