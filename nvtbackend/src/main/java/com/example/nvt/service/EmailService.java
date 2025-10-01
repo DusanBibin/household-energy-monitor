@@ -43,7 +43,7 @@ public class EmailService {
 
 
 
-        String link = "https://192.168.1.102/auth/verification/".concat(user.getVerification().getVerificationCode());
+        String link = "https://192.168.1.103/auth/verification/".concat(user.getVerification().getVerificationCode());
 
         String subject = "Verify email address";
         personalization.addDynamicTemplateData("firstName", user.getFirstName());
