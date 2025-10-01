@@ -120,32 +120,35 @@ public class AuthenticationService {
 
 
     public PartialUserDataDTO authenticate(AuthRequestDTO request, HttpServletResponse response) {
-        long start = System.currentTimeMillis();
+
 
         Authentication authentication;
         try {
-            long authStart = System.currentTimeMillis();
+
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
-//            System.out.println("Authentication time: " + (System.currentTimeMillis() - authStart) + " ms");
+
         } catch (AuthenticationException e) {
             throw new InvalidAuthenticationException("Email or password is invalid");
         }
 
-        long jwtStart = System.currentTimeMillis();
+
         User user = (User) authentication.getPrincipal();
+        if(!user.isEmailConfirmed() ) throw new InvalidAuthorizationException("Email not confirmed for this user");
+
         var jwtToken = jwtService.generateToken(user);
-//        System.out.println("JWT generation time: " + (System.currentTimeMillis() - jwtStart) + " ms");
+
 
         Cookie jwtCookie = new Cookie("jwt", jwtToken);
         jwtCookie.setHttpOnly(true);
+//        jwtCookie.setSecure(true);
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(60 * 60 * 24);
         jwtCookie.setAttribute("SameSite", "Strict");
         response.addCookie(jwtCookie);
 
-        long dtoStart = System.currentTimeMillis();
+
         PartialUserDataDTO data = PartialUserDataDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -156,9 +159,7 @@ public class AuthenticationService {
         if(user instanceof SuperAdmin superAdmin){
             data.setFirstLogin(superAdmin.isFirstLogin());
         }
-//        System.out.println("DTO build time: " + (System.currentTimeMillis() - dtoStart) + " ms");
 
-//        System.out.println("Total authenticate method time: " + (System.currentTimeMillis() - start) + " ms");
         return data;
     }
 
