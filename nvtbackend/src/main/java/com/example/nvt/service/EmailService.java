@@ -24,12 +24,12 @@ public class EmailService {
     @Value("${spring.sendgrid.api-key}")
     private String SENDGRID_API_KEY;
 
-    private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e707779b69ff472aa8e1a3f9c2773d5d";
-    private static final String REQUEST_STATUS_UPDATE_TEMPLATE_ID = "d-a66753ad11da4e6fa4891c3d49ece978";
+    private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e79626c48a854745b0aea28224306310";
+    private static final String REQUEST_STATUS_UPDATE_TEMPLATE_ID = "d-0db559b7cda8486083c66806e8547cfa";
 
     @Async
     public void sendVerificationEmail(User user) {
-        Email from = new Email("mobilnebackendtest@gmail.com");
+        Email from = new Email("springbootsendgrid@gmail.com");
 
         String toEmail = user.getEmail();
 
