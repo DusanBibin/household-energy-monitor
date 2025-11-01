@@ -74,7 +74,7 @@ class AppointmentUser(HttpUser):
         email = f"dusanbibin2+client{user_number}@gmail.com"
         payload = {"email": email, "password": self.PASSWORD}
 
-        with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+        with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
             if response.status_code == 200:
                 self.jwt_cookie = self.client.cookies.get("jwt")
                 if self.jwt_cookie:
@@ -106,7 +106,8 @@ class AppointmentUser(HttpUser):
             f"/api/v1/clerk/{clerk_id}/appointment",
             params={"startDateTime": slot_str},
             headers=headers,
-            catch_response=True
+            catch_response=True,
+            verify=False
         ) as response:
 
             if response.status_code == 200:

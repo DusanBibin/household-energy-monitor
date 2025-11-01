@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 # Endpoint URL for the Spring Boot application
-ENDPOINT_URL = "http://localhost:8080/api/v1/realestate/household/script"
+ENDPOINT_URL = "http://192.168.1.103/api/v1/realestate/household/script"
 
 # Python script to be executed for each ID
 SCRIPT_TO_RUN = "household.py"
@@ -11,7 +11,7 @@ SCRIPT_TO_RUN = "household.py"
 def fetch_ids(id_number):
     """Fetch the list of IDs from the Spring Boot endpoint."""
     try:
-        response = requests.get(ENDPOINT_URL + "/" + str(id_number))
+        response = requests.get(ENDPOINT_URL + "/" + str(id_number), verify=False)
         response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
         return response.json()  # Assuming the endpoint returns a JSON array of integers
     except requests.RequestException as e:

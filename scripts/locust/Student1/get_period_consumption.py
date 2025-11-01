@@ -25,7 +25,7 @@ class RealestateUser(HttpUser):
         payload = {"email": email, "password": self.PASSWORD}
 
         # Authenticate and get JWT
-        with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+        with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
             if response.status_code == 200:
                 self.jwt_cookie = self.client.cookies.get("jwt")
                 if self.jwt_cookie:
@@ -46,7 +46,7 @@ class RealestateUser(HttpUser):
             f"/api/v1/household/{self.household_id}/consumption",
             headers=headers,
             params={"period": period},
-            catch_response=True
+            catch_response=True, verify=False
         ) as response:
             if response.status_code == 200:
                 response.success()

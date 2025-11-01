@@ -22,7 +22,7 @@ class RealestateUser(HttpUser):
         payload = {"email": email, "password": self.PASSWORD}
 
         if not self.jwt_cookie:
-            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
                 if response.status_code == 200:
                     self.jwt_cookie = self.client.cookies.get("jwt")
                     if self.jwt_cookie:
@@ -48,10 +48,11 @@ class RealestateUser(HttpUser):
         # Step 3: send GET request to /search
         with self.client.get(
             f"/api/v1/realestate/search?query={query_string}",
-            catch_response=True,
+            catch_response=True, verify=False,
             headers={"Cookie": f"jwt={self.jwt_cookie}"}
         ) as response:
             if response.status_code == 200:
                 response.success()
             else:
                 response.failure(f"Search failed: {response.status_code}")
+                print(response.text)

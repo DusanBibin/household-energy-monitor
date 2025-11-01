@@ -36,7 +36,7 @@ class User(HttpUser):
         }
 
         if not self.jwt_cookie:
-            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
                 if response.status_code == 200:
                     self.jwt_cookie = self.client.cookies.get("jwt")
                     if self.jwt_cookie:
@@ -66,7 +66,8 @@ class User(HttpUser):
             f"/api/v1/realestate/{realestate_id}/household/{household_id}/household-request",
             files=files,
             cookies={"jwt": self.jwt_cookie},
-            catch_response=True
+            catch_response=True,
+            verify=False
         ) as response:
             if response.status_code == 200:
                 response.success()

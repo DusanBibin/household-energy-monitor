@@ -27,7 +27,7 @@ class RealestateUser(HttpUser):
 
         # Authenticate if not already authenticated
         if not self.jwt_cookie:
-            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
                 if response.status_code == 200:
                     # Locust manages cookies automatically
                     self.jwt_cookie = self.client.cookies.get("jwt")
@@ -63,7 +63,7 @@ class RealestateUser(HttpUser):
             "zoomLevel": random.randint(8, 18)
         }
 
-        with self.client.get("/api/v1/realestate/aggregate", params=params, catch_response=True) as response:
+        with self.client.get("/api/v1/realestate/aggregate", params=params, catch_response=True, verify=False) as response:
             if response.status_code == 200:
                 response.success()
             else:

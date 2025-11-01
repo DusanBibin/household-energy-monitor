@@ -73,7 +73,7 @@ class RealestateUser(HttpUser):
         }
 
         if not self.jwt_cookie:
-            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True) as response:
+            with self.client.post("/api/v1/auth/authenticate", json=payload, catch_response=True, verify=False) as response:
                 if response.status_code == 200:
                     self.jwt_cookie = self.client.cookies.get("jwt")
                     if self.jwt_cookie:
@@ -96,7 +96,7 @@ class RealestateUser(HttpUser):
 
         with self.client.get(
             f"/api/v1/realestate/{household[1]}/household/{household[0]}",
-            catch_response=True
+            catch_response=True, verify=False
         ) as response:
             if response.status_code == 200:
                 response.success()
