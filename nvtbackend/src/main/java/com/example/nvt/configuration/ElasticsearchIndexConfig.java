@@ -31,11 +31,15 @@ public class ElasticsearchIndexConfig {
     @PostConstruct
     public void initialize() throws IOException, InterruptedException {
 
-        waitForElasticsearch();
-        if (this.args.containsOption("initMode")) {
-            initializeIndexes();
-            System.out.println("iksde");
-        }
+
+        initializeIndexes();
+        // waitForElasticsearch();
+        // System.out.println("jebo te ja");
+        // if (this.args.containsOption("initMode")) {
+        //     System.out.println("izesmi");
+        //     initializeIndexes();
+        //     System.out.println("iksde");
+        // }
 
 
     }
@@ -62,46 +66,88 @@ public class ElasticsearchIndexConfig {
 
 
     public void initializeIndexes()  throws IOException {
+
         boolean realestateExists = esClient.indices().exists(e -> e.index(INDEX_REALESTATE)).value();
         boolean cityExists = esClient.indices().exists(e -> e.index(INDEX_CITY)).value();
         boolean municipalityExists = esClient.indices().exists(e -> e.index(INDEX_MUNICIPALITY)).value();
         boolean regionExists = esClient.indices().exists(e -> e.index(INDEX_REGION)).value();
-
-        if (realestateExists) {
-            esClient.indices().delete(DeleteIndexRequest.of(d -> d.index(INDEX_REALESTATE)));
-            System.out.println("Index realestate deleted.");
+    
+        // --- Realestate index ---
+        if (!realestateExists) {
+            createRealestateIndex();
+            System.out.println("Index realestate created.");
         } else {
-            System.out.println("Index realestate does not exist.");
+            if (args.containsOption("initMode")) {
+                esClient.deleteByQuery(d -> d
+                    .index(INDEX_REALESTATE)
+                    .query(q -> q.matchAll(m -> m))
+                    .refresh(true)
+                );
+                System.out.println("Index realestate emptied.");
+            } else {
+                System.out.println("Index realestate already exists, keeping data.");
+            }
         }
-        if (cityExists) {
-            esClient.indices().delete(DeleteIndexRequest.of(d -> d.index(INDEX_CITY)));
-            System.out.println("Index city deleted.");
+    
+        // --- City index ---
+        if (!cityExists) {
+            createCityIndex();
+            System.out.println("Index city created.");
         } else {
-            System.out.println("Index city does not exist.");
+            if (args.containsOption("initMode")) {
+                esClient.deleteByQuery(d -> d
+                    .index(INDEX_CITY)
+                    .query(q -> q.matchAll(m -> m))
+                    .refresh(true)
+                );
+                System.out.println("Index city emptied.");
+            } else {
+                System.out.println("Index city already exists, keeping data.");
+            }
         }
-        if (municipalityExists) {
-            esClient.indices().delete(DeleteIndexRequest.of(d -> d.index(INDEX_MUNICIPALITY)));
-            System.out.println("Index municipality deleted.");
+    
+        // --- Municipality index ---
+        if (!municipalityExists) {
+            createMunicipalityIndex();
+            System.out.println("Index municipality created.");
         } else {
-            System.out.println("Index municipality does not exist.");
+            if (args.containsOption("initMode")) {
+                esClient.deleteByQuery(d -> d
+                    .index(INDEX_MUNICIPALITY)
+                    .query(q -> q.matchAll(m -> m))
+                    .refresh(true)
+                );
+                System.out.println("Index municipality emptied.");
+            } else {
+                System.out.println("Index municipality already exists, keeping data.");
+            }
         }
-        if (regionExists) {
-            esClient.indices().delete(DeleteIndexRequest.of(d -> d.index(INDEX_REGION)));
-            System.out.println("Index region deleted.");
+    
+        // --- Region index ---
+        if (!regionExists) {
+            createRegionIndex();
+            System.out.println("Index region created.");
         } else {
-            System.out.println("Index region does not exist.");
+            if (args.containsOption("initMode")) {
+                esClient.deleteByQuery(d -> d
+                    .index(INDEX_REGION)
+                    .query(q -> q.matchAll(m -> m))
+                    .refresh(true)
+                );
+                System.out.println("Index region emptied.");
+            } else {
+                System.out.println("Index region already exists, keeping data.");
+            }
         }
-
-
-
-        System.out.println("DA LI SE OVO UPALILO ");
+    }
 
 
 
 
-        CreateIndexResponse response = esClient.indices().create(c -> c
-                        .index(INDEX_REALESTATE)
-                        .settings(IndexSettings.of(s -> s
+    private void createRealestateIndex() throws IOException {
+        esClient.indices().create(c -> c
+            .index(INDEX_REALESTATE)
+            .settings(IndexSettings.of(s -> s
                                 .analysis(a -> a
                                         .filter("autocomplete_filter", f -> f
                                                 .definition(fd -> fd
@@ -127,146 +173,128 @@ public class ElasticsearchIndexConfig {
                                         )
                                 )
                         ))
-                        .mappings(m -> m.properties(Map.of(
-                                        "location", new Property.Builder().geoPoint(new GeoPointProperty.Builder().build()).build(),
-                                        "address", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-                                        "cityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
-                                        "municipalityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
-                                        "regionDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
-                                        "vacant", new Property.Builder().boolean_(new BooleanProperty.Builder().build()).build()
-//                                "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-//                                "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-//                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-//                                "zipcode", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
-
-                                )
-                        ))
+            .mappings(m -> m.properties(Map.of(
+                "location", new Property.Builder().geoPoint(new GeoPointProperty.Builder().build()).build(),
+                "address", new Property.Builder().text(new TextProperty.Builder()
+                    .analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build(),
+                "cityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                "municipalityDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                "regionDocId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build(),
+                "vacant", new Property.Builder().boolean_(new BooleanProperty.Builder().build()).build()
+            )))
         );
-
-        CreateIndexResponse responseCity = esClient.indices().create(c -> c
-                .index(INDEX_CITY)
-                .settings(IndexSettings.of(s -> s
-                        .analysis(a -> a
-                                .filter("autocomplete_filter", f -> f
-                                        .definition(fd -> fd
-                                                .edgeNgram(ngram -> ngram
-                                                        .minGram(1)
-                                                        .maxGram(30)
-                                                )
-                                        )
-                                ).filter("asciifolding_filter", f -> f
-                                        .definition(fd -> fd
-                                                .asciifolding(asc -> asc
-                                                        .preserveOriginal(true))))
-                                .analyzer("autocomplete_search", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase")
-                                        )
-                                ).analyzer("autocomplete_index", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
-                                        )
-                                )
-                        )
-                ))
-                .mappings(m -> m.properties(Map.of(
-                                "city", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
-                        )
-                ))
-        );
-
-        CreateIndexResponse responseMunicipality = esClient.indices().create(c -> c
-                .index(INDEX_MUNICIPALITY)
-                .settings(IndexSettings.of(s -> s
-                        .analysis(a -> a
-                                .filter("autocomplete_filter", f -> f
-                                        .definition(fd -> fd
-                                                .edgeNgram(ngram -> ngram
-                                                        .minGram(1)
-                                                        .maxGram(30)
-                                                )
-                                        )
-                                ).filter("asciifolding_filter", f -> f
-                                        .definition(fd -> fd
-                                                .asciifolding(asc -> asc
-                                                        .preserveOriginal(true))))
-                                .analyzer("autocomplete_search", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase")
-                                        )
-                                ).analyzer("autocomplete_index", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
-                                        )
-                                )
-                        )
-                ))
-                .mappings(m -> m.properties(Map.of(
-                                "municipality", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
-                        )
-                ))
-        );
-
-        CreateIndexResponse responseRegion = esClient.indices().create(c -> c
-                .index(INDEX_REGION)
-                .settings(IndexSettings.of(s -> s
-                        .analysis(a -> a
-                                .filter("autocomplete_filter", f -> f
-                                        .definition(fd -> fd
-                                                .edgeNgram(ngram -> ngram
-                                                        .minGram(1)
-                                                        .maxGram(30)
-                                                )
-                                        )
-                                ).filter("asciifolding_filter", f -> f
-                                        .definition(fd -> fd
-                                                .asciifolding(asc -> asc
-                                                        .preserveOriginal(true))))
-                                .analyzer("autocomplete_search", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase")
-                                        )
-                                ).analyzer("autocomplete_index", an -> an
-                                        .custom(cust -> cust
-                                                .tokenizer("standard")
-                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
-                                        )
-                                )
-                        )
-                ))
-                .mappings(m -> m.properties(Map.of(
-                                "region", new Property.Builder().text(new TextProperty.Builder().analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
-                        )
-                ))
-        );
-
-        if (response.acknowledged()) {
-            System.out.println("Index '" + INDEX_REALESTATE + "' created successfully.");
-        } else {
-            System.out.println("Failed to create index.");
-        }
-
-        if (responseCity.acknowledged()) {
-            System.out.println("Index '" + INDEX_CITY + "' created successfully.");
-        } else {
-            System.out.println("Failed to create index.");
-        }
-
-        if (responseMunicipality.acknowledged()) {
-            System.out.println("Index '" + INDEX_MUNICIPALITY + "' created successfully.");
-        } else {
-            System.out.println("Failed to create index.");
-        }
-
-        if (responseRegion.acknowledged()) {
-            System.out.println("Index '" + INDEX_REGION+ "' created successfully.");
-        } else {
-            System.out.println("Failed to create index.");
-        }
     }
+    
+    private void createCityIndex() throws IOException {
+        esClient.indices().create(c -> c
+            .index(INDEX_CITY)
+            .settings(IndexSettings.of(s -> s
+                        .analysis(a -> a
+                                .filter("autocomplete_filter", f -> f
+                                        .definition(fd -> fd
+                                                .edgeNgram(ngram -> ngram
+                                                        .minGram(1)
+                                                        .maxGram(30)
+                                                )
+                                        )
+                                ).filter("asciifolding_filter", f -> f
+                                        .definition(fd -> fd
+                                                .asciifolding(asc -> asc
+                                                        .preserveOriginal(true))))
+                                .analyzer("autocomplete_search", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase")
+                                        )
+                                ).analyzer("autocomplete_index", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
+                                        )
+                                )
+                        )
+                ))
+            .mappings(m -> m.properties(Map.of(
+                "city", new Property.Builder().text(new TextProperty.Builder()
+                    .analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
+            )))
+        );
+    }
+    
+    private void createMunicipalityIndex() throws IOException {
+        esClient.indices().create(c -> c
+            .index(INDEX_MUNICIPALITY)
+            .settings(IndexSettings.of(s -> s
+                        .analysis(a -> a
+                                .filter("autocomplete_filter", f -> f
+                                        .definition(fd -> fd
+                                                .edgeNgram(ngram -> ngram
+                                                        .minGram(1)
+                                                        .maxGram(30)
+                                                )
+                                        )
+                                ).filter("asciifolding_filter", f -> f
+                                        .definition(fd -> fd
+                                                .asciifolding(asc -> asc
+                                                        .preserveOriginal(true))))
+                                .analyzer("autocomplete_search", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase")
+                                        )
+                                ).analyzer("autocomplete_index", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
+                                        )
+                                )
+                        )
+                ))
+            .mappings(m -> m.properties(Map.of(
+                "municipality", new Property.Builder().text(new TextProperty.Builder()
+                    .analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
+            )))
+        );
+    }
+    
+    private void createRegionIndex() throws IOException {
+        esClient.indices().create(c -> c
+            .index(INDEX_REGION)
+            .settings(IndexSettings.of(s -> s
+                        .analysis(a -> a
+                                .filter("autocomplete_filter", f -> f
+                                        .definition(fd -> fd
+                                                .edgeNgram(ngram -> ngram
+                                                        .minGram(1)
+                                                        .maxGram(30)
+                                                )
+                                        )
+                                ).filter("asciifolding_filter", f -> f
+                                        .definition(fd -> fd
+                                                .asciifolding(asc -> asc
+                                                        .preserveOriginal(true))))
+                                .analyzer("autocomplete_search", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase")
+                                        )
+                                ).analyzer("autocomplete_index", an -> an
+                                        .custom(cust -> cust
+                                                .tokenizer("standard")
+                                                .filter("lowercase", "autocomplete_filter", "asciifolding_filter")
+                                        )
+                                )
+                        )
+                ))
+            .mappings(m -> m.properties(Map.of(
+                "region", new Property.Builder().text(new TextProperty.Builder()
+                    .analyzer("autocomplete_index").searchAnalyzer("autocomplete_search").build()).build()
+            )))
+        );
+    }
+
+
+
+
+    
 }

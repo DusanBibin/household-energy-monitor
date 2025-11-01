@@ -10,10 +10,13 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
@@ -24,12 +27,14 @@ public class EmailService {
     @Value("${spring.sendgrid.api-key}")
     private String SENDGRID_API_KEY;
 
+    private final HttpServletRequest request;
+
     private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e79626c48a854745b0aea28224306310";
     private static final String REQUEST_STATUS_UPDATE_TEMPLATE_ID = "d-0db559b7cda8486083c66806e8547cfa";
-
+    private static final String SENDER_EMAIL = "springbootsendgrid@gmail.com";
     @Async
-    public void sendVerificationEmail(User user) {
-        Email from = new Email("springbootsendgrid@gmail.com");
+    public void sendVerificationEmail(User user, String baseUrl) {
+        Email from = new Email(SENDER_EMAIL);
 
         String toEmail = user.getEmail();
 
@@ -42,8 +47,8 @@ public class EmailService {
         mail.setFrom(from);
 
 
-
-        String link = "https://192.168.1.103/auth/verification/".concat(user.getVerification().getVerificationCode());
+        
+        String link = baseUrl + "/auth/verification/".concat(user.getVerification().getVerificationCode());
 
         String subject = "Verify email address";
         personalization.addDynamicTemplateData("firstName", user.getFirstName());
@@ -70,7 +75,7 @@ public class EmailService {
 
     @Async
     public void sendRequestUpdate(String email, String firstName, String address, String status, String reason) {
-        Email from = new Email("mobilnebackendtest@gmail.com");
+        Email from = new Email(SENDER_EMAIL);
 
         Email to = new Email(email);
         System.out.println("Sent email to: " + email);

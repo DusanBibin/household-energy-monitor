@@ -10,6 +10,7 @@ import com.example.nvt.exceptions.InvalidInputException;
 import com.example.nvt.model.*;
 import com.example.nvt.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,14 @@ public class AuthenticationService {
     private final ClientService clientService;
     private final UserRepository userRepository;
 
+
+    private final HttpServletRequest r;
     @Transactional
     public String register(@Valid RegisterRequestDTO request, MultipartFile profileImage, User user) {
+        
+
+        String baseUrl = r.getRequestURL().toString().replace(r.getRequestURI(), "");
+        System.out.println(baseUrl);
 
         if(!(user instanceof SuperAdmin superAdmin || user == null))
             throw new InvalidAuthorizationException("Invalid action");
@@ -111,7 +118,7 @@ public class AuthenticationService {
         userService.saveUser(newUser);
         System.out.println("ZAVRSEN OBICAN KOD POCINJE SLANJE MEJLA");
         String message = "Registration successful. Validation email sent to ".concat(request.getEmail());
-        if(!emailConfirmed) emailService.sendVerificationEmail(newUser);
+        if(!emailConfirmed) emailService.sendVerificationEmail(newUser, baseUrl);
         else message = "Admin registration successful";
 
         System.out.println("ZAVRSENO SLANJE MEJLA");

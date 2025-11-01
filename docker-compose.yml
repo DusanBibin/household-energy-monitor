@@ -17,10 +17,11 @@ services:
         condition: service_started
       elasticsearch:
         condition: service_healthy
-    command: ["--initMode"]
+    command: ["--initMode", "--fullData"]
     volumes:
       - ./nvtbackend/data:/app/data
       - ./nvtbackend/files:/app/files
+      - ./nvtbackend/password.txt:/app/password.txt
       
   db:
     image: postgres
@@ -32,6 +33,7 @@ services:
       - "5432:5432"
     volumes:
     - ./nvtbackend/data:/docker-entrypoint-initdb.d:ro
+    - postgres_data:/var/lib/postgresql/data
 
   influxdb:
     image: influxdb:2.7
@@ -50,6 +52,23 @@ services:
       - influxdb-data:/var/lib/influxdb2
       - influxdb-config:/etc/influxdb2
       - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS http://localhost:8086/health || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+  influxdb-seed:
+    image: influxdb:2.7
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
+      - influxdb-seed-flag:/seed
+    command: >
+      sh -c 'if [ ! -f /seed/done ]; then influx write --host http://influxdb:8086 --bucket nvt --org nvt --token CTL_htkm6HgdUY8K9yRFdfb74-R5mE6e6GMUkRd2eYn5zXWaS9O3ubtj3-l8g13S-Qc04xIqAcVsyXUzuLvwaQ== --file /tmp/electricity_compact.lp && touch /seed/done; fi'
+
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -71,7 +90,6 @@ services:
       - "443:443"
     volumes:
       - ./nvtbackend/files:/files:ro
-      - ./certs:/etc/nginx/certs:ro
     depends_on:
       - backend
 
@@ -87,6 +105,8 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    volumes:
+    - es_data:/usr/share/elasticsearch/data
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:9200 || exit 1"]
       interval: 10s
@@ -111,3 +131,6 @@ volumes:
   redis_data:
   influxdb-data:
   influxdb-config:
+  postgres_data:
+  es_data:
+  influxdb-seed-flag:

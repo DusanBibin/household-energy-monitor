@@ -32,10 +32,10 @@
     COPY nginx.conf /etc/nginx/nginx.conf
     
     # Generate self-signed SSL certs (valid 365 days)
-    RUN mkdir -p /etc/ssl/private /etc/ssl/certs && \
+    RUN mkdir -p /etc/nginx/certs && \
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-        -keyout /etc/ssl/private/nginx-selfsigned.key \
-        -out /etc/ssl/certs/nginx-selfsigned.crt \
+        -keyout /etc/nginx/certs/nginx.key \
+        -out /etc/nginx/certs/nginx.crt \
         -subj "/CN=localhost"
     
     # Expose ports

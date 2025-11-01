@@ -51,6 +51,32 @@ public class RealestateSearchService {
             FilterType filterType, String filterDocId, int zoomLevel) throws IOException {
 
 
+
+        int targetMaxBuckets = 5000;
+        int precision = 3 + zoomLevel;
+
+        
+        int lonTiles = (int) Math.pow(2, precision);
+        int latTiles = (int) Math.pow(2, precision);
+
+        double lonSpan = bottomRightLon - topLeftLon;
+        double latSpan = topLeftLat - bottomRightLat;
+
+        int estBuckets = (int) (lonTiles * (lonSpan / 360.0) * latTiles * (latSpan / 180.0));
+
+        if (estBuckets > targetMaxBuckets) {
+            precision = (int) (precision - Math.log(estBuckets / targetMaxBuckets) / Math.log(2));
+            precision = Math.max(1, precision); 
+        }
+
+        final int prec = precision;
+
+
+
+
+
+
+
         GeoBoundingBoxQuery geoBoundingBoxQuery = QueryBuilders.geoBoundingBox()
                 .field("location")
                 .boundingBox(g -> g.coords(
@@ -88,8 +114,8 @@ public class RealestateSearchService {
         Aggregation geoTileGridAggregation = Aggregation.of(a -> a
                 .geotileGrid(g -> g
                         .field("location")
-                        .precision(3 + zoomLevel)
-                        .size(200))
+                        .precision(prec)
+                        .size(150))
 
                 .aggregations("top_realestates", agg -> agg
                         .topHits(th -> th
@@ -125,6 +151,11 @@ public class RealestateSearchService {
         }
         return realestateDocs;
     }
+
+
+
+
+
 
 
     public void updateRealestateVacancy(Long dbId){

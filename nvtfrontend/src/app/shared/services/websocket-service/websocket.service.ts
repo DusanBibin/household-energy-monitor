@@ -17,11 +17,12 @@ export class WebsocketService {
 
   constructor() {
     this.client = new Client({
-      brokerURL: 'ws://' + environment.ip + ':8080/ws', // your WebSocket endpoint
+      brokerURL: (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
+                  + window.location.host + '/ws',
       connectHeaders: {},
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
-      webSocketFactory: () => new SockJS('http://' + environment.ip +':8080/ws') // SockJS fallback if needed
+      webSocketFactory: () => new SockJS(window.location.origin + '/ws')
     });
 
     this.client.onConnect = (frame) => {
