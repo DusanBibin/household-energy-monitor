@@ -1,0 +1,268 @@
+import { Component, OnInit } from '@angular/core';
+import { HouseholdDetailsFormComponent } from "../../ui/household-details-form/household-details-form.component";
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClientService } from '../../data-access/client.service';
+import { HouseholdDetailsDTO } from '../../data-access/model/client-model';
+import { FileService } from '../../../../shared/services/file-service/file.service';
+import { switchMap, map, catchError, of, Cons } from 'rxjs';
+import { SnackBarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { ResponseData, ResponseMessage } from '../../../../shared/model';
+import { ConsumptionDTO } from '../../data-access/model/client-model';
+import { WebsocketService } from '../../../../shared/services/websocket-service/websocket.service';
+import { Subscription } from 'rxjs';
+import { JwtService } from '../../../../shared/services/jwt-service/jwt.service';
+
+
+@Component({
+  selector: 'app-household-details',
+  standalone: false,
+  templateUrl: './household-details.component.html',
+  styleUrl: './household-details.component.css'
+})
+export class HouseholdDetailsComponent implements OnInit {
+
+
+
+  householdDetails: ResponseData | null = null;
+  realestateId: number;
+  householdId: number;
+              
+  currentYM: { year: number, month: number } = this.getTodayYM();     
+  chartData: ConsumptionDTO[] = [];
+
+
+
+  lineChartData: ConsumptionDTO[] = [];
+
+  private wsSubscription: Subscription | null = null;
+  constructor(private route: ActivatedRoute, private clientService: ClientService, private fileService: FileService, private snackService: SnackBarService,
+     private webSocketService: WebsocketService, private jwtService: JwtService){
+    this.realestateId = Number(this.route.snapshot.paramMap.get('realestateId'));
+    this.householdId = Number(this.route.snapshot.paramMap.get('householdId'));
+
+  }
+
+  unsubscribe(){
+    if (this.wsSubscription) {
+      this.wsSubscription.unsubscribe();
+    }
+    this.webSocketService.unsubscribe();
+  }
+
+  subscribe(){
+    this.wsSubscription = this.webSocketService.subscribeToHousehold(this.householdId)
+    .subscribe(data => {
+      console.log('Received data:', data);
+      let v: ConsumptionDTO = data as ConsumptionDTO;
+
+      let record: ConsumptionDTO = {
+        datetime: v.datetime.replace(/T/g, ' '),
+        kwh: data.kwh 
+      }
+
+      if(this.lineChartData.length == 3) this.lineChartData = [...this.lineChartData.slice(1), record];
+      else this.lineChartData = [...this.lineChartData, record];
+      console.log(record)
+      console.log(this.lineChartData)
+      
+    });
+  }
+
+  ngOnDestroy() {
+   this.unsubscribe()
+  }
+
+  ngOnInit(): void {
+
+
+
+    
+    console.log("sta se ovde dogadja")
+    console.log(this.householdDetails?.data.user.id === this.jwtService.getId())
+
+    
+    
+    console.log(this.route.snapshot.paramMap)
+
+
+    this.clientService.getHouseholdDetails(this.realestateId, this.householdId).subscribe({
+      next: householdDetails => {
+        this.householdDetails = { isError: false, data: householdDetails };
+
+        if(this.householdDetails){
+          if(this.householdDetails.data){
+            if(this.householdDetails.data.user){
+              if(this.householdDetails?.data.user.id === this.jwtService.getId()){
+                console.log("Da li dobijamo podatke")
+                this.loadData();
+                this.loadLineChartData('3h');
+            
+            
+                this.subscribe()
+              }
+            }
+          }
+        }
+        
+        console.log('Household details:', householdDetails);
+      },
+      error: err => {
+        this.householdDetails = { isError: true, error: err.error as ResponseMessage };
+        console.error('Error fetching household details:', err);
+      }
+    });
+
+
+    console.log(this.realestateId)
+    console.log(this.householdId )
+  }
+
+
+  createClaimRequest(files: { id: number, file: File | null }[]) {
+    const MAX_SIZE_BYTES = 1 * 1024 * 1024 * 1024; // 1 GB 
+  
+    const filesOnly: File[] = files
+      .filter(item => item.file !== null)
+      .map(item => item.file as File);
+  
+ 
+    const hasTooBigFile = filesOnly.some(file => file.size > MAX_SIZE_BYTES);
+  
+    if (hasTooBigFile) {
+      console.log('One or more files exceed the 1 GB size limit');
+      this.snackService.openSnackBar("One or more files exceed the 1 GB size limit");
+      return; 
+    } else {
+      console.log('All files are within size limits');
+    }
+  
+    console.log(filesOnly);
+    console.log(this.realestateId);
+    console.log(this.householdId);
+  
+    this.clientService.createHouseholdClaim(this.realestateId, this.householdId, filesOnly).subscribe({
+      next: (newDetails) => {
+        this.householdDetails = { isError: false, data: newDetails };
+        this.snackService.openSnackBar("Successfully created new request");
+      },
+      error: err => {
+        console.log(err);
+        if (err.status === 413) {
+          this.snackService.openSnackBar("The files for the request are too large");
+        }
+      }
+    });
+  }
+  
+
+  loadData(): void {
+    const { year, month } = this.currentYM;
+    this.clientService.getMonthly(this.householdId, year, month).subscribe({
+      next: values => {
+        this.chartData = values;
+      },error: err => {
+        console.log(err);
+      }
+    })
+  }
+
+
+  loadLineChartData(period: string): void {
+    this.clientService.getConsumptionByPeriod(this.householdId, period).subscribe({
+      next: values => {
+        this.lineChartData = values.map(item => {
+          const date = new Date(item.datetime);
+          const year = date.getFullYear();
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
+          const day = date.getDate().toString().padStart(2, '0');
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const seconds = date.getSeconds().toString().padStart(2, '0');
+  
+          return {
+            datetime: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+            kwh: item.kwh
+          };
+        });
+        console.log(this.lineChartData);
+      }, error: err => {
+        console.log(err)
+      }
+    })
+  }
+
+  nextMonth(): void {
+    // move forward by 1 month
+    if (this.currentYM.month === 12) {
+      this.currentYM.year++;
+      this.currentYM.month = 1;
+    } else {
+      this.currentYM.month++;
+    }
+    this.loadData();
+  }
+
+  prevMonth(): void {
+    // move backward by 1 month
+    if (this.currentYM.month === 1) {
+      this.currentYM.year--;
+      this.currentYM.month = 12;
+    } else {
+      this.currentYM.month--;
+    }
+    this.loadData();
+  }
+
+  
+
+  private getTodayYM() {
+    const d = new Date();
+    return { year: d.getFullYear(), month: d.getMonth() + 1 };
+  }
+
+  handleMonthChange(event: {isForward:boolean}){
+    if(event.isForward) this.nextMonth();
+    else this.prevMonth();
+  }
+
+
+
+  handleToDailyChange(date: Date | null){
+    if(date){
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; 
+  
+      this.clientService.getDaily(this.householdId, year, month).subscribe({
+        next: values => {
+          this.chartData = values;
+        },error: err => {
+          console.log(err)
+        }
+      })
+    }else{
+      this.loadData()
+    }
+   
+  }
+
+  handlePeriodChange(period: string){
+    if(period === "3h") this.subscribe()
+    else this.unsubscribe()
+    this.loadLineChartData(period);
+  }
+
+
+  handleDateRange(event: {from: string, to: string}){
+    this.unsubscribe()
+    this.clientService.getConsumptionByDateRange(this.householdId, event.from, event.to).subscribe({
+      next: values => {
+        this.lineChartData = values
+      },error: err => {
+        console.log(err)
+      }
+    })
+  }
+
+
+
+}

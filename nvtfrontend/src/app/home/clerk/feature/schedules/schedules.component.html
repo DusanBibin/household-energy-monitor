@@ -1,0 +1,8 @@
+<div class="w-100 h-100">
+    <app-schedules-dumb
+    [appointments]="appointments"
+    [newAppointmentUpdate]="newAppointmentUpdate"
+    [clerk]="clerk"
+    (appointmentDataEmmitter)="handleAppointmentCreate($event)"
+    (calendarViewChanged)="onCalendarRangeChange($event)"></app-schedules-dumb>
+</div>

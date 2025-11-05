@@ -1,0 +1,175 @@
+<div class="w-100 h-100">
+
+   
+    @if(isLoading){
+        <div class="d-flex w-100 h-100 align-items-center justify-content-center" >
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }@else {
+        
+      
+            
+     
+        <div class="w-100 h-100 d-flex flex-column">
+
+            
+            <div class="d-flex border-bottom p-3">
+                <h5 class="m-0">Household claim requests</h5>
+            </div>
+        
+        
+            <div class="d-flex flex-row gap-3 p-3 border-bottom">
+                
+                
+                <div>
+                    <label for="statusSelect" class="form-label">Status</label>
+                    <select [(ngModel)]="status" (change)="loadRequests()" class="form-select" id="statusSelect">
+                        <option [ngValue]="null">None</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="REJECTED">Rejected</option>
+                    </select>
+                    </div>
+                    
+                    <div>
+                    <label for="sortFieldSelect" class="form-label">Filter type</label>
+                    <select [(ngModel)]="sortField" (change)="loadRequests()" class="form-select" id="sortFieldSelect">
+                        <option value="requestSubmitted">Submitted at</option>
+                        <option value="requestProcessed">Processed at</option>
+                    </select>
+                    </div>
+                    
+                    <div>
+                    <label for="sortDirSelect" class="form-label">Order</label>
+                    <select [(ngModel)]="sortDir" (change)="loadRequests()" class="form-select" id="sortDirSelect">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                    </div>
+                    
+            
+        
+        
+                
+                
+            </div>
+        
+            @if(requests.length === 0){
+                <div class="d-flex w-100 h-100 align-items-center justify-content-center" >
+                    No requests found
+                </div>
+        
+            }@else {
+               
+                <div class="d-flex flex-column flex-grow-1 px-2 pt-2" style="overflow-y: scroll; " >
+        
+        
+        
+                    @for (req of requests; track req){
+                        <div (click)="navigateDetailsRequest(req.realestateId, req.householdId, req.id)"
+                        (mouseenter)="selectedId = req.id" 
+                        (mouseleave)="selectedId = 0" 
+                        class="p-2 mb-2 rounded border d-flex flex-md-row justify-content-between flex-column"
+                        [ngClass]="{
+                          'shadow-lg': selectedId === req.id,
+                          'shadow': selectedId !== req.id
+                        }"
+                        style="cursor: pointer;">
+            
+                            <div>
+                                <div class="d-flex flex-row mb-1 "> 
+                                    <!-- <i class="bi me-2 bi-building"></i>  -->
+                                    <i class="bi me-2" [ngClass]="{
+                                        'bi-house-door': req.realEstateType === 'HOUSE',
+                                        'bi-building': req.realEstateType === 'BUILDING',
+                                        'bi-signpost': req.realEstateType === 'COTTAGE',
+                                        'bi-shop': req.realEstateType === 'COMMERCE_SPACE'
+                                      }"></i> 
+                                    <p class="m-0" style="font-size: medium;">{{req.address}}</p>
+                        
+                                </div>
+                                <p class="m-0" style="font-size: medium;">{{req.requestStatus}}</p>
+                            </div>
+                
+                
+                
+                            <div class="d-flex flex-row flex-md-column gap-3 gap-md-0 mt-3 mt-md-0">
+                                <small class="m-0" >Subbmitted at: {{req.requestSubmitted | date: 'dd/MM/yyyy HH:mm:ss'}}</small>
+                                @if(req.requestProcessed) {<small class="m-0" >Processed at: {{req.requestProcessed  | date: 'dd/MM/yyyy HH:mm:ss'}}</small>}
+                            </div>
+                        
+                        </div>
+                    }
+                    
+            
+                </div>
+            
+            
+                
+                @if (totalPages > 1) {
+                    <div class="d-flex justify-content-center align-items-center border-top">
+                        <nav aria-label="Pagination" class="pt-4">
+                            <ul class="pagination">
+                        
+                            <li class="page-item" [class.disabled]="page === 0">
+                                <a class="page-link" role="button" (click)="goPrevious()">Previous</a>
+                            </li>
+                            
+        
+                            <li 
+                                class="page-item" 
+                                [class.active]="page === i"
+                                role="button" 
+                                *ngFor="let p of [].constructor(totalPages); let i = index"
+                                (click)="goToPage(i)">
+                                <a class="page-link">{{ i + 1 }}</a>
+                            </li>
+                        
+                            <li class="page-item" [class.disabled]="page === totalPages - 1">
+                                <a class="page-link" role="button" (click)="goNext()">Next</a>
+                            </li>
+                        
+                            </ul>
+                        </nav>
+                        </div>
+                }
+                
+            }
+            
+            
+            
+                
+   
+            
+        
+            
+        </div>
+        
+    
+    }
+   
+
+
+</div>
+
+
+
+  <!-- @if(realestatesInput.length > 10){
+                    <div class="d-flex justify-content-center align-items-center">
+                      <nav aria-label="iksdebro" class="pt-4">
+                        <ul class="pagination">
+                          <li class="page-item">
+                            <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage - 1)" [ngClass]="{'disabled': realestatePagination.currentPage === 1}">Previous</a>
+                          </li>
+                          @for (pageNum of realestatePagination.pages; track $index) {
+                            <li class="page-item" role="button" (click)="changePage(pageNum)" [ngClass]="{'active': realestatePagination.currentPage === pageNum}"><a class="page-link">{{pageNum}}</a></li>
+                          }
+                          <li class="page-item">
+                            <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage + 1)"[ngClass]="{'disabled': realestatePagination.currentPage === realestatePagination.totalPages}">Next</a>
+                          </li> 
+                        </ul>
+                      </nav>
+                    </div>
+                  } -->

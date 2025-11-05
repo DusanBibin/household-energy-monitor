@@ -1,0 +1,4810 @@
+1,Ada,24430,1
+2,Adaševci,22244,2
+3,Adorjan,24425,3
+4,Adrani,36203,4
+5,Azanja,11423,5
+6,Aleksa Šantić,25212,6
+7,Aleksandrovac,12370,7
+8,Aleksandrovac,37230,8
+9,Aleksandrovo,23217,9
+10,Aleksinac,18220,10
+11,Aleksinački Rudnik,18226,10
+12,Alibunar,26310,11
+13,Aljinovići,31307,12
+14,Apatin,25260,13
+15,Aradac,23207,14
+16,Aranđelovac,34300,15
+17,Arilje,31230,16
+18,Ašanja,22418,17
+19,Babušnica,18330,18
+20,Bavanište,26222,19
+21,Bagrdan,35204,20
+22,Badnjevac,34226,21
+23,Badovinci,15358,22
+24,Bajina Bašta,31250,23
+25,Bajmok,24210,24
+26,Bajša,24331,25
+27,Balajnac,18257,26
+28,Baljevac,36344,27
+29,Banatska Dubica,23251,28
+30,Banatska Palanka,26324,29
+31,Banatska Subotica,26327,29
+32,Banatska Topola,23315,30
+33,Banatski Brestovac,26234,31
+34,Banatski Dvor,23213,32
+35,Banatski Despotovac,23242,14
+36,Banatski Karlovac,26320,11
+37,Banatsko Aranđelovo,23332,33
+38,Banatsko Veliko Selo,23312,30
+39,Banatsko Karađorđevo,23216,32
+40,Banatsko Novo Selo,26314,31
+41,Banovo Polje,15362,22
+42,Banovci-Dunav,22303,34
+43,Banoštor,21312,35
+44,Banja,34304,15
+45,Banja,31337,36
+46,Banja Koviljača,15316,37
+47,Banjani,14214,38
+48,Banjska,38216,39
+49,Barajevo,11460,40
+50,Baranda,26205,41
+51,Barbatovac,18426,42
+52,Bare,12227,43
+53,Bare,34205,44
+54,Bare,36315,45
+55,Barice,26367,46
+56,Barič,11504,47
+57,Barlovo,18432,48
+58,Baroševac,11565,49
+59,Batočina,34227,21
+60,Batrovci,22251,2
+61,Batuse,38210,50
+62,Bač,21420,51
+63,Bačevci,31258,23
+64,Bačina,37265,52
+65,Bačinci,22225,2
+66,Bačka Palanka,21400,53
+67,Bačka Topola,24300,25
+68,Bački Breg,25275,6
+69,Bački Brestovac,25242,54
+70,Bački Vinogradi,24415,24
+71,Bački Gračac,25252,54
+72,Bački Jarak,21234,55
+73,Bački Monoštor,25272,6
+74,Bački Petrovac,21470,56
+75,Bački Sokolac,24343,25
+76,Bačko Gradište,21217,57
+77,Bačko Dobro Polje,21465,58
+78,Bačko Novo Selo,21429,51
+79,Bačko Petrovo Selo,21226,57
+80,Bašaid,23316,30
+81,Begeč,21411,59
+82,Bezdan,25270,6
+83,Bela Voda,37253,60
+84,Bela Zemlja,31311,61
+85,Bela Palanka,18310,62
+86,Bela Crkva,15313,63
+87,Bela Crkva,26340,29
+88,Belanovica,14246,64
+89,Bele Vode,32259,65
+90,Belegiš,22306,34
+91,Beli Potok,11223,66
+92,Beli Potok,19366,67
+93,Belo Blato,23205,14
+94,Beloljin,18424,68
+95,Belosavci,34312,69
+96,Belotinac,18411,70
+97,Beloševac,34208,71
+98,Belušić,35263,72
+99,Beljina,11461,40
+100,Beočin,21300,35
+101,Berkasovo,22242,2
+102,Bečej,21220,57
+103,Bešenovo,22212,73
+104,Beška,22324,74
+105,Bigrenica,35238,75
+106,Bikić Do,22254,2
+107,Bikovo,24206,24
+108,Biljača,17522,76
+109,Bingula,22253,2
+110,Bioska,31241,61
+111,Bistar,17546,77
+112,Bistrica,31325,78
+113,Blaževo,37226,79
+114,Blace,18420,42
+115,Bobovo,35217,80
+116,Bogaraš,24408,81
+117,Bogatić,15350,22
+118,Bogovađa,14225,82
+119,Bogovina,19372,83
+120,Bogojevo,25245,54
+121,Bogojevce,16254,84
+122,Bogutovac,36341,4
+123,Bođani,21427,51
+124,Boževac,12313,85
+125,Božetići,31322,78
+126,Božica,17537,86
+127,Bojnik,16205,87
+128,Boka,23252,28
+129,Boljevac,19370,83
+130,Boljkovci,32312,88
+131,Bor,19210,89
+132,Borski Brestovac,19229,89
+133,Bosilegrad,17540,77
+134,Bosut,22217,73
+135,Botoš,23243,14
+136,Bočar,23274,90
+137,Bošnjane,37262,52
+138,Bošnjace,16232,91
+139,Bradarac,12206,43
+140,Braničevo,12222,92
+141,Brankovina,14201,93
+142,Bratljevo,32256,65
+143,Braćevac,19315,94
+144,Brvenik,36346,27
+145,Brgule,14212,38
+146,Brđani,32303,88
+147,Brežđe,14244,95
+148,Brezjak,15309,37
+149,Brezna,32307,88
+150,Brezova,32253,65
+151,Brezovica,38157,96
+152,Brekovo,31234,16
+153,Bresnica,32213,97
+154,Brestovac,16253,84
+155,Brestovačka Banja,19216,89
+156,Brza Palanka,19323,98
+157,Brzi Brod,18116,99
+158,Brzan,34228,21
+159,Brzeće,37225,79
+160,Brodarevo,31305,12
+161,Brus,37220,79
+162,Brusnik,19313,100
+163,Budisava,21242,59
+164,Buđanovci,22421,101
+165,Bujanovac,17520,76
+166,Bukovac,21209,59
+167,Bukovik,34301,15
+168,Bukovica,32251,65
+169,Bukorovac,34217,71
+170,Bunar,35273,20
+171,Burdimo,18368,102
+172,Burovac,12307,103
+173,Busilovac,35249,104
+174,Bučje,19369,67
+175,Vajska,21426,51
+176,Valjevo,14000,93
+177,Varvarin,37260,52
+178,Varda,31263,105
+179,Varna,15232,106
+180,Varoš,18363,102
+181,Vasilj,19367,67
+182,Vatin,26337,107
+183,Vašica,22241,2
+184,Velebit,24428,3
+185,Velesnica,19328,98
+186,Velika Vrbnica,37233,8
+187,Velika Grabovnica,16221,84
+188,Velika Greda,26366,46
+189,Velika Drenova,37245,108
+190,Velika Ivanča,11414,109
+191,Velika Jasikova,19235,100
+192,Velika Krsna,11408,109
+193,Velika Lomnica,37209,60
+194,Velika Moštanica,11262,110
+195,Velika Plana,11320,111
+196,Velika Plana,18403,68
+197,Velika Reka,15322,112
+198,Veliki Borak,11462,40
+199,Veliki Gaj,26365,46
+200,Veliki Izvor,19206,100
+201,Veliki Popović,35223,113
+202,Veliki Radinci,22211,73
+203,Veliki Trnovac,17528,76
+204,Veliki Crljeni,11563,49
+205,Veliki Šiljegovac,37204,60
+206,Veliko Bonjince,18215,18
+207,Veliko Gradište,12220,114
+208,Veliko Laole,12306,103
+209,Veliko Orašje,11323,111
+210,Veliko Središte,26334,107
+211,Venčane,34306,15
+212,Veternik,21203,59
+213,Vilovo,21246,115
+214,Vina,19368,67
+215,Vionica,32254,65
+216,Visočka Ržana,18306,116
+217,Vitanovac,36206,4
+218,Vitkovac,36207,4
+219,Vitoševac,37213,117
+220,Viča,32233,118
+221,Višnjevac,24222,24
+222,Višnjićevo,22246,2
+223,Vladimirovac,26315,11
+224,Vladimirci,15225,119
+225,Vladičin Han,17510,120
+226,Vlajkovac,26332,107
+227,Vlase,17507,121
+228,Vlasotince,16210,122
+229,Vlaška,11406,109
+230,Voganj,22429,101
+231,Vodanj,11328,123
+232,Vojvoda Stepa,23219,9
+233,Vojvodinci,26338,107
+234,Vojka,22313,34
+235,Vojska,35208,80
+236,Voluja,12256,124
+237,Vražogrnac,19312,100
+238,Vranić,11427,40
+239,Vranovo,11329,123
+240,Vranje,17501,121
+241,Vranjska Banja,17541,121
+242,Vratarnica,19344,100
+243,Vraćevšnica,32315,88
+244,Vračev Gaj,26348,29
+245,Vrba,36214,4
+246,Vrbas,21460,58
+247,Vrbica,23329,125
+248,Vrbovac,38263,126
+249,Vrdnik,22408,127
+250,Vreoci,11560,49
+251,Vrmdža,18236,128
+252,Vrnjačka Banja,36210,129
+253,Vrnjci,36217,129
+254,Vrćenovica,18221,10
+255,Vrhpolje,15324,130
+256,Vršac,26300,107
+257,Vukovac,12318,131
+258,Vučje,16203,84
+259,Gaj,26223,19
+260,Gajdobra,21432,53
+261,Gakovo,25282,6
+262,Gamzigradska Banja,19228,100
+263,Gardinovci,21247,115
+264,Gadžin Han,18240,132
+265,Gibarac,22258,2
+266,Glavinci,35261,20
+267,Globoder,37251,60
+268,Glogovac,35222,20
+269,Glogonj,26202,31
+270,Gložan,21412,56
+271,Glušci,15356,22
+272,Gnjilan,18309,116
+273,Golobok,11316,5
+274,Golubac,12223,92
+275,Golubinci,22308,34
+276,Goračići,32232,118
+277,Gornja Dobrinja,31214,133
+278,Gornja Draguša,18425,42
+279,Gornja Lisina,17538,77
+280,Gornja Sabanta,34206,71
+281,Gornja Toplica,14243,95
+282,Gornja Toponica,18202,134
+283,Gornja Trepča,32215,97
+284,Gornja Trnava,34324,69
+285,Gornje Dvorane,37206,60
+286,Gornji Barbeš,18241,132
+287,Gornji Breg,24406,81
+288,Gornji Matejevac,18204,135
+289,Gornji Milanovac,32300,88
+290,Gornji Stepoš,37221,60
+291,Gornji Stupanj,37234,8
+292,Gospođinci,21237,136
+293,Gostun,31308,12
+294,Grabovac,11508,47
+295,Grabovica,19327,98
+296,Grabovci,22423,101
+297,Gradskovo,19205,100
+298,Gračanica,38205,137
+299,Grgurevci,22213,73
+300,Grdelica (varoš),16220,84
+301,Grebenac,26347,29
+302,Grlište,19342,100
+303,Grljan,19341,100
+304,Grošnica,34202,71
+305,Gruža,34230,44
+306,Guberevac,16211,84
+307,Guberevac,34232,44
+308,Gudurica,26335,107
+309,Gunaroš,24312,25
+310,Guča (varošica),32230,118
+311,Guševac,18208,102
+312,Darosava,34305,15
+313,Debeljača,26214,138
+314,Debrc,15214,119
+315,Devojački Bunar,26316,11
+316,Deževa,36305,139
+317,Deliblato,26225,19
+318,Delimeđe,36307,140
+319,Deronje,25254,54
+320,Desimirovac,34321,71
+321,Despotovac,35213,113
+322,Despotovo,21468,53
+323,Deč,22441,17
+324,Divljaka,31236,16
+325,Divostin,34204,71
+326,Divoš,22232,73
+327,Divci,14222,93
+328,Divčibare,14204,93
+329,Dimitrovgrad,18320,141
+330,Dobra,12224,92
+331,Dobri Do,18408,48
+332,Dobrinci,22412,101
+333,Dobrić,15235,106
+334,Dobrica,26354,11
+335,Dolac (naselje),18314,62
+336,Dolovo,26227,31
+337,Doljevac,18410,70
+338,Donja Bela Reka,19213,89
+339,Donja Borina,15317,112
+340,Donja Gušterica,38207,142
+341,Donja Kamenica,19352,67
+342,Donja Ljubata,17544,77
+343,Donja Mutnica,35255,104
+344,Donja Orovica,15323,130
+345,Donja Rečica,18404,68
+346,Donja Trnava,18421,68
+347,Donja Šatornja,34314,69
+348,Donje Vidovo,35258,104
+349,Donje Zuniče,19345,67
+350,Donje Međurovo,18254,143
+351,Donje Crnatovo,18414,144
+352,Donje Crniljevo,15227,145
+353,Donji Dušnik,18242,132
+354,Donji Krčin,37258,52
+355,Donji Milanovac,19220,146
+356,Donji Stajevac,17526,147
+357,Doroslovo,25243,6
+358,Draginac,15311,37
+359,Draginje,15226,145
+360,Draglica,31317,78
+361,Dragobraća,34231,71
+362,Dragovo,35265,72
+363,Dragolj,32316,88
+364,Dragocvet,35272,20
+365,Dragoševac,35262,20
+366,Draževac,11506,47
+367,Draževac,18223,10
+368,Drajkovce,38239,96
+369,Dračić,14203,93
+370,Drenovac,15212,106
+371,Drenovac,35257,104
+372,Drugovac,11432,123
+373,Dublje,15359,22
+374,Dubovac,26224,19
+375,Dubovo,18406,144
+376,Duboka,12255,124
+377,Duboka,35218,20
+378,Dubočane,19232,100
+379,Dubravica,12207,43
+380,Duga Poljana,36312,45
+381,Dugo Polje,18237,128
+382,Dudovica,11561,49
+383,Dupljaja,26328,29
+384,Đala,23335,33
+385,Đunis,37202,60
+386,Đurđevo,21239,136
+387,Đurđin,24213,24
+388,Elemir,23208,14
+389,Erdevik,22230,2
+390,Erdeč,34207,71
+391,Ečka,23203,14
+392,Žabalj,21230,136
+393,Žabari,12374,7
+394,Žagubica,12320,131
+395,Željuše,18325,141
+396,Žirovnica,34229,21
+397,Žitište,23210,32
+398,Žitkovac,18210,10
+399,Žitni Potok,18407,68
+400,Žitorađa,18412,144
+401,Žiča,36221,4
+402,Žuč,18438,48
+403,Zablaće,32223,97
+404,Zabojnica,34244,44
+405,Zabrežje,11505,47
+406,Zavlaka,15312,63
+407,Zagajica,26344,107
+408,Zajača,15315,37
+409,Zaječar,19000,100
+410,Zaplanjska Toponica,18244,132
+411,Zasavica,22201,73
+412,Zvezdan,19227,100
+413,Zvečan,38227,39
+414,Zvonce,18333,18
+415,Zdravinje,37203,60
+416,Zlatibor,31315,148
+417,Zlatica,23255,14
+418,Zlodol,31253,23
+419,Zlot,19215,89
+420,Zmajevo,21213,58
+421,Zminjak,15352,106
+422,Zrenjanin,23000,14
+423,Zubin Potok,38228,149
+424,Zuce,11225,66
+425,Ivanovo,26233,31
+426,Ivanjica,32250,65
+427,Idvor,26207,138
+428,Iđoš,23323,30
+429,Izbište,26343,107
+430,Ilandža,26352,11
+431,Ilinci,22250,2
+432,Ilićevo,34203,71
+433,Inđija,22320,74
+434,Irig,22406,127
+435,Jabuka,26201,31
+436,Jabuka,31306,12
+437,Jabukovac,19304,94
+438,Jabučje,14226,82
+439,Jagnjilo,11412,109
+440,Jagodina,35000,20
+441,Jadranska Lešnica,15308,37
+442,Jazak,22409,127
+443,Jazovo,23327,125
+444,Jamena,22248,2
+445,Jankov Most,23201,14
+446,Janošik,26362,11
+447,Jarak,22426,73
+448,Jarkovac,23250,28
+449,Jarmenovci,34318,69
+450,Jasenovo,26346,29
+451,Jasenovo,31319,78
+452,Jasenovo,35241,113
+453,Jasika,37252,60
+454,Jasikovica,37247,108
+455,Jasikovo,19256,146
+456,Jaša Tomić,23230,28
+457,Ježevica,31213,133
+458,Ježevica,32222,97
+459,Jelašnica,17531,86
+460,Jelašnica,18206,150
+461,Jelen Do,31215,133
+462,Jelovik,34309,15
+463,Jermenovci,26363,46
+464,Jovanovac,18258,26
+465,Jovanovac,34211,71
+466,Jovac,35205,75
+467,Jošanica,18234,128
+468,Jošanička Banja,36345,27
+469,Jugbogdanovac,18253,26
+470,Junkovac,11562,49
+471,Kalna,19353,67
+472,Kaluđerica,11130,151
+473,Kamenica,14252,93
+474,Kamenica,15222,145
+475,Kamenica,18324,141
+476,Kanjiža,24420,3
+477,Kaona,32234,118
+478,Kaonik,37256,60
+479,Karavukovo,25255,54
+480,Karađorđevo,21421,53
+481,Karađorđevo,24308,25
+482,Karan,31204,61
+483,Karlovčić,22443,17
+484,Katun,18225,10
+485,Kać,21241,59
+486,Kačarevo,26212,31
+487,Kevi,24407,81
+488,Kelebija,24104,24
+489,Kelebija gran. prelaz,24205,24
+490,Kikinda,23300,30
+491,Kisač,21211,59
+492,Kladovo,19320,98
+493,Klek,23211,14
+494,Klenak,22424,101
+495,Klenike,17524,76
+496,Klenje,12258,92
+497,Klenje,15357,22
+498,Klisura,17535,86
+499,Kličevac,12209,43
+500,Klokočevac,19222,146
+501,Kljajićevo,25221,6
+502,Knić,34240,44
+503,Knićanin,23265,14
+504,Knjaževac,19350,67
+505,Kobišnica,19316,94
+506,Kovačevac,11409,109
+507,Kovačica,26210,138
+508,Kovilj,21243,59
+509,Kovin,26220,19
+510,Kokin Brod,31318,78
+511,Kolare,35242,20
+512,Kolari,11431,123
+513,Kolut,25274,6
+514,Komirić,14254,152
+515,Konak,23253,28
+516,Konarevo,36340,4
+517,Končarevo,35219,20
+518,Konjuh,37254,60
+519,Kopaonik,36354,27
+520,Koprivnica,19223,100
+521,Koraćica,11415,109
+522,Korbevac,17545,153
+523,Korbovo,19329,98
+524,Korenita,15302,37
+525,Korman,18216,10
+526,Korman,34224,71
+527,Kosančić,16206,87
+528,Kosjerić (varoš),31260,105
+529,Kosovo Polje,38210,50
+530,Kosovska Kamenica,38260,154
+531,Kosovska Mitrovica,38220,155
+532,Kostojevići,31254,23
+533,Kostolac,12208,156
+534,Kotraža,32235,118
+535,Koceljeva,15220,145
+536,Kragujevac,34000,71
+537,Krajišnik,23231,28
+538,Kraljevo,36000,4
+539,Kraljevci,22411,101
+540,Kremna,31242,61
+541,Krepoljin,12316,131
+542,Kriva Feja,17543,153
+543,Krivaja,24341,25
+544,Krivelj,19219,89
+545,Krivi Vir,19375,83
+546,Krnjevo,11319,111
+547,Krnješevci,22314,34
+548,Krupanj,15314,63
+549,Krupac,18307,116
+550,Krušar,35227,75
+551,Kruševac,37000,60
+552,Kruševica,18409,68
+553,Krušedol,22328,127
+554,Kruščić,25225,157
+555,Krčedin,22325,74
+556,Kuzmin,22223,73
+557,Kukljin,37255,60
+558,Kukujevci,22224,2
+559,Kula,25230,157
+560,Kulina,18214,10
+561,Kulpin,21472,56
+562,Kumane,23271,90
+563,Kupinik,26368,46
+564,Kupinovo,22419,17
+565,Kupusina,25262,13
+566,Kupci,37222,60
+567,Kuršumlija,18430,48
+568,Kuršumlijska Banja,18435,48
+569,Kusadak,11425,5
+570,Kusić,26349,29
+571,Kucura,21466,58
+572,Kučevo,12240,124
+573,Kušiljevo,35226,80
+574,Kušići,32258,65
+575,Kuštilj,26336,107
+576,Lađevci,36204,4
+577,Lazarevac,11550,49
+578,Lazarevo,23241,14
+579,Laznica,12321,131
+580,Lajkovac (varoš),14224,82
+581,Lalinac,18256,143
+582,Lalinac,18201,102
+583,Lalić,25234,54
+584,Laplje Selo,38204,137
+585,Lapovo (selo),34221,158
+586,Lapovo (varošica),34220,158
+587,Laćarak,22221,73
+588,Lebane,16230,91
+589,Ledinci,21207,59
+590,Ležimir,22207,73
+591,Lelić,14205,93
+592,Lenovac,19343,100
+593,Lepenac,37224,79
+594,Lepenica,17513,120
+595,Lepina,38208,142
+596,Leposavić,38218,159
+597,Leskovac,16000,84
+598,Lece,16248,160
+599,Lešak,38219,159
+600,Lešnica,15307,37
+601,Lipar,25232,157
+602,Lipe,11310,123
+603,Lipnički Šor,15341,37
+604,Lipolist,15305,106
+605,Lički Hanovi,18245,132
+606,Lovćenac,24322,161
+607,Loznica,15300,37
+608,Lozovik,11317,111
+609,Lok,21248,115
+610,Lokve,26361,11
+611,Loćika,35274,72
+612,Lubnica,19208,100
+613,Lug,21315,35
+614,Lugavčina,11321,123
+615,Lužnice,34325,71
+616,Lukare,36306,139
+617,Lukino Selo,23224,14
+618,Lukićevo,23261,14
+619,Lukovo,19371,83
+620,Lukovska Banja,18437,48
+621,Lunovo Selo,31203,61
+622,Lučani (varošica),32240,118
+623,Ljig,14240,64
+624,Ljuba,22255,2
+625,Ljuberađa,18217,18
+626,Ljubiš,31209,148
+627,Ljubovija,15320,130
+628,Ljukovo,22321,74
+629,Ljutovo,24215,24
+630,Maglić,21473,56
+631,Majdan,23333,33
+632,Majdanpek,19250,146
+633,Majilovac,12221,114
+634,Majur,15353,106
+635,Majur,35270,20
+636,Mala Bosna,24217,24
+637,Mala Krsna,11313,123
+638,Mala Moštanica,11261,47
+639,Mala Plana,18423,68
+640,Male Pijace,24416,3
+641,Male Pčelice,34216,71
+642,Mali Beograd,24309,25
+643,Mali Zvornik,15318,112
+644,Mali Iđoš,24321,161
+645,Mali Izvor,19347,100
+646,Mali Jasenovac,19209,100
+647,Mali Požarevac,11235,162
+648,Malo Krčmare,34212,163
+649,Malo Crniće,12311,85
+650,Malošište,18415,70
+651,Malča,18207,135
+652,Manđelos,22208,73
+653,Manojlovce,16201,84
+654,Maradik,22327,74
+655,Margita,26364,46
+656,Markovac,11325,111
+657,Markovica,32243,118
+658,Martinci,22222,73
+659,Martonoš,24417,3
+660,Maršić,34209,71
+661,Mataruška Banja,36201,4
+662,Mačvanska Mitrovica,22202,73
+663,Mačvanski Pričinović,15211,106
+664,Mačkat,31312,148
+665,Medveđa,16240,160
+666,Medveđa,35224,113
+667,Medveđa,37244,108
+668,Medoševac,18209,134
+669,Međa,23234,32
+670,Međulužje,11405,109
+671,Međurečje,32255,65
+672,Melenci,23270,14
+673,Melenci-Rusanda,23269,14
+674,Meljak,11426,40
+675,Merdare,18445,48
+676,Merošina,18252,26
+677,Merćez,18436,48
+678,Metlić,15233,106
+679,Metovnica,19204,89
+680,Mijatovac,35236,75
+681,Milatovac,34222,21
+682,Milentija,37227,79
+683,Miletićevo,26373,46
+684,Mileševo,21227,57
+685,Miloševac,11318,111
+686,Miloševo,35268,20
+687,Milutovac,37246,108
+688,Minićevo,19340,67
+689,Mionica (varošica),14242,95
+690,Mirosaljci,11567,49
+691,Miroševce,16204,84
+692,Mitrovac,31251,23
+693,Mihajlovac,11312,123
+694,Mihajlovac,19322,94
+695,Mihajlovo,23202,14
+696,Mišićevo,24211,24
+697,Mladenovac (varoš),11400,109
+698,Mladenovo,21422,53
+699,Mozgovo,18229,10
+700,Mokra Gora,31243,61
+701,Mokrin,23305,30
+702,Mol,24435,1
+703,Molovin,22256,2
+704,Morović,22245,2
+705,Mošorin,21245,115
+706,Mramor,18251,143
+707,Mramorak,26226,19
+708,Mrčajevci,32210,97
+709,Mršinci,32224,97
+710,Mužlja,23206,14
+711,Muhovac,17529,76
+712,Nadalj,21216,164
+713,Nakovo,23311,30
+714,Natalinci,34313,69
+715,Negotin,19300,94
+716,Neresnica,12242,124
+717,Neuzina,23245,28
+718,Neštin,21314,53
+719,Nikinci,22422,101
+720,Nikolinci,26322,11
+721,Nikoličevo,19311,100
+722,Niševac,18366,102
+723,Niška Banja,18205,150
+724,Nova Varoš,31320,78
+725,Nova Gajdobra,21431,53
+726,Nova Pazova,22330,34
+727,Nova Crvenka,25224,157
+728,Nova Crnja,23218,9
+729,Novi Banovci,22304,34
+730,Novi Bečej,23272,90
+731,Novi Bračin,37216,117
+732,Novi Žednik,24223,24
+733,Novi Itebej,23236,32
+734,Novi Karlovci,22322,74
+735,Novi Kneževac,23330,33
+736,Novi Kozarci,23313,30
+737,Novi Kozjak,26353,11
+738,Novi Pazar,36300,139
+739,Novi Sad,21000,59
+740,Novi Slankamen,22323,74
+741,Novo Miloševo,23273,90
+742,Novo Orahovo,24351,25
+743,Novo Selo,18250,143
+744,Novo Selo,36216,129
+745,Noćaj,22203,73
+746,Obrež,22417,17
+747,Obrež,37266,52
+748,Obrenovac,11500,47
+749,Obrovac,21423,53
+750,Ovčar Banja,32242,97
+751,Ogar,22416,17
+752,Omoljica,26230,31
+753,Oparić,35267,72
+754,Opovo,26204,41
+755,Orane,16233,87
+756,Orašac,34308,15
+757,Oreškovica,12308,103
+758,Orid,15213,106
+759,Orlovat,23263,14
+760,Orom,24207,3
+761,Osanica,12317,131
+762,Osečina (varošica),14253,152
+763,Osipaonica,11314,123
+764,Ostojićevo,23326,125
+765,Ostrovica,18312,150
+766,Ostružnica,11251,110
+767,Odžaci,25250,54
+768,Oštrelj,19226,89
+769,Pavliš,26333,107
+770,Padež,37257,60
+771,Padej,23325,125
+772,Padina,26215,138
+773,Palić,24413,24
+774,Pambukovica,14213,38
+775,Panonija,24330,25
+776,Pančevo,26000,31
+777,Parage,21434,53
+778,Paraćin,35250,104
+779,Parteš,38251,165
+780,Parunovac,37201,60
+781,Pasjane,38266,165
+782,Pačir,24342,25
+783,Pejkovac,18413,144
+784,Pepeljevac,37231,60
+785,Perlez,23260,14
+786,Perućac,31256,23
+787,Petlovača,15304,106
+788,Petrovaradin,21131,59
+789,Petrovac,12300,103
+790,Pećinci,22410,17
+791,Pecka,14207,152
+792,Pečenjevce,16251,84
+793,Pivnice,21469,53
+794,Pinosava,11226,66
+795,Pirot,18300,116
+796,Plavna,19307,94
+797,Plavna,21428,51
+798,Plažane,35212,113
+799,Plana,35247,104
+800,Plandište,26360,46
+801,Platičevo,22420,101
+802,Plemetina,38211,166
+803,Pleš,37238,8
+804,Pločica,26229,19
+805,Pobeda,24313,25
+806,Poganovo,18326,141
+807,Podvis,19362,67
+808,Podvrška,19321,98
+809,Podgorac,19233,83
+810,Podunavci,36215,129
+811,Požarevac,12000,43
+812,Požega,31210,133
+813,Pojate,37214,167
+814,Poljana,12372,43
+815,Poljska Ržana,18328,116
+816,Popinci,22428,17
+817,Popovac,35254,104
+818,Popučke,14221,93
+819,Porodin,12375,7
+820,Potočac,35207,104
+821,Poćuta,14206,93
+822,Počekovina,37243,108
+823,Pranjani,32308,88
+824,Prahovo,19330,94
+825,Prevešt,35264,72
+826,Predejane (varoš),16222,84
+827,Prekonoga,18365,102
+828,Preljina,32212,97
+829,Preševo,17523,168
+830,Preševo-terminal,17555,168
+831,Priboj,31330,36
+832,Priboj Vranjski,17511,120
+833,Privina Glava,22257,2
+834,Prigrevica,25263,13
+835,Prijepolje,31300,12
+836,Prilički Kiseljak,32252,65
+837,Prilužje,38213,169
+838,Pričević,14251,93
+839,Prnjavor (Mačvanski),15306,106
+840,Provo,15215,119
+841,Prokuplje,18400,68
+842,Prolom Banja,18433,48
+843,Pružatovac,11413,109
+844,Prhovo,22442,17
+845,Pukovac,18255,70
+846,Putinci,22404,101
+847,Rabrovo,12254,124
+848,Ravna Dubrava,18246,132
+849,Ravni Topolovac,23212,32
+850,Ravni,31206,61
+851,Ravno Selo,21471,58
+852,Ravnje,22205,73
+853,Radalj,15321,112
+854,Radinac,11311,123
+855,Radičević,21225,57
+856,Radljevo,14211,38
+857,Radovnica,17561,147
+858,Radojevo,23221,9
+859,Radujevac,19334,94
+860,Ražana,31265,105
+861,Ražanj,37215,117
+862,Razbojna,37223,79
+863,Razgojna,16252,84
+864,Rainovača,15342,130
+865,Rajković,14202,95
+866,Rakovac,21299,35
+867,Ralja,11233,162
+868,Ranilović,34302,15
+869,Ranilug,38267,154
+870,Ranovac,12304,103
+871,Rastina,25283,6
+872,Rataje,37236,8
+873,Ratari,11411,5
+874,Ratina,36212,4
+875,Ratkovo,25253,54
+876,Rača Kragujevačka,34210,163
+877,Rača,18440,48
+878,Rašanac,12315,103
+879,Raševica,35206,104
+880,Raška,36350,27
+881,Rgotina,19214,100
+882,Rekovac,35260,72
+883,Resavica,35237,113
+884,Resnik,34225,71
+885,Ribare,35220,20
+886,Ribari,15310,106
+887,Ribariće,36309,140
+888,Ribarska Banja,37205,60
+889,Riđica,25280,6
+890,Ripanj,11232,66
+891,Ristovac,17521,121
+892,Rogača,11453,162
+893,Rogačica,31255,23
+894,Roge,31237,133
+895,Rogljevo,19318,94
+896,Rožanstvo,31208,148
+897,Roćevići,36205,4
+898,Rudna Glava,19257,146
+899,Rudnik,32313,88
+900,Rudnica,36353,27
+901,Rudno,36222,4
+902,Rudovci,11566,49
+903,Ruma,22400,101
+904,Rumenka,21201,59
+905,Ruski Krstur,25233,157
+906,Rusko Selo,23314,30
+907,Rutevac,18224,10
+908,Rušanj,11194,110
+909,Savinac,19377,83
+910,Savino Selo,21467,58
+911,Sajan,23324,30
+912,Sakule,26206,41
+913,Salaš Noćajski,22204,73
+914,Salaš,19224,100
+915,Samaila,36202,4
+916,Samoš,26350,138
+917,Sanad,23331,125
+918,Saraorci,11315,123
+919,Sastav Reka,16213,170
+920,Sastavci,31335,36
+921,Sveti Ilija,17508,121
+922,Svetozar Miletić,25211,6
+923,Svilajnac,35210,80
+924,Svileuva,15221,145
+925,Svilojevo,25265,13
+926,Svođe,16212,122
+927,Svojnovo,35259,104
+928,Svrljig,18360,102
+929,Sevojno,31205,171
+930,Sedlare,35211,80
+931,Selevac,11407,5
+932,Selenča,21425,51
+933,Seleuš,26351,11
+934,Senta,24400,81
+935,Senje,35233,75
+936,Senjski Rudnik,35234,113
+937,Sefkerin,26203,41
+938,Seča Reka,31262,105
+939,Sečanica,18203,134
+940,Sečanj,23240,28
+941,Sibač,22440,17
+942,Sivac,25223,157
+943,Sijarinska Banja,16246,160
+944,Sikirica,35256,104
+945,Sikole,19225,94
+946,Silbaš,21433,53
+947,Siokovac,35203,20
+948,Sip,19326,98
+949,Sipić,34213,163
+950,Sirig,21214,55
+951,Sirogojno,31207,148
+952,Sirča,36208,4
+953,Sićevo,18311,150
+954,Sjenica,36310,45
+955,Skela,11509,47
+956,Skobalj,11322,123
+957,Skorenovac,26228,19
+958,Slavkovica,14245,64
+959,Slatina,19221,89
+960,Slovac,14223,82
+961,Smederevska Palanka,11420,5
+962,Smederevo,11300,123
+963,Smilovci,18323,141
+964,Smoljinac,12312,85
+965,Sokobanja,18230,128
+966,Sombor,25000,6
+967,Sonta,25264,13
+968,Sopot,11450,162
+969,Sot,22243,2
+970,Sočanica,38217,159
+971,Sremska Mitrovica,22000,73
+972,Srbobran,21480,164
+973,Srednjevo,12253,114
+974,Sremska Kamenica,21202,59
+975,Sremska Rača,22247,73
+976,Sremski Karlovci,21205,172
+977,Sremski Mihaljevci,22413,17
+978,Sremčica,11253,110
+979,Srpska Crnja,23220,9
+980,Srpski Itebej,23233,32
+981,Srpski Krstur,23334,33
+982,Srpski Miletić,25244,54
+983,Stave,14255,93
+984,Stajićevo,23204,14
+985,Stalać,37212,167
+986,Stanišić,25284,6
+987,Stapar,25240,6
+988,Stara Moravica,24340,25
+989,Stara Pazova,22300,34
+990,Stari Banovci,22305,34
+991,Stari Žednik,24224,24
+992,Stari Lec,26371,46
+993,Stari Slankamen,22329,74
+994,Staro Selo,11324,111
+995,Starčevo,26232,31
+996,Stejanovci,22405,101
+997,Stenjevac,35215,113
+998,Stepanovićevo,21212,59
+999,Stepojevac,11564,49
+1000,Stojnik,34307,15
+1001,Stopanja,37242,108
+1002,Stragari,34323,71
+1003,Straža,26345,107
+1004,Strelac,18332,18
+1005,Stubal,17512,120
+1006,Stubica,35246,104
+1007,Stubline,11507,47
+1008,Studenica,36343,4
+1009,Subotinac,18227,10
+1010,Subotica (kod Svijanca),35209,80
+1011,Subotica,24000,24
+1012,Subotište,22414,17
+1013,Sukovo,18322,116
+1014,Sumrakovac,19376,83
+1015,Supska,35228,75
+1016,Surduk,22307,34
+1017,Surdulica,17530,86
+1018,Susek,21313,35
+1019,Sutjeska,23244,28
+1020,Tavankut,24214,24
+1021,Takovo,32304,88
+1022,Taraš,23209,14
+1023,Tekeriš,15234,37
+1024,Tekija,19325,98
+1025,Telečka,25222,6
+1026,Temerin,21235,55
+1027,Temska,18355,116
+1028,Tešica,18212,10
+1029,Titel,21240,115
+1030,Toba,23222,9
+1031,Tovariševo,21424,53
+1032,Tomaševac,23262,14
+1033,Tomislavci,24334,25
+1034,Topola (varošica),34310,69
+1035,Topolovnik,12226,114
+1036,Toponica,34243,44
+1037,Torak,23232,32
+1038,Torda,23214,32
+1039,Tornjoš,24352,81
+1040,Totovo Selo,24427,3
+1041,Trbušani,32205,97
+1042,Trgovište,17525,147
+1043,Trešnjevac,24426,3
+1044,Trešnjevica,35248,104
+1045,Trnavci,37235,8
+1046,Trnjane,18213,10
+1047,Trnjane,19306,94
+1048,Trstenik,37240,108
+1049,Trupale,18211,134
+1050,Tršić,15303,37
+1051,Tulare,16247,160
+1052,Turekovac,16231,84
+1053,Turija,12257,124
+1054,Turija,21215,164
+1055,Tutin,36320,140
+1056,Ćićevac,37210,167
+1057,Ćuprija,35230,75
+1058,Ub,14210,38
+1059,Ugao,36313,45
+1060,Ugrinovci,32314,88
+1061,Užice,31000,61
+1062,Uzdin,26216,138
+1063,Uzovnica,15319,130
+1064,Uljma,26330,107
+1065,Umka,11260,110
+1066,Urovica,19305,94
+1067,Utrine,24437,1
+1068,Ušće,36342,4
+1069,Farkaždin,23264,14
+1070,Feketić,24323,161
+1071,Futog,21410,59
+1072,Hajdukovo,24414,24
+1073,Hajdučica,26370,46
+1074,Hetin,23235,32
+1075,Horgoš,24410,3
+1076,Horgoš granični prelaz,24411,3
+1077,Hrtkovci,22427,101
+1078,Cerovac,15224,106
+1079,Crvena Reka,18313,62
+1080,Crvena Crkva,26323,29
+1081,Crvenka,25220,157
+1082,Crepaja,26213,138
+1083,Crkvine,36321,140
+1084,Crna Bara,15355,22
+1085,Crna Bara,23328,125
+1086,Crna Trava,16215,170
+1087,Crnoklište,18304,116
+1088,Čajetina,31310,148
+1089,Čalma,22231,73
+1090,Čantavir,24220,24
+1091,Čačak,32000,97
+1092,Čelarevo,21413,53
+1093,Čenej,21233,59
+1094,Čenta,23266,14
+1095,Čerević,21311,35
+1096,Čestereg,23215,32
+1097,Čečina,18417,70
+1098,Čitluk,18232,128
+1099,Čitluk,37208,60
+1100,Čoka,23320,125
+1101,Čonoplja,25210,6
+1102,Čortanovci,22326,74
+1103,Čukojevac,36220,4
+1104,Čumić,34322,71
+1105,Čurug,21238,136
+1106,Džep,17514,120
+1107,Džigolj,18405,68
+1108,Šabac,15000,106
+1109,Šajkaš,21244,115
+1110,Šarbanovac,19373,89
+1111,Šarbanovac-Timok,19379,89
+1112,Šašinci,22425,73
+1113,Šepšin,11433,109
+1114,Šetonje,12309,103
+1115,Šid,22239,2
+1116,Šilovo,38252,165
+1117,Šimanovci,22310,17
+1118,Šljivovac,34219,71
+1119,Šljivovica,31244,148
+1120,Šljivovo,37239,8
+1121,Štavalj,36311,45
+1122,Štitar,15354,106
+1123,Štitare,36314,139
+1124,Štrpce,38236,96
+1125,Štubik,19303,94
+1126,Šupljak,24418,24
+1127,Šurjan,23254,28
+1128,Grocka,11306,151
+1129,Surčin,11271,173
+1130,Batajnica,11273,174
+1131,Beograd (savski venac),11000,175
+1132,Beograd (stari grad),11000,176
+1133,Beograd (vračar),11000,177
+1134,Beograd (voždovac),11010,66
+1135,Beograd (čukarica),11030,110
+1136,Beograd (zvezdara),11050,178
+1137,Beograd (palilula),11060,179
+1138,Beograd (novi Beograd),11070,180
+1139,Beograd (zemun),11080,174
+1140,Beograd (rakovica),11090,181
+1141,Topola (Selo),0,69
+1142,Vrčin,0,151
+1143,Boleč,0,151
+1144,Krćevac,0,69
+1145,Nemenikuće,0,162
+1146,Popović,0,162
+1147,Mala Ivanča,0,162
+1148,Đurinci,0,162
+1149,Amerić,0,109
+1150,Leštane,0,151
+1151,Vinča,0,151
+1152,Dražanj,0,151
+1153,Slanci,0,179
+1154,Veliko Selo,0,179
+1155,Ritopek,0,151
+1156,Mala Vrbica,0,109
+1157,Zaklopača,0,151
+1158,Rajkovac,0,109
+1159,Senaja,0,109
+1160,Begaljica,0,151
+1161,Šipačina,0,27
+1162,Kovači,0,27
+1163,Borovo,0,4
+1164,Ribnica,0,4
+1165,Kovanluk,0,4
+1166,Oplanići,0,4
+1167,Metikoš,0,4
+1168,Dragosinjci,0,4
+1169,Boće,0,27
+1170,Šumarice,0,4
+1171,Vraneši,0,129
+1172,Milavčići,0,4
+1173,Pečenog,0,4
+1174,Dobrača,0,71
+1175,Vukušica,0,129
+1176,Milakovac,0,4
+1177,Gračac,0,129
+1178,Goč,0,129
+1179,Rsavci,0,129
+1180,Godačica,0,4
+1181,Rokci,0,8
+1182,Rogavčina,0,8
+1183,Kriva Reka,0,79
+1184,Lipova,0,129
+1185,Stanišinci,0,129
+1186,Bzenice,0,8
+1187,Maskar,0,69
+1188,Guncati,0,44
+1189,Žunje,0,44
+1190,Pajsijević,0,44
+1191,Dragušica,0,44
+1192,Grivac,0,44
+1193,Dubrava,0,44
+1194,Veliki Šenj,0,71
+1195,Božurnja,0,69
+1196,Vlakča,0,71
+1197,Ovsište,0,69
+1198,Zagorica,0,69
+1199,Žabare,0,69
+1200,Vučkovica,0,44
+1201,Mironić,0,71
+1202,Rogojevac,0,71
+1203,Kutlovo,0,71
+1204,Balosave,0,44
+1205,Čestin,0,44
+1206,Prekopeča,0,71
+1207,Rabrovac,0,109
+1208,Šume,0,69
+1209,Dobrače,0,16
+1210,Mladenovac (Selo),0,109
+1211,Granice,0,109
+1212,Dubona,0,109
+1213,Umčari,0,151
+1214,Pudarci,0,151
+1215,Kamendol,0,151
+1216,Brestovik,0,151
+1217,Badljevica,0,123
+1218,Petropolje,0,4
+1219,Vrbeta,0,44
+1220,Lipnica,0,44
+1221,Đuriselo,0,71
+1222,Gornje Grbice,0,71
+1223,Drača,0,71
+1224,Poskurice,0,71
+1225,Landol,0,123
+1226,Saranovo,0,163
+1227,Kloka,0,69
+1228,Adžine Livade,0,71
+1229,Opornica,0,71
+1230,Gornje Jarušice,0,71
+1231,Bašin,0,5
+1232,Sepci,0,163
+1233,Veliko Krčmare,0,163
+1234,Borci,0,163
+1235,Mramorac,0,5
+1236,Glibovac,0,5
+1237,Beluće,0,109
+1238,Malo Orašje,0,123
+1239,Sovljak,0,38
+1240,Seone,0,123
+1241,Udovice,0,123
+1242,Binovac,0,123
+1243,Petrijevo,0,123
+1244,Trebinje,0,48
+1245,Grčak,0,8
+1246,Botunja,0,79
+1247,Dulene,0,71
+1248,Banatsko Višnjićevo,0,32
+1249,Štava,0,48
+1250,Livađe,0,79
+1251,Velike Pčelice,0,71
+1252,Graševci,0,79
+1253,Vitoše,0,79
+1254,Kovizle,0,79
+1255,Koznica,0,8
+1256,Gornje Leviće,0,79
+1257,Ruđinci,0,129
+1258,Štulac,0,129
+1259,Boturići,0,8
+1260,Budilovina,0,79
+1261,Sudimlja,0,79
+1262,Lozna,0,108
+1263,Stublica,0,108
+1264,Nadrlje,0,72
+1265,Seoce,0,48
+1266,Latkovac,0,8
+1267,Žiljci,0,79
+1268,Puhovac,0,8
+1269,Velja Glava,0,8
+1270,Drenova,0,79
+1271,Popovci,0,8
+1272,Kožetin,0,8
+1273,Raklja,0,8
+1274,Prnjavor,0,108
+1275,Čairi,0,108
+1276,Božurevac,0,108
+1277,Sibnica,0,72
+1278,Žarevo,0,79
+1279,Tršanovci,0,79
+1280,Mala Vrbnica,0,79
+1281,Drenča,0,8
+1282,Ržanica,0,8
+1283,Batote,0,79
+1284,Igroš,0,79
+1285,Parčin,0,8
+1286,Ljubinci,0,8
+1287,Riđevštica,0,108
+1288,Mijajlovac,0,108
+1289,Kaludra,0,72
+1290,Mala Sugubina,0,108
+1291,Rudenice,0,8
+1292,Levići,0,108
+1293,Gledić,0,4
+1294,Bajčetina,0,44
+1295,Baljkovac,0,71
+1296,Pridvorice,0,5
+1297,Miraševac,0,163
+1298,Viševac,0,163
+1299,Baničina,0,5
+1300,Vodice,0,5
+1301,Trmbas,0,71
+1302,Vučić,0,163
+1303,Stojačak,0,5
+1304,Mali Miraševac,0,163
+1305,Vlaški Do,0,5
+1306,Lunjevac,0,123
+1307,Vučak,0,123
+1308,Dankoviće,0,48
+1309,Grčac,0,5
+1310,Bačinac,0,5
+1311,Botunje,0,71
+1312,Gornje Komarice,0,71
+1313,Županjevac,0,72
+1314,Velika Sugubina,0,71
+1315,Ratković,0,72
+1316,Nikšić,0,21
+1317,Trska,0,163
+1318,Donja Rača,0,163
+1319,Crni Kao,0,21
+1320,Rakinac,0,111
+1321,Donje Komarice,0,71
+1322,Motrić,0,72
+1323,Lomnica,0,72
+1324,Cikot,0,72
+1325,Dobrovodica,0,21
+1326,Kijevo,0,21
+1327,Mačkovac,0,60
+1328,Kulič,0,123
+1329,Šalinac,0,123
+1330,Batovac,0,43
+1331,Brežane,0,43
+1332,Dragovac,0,43
+1333,Malo Bavanište,0,19
+1334,Vlahinja,0,48
+1335,Dupci,0,79
+1336,Gornje Rataje,0,8
+1337,Strojinci,0,79
+1338,Žilinci,0,79
+1339,Donje Rataje,0,8
+1340,Zlatari,0,79
+1341,Novaci,0,8
+1342,Dašnica,0,8
+1343,Srnje,0,60
+1344,Donja Omašnica,0,108
+1345,Stari Trstenik,0,108
+1346,Golubovac,0,108
+1347,Grkljane,0,60
+1348,Mala Kruševica,0,52
+1349,Gornji Krčin,0,52
+1350,Sagonjevo,0,48
+1351,Kovioci,0,79
+1352,Gornja Zleginja,0,8
+1353,Donja Zleginja,0,8
+1354,Laćisled,0,8
+1355,Garevina,0,8
+1356,Donji Stupanj,0,8
+1357,Selište,0,108
+1358,Mrmoš,0,8
+1359,Komorane,0,60
+1360,Vrbnica,0,8
+1361,Brajkovac,0,60
+1362,Ljubava,0,60
+1363,Sekurič,0,72
+1364,Konjuva,0,48
+1365,Perunika,0,48
+1366,Šatra,0,48
+1367,Baćoglava,0,48
+1368,Gornja Mikuljana,0,48
+1369,Krtok,0,48
+1370,Spance,0,48
+1371,Ravni Šort,0,48
+1372,Mala Kosanica,0,48
+1373,Pljakovo,0,48
+1374,Rudare,0,48
+1375,Više Selo,0,42
+1376,Donja Rašica,0,42
+1377,Drešnica,0,42
+1378,Majdevo,0,60
+1379,Suvaja,0,60
+1380,Sebečevac,0,60
+1381,Džepnica,0,42
+1382,Trbunje,0,42
+1383,Mali Kupci,0,60
+1384,Veliki Kupci,0,60
+1385,Doljane,0,60
+1386,Trebotin,0,60
+1387,Kamenare,0,60
+1388,Parcane,0,52
+1389,Pajkovac,0,52
+1390,Toljevac,0,52
+1391,Koševi,0,60
+1392,Krvavica,0,60
+1393,Šašilovac,0,60
+1394,Globare,0,60
+1395,Zalogovac,0,52
+1396,Marenovo,0,52
+1397,Popova,0,42
+1398,Jablanica,0,60
+1399,Tmava,0,48
+1400,Šavrane,0,60
+1401,Vranovac,0,20
+1402,Naupare,0,60
+1403,Meševo,0,60
+1404,Cerova,0,60
+1405,Begovo Brdo,0,60
+1406,Cernica,0,52
+1407,Izbenica,0,52
+1408,Belica,0,20
+1409,Mišević,0,20
+1410,Strižilo,0,20
+1411,Tečić,0,72
+1412,Ursule,0,72
+1413,Gornje Štiplje,0,20
+1414,Lovci,0,20
+1415,Kalenovac,0,20
+1416,Crnče,0,20
+1417,Donja Livadica,0,111
+1418,Vukmanovac,0,72
+1419,Šantarovac,0,20
+1420,Gornji Račnik,0,20
+1421,Donje Štiplje,0,20
+1422,Šuljkovac,0,20
+1423,Međureč,0,20
+1424,Gložane,0,80
+1425,Crkvenac,0,80
+1426,Radošin,0,80
+1427,Trnovče,0,111
+1428,Živica,0,43
+1429,Ostrovo,0,156
+1430,Šušara,0,107
+1431,Petka,0,156
+1432,Šumarak,0,19
+1433,Lučica,0,43
+1434,Prugovo,0,43
+1435,Trnava,0,20
+1436,Ćirikovac,0,43
+1437,Klenovnik,0,156
+1438,Brzohode,0,7
+1439,Selo Kostolac,0,156
+1440,Medojevac,0,20
+1441,Ribnik,0,20
+1442,Vinorača,0,20
+1443,Voljavče,0,20
+1444,Bukovče,0,20
+1445,Novo Lanište,0,20
+1446,Staro Lanište,0,20
+1447,Crni Lug,0,121
+1448,Bresje,0,80
+1449,Trpeze,0,48
+1450,Vrlane,0,80
+1451,Četereže,0,7
+1452,Kočino Selo,0,20
+1453,Rakitovo,0,20
+1454,Mali Popović,0,20
+1455,Viteževo,0,7
+1456,Dobra Voda,0,20
+1457,Troponje,0,80
+1458,Bošnjak,0,103
+1459,Simićevo,0,7
+1460,Oreovica,0,7
+1461,Maljurevac,0,43
+1462,Polatna,0,7
+1463,Bubušinac,0,43
+1464,Bratinac,0,43
+1465,Drmno,0,43
+1466,Kajtasovo,0,29
+1467,Parta,0,107
+1468,Salakovac,0,85
+1469,Mirijevo,0,7
+1470,Svinjarevo,0,7
+1471,Kočetin,0,7
+1472,Orljevo,0,103
+1473,Veliko Crniće,0,85
+1474,Orešac,0,107
+1475,Dužine,0,46
+1476,Markovićevo,0,46
+1477,Banatski Sokolac,0,46
+1478,Samoljica,0,76
+1479,Letovica,0,76
+1480,Oraovica,0,168
+1481,Gospođince,0,168
+1482,Dobrosin,0,76
+1483,Rajince,0,168
+1484,Gramada,0,76
+1485,Čukarka,0,168
+1486,Aliđerce,0,168
+1487,Golemi Dol,0,168
+1488,Reljan,0,168
+1489,Nesalce,0,76
+1490,Bratoselce,0,76
+1491,Buštranje,0,168
+1492,Levosoje,0,76
+1493,Ljiljance,0,76
+1494,Davidovac,0,121
+1495,Vrtogoš,0,121
+1496,Karadnik,0,76
+1497,Trejak,0,76
+1498,Starac,0,76
+1499,Pavlovac,0,121
+1500,Dubnica,0,121
+1501,Donji Neradovac,0,121
+1502,Stropsko,0,121
+1503,Gornji Neradovac,0,121
+1504,Soderce,0,121
+1505,Ribince,0,121
+1506,Baraljevac,0,76
+1507,Milanovo,0,121
+1508,Donje Žapsko,0,121
+1509,Buljesovce,0,121
+1510,Donje Trebešinje,0,121
+1511,Tibužde,0,121
+1512,Zlatokop,0,121
+1513,Ćukovac,0,121
+1514,Mečkovac,0,121
+1515,Suvi Dol,0,121
+1516,Bojin Del,0,121
+1517,Klašnice,0,121
+1518,Oblička Sena,0,121
+1519,Vladovce,0,147
+1520,Bace,0,68
+1521,Surdul,0,121
+1522,Lazarica,0,60
+1523,Toplac,0,153
+1524,Kumarevo,0,153
+1525,Moštanica,0,121
+1526,Mazarać,0,120
+1527,Široka Planina,0,147
+1528,Šaprance,0,147
+1529,Margance,0,147
+1530,Dumbija,0,147
+1531,Gornje Punuševce,0,121
+1532,Viševce,0,121
+1533,Bujkovac,0,153
+1534,Izumno,0,153
+1535,Barbarušince,0,121
+1536,Panevlje,0,153
+1537,Koćura,0,121
+1538,Nova Brezovica,0,121
+1539,Srednji Del,0,121
+1540,Lipovac,0,153
+1541,Prvonek,0,153
+1542,Klisurica,0,153
+1543,Donji Kozji Dol,0,147
+1544,Zladovce,0,147
+1545,Novi Glog,0,147
+1546,Lesnica,0,147
+1547,Kalovo,0,147
+1548,Stari Glog,0,153
+1549,Babina Poljana,0,153
+1550,Gornja Ljubata,0,77
+1551,Gornja Ržana,0,77
+1552,Suvi Do,0,42
+1553,Karamanica,0,77
+1554,Doganica,0,77
+1555,Nazarica,0,77
+1556,Crnoštica,0,77
+1557,Jarešnik,0,77
+1558,Topli Dol,0,86
+1559,Grevci,0,60
+1560,Vrševac,0,48
+1561,Donja Lisina,0,77
+1562,Milevci,0,77
+1563,Donje Tlamino,0,77
+1564,Brankovci,0,77
+1565,Paralovo,0,77
+1566,Buceljevo,0,77
+1567,Rajčilovci,0,77
+1568,Radičevci,0,77
+1569,Grujinci,0,77
+1570,Mlekominci,0,77
+1571,Gari,0,60
+1572,Ribarci,0,77
+1573,Mačja Stena,0,48
+1574,Visoka,0,48
+1575,Belo Polje,0,48
+1576,Krčmare,0,48
+1577,Prolom,0,48
+1578,Donje Točane,0,48
+1579,Pločnik,0,68
+1580,Dedinac,0,48
+1581,Mala Braina,0,160
+1582,Mrkonje,0,160
+1583,Sponce,0,160
+1584,Čokotin,0,160
+1585,Ivan Kula,0,48
+1586,Đake,0,48
+1587,Svinjište,0,48
+1588,Tovrljane,0,68
+1589,Bresnik,0,68
+1590,Gornja Konjuša,0,68
+1591,Vlasovo,0,68
+1592,Gornji Gajtan,0,160
+1593,Široke Njive,0,68
+1594,Miljkovica,0,68
+1595,Kačapor,0,42
+1596,Pretrešnja,0,42
+1597,Gornje Svarče,0,42
+1598,Donje Svarče,0,42
+1599,Buci,0,60
+1600,Trmčare,0,60
+1601,Sezemče,0,60
+1602,Donji Stepoš,0,60
+1603,Pakašnica,0,60
+1604,Mudrakovac,0,60
+1605,Roanda,0,80
+1606,Veliko Golovode,0,60
+1607,Đurinac,0,80
+1608,Malo Golovode,0,60
+1609,Modrica,0,60
+1610,Kapidžija,0,60
+1611,Dedina,0,60
+1612,Makrešane,0,60
+1613,Šanac,0,60
+1614,Dvorane,0,60
+1615,Pasjak,0,60
+1616,Varvarin (Selo),0,52
+1617,Maskare,0,52
+1618,Gornji Katun,0,52
+1619,Mrzenica,0,167
+1620,Donji Katun,0,52
+1621,Vlahovo,0,144
+1622,Donja Konjuša,0,68
+1623,Končić,0,68
+1624,Prekopuce,0,68
+1625,Merovac,0,68
+1626,Mršelj,0,68
+1627,Petina,0,60
+1628,Poljaci,0,60
+1629,Bresničić,0,68
+1630,Resinac,0,68
+1631,Donja Toponica,0,68
+1632,Potočić,0,68
+1633,Belasica,0,60
+1634,Stanci,0,60
+1635,Grad Stalać,0,167
+1636,Sušica,0,60
+1637,Crkvina,0,60
+1638,Jošje,0,60
+1639,Cerovo,0,117
+1640,Braljina,0,117
+1641,Maćija,0,117
+1642,Retkocer,0,160
+1643,Maćedonce (Retkocersko),0,160
+1644,Drence,0,160
+1645,Borovac,0,160
+1646,Svirce,0,160
+1647,Pusto Šilovo,0,160
+1648,Gazdare,0,160
+1649,Ivanje,0,87
+1650,Obrtince,0,68
+1651,Novi Đurovac,0,68
+1652,Obražda,0,87
+1653,Borince,0,87
+1654,Magaš,0,87
+1655,Gornji Bučumet,0,160
+1656,Majkovac,0,87
+1657,Glasovik,0,68
+1658,Bučince,0,68
+1659,Marovac,0,160
+1660,Kapit,0,160
+1661,Donji Bučumet,0,160
+1662,Sijarina,0,160
+1663,Crni Vrh,0,160
+1664,Ravna Banja,0,160
+1665,Drvodelj,0,91
+1666,Gornja Lapaštica,0,160
+1667,Rafuna,0,91
+1668,Vujanovo,0,87
+1669,Lalinovac,0,91
+1670,Mijajlica,0,87
+1671,Rastovnica,0,68
+1672,Zladovac,0,144
+1673,Asanovac,0,144
+1674,Sekicol,0,91
+1675,Turjane,0,87
+1676,Rečica,0,87
+1677,Geglja,0,91
+1678,Prekopčelica,0,91
+1679,Crkvica,0,87
+1680,Zlata,0,68
+1681,Novo Momčilovo,0,144
+1682,Lukomir,0,144
+1683,Bulatovac,0,68
+1684,Babotinac,0,68
+1685,Mikulovac,0,68
+1686,Bajčince,0,68
+1687,Rosica,0,60
+1688,Gornja Stražava,0,68
+1689,Devča,0,26
+1690,Vukanja,0,10
+1691,Radevce,0,10
+1692,Loznac,0,10
+1693,Poslon,0,117
+1694,Čubura,0,117
+1695,Šetka,0,117
+1696,Donji Ljubeš,0,10
+1697,Gredetin,0,10
+1698,Gornji Ljubeš,0,10
+1699,Vukašinovac,0,10
+1700,Podina,0,144
+1701,Skorica,0,117
+1702,Smilovac,0,117
+1703,Rujište,0,117
+1704,Pardik,0,117
+1705,Dešilovo,0,26
+1706,Babin Potok,0,68
+1707,Arbanasce,0,26
+1708,Krajkovac,0,26
+1709,Gornji Adrovac,0,10
+1710,Čukurovac,0,10
+1711,Česta,0,10
+1712,Gornje Suhotno,0,10
+1713,Donje Suhotno,0,10
+1714,Stara Božurna,0,144
+1715,Jug Bogdanovac,0,26
+1716,Kostadinovac,0,26
+1717,Lepaja,0,26
+1718,Biljeg,0,26
+1719,Bučić,0,26
+1720,Baličevac,0,26
+1721,Oblačina,0,26
+1722,Azbresnica,0,26
+1723,Moravac,0,10
+1724,Donja Peščanica,0,10
+1725,Bobovište,0,10
+1726,Ćićina,0,10
+1727,Donji Adrovac,0,10
+1728,Prćilovica,0,10
+1729,Dražmirovac,0,20
+1730,Vakup,0,10
+1731,Bovan,0,10
+1732,Bogava,0,113
+1733,Čepure,0,104
+1734,Virine,0,75
+1735,Striža,0,104
+1736,Isakovo,0,75
+1737,Vitance,0,113
+1738,Brestovo,0,113
+1739,Proštinac,0,80
+1740,Roćevac,0,80
+1741,Kupinovac,0,80
+1742,Vojnik,0,113
+1743,Dobrnje,0,103
+1744,Lopušnik,0,103
+1745,Busur,0,103
+1746,Krvije,0,103
+1747,Tabanovac,0,103
+1748,Petrovac Na Mlavi,0,103
+1749,Ratare,0,104
+1750,Batinac,0,75
+1751,Beljajka,0,113
+1752,Lebina,0,104
+1753,Mirilovac,0,104
+1754,Popovnjak,0,113
+1755,Miliva,0,113
+1756,Vezičevo,0,103
+1757,Ćovdin,0,103
+1758,Malo Laole,0,103
+1759,Stamnica,0,103
+1760,Ždrelo,0,103
+1761,Veliki Popovac,0,103
+1762,Batuša,0,85
+1763,Kalište,0,85
+1764,Crljenac,0,85
+1765,Kasidol,0,43
+1766,Dubočka,0,103
+1767,Kamenovo,0,103
+1768,Šapine,0,85
+1769,Zabrega,0,85
+1770,Kurjače,0,114
+1771,Ram,0,114
+1772,Knežica,0,103
+1773,Kobilje,0,85
+1774,Pečanica,0,114
+1775,Ljubinje,0,114
+1776,Garevo,0,114
+1777,Desine,0,114
+1778,Makce,0,114
+1779,Doljašnica,0,114
+1780,Kamijevo,0,114
+1781,Češljeva Bara,0,114
+1782,Carevac,0,114
+1783,Kisiljevo,0,114
+1784,Usije,0,92
+1785,Buljane,0,104
+1786,Bliznak,0,131
+1787,Kruščica,0,29
+1788,Lešje,0,104
+1789,Gornja Mutnica,0,104
+1790,Šaludovac,0,104
+1791,Resavica (Selo),0,113
+1792,Klačevica,0,104
+1793,Izvor,0,104
+1794,Ravna Reka,0,113
+1795,Milanovac,0,131
+1796,Sige,0,131
+1797,Breznica,0,131
+1798,Ceremošnja,0,124
+1799,Izvarica,0,131
+1800,Bukovska,0,124
+1801,Kladurovo,0,103
+1802,Mustapić,0,124
+1803,Šuvajić,0,92
+1804,Radoševac,0,92
+1805,Zelenik,0,124
+1806,Dušmanić,0,92
+1807,Mišljenovac,0,124
+1808,Gornji Drenovac,0,144
+1809,Lješnica,0,124
+1810,Vuković,0,124
+1811,Kudreš,0,92
+1812,Vojilovo,0,92
+1813,Maleševo,0,92
+1814,Tribrode,0,114
+1815,Kusiće,0,114
+1816,Vinarce,0,84
+1817,Vinci,0,92
+1818,Kučajna,0,124
+1819,Cerovica,0,124
+1820,Dvorište,0,92
+1821,Stubla,0,87
+1822,Ševica,0,124
+1823,Rakova Bara,0,124
+1824,Krivača,0,92
+1825,Lipovica,0,91
+1826,Oruglica,0,84
+1827,Klajić,0,91
+1828,Šarce,0,91
+1829,Trstena,0,121
+1830,Dupeljevo,0,121
+1831,Grgurovce,0,91
+1832,Šumane,0,91
+1833,Popovce,0,91
+1834,Kočane,0,70
+1835,Gornje Vranovce,0,91
+1836,Mrveš,0,87
+1837,Goli Rid,0,91
+1838,Glašince,0,144
+1839,Kare,0,144
+1840,Jasenica,0,144
+1841,Ždeglovo,0,91
+1842,Pridvorica,0,87
+1843,Lapotince,0,87
+1844,Kacabać,0,87
+1845,Gornje Crnatovo,0,144
+1846,Voljčince,0,144
+1847,Gornje Brijanje,0,87
+1848,Šarlinac,0,70
+1849,Oštra Glava,0,121
+1850,Golemo Selo,0,121
+1851,Lalince,0,121
+1852,Kaluđerce,0,84
+1853,Bukova Glava,0,84
+1854,Stance,0,121
+1855,Gradnja,0,121
+1856,Dobrejance,0,121
+1857,Tumba,0,121
+1858,Brza,0,84
+1859,Bunuški Čifluk,0,84
+1860,Karađorđevac,0,84
+1861,Pertate,0,91
+1862,Ćenovac,0,91
+1863,Belanovce,0,84
+1864,Dušanovo,0,84
+1865,Donje Brijanje,0,84
+1866,Donji Drenovac,0,144
+1867,Šainovac,0,70
+1868,Draškovac,0,84
+1869,Šarlince,0,84
+1870,Podrimce,0,84
+1871,Gornje Stopanje,0,84
+1872,Kutleš,0,84
+1873,Čekmin,0,84
+1874,Rusna,0,70
+1875,Đakus,0,144
+1876,Rožina,0,26
+1877,Dudulajce,0,26
+1878,Nozrina,0,10
+1879,Lužane,0,10
+1880,Grejač,0,10
+1881,Bankovac,0,10
+1882,Moravski Bujmir,0,10
+1883,Samarinovac,0,144
+1884,Držanovac,0,144
+1885,Gradište,0,26
+1886,Krušce,0,143
+1887,Supovac,0,134
+1888,Veliki Drenovac,0,10
+1889,Mezgraja,0,134
+1890,Glogovica,0,10
+1891,Aleksinački Bujmir,0,10
+1892,Gornje Međurovo,0,143
+1893,Trubarevac,0,128
+1894,Prugovac,0,10
+1895,Žučkovac,0,128
+1896,Orljane,0,70
+1897,Batušinac,0,26
+1898,Čokot,0,143
+1899,Deveti Maj,0,143
+1900,Čapljinac,0,70
+1901,Bubanj,0,143
+1902,Pasi Poljana,0,143
+1903,Vrtište,0,134
+1904,Berčinac,0,134
+1905,Beli Breg,0,10
+1906,Paljina,0,134
+1907,Vele Polje,0,134
+1908,Donji Komren,0,134
+1909,Donje Vlase,0,143
+1910,Ćurlina,0,70
+1911,Gornji Komren,0,134
+1912,Paligrace,0,134
+1913,Rujnik,0,134
+1914,Hum,0,134
+1915,Kravlje,0,134
+1916,Vrelo,0,10
+1917,Gornji Krupac,0,10
+1918,Rsovac,0,10
+1919,Jezero,0,128
+1920,Sikirje,0,121
+1921,Smiljević,0,121
+1922,Strešak,0,121
+1923,Solačka Sena,0,120
+1924,Srneći Dol,0,120
+1925,Kostomlatica,0,120
+1926,Strojkovce,0,84
+1927,Nakrivanj,0,84
+1928,Čukljenik,0,84
+1929,Tulovo,0,84
+1930,Gornje Sinkovce,0,84
+1931,Donje Sinkovce,0,84
+1932,Šišince,0,84
+1933,Donje Stopanje,0,84
+1934,Velika Kopašnica,0,84
+1935,Zalužnje,0,84
+1936,Donja Jajina,0,84
+1937,Presečina,0,84
+1938,Veliko Trnjane,0,84
+1939,Dukat,0,132
+1940,Živkovo,0,84
+1941,Čifluk Razgojnski,0,84
+1942,Grdanica,0,84
+1943,Bobište,0,84
+1944,Zagužane,0,84
+1945,Bratmilovce,0,84
+1946,Mrštane,0,84
+1947,Badince,0,84
+1948,Zlokućane,0,84
+1949,Drćevac,0,84
+1950,Babičko,0,84
+1951,Gornje Vlase,0,132
+1952,Kacapun,0,120
+1953,Bačvište,0,120
+1954,Kunovo,0,120
+1955,Rdovo,0,120
+1956,Gornje Jabukovo,0,120
+1957,Suva Morava,0,120
+1958,Repince,0,120
+1959,Balinovce,0,120
+1960,Letovište,0,120
+1961,Vrbovo,0,120
+1962,Gramađe,0,120
+1963,Dekutince,0,120
+1964,Kalimance,0,120
+1965,Polom,0,120
+1966,Kržince,0,120
+1967,Prekodolce,0,120
+1968,Manajle,0,120
+1969,Žitorađe,0,120
+1970,Ružić,0,120
+1971,Grdelica (Selo),0,84
+1972,Oraovica (Kod Grdelice),0,84
+1973,Mrtvica,0,120
+1974,Garinje,0,120
+1975,Graovo,0,84
+1976,Bojišina,0,84
+1977,Žižavica,0,84
+1978,Donji Bunibrod,0,84
+1979,Donje Krajince,0,84
+1980,Gornje Krajince,0,84
+1981,Dobrotin,0,84
+1982,Nomanica,0,84
+1983,Donja Kupinovica,0,84
+1984,Crkovnica,0,84
+1985,Marina Kutina,0,132
+1986,Golema Njiva,0,84
+1987,Krastavče,0,132
+1988,Stajkovce,0,122
+1989,Rajno Polje,0,84
+1990,Gradašnica,0,84
+1991,Tupalovce,0,84
+1992,Kukavica,0,122
+1993,Kozare,0,84
+1994,Orašje,0,122
+1995,Jarsenovo,0,84
+1996,Ćelije,0,132
+1997,Gabrovac,0,143
+1998,Berbatovo,0,143
+1999,Donja Vrežina,0,135
+2000,Brenica,0,135
+2001,Cerje,0,135
+2002,Donji Matejevac,0,135
+2003,Popšica,0,102
+2004,Labukovo,0,102
+2005,Vilandrica,0,132
+2006,Vukmanovo,0,143
+2007,Nikola Tesla,0,150
+2008,Prva Kutina,0,150
+2009,Lazarevo Selo,0,150
+2010,Radikina Bara,0,150
+2011,Gornja Vrežina,0,135
+2012,Blendija,0,128
+2013,Knez Selo,0,135
+2014,Kopajkošara,0,102
+2015,Slivje,0,102
+2016,Galibabinac,0,102
+2017,Sesalac,0,128
+2018,Bogdinac,0,128
+2019,Taskovići,0,132
+2020,Prosek,0,150
+2021,Grbavče,0,102
+2022,Jasenovik,0,135
+2023,Čagrovac,0,132
+2024,Jagličje,0,132
+2025,Oreovac,0,135
+2026,Manastir,0,150
+2027,Donja Studena,0,150
+2028,Kunovica,0,150
+2029,Plužina,0,102
+2030,Levovik,0,128
+2031,Milušinac,0,128
+2032,Dobro Polje,0,83
+2033,Banjski Orešac,0,67
+2034,Zorunovac,0,67
+2035,Bačevica,0,83
+2036,Osnić,0,83
+2037,Radenka,0,124
+2038,Brnjica,0,92
+2039,Ilino,0,83
+2040,Valakonje,0,83
+2041,Vlaole,0,146
+2042,Dobrujevac,0,83
+2043,Planinica,0,100
+2044,Gornjane,0,89
+2045,Crnajka,0,146
+2046,Boljetin,0,146
+2047,Topolnica,0,146
+2048,Mali Žam,0,107
+2049,Mesić,0,107
+2050,Malo Središte,0,107
+2051,Sočica,0,107
+2052,Zagužanje,0,86
+2053,Suševlje,0,84
+2054,Velika Sejanica,0,84
+2055,Bričevlje,0,84
+2056,Manjak,0,120
+2057,Palojce,0,84
+2058,Dugi Del,0,86
+2059,Leskova Bara,0,86
+2060,Donje Romanovce,0,86
+2061,Danjino Selo,0,86
+2062,Šišave,0,122
+2063,Ravni Del,0,122
+2064,Stupnica,0,84
+2065,Donje Dragovlje,0,132
+2066,Gornji Dušnik,0,132
+2067,Gornje Dragovlje,0,132
+2068,Ličje,0,132
+2069,Samarnica,0,122
+2070,Donji Prisjan,0,122
+2071,Komarica,0,122
+2072,Mali Vrtop,0,132
+2073,Veliki Vrtop,0,132
+2074,Mali Krčimir,0,132
+2075,Ćurkovica,0,86
+2076,Mačkatica,0,86
+2077,Gornje Romanovce,0,86
+2078,Mlačište,0,170
+2079,Rajčetine,0,170
+2080,Pavličina,0,170
+2081,Bitvrđa,0,86
+2082,Brod,0,170
+2083,Obradovce,0,170
+2084,Jovanovce,0,170
+2085,Krstićevo,0,170
+2086,Gornji Dejan,0,122
+2087,Zlatićevo,0,122
+2088,Zavidince,0,18
+2089,Veliki Krčimir,0,132
+2090,Štrbovac,0,18
+2091,Dolac (Selo),0,62
+2092,Modra Stena,0,18
+2093,Bogdanovac,0,18
+2094,Divljana,0,62
+2095,Bancarevo,0,150
+2096,Miljkovac,0,67
+2097,Veta,0,62
+2098,Šuman Topla,0,67
+2099,Balanovac,0,67
+2100,Lasovo,0,100
+2101,Bulinovac,0,67
+2102,Rgošte,0,67
+2103,Grezna,0,67
+2104,Valevac,0,67
+2105,Gornja Bela Reka,0,100
+2106,Marinovac,0,100
+2107,Špaj,0,62
+2108,Crveni Breg,0,62
+2109,Vrgudinac,0,62
+2110,Okruglica,0,102
+2111,Tijovac,0,102
+2112,Gulijan,0,102
+2113,Vlasina Okruglica,0,86
+2114,Moklište,0,62
+2115,Gornji Rinj,0,62
+2116,Donji Rinj,0,62
+2117,Gornje Krnjino,0,18
+2118,Lozan,0,102
+2119,Ponor,0,67
+2120,Kambelevac,0,18
+2121,Žlne,0,67
+2122,Štipina,0,67
+2123,Pasjač,0,116
+2124,Kaličina,0,67
+2125,Ravna,0,67
+2126,Trnovac,0,67
+2127,Zagrađe,0,100
+2128,Gornje Zuniče,0,67
+2129,Zlatance,0,170
+2130,Darkovce,0,170
+2131,Vlasina Stojkovićeva,0,86
+2132,Jabukovik,0,170
+2133,Kostur,0,116
+2134,Gradska,0,170
+2135,Pržojne,0,122
+2136,Gornji Orah,0,122
+2137,Dol,0,18
+2138,Krivi Del,0,170
+2139,Stranjevo,0,122
+2140,Grnčar,0,18
+2141,Linovo,0,18
+2142,Donja Koritnica,0,62
+2143,Gornja Koritnica,0,62
+2144,Bežište,0,62
+2145,Radosin,0,18
+2146,Provaljenik,0,18
+2147,Bratiševac,0,18
+2148,Donji Striževac,0,18
+2149,Gornji Striževac,0,18
+2150,Suračevo,0,18
+2151,Kolunica,0,86
+2152,Groznatovci,0,86
+2153,Palja,0,86
+2154,Rakov Dol,0,18
+2155,Radinjince,0,18
+2156,Gorčince,0,18
+2157,Kaluđerevo,0,18
+2158,Vojnici,0,18
+2159,Valniš,0,18
+2160,Vava,0,18
+2161,Kremenica,0,62
+2162,Periš,0,102
+2163,Miranovačka Kula,0,62
+2164,Jalovik Izvor,0,67
+2165,Gornja Kamenica,0,67
+2166,Gornja Glama,0,62
+2167,Babin Kal,0,62
+2168,Ljubatovica,0,62
+2169,Pajež,0,62
+2170,Miranovac,0,62
+2171,Šesti Gabar,0,67
+2172,Štrbac,0,67
+2173,Lokva,0,67
+2174,Radičevac,0,67
+2175,Ošljane,0,67
+2176,Čiflik,0,62
+2177,Osmakova,0,116
+2178,Orlja,0,116
+2179,Bazovik,0,116
+2180,Vrtovac,0,67
+2181,Crvenčevo,0,116
+2182,Ćuštica,0,67
+2183,Novo Korito,0,67
+2184,Aldinac,0,67
+2185,Gamzigrad,0,100
+2186,Tanda,0,89
+2187,Topla,0,89
+2188,Šljivar,0,100
+2189,Rtkovo,0,98
+2190,Popovica,0,94
+2191,Mosna,0,146
+2192,Golubinje,0,146
+2193,Miroč,0,146
+2194,Prlita,0,100
+2195,Halovo,0,100
+2196,Mala Kamenica,0,94
+2197,Šarkamen,0,94
+2198,Vratna,0,94
+2199,Karbulovo,0,94
+2200,Malajnica,0,94
+2201,Veliki Jasenovac,0,100
+2202,Tabakovac,0,100
+2203,Klenovac,0,100
+2204,Tamnič,0,94
+2205,Vidrovac,0,94
+2206,Dušanovac,0,94
+2207,Velika Kamenica,0,98
+2208,Kupuzište,0,98
+2209,Ljubičevac,0,98
+2210,Manastirica,0,98
+2211,Novi Sip,0,98
+2212,Vuči Del,0,18
+2213,Sinja Glava,0,116
+2214,Barje Čiflik,0,116
+2215,Rakita,0,18
+2216,Berin Izvor,0,18
+2217,Našuškovica,0,18
+2218,Kusa Vrana,0,141
+2219,Berovica,0,116
+2220,Rajac,0,94
+2221,Berilovac,0,116
+2222,Novi Zavoj,0,116
+2223,Vrapča,0,141
+2224,Vojnegovac,0,116
+2225,Veliki Jovanovac,0,116
+2226,Trnjana,0,116
+2227,Gornja Držina,0,116
+2228,Srećkovac,0,116
+2229,Mali Jovanovac,0,116
+2230,Kumanovo,0,116
+2231,Rudinje,0,116
+2232,Nišor,0,116
+2233,Koprivštica,0,116
+2234,Pokrevenik,0,116
+2235,Topli Do,0,116
+2236,Gostuša,0,116
+2237,Gojin Dol,0,141
+2238,Željuša,0,141
+2239,Prača,0,141
+2240,Beleš,0,141
+2241,Paskašija,0,141
+2242,Donja Nevlja,0,141
+2243,Bilo,0,141
+2244,Verzar,0,141
+2245,Rsovci,0,116
+2246,Gulenovci,0,141
+2247,Brlog,0,116
+2248,Protopopinci,0,141
+2249,Izatovci,0,141
+2250,Braćevci,0,141
+2251,Rosomač,0,116
+2252,Mazgoš,0,141
+2253,Dojkinci,0,116
+2254,Crnomasnica,0,94
+2255,Smedovac,0,94
+2256,Mokranje,0,94
+2257,Veljkovo,0,94
+2258,Kovilovo,0,94
+2259,Srbovo,0,94
+2260,Vajuga,0,98
+2261,Kostol,0,98
+2262,Selanac,0,130
+2263,Velika Vrbica,0,98
+2264,Donji Krivodol,0,141
+2265,Radoinja,0,78
+2266,Grdovići,0,16
+2267,Luke,0,65
+2268,Staro Momčilovo,0,144
+2269,Ljubić,0,97
+2270,Ritošići,0,36
+2271,Kukurovići,0,36
+2272,Sakar,0,112
+2273,Culine,0,112
+2274,Donja Trešnjica,0,112
+2275,Voljevci,0,112
+2276,Crnča,0,130
+2277,Brasina,0,112
+2278,Trbušnica,0,37
+2279,Krajišnici,0,37
+2280,Lozničko Polje,0,37
+2281,Baščeluci,0,37
+2282,Paskovac,0,37
+2283,Ploča,0,37
+2284,Klupci,0,37
+2285,Runjani,0,37
+2286,Zabrđe,0,36
+2287,Krnjača,0,36
+2288,Požegrmac,0,36
+2289,Panjak,0,61
+2290,Rastište,0,23
+2291,Brštica,0,63
+2292,Lonjin,0,130
+2293,Rujevac,0,130
+2294,Kržava,0,63
+2295,Gornja Borina,0,37
+2296,Voćnjak,0,37
+2297,Jelav,0,37
+2298,Kostajnik,0,63
+2299,Kozjak,0,37
+2300,Grnčara,0,37
+2301,Donje Nedeljice,0,37
+2302,Gornji Dobrić,0,37
+2303,Bradić,0,37
+2304,Dvorska,0,63
+2305,Donji Dobrić,0,37
+2306,Likodra,0,63
+2307,Duboko,0,130
+2308,Postenje,0,130
+2309,Banjevac,0,63
+2310,Tomanj,0,63
+2311,Lipenović,0,63
+2312,Kršanje,0,61
+2313,Podnemić,0,130
+2314,Donja Ljuboviđa,0,130
+2315,Šljivova,0,63
+2316,Gornja Ljuboviđa,0,130
+2317,Tolisavac,0,63
+2318,Vrbić,0,63
+2319,Gornje Nedeljice,0,37
+2320,Simino Brdo,0,37
+2321,Čokešina,0,37
+2322,Joševa,0,37
+2323,Petkovica,0,106
+2324,Krasava,0,63
+2325,Brezovice,0,63
+2326,Salaš Crnobarski,0,22
+2327,Očage,0,22
+2328,Zabrdnji Toci,0,12
+2329,Donje Babine,0,12
+2330,Miliješ,0,36
+2331,Crnuzi,0,36
+2332,Dobrilovići,0,36
+2333,Kamena Gora,0,12
+2334,Karoševina,0,12
+2335,Junčevići,0,12
+2336,Crkveni Toci,0,12
+2337,Zvijezd,0,12
+2338,Osoje,0,12
+2339,Seljane,0,12
+2340,Čauševići,0,12
+2341,Kalafati,0,36
+2342,Semegnjevo,0,148
+2343,Đurašići,0,12
+2344,Seljašnica,0,12
+2345,Hrta,0,12
+2346,Skokuće,0,12
+2347,Mijoska,0,12
+2348,Džurovo,0,12
+2349,Ratajska,0,12
+2350,Kratovo,0,36
+2351,Mataruge,0,12
+2352,Vinicka,0,12
+2353,Gornja Trešnjica,0,130
+2354,Miljevići,0,12
+2355,Koševine,0,12
+2356,Čelice,0,78
+2357,Ivezići,0,12
+2358,Bjelahova,0,12
+2359,Pranjci,0,12
+2360,Brvine,0,12
+2361,Potok,0,12
+2362,Taševo,0,12
+2363,Rasno,0,12
+2364,Jelača,0,36
+2365,Stublo,0,148
+2366,Drlače,0,130
+2367,Caparić,0,130
+2368,Carina,0,152
+2369,Leović,0,130
+2370,Mala Reka,0,23
+2371,Solotuša,0,23
+2372,Strmovo,0,23
+2373,Grčić,0,130
+2374,Gornja Orovica,0,130
+2375,Savković,0,130
+2376,Orovička Planina,0,130
+2377,Skadar,0,152
+2378,Bratačić,0,152
+2379,Filipovići,0,37
+2380,Mojković,0,63
+2381,Donja Badanja,0,37
+2382,Ribarice,0,37
+2383,Milina,0,37
+2384,Gornja Badanja,0,37
+2385,Bela Reka,0,106
+2386,Trbosilje,0,37
+2387,Radovašnica,0,106
+2388,Belotić,0,152
+2389,Gornja Sipulja,0,37
+2390,Culjković,0,106
+2391,Zasavica I,0,73
+2392,Duvanište,0,106
+2393,Zasavica Ii,0,73
+2394,Raduša,0,61
+2395,Višesava,0,23
+2396,Okletac,0,23
+2397,Strmac,0,61
+2398,Obajgora,0,23
+2399,Gornje Košlje,0,130
+2400,Osečina (Selo),0,152
+2401,Pridoli,0,23
+2402,Pear,0,61
+2403,Suvodanje,0,93
+2404,Zarožje,0,23
+2405,Sirdija,0,152
+2406,Dragijevica,0,152
+2407,Konjuša,0,152
+2408,Cvetulja,0,63
+2409,Bukor,0,106
+2410,Rumska,0,106
+2411,Volujac,0,106
+2412,Pocerski Metković,0,106
+2413,Slepčević,0,106
+2414,Bogosavac,0,106
+2415,Sinošević,0,106
+2416,Uzveće,0,22
+2417,Tabanović,0,106
+2418,Pravoševo,0,12
+2419,Dokmir,0,38
+2420,Donji Tavankut,0,24
+2421,Ključ,0,95
+2422,Tripkova,0,148
+2423,Sviloš,0,35
+2424,Grabovo,0,35
+2425,Zavinograđe,0,12
+2426,Radobuđa,0,16
+2427,Lučice,0,12
+2428,Grobnice,0,12
+2429,Hisardžik,0,12
+2430,Rutoši,0,78
+2431,Dobroselica,0,148
+2432,Branešci,0,148
+2433,Seništa,0,78
+2434,Donji Stranjani,0,12
+2435,Kaćevo,0,12
+2436,Kosatica,0,12
+2437,Draževići,0,78
+2438,Rudine,0,148
+2439,Alin Potok,0,148
+2440,Negbina,0,78
+2441,Golovo,0,148
+2442,Tutiće,0,45
+2443,Grgaje,0,45
+2444,Višnjeva,0,45
+2445,Drmanovići,0,78
+2446,Vraneša,0,78
+2447,Burađa,0,78
+2448,Rakovica,0,148
+2449,Amzići,0,78
+2450,Gornje Goračiće,0,12
+2451,Vilovi,0,78
+2452,Caričina,0,45
+2453,Vujinovača,0,93
+2454,Radijevići,0,78
+2455,Akmačići,0,78
+2456,Nikojevići,0,61
+2457,Debelja,0,78
+2458,Gostilje,0,148
+2459,Skržuti,0,61
+2460,Zbojštica,0,61
+2461,Drežnik,0,61
+2462,Vrutci,0,61
+2463,Keserovina,0,61
+2464,Lještansko,0,23
+2465,Stapari,0,61
+2466,Zaglavak,0,23
+2467,Stanina Reka,0,93
+2468,Tuđin,0,152
+2469,Osladić,0,93
+2470,Mijači,0,93
+2471,Bobova,0,93
+2472,Vragočanica,0,93
+2473,Sitarice,0,93
+2474,Godečevo,0,105
+2475,Kačer,0,61
+2476,Makovište,0,105
+2477,Sovač,0,93
+2478,Tubravić,0,93
+2479,Majinović,0,93
+2480,Taor,0,93
+2481,Gornja Bukovica,0,93
+2482,Tupanci,0,93
+2483,Balinović,0,93
+2484,Stubo,0,93
+2485,Beomužević,0,93
+2486,Mrovska,0,119
+2487,Goločelo,0,145
+2488,Miličinica,0,93
+2489,Nakučani,0,106
+2490,Vukošić,0,119
+2491,Matijevac,0,119
+2492,Gornja Vranjska,0,106
+2493,Jevremovac,0,106
+2494,Ševarice,0,106
+2495,Pocerski Pričinović,0,106
+2496,Mala Vranjska,0,106
+2497,Oglađenovac,0,93
+2498,Ljutice,0,145
+2499,Krnule,0,119
+2500,Lojanice,0,119
+2501,Jelenča,0,106
+2502,Donje Leskovice,0,93
+2503,Mišar,0,106
+2504,Drijetanj,0,61
+2505,Buar,0,61
+2506,Ljubanje,0,61
+2507,Gostinica,0,61
+2508,Donja Pološnica,0,105
+2509,Gornja Pološnica,0,105
+2510,Paklje,0,93
+2511,Donja Bukovica,0,93
+2512,Jovanja,0,93
+2513,Sandalj,0,93
+2514,Ribaševina,0,61
+2515,Godljevo,0,105
+2516,Paramun,0,105
+2517,Doliće,0,45
+2518,Cikote,0,105
+2519,Radanovci,0,105
+2520,Galovići,0,105
+2521,Gornje Leskovice,0,93
+2522,Zlatarić,0,93
+2523,Strmna Gora,0,93
+2524,Sedlari,0,93
+2525,Kotešica,0,93
+2526,Rađevo Selo,0,93
+2527,Mali Bošnjak,0,145
+2528,Brdarica,0,145
+2529,Mehovine,0,119
+2530,Družetić,0,145
+2531,Bobovik,0,119
+2532,Jalovik,0,119
+2533,Skupljen,0,119
+2534,Vučevica,0,119
+2535,Mrđenovac,0,106
+2536,Jazovnik,0,119
+2537,Krnić,0,119
+2538,Trbušac,0,119
+2539,Zvezd,0,119
+2540,Predvorica,0,106
+2541,Vitojevci,0,101
+2542,Miokus,0,106
+2543,Dragojevac,0,119
+2544,Crvsko,0,45
+2545,Miševići,0,78
+2546,Komarani,0,78
+2547,Šušure,0,45
+2548,Donje Lopiže,0,45
+2549,Družiniće,0,45
+2550,Močioci,0,65
+2551,Klekova,0,65
+2552,Severovo,0,16
+2553,Dujke,0,45
+2554,Zaječiće,0,45
+2555,Medare,0,45
+2556,Ponorac,0,45
+2557,Tisovica,0,78
+2558,Grivska,0,16
+2559,Krće,0,45
+2560,Bačija,0,45
+2561,Kladnica,0,45
+2562,Vrsjenice,0,45
+2563,Maskova,0,65
+2564,Šarenik,0,65
+2565,Rečice,0,133
+2566,Gorobilje,0,133
+2567,Pogled,0,16
+2568,Potočanje,0,61
+2569,Ponikovica,0,61
+2570,Gubin Do,0,61
+2571,Kosjerić (Selo),0,105
+2572,Potpeće,0,61
+2573,Krvavci,0,61
+2574,Lelići,0,61
+2575,Brajkovići,0,105
+2576,Stojići,0,105
+2577,Zabrdica,0,93
+2578,Drenovci,0,105
+2579,Vranjani,0,133
+2580,Kozličić,0,93
+2581,Jazovik,0,93
+2582,Gornja Grabovica,0,93
+2583,Degurić,0,93
+2584,Bujačić,0,93
+2585,Blizonje,0,93
+2586,Gorjani,0,61
+2587,Bjelotići,0,61
+2588,Tvrdići,0,133
+2589,Tubići,0,105
+2590,Mrčići,0,105
+2591,Bjeloperica,0,105
+2592,Zdravčići,0,133
+2593,Dobrodo,0,61
+2594,Zaselje,0,133
+2595,Uzići,0,133
+2596,Kalenići,0,133
+2597,Skakavci,0,105
+2598,Zarube,0,93
+2599,Prijezdić,0,93
+2600,Petnica,0,93
+2601,Gorić,0,93
+2602,Klinci,0,93
+2603,Dupljaj,0,93
+2604,Paune,0,93
+2605,Babina Luka,0,93
+2606,Zukve,0,145
+2607,Gola Glava,0,93
+2608,Tulari,0,38
+2609,Kožuar,0,38
+2610,Brestač,0,17
+2611,Mesarci,0,119
+2612,Kalinovac,0,38
+2613,Suvo Selo,0,119
+2614,Vukona,0,38
+2615,Velika Ježevica,0,133
+2616,Rupeljevo,0,133
+2617,Visibaba,0,133
+2618,Čestobrodica,0,133
+2619,Subjel,0,105
+2620,Dražinovići,0,133
+2621,Tometino Polje,0,133
+2622,Glumač,0,133
+2623,Mušići,0,105
+2624,Robaje,0,95
+2625,Krčmar,0,95
+2626,Osečenica,0,95
+2627,Šušeoka,0,95
+2628,Lukavac,0,93
+2629,Gvozdenović,0,38
+2630,Klanica,0,93
+2631,Rasna,0,133
+2632,Bakionica,0,133
+2633,Tolić,0,95
+2634,Donja Dobrinja,0,133
+2635,Godovik,0,133
+2636,Duškovci,0,133
+2637,Mala Ježevica,0,133
+2638,Prijanovići,0,133
+2639,Loret,0,133
+2640,Srednja Dobrinja,0,133
+2641,Đurđevac,0,95
+2642,Gornji Lajkovac,0,95
+2643,Vrhovine,0,38
+2644,Radobić,0,95
+2645,Stepanje,0,82
+2646,Čučuge,0,38
+2647,Trlić,0,38
+2648,Beljin,0,119
+2649,Vukićevica,0,47
+2650,Dren,0,47
+2651,Ljubinić,0,47
+2652,Gunjevac,0,38
+2653,Šuljam,0,73
+2654,Mala Remeta,0,127
+2655,Mićunovo,0,25
+2656,Rivica,0,127
+2657,Stari Ledinci,0,59
+2658,Njegoševo,0,25
+2659,Bačko Dušanovo,0,24
+2660,Neradin,0,127
+2661,Mali Radinci,0,101
+2662,Žarkovac,0,101
+2663,Šatrinci,0,127
+2664,Velika Remeta,0,127
+2665,Dobrodol,0,127
+2666,Krušedol Prnjavor,0,127
+2667,Krušedol Selo,0,127
+2668,Svetićevo,0,25
+2669,Kavilo,0,25
+2670,Doline,0,3
+2671,Jarkovci,0,74
+2672,Pilatovići,0,133
+2673,Mali Pesak,0,3
+2674,Sterijino,0,1
+2675,Vojvoda Zimonić,0,3
+2676,Boroštica,0,140
+2677,Tuzinje,0,45
+2678,Đerekare,0,140
+2679,Deretin,0,65
+2680,Bogojevići,0,16
+2681,Vrane,0,16
+2682,Vigošte,0,16
+2683,Čibutkovica,0,49
+2684,Stupčevići,0,16
+2685,Virovo,0,16
+2686,Stup,0,45
+2687,Žitniće,0,45
+2688,Gornja Kravarica,0,118
+2689,Donja Kravarica,0,118
+2690,Ervenice,0,140
+2691,Baćica,0,140
+2692,Lipica,0,140
+2693,Gujiće,0,140
+2694,Žabren,0,45
+2695,Pružanj,0,140
+2696,Draževiće,0,45
+2697,Rti,0,118
+2698,Beli Kamen,0,118
+2699,Guča (Selo),0,118
+2700,Kumanica,0,65
+2701,Komadine,0,65
+2702,Dučalovići,0,118
+2703,Popadić,0,95
+2704,Bedina Varoš,0,65
+2705,Sveštica,0,65
+2706,Gugalj,0,133
+2707,Gojna Gora,0,88
+2708,Bogdanica,0,88
+2709,Puhovo,0,118
+2710,Lopaš,0,133
+2711,Dljin,0,118
+2712,Mionica (Selo),0,95
+2713,Bajevac,0,82
+2714,Virovac,0,95
+2715,Paštrić,0,95
+2716,Vrtiglav,0,95
+2717,Nepričava,0,82
+2718,Komanice,0,95
+2719,Maljević,0,95
+2720,Donji Mušić,0,95
+2721,Lučani (Selo),0,118
+2722,Tučkovo,0,133
+2723,Krstac,0,118
+2724,Lisice,0,118
+2725,Družetići,0,88
+2726,Lis,0,118
+2727,Rošci,0,97
+2728,Jančići,0,97
+2729,Rubribreza,0,82
+2730,Gornji Mušić,0,95
+2731,Koštunići,0,88
+2732,Berkovac,0,95
+2733,Rakari,0,95
+2734,Ba,0,64
+2735,Vračević,0,82
+2736,Dučić,0,95
+2737,Lajkovac (Selo),0,82
+2738,Bogdanovica,0,38
+2739,Murgaš,0,38
+2740,Trnjaci,0,38
+2741,Stublenica,0,38
+2742,Paljuvi,0,38
+2743,Lončanik,0,38
+2744,Milorci,0,38
+2745,Trstenica,0,47
+2746,Brović,0,47
+2747,Šarbane,0,38
+2748,Urovci,0,47
+2749,Krtinska,0,47
+2750,Zvečka,0,47
+2751,Piroman,0,47
+2752,Veliko Polje,0,47
+2753,Petrovčić,0,173
+2754,Progar,0,173
+2755,Negrišori,0,118
+2756,Međuvršje,0,97
+2757,Veliševac,0,64
+2758,Donji Lajkovac,0,82
+2759,Bošnjanović,0,64
+2760,Kadina Luka,0,64
+2761,Babajić,0,64
+2762,Županjac,0,49
+2763,Cvetanovac,0,64
+2764,Tijanje,0,118
+2765,Zeoke,0,118
+2766,Pakovraće,0,97
+2767,Vidova,0,97
+2768,Prijevor,0,97
+2769,Miokovci,0,97
+2770,Grab,0,118
+2771,Parmenac,0,97
+2772,Gukoš,0,64
+2773,Latković,0,64
+2774,Jajčić,0,64
+2775,Namga,0,140
+2776,Barzilovica,0,49
+2777,Moravci,0,64
+2778,Pavlje,0,139
+2779,Rvati,0,47
+2780,Kalenić,0,38
+2781,Poljane,0,47
+2782,Mislođin,0,47
+2783,Boljevci,0,173
+2784,Bečmen,0,173
+2785,Dobanovci,0,173
+2786,Šopić,0,49
+2787,Konatice,0,47
+2788,Jasenak,0,47
+2789,Jakovo,0,173
+2790,Tunovo,0,139
+2791,Pope,0,140
+2792,Lukavica,0,140
+2793,Čarovina,0,140
+2794,Baljen,0,140
+2795,Župa,0,140
+2796,Ruđa,0,140
+2797,Smoluća,0,140
+2798,Blaca,0,140
+2799,Dojinoviće,0,139
+2800,Janča,0,139
+2801,Radaljica,0,139
+2802,Donji Dubac,0,118
+2803,Paljevo,0,140
+2804,Kuzmičevo,0,139
+2805,Milatovići,0,118
+2806,Guberevci,0,118
+2807,Orlja Glava,0,4
+2808,Vlasteljice,0,118
+2809,Jeliće,0,140
+2810,Popiće,0,140
+2811,Šavci,0,139
+2812,Bajevica,0,139
+2813,Rajčinoviće,0,139
+2814,Veseniće,0,140
+2815,Ivanča,0,139
+2816,Varevo,0,139
+2817,Vrapče,0,140
+2818,Žunjeviće,0,139
+2819,Pobrđe,0,139
+2820,Oholje,0,139
+2821,Vojniće,0,139
+2822,Šaronje,0,139
+2823,Bekova,0,139
+2824,Mlanča,0,4
+2825,Premeća,0,97
+2826,Bzovik,0,4
+2827,Sebimilje,0,27
+2828,Žaočani,0,97
+2829,Lazac,0,4
+2830,Jezdina,0,97
+2831,Gornja Gorevnica,0,97
+2832,Lozanj,0,88
+2833,Brančić,0,64
+2834,Beršići,0,88
+2835,Gornji Branetići,0,88
+2836,Lalinci,0,64
+2837,Donji Banjani,0,64
+2838,Dići,0,64
+2839,Ivanovci,0,64
+2840,Liplje,0,64
+2841,Ozrem,0,88
+2842,Štavica,0,64
+2843,Poljanice,0,64
+2844,Atenica,0,97
+2845,Kozelj,0,64
+2846,Kulinovci,0,97
+2847,Milićevci,0,97
+2848,Donji Branetići,0,88
+2849,Ločevci,0,88
+2850,Ljevaja,0,88
+2851,Banjica,0,97
+2852,Rakova,0,97
+2853,Šarani,0,88
+2854,Šutci,0,64
+2855,Mali Crljeni,0,49
+2856,Kalanjevci,0,64
+2857,Vrbovno,0,49
+2858,Šiljakovac,0,40
+2859,Sokolovo,0,49
+2860,Arapovac,0,49
+2861,Rožanci,0,40
+2862,Baćevac,0,40
+2863,Pećani,0,110
+2864,Viljuša,0,97
+2865,Konjevići,0,97
+2866,Semedraž,0,88
+2867,Prislonica,0,97
+2868,Baluga (Ljubićska),0,97
+2869,Vapa,0,97
+2870,Kalimanići,0,88
+2871,Klatičevo,0,88
+2872,Brusnica,0,88
+2873,Ljutovnica,0,88
+2874,Trudelj,0,88
+2875,Šilopaj,0,88
+2876,Progoreoci,0,15
+2877,Živkovci,0,64
+2878,Garaši,0,15
+2879,Stančići,0,97
+2880,Donja Trepča,0,97
+2881,Velereč,0,88
+2882,Kukići,0,97
+2883,Mojsinje,0,97
+2884,Lunjevica,0,88
+2885,Bosuta,0,15
+2886,Boždarevac,0,40
+2887,Prkosava,0,49
+2888,Manić,0,40
+2889,Tulež,0,15
+2890,Lisović,0,40
+2891,Borča,0,179
+2892,Padinska Skela,0,179
+2893,Slankamenački Vinogradi,0,74
+2894,Siget,0,33
+2895,Golice,0,139
+2896,Mur,0,139
+2897,Izbice,0,139
+2898,Građanoviće,0,139
+2899,Sudsko Selo,0,139
+2900,Gornja Tušimlja,0,139
+2901,Srednja Tušimlja,0,139
+2902,Tepeče,0,4
+2903,Lopatnica,0,4
+2904,Pekčanica,0,4
+2905,Kačulice,0,97
+2906,Vrdila,0,4
+2907,Nosoljin,0,27
+2908,Draganići,0,27
+2909,Panojeviće,0,27
+2910,Bapsko Polje,0,4
+2911,Progorelica,0,4
+2912,Mrsać,0,4
+2913,Rajetiće,0,139
+2914,Kašalj,0,139
+2915,Supnje,0,27
+2916,Beoci,0,27
+2917,Kraviće,0,27
+2918,Bela Stena,0,27
+2919,Tadenje,0,4
+2920,Lozno,0,4
+2921,Obrva,0,4
+2922,Vukosavci,0,15
+2923,Musina Reka,0,4
+2924,Jarčujak,0,4
+2925,Miločaj,0,4
+2926,Čibukovac,0,4
+2927,Biočin,0,27
+2928,Brvenik Naselje,0,27
+2929,Radošiće,0,27
+2930,Korlaće,0,27
+2931,Kurići,0,27
+2932,Mure,0,27
+2933,Popovići,0,4
+2934,Grdica,0,4
+2935,Donja Gorevnica,0,97
+2936,Ostra,0,97
+2937,Vujetinci,0,97
+2938,Bečanj,0,97
+2939,Svračkovci,0,88
+2940,Gornja Vrbava,0,88
+2941,Gornja Crnuća,0,88
+2942,Donja Vrbava,0,88
+2943,Katrga,0,97
+2944,Donja Crnuća,0,88
+2945,Gornja Trešnjevica,0,15
+2946,Manojlovci,0,69
+2947,Misača,0,15
+2948,Donja Trešnjevica,0,69
+2949,Gornja Šatornja,0,69
+2950,Brezovac,0,15
+2951,Dučina,0,162
+2952,Babe,0,162
+2953,Parcani,0,162
+2954,Ovča,0,179
+2955,Tavnik,0,4
+2956,Bumbarevo Brdo,0,44
+2957,Borač,0,44
+2958,Cvetke,0,4
+2959,Blaznava,0,69
+2960,Ljuljaci,0,44
+2961,Ramaća,0,71
+2962,Oplanić,0,44
+2963,Masloševo,0,71
+2964,Plaskovac,0,69
+2965,Žerađe,0,27
+2966,Jelakci,0,8
+2967,Ravanica,0,4
+2968,Leševo,0,4
+2969,Kikojevac,0,44
+2970,Jelenac,0,69
+2971,Sumorovac,0,44
+2972,Pajazitovo,0,71
+2973,Donje Grbice,0,71
+2974,Drlupa,0,4
+2975,Vinjište,0,71
+2976,Suvodol,0,123
+2977,Mrča,0,48
+2978,Osreci,0,79
+2979,Domiševina,0,79
+2980,Vranštica,0,8
+2981,Vlajkovci,0,79
+2982,Strmenica,0,8
+2983,Popina,0,108
+2984,Donje Leviće,0,79
+2985,Babica,0,48
+2986,Osaonica,0,108
+2987,Donji Lipovac,0,79
+2988,Lesenovci,0,8
+2989,Gornja Crnišava,0,108
+2990,Leskovica,0,8
+2991,Mala Grabovnica,0,79
+2992,Bratići,0,8
+2993,Dobroljupci,0,8
+2994,Lepojević,0,72
+2995,Kamenjača,0,108
+2996,Rujišnik,0,108
+2997,Veluće,0,108
+2998,Trešnjevak,0,71
+2999,Cvetojevac,0,71
+3000,Novi Milanovac,0,71
+3001,Donja Sabanta,0,71
+3002,Siljevica,0,72
+3003,Gradac,0,21
+3004,Velika Kruševica,0,72
+3005,Igrište,0,48
+3006,Žegrova,0,48
+3007,Vitkovo,0,8
+3008,Bobote,0,8
+3009,Nevada,0,48
+3010,Bogiše,0,79
+3011,Karanovac,0,52
+3012,Donja Mikuljana,0,48
+3013,Prevetica,0,48
+3014,Markoviće,0,48
+3015,Degrmen,0,48
+3016,Čučale,0,42
+3017,Kavadar,0,72
+3018,Rabenovac,0,72
+3019,Beočić,0,72
+3020,Topola,0,20
+3021,Ivkovački Prnjavor,0,20
+3022,Lukovica,0,80
+3023,Mačevac,0,80
+3024,Tićevac,0,7
+3025,Kravlji Do,0,85
+3026,Ritiševo,0,107
+3027,Cakanovac,0,168
+3028,Strezovce,0,168
+3029,Donje Novo Selo,0,76
+3030,Srpska Kuća,0,76
+3031,Čestelin,0,121
+3032,Kuštica,0,76
+3033,Pljačkovica,0,121
+3034,Lepčince,0,121
+3035,Ranutovac,0,121
+3036,Šajince,0,147
+3037,Prevalac,0,153
+3038,Gornji Kozji Dol,0,147
+3039,Crnovce,0,147
+3040,Duga Luka,0,153
+3041,Stara Brezovica,0,121
+3042,Gornja Trnica,0,147
+3043,Gornji Stajevac,0,147
+3044,Crveni Grad,0,147
+3045,Prolesje,0,147
+3046,Musulj,0,77
+3047,Goleš,0,77
+3048,Donja Ržana,0,77
+3049,Gornje Tlamino,0,77
+3050,Gložje,0,77
+3051,Rikačevo,0,77
+3052,Zli Dol,0,77
+3053,Belut,0,77
+3054,Veliko Pupavce,0,48
+3055,Gornje Točane,0,48
+3056,Medevce,0,160
+3057,Poroštica,0,160
+3058,Piskalje,0,68
+3059,Vratare,0,60
+3060,Dobromir,0,60
+3061,Gornje Vidovo,0,104
+3062,Gornja Bresnica,0,68
+3063,Krnji Grad,0,68
+3064,Smrdan,0,68
+3065,Gornja Rečica,0,68
+3066,Pozlata,0,60
+3067,Gaglovo,0,60
+3068,Mali Šiljegovac,0,60
+3069,Lučina,0,167
+3070,Vrapce,0,160
+3071,Bogunovac,0,160
+3072,Maćedonce,0,160
+3073,Donji Gajtan,0,160
+3074,Rankova Reka,0,68
+3075,Jabučevo,0,68
+3076,Dragi Deo,0,68
+3077,Slišane,0,91
+3078,Bregovina,0,68
+3079,Tupale,0,160
+3080,Rujkovac,0,160
+3081,Bačevina,0,91
+3082,Slavnik,0,87
+3083,Svinjarica,0,91
+3084,Konjarnik,0,144
+3085,Debeli Lug,0,144
+3086,Pašinac,0,68
+3087,Ostrikovac,0,75
+3088,Jakovlje,0,10
+3089,Krušje,0,10
+3090,Praskovče,0,117
+3091,Mađere,0,117
+3092,Jasenje,0,10
+3093,Gornja Peščanica,0,10
+3094,Deligrad,0,10
+3095,Donja Stražava,0,68
+3096,Gornja Rasovača,0,26
+3097,Donja Rasovača,0,26
+3098,Mali Drenovac,0,10
+3099,Belja,0,10
+3100,Dvorica,0,75
+3101,Šavac,0,104
+3102,Vošanovac,0,103
+3103,Paljane,0,75
+3104,Kovanica,0,75
+3105,Melnica,0,103
+3106,Beranje,0,43
+3107,Sirakovo,0,114
+3108,Malo Gradište,0,85
+3109,Đurakovo,0,114
+3110,Biskuplje,0,114
+3111,Zatonje,0,114
+3112,Češko Selo,0,29
+3113,Aljudovo,0,85
+3114,Mala Bresnica,0,124
+3115,Krupaja,0,131
+3116,Mrčkovac,0,92
+3117,Donja Kruševica,0,92
+3118,Srpce,0,124
+3119,Bikinje,0,92
+3120,Sladinac,0,92
+3121,Požeženo,0,114
+3122,Kaluđerovo,0,29
+3123,Buvce,0,91
+3124,Barje,0,84
+3125,Plavce,0,87
+3126,Granica,0,87
+3127,Grudaš,0,144
+3128,Lugare,0,91
+3129,Đinđuša,0,87
+3130,Melovo,0,84
+3131,Slavujevce,0,84
+3132,Todorovce,0,84
+3133,Donja Bunuša,0,84
+3134,Radonjica,0,84
+3135,Žabljane,0,84
+3136,Donje Vranovce,0,91
+3137,Cekavica,0,91
+3138,Brest,0,26
+3139,Mramorski Potok,0,143
+3140,Mekiš,0,70
+3141,Mramorsko Brdo,0,26
+3142,Rujevica,0,128
+3143,Poružnica,0,128
+3144,Perutina,0,70
+3145,Mužinac,0,128
+3146,Prekonozi,0,10
+3147,Kruševa Glava,0,121
+3148,Kukulovce,0,84
+3149,Palikuća,0,84
+3150,Brejanovce,0,84
+3151,Navalin,0,84
+3152,Donja Lokošnica,0,84
+3153,Bogoševo,0,120
+3154,Dupljane,0,120
+3155,Repište,0,120
+3156,Dedina Bara,0,84
+3157,Velika Biljanica,0,84
+3158,Mala Kopašnica,0,84
+3159,Oraovica (Kod Crkovnice),0,84
+3160,Gornja Kupinovica,0,84
+3161,Gare,0,132
+3162,Grkinja,0,132
+3163,Radenkovac,0,128
+3164,Nikolinac,0,128
+3165,Mirovo,0,83
+3166,Koritnjak,0,150
+3167,Rautovo,0,150
+3168,Pasjača,0,135
+3169,Gornja Studena,0,150
+3170,Palilula,0,102
+3171,Skrobnica,0,67
+3172,Vlaško Polje,0,67
+3173,Zubetinac,0,67
+3174,Brodica,0,124
+3175,Boljevac Selo,0,83
+3176,Leskovo,0,146
+3177,Dobričevo,0,29
+3178,Jablanka,0,107
+3179,Boćevica,0,84
+3180,Ljutež,0,120
+3181,Ličin Dol,0,84
+3182,Predejane (Selo),0,84
+3183,Donja Lopušnja,0,122
+3184,Mrkovica,0,84
+3185,Gornja Lopušnja,0,122
+3186,Gunjetina,0,122
+3187,Ovsinjinac,0,132
+3188,Semče,0,132
+3189,Bankovci,0,170
+3190,Ostrozub,0,170
+3191,Bajinci,0,170
+3192,Vus,0,170
+3193,Jakovljevo,0,122
+3194,Tegošnica,0,122
+3195,Željevo,0,102
+3196,Drajinac,0,102
+3197,Leskovik,0,62
+3198,Tamnjanica,0,62
+3199,Bukurovac,0,62
+3200,Beloinje,0,102
+3201,Svrljiška Topla,0,67
+3202,Stogazovac,0,67
+3203,Manjinac,0,67
+3204,Koželj,0,67
+3205,Vrandol,0,62
+3206,Mokra,0,62
+3207,Mučibaba,0,67
+3208,Debelica,0,67
+3209,Crvenje,0,67
+3210,Žukovac,0,67
+3211,Štitarac,0,67
+3212,Berčinovac,0,67
+3213,Brestov Dol,0,18
+3214,Šljivovik,0,62
+3215,Preslap,0,170
+3216,Strezimirovci,0,86
+3217,Dučevac,0,18
+3218,Stol,0,18
+3219,Kozja,0,62
+3220,Pričevac,0,67
+3221,Dejanovac,0,67
+3222,Balta Berilovac,0,67
+3223,Luka,0,89
+3224,Rečka,0,94
+3225,Čubra,0,94
+3226,Petrovo Selo,0,98
+3227,Reka,0,98
+3228,Studena,0,18
+3229,Preseka,0,18
+3230,Jasenov Del,0,18
+3231,Janja,0,67
+3232,Bačevo,0,141
+3233,Pakleštica,0,116
+3234,Milutinovac,0,98
+3235,Zaostro,0,36
+3236,Gornja Koviljača,0,37
+3237,Kaluđerovići,0,36
+3238,Kasidoli,0,36
+3239,Gornje Babine,0,12
+3240,Pribojska Goleša,0,36
+3241,Berlovine,0,130
+3242,Sokolac,0,130
+3243,Brnjac,0,37
+3244,Šurice,0,37
+3245,Jarebice,0,37
+3246,Kotroman,0,61
+3247,Oraovac,0,12
+3248,Čadinje,0,12
+3249,Zalug,0,12
+3250,Vitasi,0,61
+3251,Radenković,0,73
+3252,Ravnaja,0,63
+3253,Donja Sipulja,0,37
+3254,Pomijača,0,37
+3255,Skrađani,0,106
+3256,Bojić,0,106
+3257,Sainovina,0,148
+3258,Vizić,0,53
+3259,Stara Bingula,0,73
+3260,Gornja Rogatica,0,25
+3261,Šišatovac,0,73
+3262,Štitkovo,0,78
+3263,Zastup,0,12
+3264,Sedobro,0,12
+3265,Krajinoviće,0,45
+3266,Milakovići,0,12
+3267,Karaula,0,12
+3268,Brdo,0,78
+3269,Ojkovica,0,78
+3270,Kućani,0,78
+3271,Rebelj,0,93
+3272,Ruda Bukva,0,105
+3273,Ćukovine,0,145
+3274,Kozarica,0,119
+3275,Pejinović,0,119
+3276,Žabar,0,106
+3277,Rabas,0,93
+3278,Kovačice,0,93
+3279,Riđake,0,119
+3280,Pralja,0,45
+3281,Trijebine,0,45
+3282,Uvac,0,45
+3283,Radoševo,0,16
+3284,Zlakusa,0,61
+3285,Bioc,0,45
+3286,Papiće,0,45
+3287,Raždaginja,0,45
+3288,Ljepojevići,0,78
+3289,Ravna Gora,0,65
+3290,Sugubine,0,45
+3291,Fijulj,0,45
+3292,Katići,0,65
+3293,Latvica,0,16
+3294,Milićevo Selo,0,133
+3295,Brangović,0,93
+3296,Ševrljuge,0,105
+3297,Radovci,0,133
+3298,Mionica,0,105
+3299,Batalage,0,145
+3300,Vlasanica,0,119
+3301,Kršna Glava,0,38
+3302,Donji Tovarnik,0,17
+3303,Klašnić,0,95
+3304,Mršelji,0,133
+3305,Tvrdojevac,0,38
+3306,Zvizdar,0,38
+3307,Bešenovački Prnjavor,0,73
+3308,Karajukića Bunari,0,45
+3309,Cetanoviće,0,45
+3310,Višnjice,0,45
+3311,Reževiće,0,140
+3312,Međugor,0,45
+3313,Točilovo,0,140
+3314,Saš,0,140
+3315,Gurdijelje,0,140
+3316,Bujkoviće,0,140
+3317,Čukote,0,140
+3318,Šare,0,45
+3319,Ljutaje,0,45
+3320,Pšanik,0,118
+3321,Papratište,0,133
+3322,Prilipac,0,133
+3323,Leušići,0,88
+3324,Veselinovac,0,93
+3325,Vrnčani,0,97
+3326,Nanomir,0,95
+3327,Ruklada,0,38
+3328,Brgulice,0,47
+3329,Paležnica,0,64
+3330,Šušnjar,0,49
+3331,Cvetovac,0,49
+3332,Severni Kočarnik,0,140
+3333,Dobri Dub,0,140
+3334,Okose,0,139
+3335,Glogovik,0,140
+3336,Vučiniće,0,139
+3337,Gluhavica,0,140
+3338,Doljani,0,139
+3339,Koritnik,0,65
+3340,Gornji Dubac,0,118
+3341,Gornji Crniš,0,140
+3342,Piskopovce,0,140
+3343,Miščiće,0,139
+3344,Boroviće,0,27
+3345,Dedevci,0,4
+3346,Riđage,0,97
+3347,Ručići,0,88
+3348,Sinoševići,0,88
+3349,Baluga (Trnavska),0,97
+3350,Mutanj,0,88
+3351,Varnice,0,88
+3352,Javor,0,139
+3353,Filić,0,33
+3354,Banatski Monoštor,0,125
+3355,Starčeviće,0,140
+3356,Boturovina,0,139
+3357,Vojkoviće,0,139
+3358,Goričani,0,97
+3359,Vrtine,0,27
+3360,Smilov Laz,0,139
+3361,Kućane,0,27
+3362,Drakčići,0,4
+3363,Karadak,0,27
+3364,Pocesje,0,27
+3365,Guriševci,0,69
+3366,Nevade,0,88
+3367,Pretoke,0,44
+3368,Radmilović,0,44
+3369,Kopljare,0,15
+3370,Kneževac,0,44
+3371,Kusovac,0,44
+3372,Ugljarevac,0,71
+3373,Vojmilovići,0,27
+3374,Otroci,0,129
+3375,Mali Šenj,0,71
+3376,Svetlić,0,69
+3377,Donje Jarušice,0,163
+3378,Gornji Lipovac,0,79
+3379,Pačarađa,0,48
+3380,Busenje,0,28
+3381,Bozoljin,0,79
+3382,Donji Vratari,0,8
+3383,Žalica,0,48
+3384,Stanjevo,0,8
+3385,Pavaštica,0,48
+3386,Tuleš,0,8
+3387,Adrovac,0,163
+3388,Radovanje,0,111
+3389,Samokovo,0,48
+3390,Ljuša,0,48
+3391,Kastrat,0,48
+3392,Nabrđe,0,43
+3393,Milivojce,0,121
+3394,Suharno,0,76
+3395,Brnjare,0,76
+3396,Donja Trnica,0,147
+3397,Slivnica,0,153
+3398,Resen,0,77
+3399,Dešiška,0,48
+3400,Mehane,0,48
+3401,Kosmača,0,48
+3402,Bogujevac,0,48
+3403,Velika Braina,0,160
+3404,Varadin,0,160
+3405,Trnovi Laz,0,68
+3406,Veliko Krušince,0,60
+3407,Krežbinac,0,104
+3408,Stari Bračin,0,117
+3409,Petrilje,0,160
+3410,Negosavlje,0,160
+3411,Srednji Bučumet,0,160
+3412,Ševiš,0,68
+3413,Grbavce,0,160
+3414,Radinovac,0,91
+3415,Lozane,0,87
+3416,Zubovac,0,60
+3417,Bojince,0,60
+3418,Srezovac,0,10
+3419,Nova Božurna,0,68
+3420,Glavica,0,104
+3421,Velika Bresnica,0,124
+3422,Vitovnica,0,103
+3423,Miljević,0,92
+3424,Sena,0,124
+3425,Ravnište,0,124
+3426,Gagince,0,84
+3427,Studenac,0,144
+3428,Nova Topola,0,91
+3429,Gorina,0,84
+3430,Drvodelja,0,84
+3431,Uševce,0,121
+3432,Gornja Bunuša,0,84
+3433,Togočevce,0,91
+3434,Gornje Trnjane,0,84
+3435,Donji Krupac,0,10
+3436,Gumerište,0,121
+3437,Gornja Jajina,0,84
+3438,Donje Jabukovo,0,120
+3439,Zebince,0,120
+3440,Nesvrta,0,84
+3441,Gornji Bunibrod,0,84
+3442,Mala Biljanica,0,84
+3443,Jašunja,0,84
+3444,Kovačeva Bara,0,84
+3445,Piskupovo,0,84
+3446,Sopotnica,0,132
+3447,Crnatovo,0,122
+3448,Kaletinac,0,132
+3449,Kosmovac,0,62
+3450,Ostatovica,0,18
+3451,Lanište,0,62
+3452,Krenta,0,67
+3453,Draževo,0,62
+3454,Okolište,0,102
+3455,Jakovac,0,67
+3456,Crvena Jabuka,0,18
+3457,Raljin,0,18
+3458,Petruša,0,67
+3459,Kijevac,0,18
+3460,Tatrasnica,0,67
+3461,Repušnica,0,67
+3462,Čokonjar,0,100
+3463,Banski Dol,0,141
+3464,Gradinje,0,141
+3465,Kladušnica,0,98
+3466,Budišić,0,112
+3467,Planina,0,63
+3468,Kašice,0,12
+3469,Dušmanići,0,12
+3470,Izbičanj,0,12
+3471,Tornik,0,130
+3472,Desić,0,106
+3473,Grušić,0,106
+3474,Galović,0,145
+3475,Maovi,0,106
+3476,Srednji Salaš,0,25
+3477,Balići,0,12
+3478,Mušvete,0,148
+3479,Rovni,0,93
+3480,Goševo,0,45
+3481,Trudovo,0,78
+3482,Željine,0,148
+3483,Boljare,0,45
+3484,Bjeluša,0,16
+3485,Boguti,0,45
+3486,Mratišić,0,95
+3487,Mrčić,0,93
+3488,Mađer,0,133
+3489,Sanković,0,95
+3490,Obornjača,0,1
+3491,Kijevci,0,45
+3492,Rastenoviće,0,45
+3493,Kamešnica,0,45
+3494,Kokošiće,0,45
+3495,Raspoganče,0,45
+3496,Rovine,0,65
+3497,Turica,0,118
+3498,Struganik,0,95
+3499,Gunjica,0,95
+3500,Srezojevci,0,88
+3501,Dajići,0,65
+3502,Tenkovo,0,139
+3503,Rast,0,139
+3504,Zapadni Mojstir,0,140
+3505,Kovačevo,0,139
+3506,Polokce,0,139
+3507,Burovo,0,49
+3508,Arnajevo,0,40
+3509,Davidovica,0,88
+3510,Rabe,0,33
+3511,Strumce,0,140
+3512,Cokoviće,0,139
+3513,Milatkoviće,0,27
+3514,Zasad,0,4
+3515,Lopužnje,0,139
+3516,Polumir,0,4
+3517,Rudnjak,0,4
+3518,Vojkovci,0,69
+3519,Bečevica,0,44
+3520,Predole,0,4
+3521,Boranci,0,79
+3522,Radmanovo,0,79
+3523,Grad,0,79
+3524,Šljivica,0,72
+3525,Magovo,0,48
+3526,Komarane,0,72
+3527,Mirnica,0,48
+3528,Vražogrnci,0,8
+3529,Dabinovac,0,48
+3530,Šogolj,0,60
+3531,Deonica,0,20
+3532,Rajkinac,0,20
+3533,Gornje Žapsko,0,121
+3534,Barelić,0,121
+3535,Korbul,0,153
+3536,Surlica,0,147
+3537,Crna Reka,0,147
+3538,Žeravino,0,77
+3539,Zebica,0,48
+3540,Grabovnica,0,48
+3541,Bivolje,0,60
+3542,Donje Konjuvce,0,87
+3543,Balinovac,0,68
+3544,Pankovo,0,103
+3545,Makvište,0,113
+3546,Snegotin,0,92
+3547,Konjino,0,91
+3548,Stublina,0,10
+3549,Beliševo,0,120
+3550,Grajevce,0,84
+3551,Donji Barbeš,0,132
+3552,Tegovište,0,120
+3553,Jastrebac,0,120
+3554,Radmirovac,0,102
+3555,Kopitarce,0,120
+3556,Malo Bonjince,0,18
+3557,Ravni Do,0,150
+3558,Crnoljevica,0,102
+3559,Bučum,0,102
+3560,Manojlica,0,102
+3561,Gornje Gare,0,170
+3562,Kandalica,0,67
+3563,Balinac,0,67
+3564,Bela,0,116
+3565,Mijani,0,12
+3566,Gradojević,0,145
+3567,Visočka,0,45
+3568,Koprivna,0,12
+3569,Božov Potok,0,45
+3570,Gornje Lopiže,0,45
+3571,Buđevo,0,45
+3572,Čedovo,0,45
+3573,Dunišiće,0,45
+3574,Belić,0,93
+3575,Rosići,0,105
+3576,Pavlovci,0,101
+3577,Vrapci,0,45
+3578,Velika Marišta,0,95
+3579,Teočin,0,88
+3580,Biohane,0,140
+3581,Batrage,0,140
+3582,Dramiće,0,139
+3583,Stanča,0,4
+3584,Savovo,0,4
+3585,Zamčanje,0,4
+3586,Rašković,0,44
+3587,Zakuta,0,4
+3588,Paljevštica,0,79
+3589,Trećak,0,48
+3590,Ljutova,0,48
+3591,Venčac,0,8
+3592,Vasiljevac,0,48
+3593,Jošanički Prnjavor,0,20
+3594,Potporanj,0,107
+3595,Vrban,0,76
+3596,Košarno,0,76
+3597,Kopanjane,0,121
+3598,Šumata Trnica,0,147
+3599,Mezdraja,0,147
+3600,Nastavce,0,121
+3601,Donje Punuševce,0,121
+3602,Đerekarce,0,147
+3603,Sekirača,0,48
+3604,Đulekare,0,160
+3605,Gurgutovo,0,160
+3606,Ivankovac,0,75
+3607,Medveđica,0,131
+3608,Sisevac,0,104
+3609,Mijakovce,0,121
+3610,Veliko Vojlovce,0,91
+3611,Kaštavar,0,84
+3612,Urmanica,0,121
+3613,Donja Slatina,0,84
+3614,Urvič,0,120
+3615,Merdželat,0,102
+3616,Kozilo,0,122
+3617,Čuka,0,170
+3618,Berduj,0,18
+3619,Donja Glama,0,62
+3620,Sinjac,0,62
+3621,Amajić,0,112
+3622,Bogoštica,0,63
+3623,Gojakovići,0,12
+3624,Borišiće,0,45
+3625,Gornje Trudovo,0,78
+3626,Poda,0,45
+3627,Kalipolje,0,45
+3628,Aliveroviće,0,45
+3629,Markova Crkva,0,82
+3630,Dulebe,0,140
+3631,Mitrova,0,140
+3632,Vidovo,0,139
+3633,Reljinci,0,88
+3634,Dražiniće,0,4
+3635,Kamenjani,0,4
+3636,Gostiradiće,0,27
+3637,Meljanica,0,4
+3638,Kneževo,0,79
+3639,Trmka,0,48
+3640,Sebrat,0,76
+3641,Gornja Otulja,0,121
+3642,Rusce,0,121
+3643,Trubarevo,0,167
+3644,Donja Lapaštica,0,160
+3645,Gornje Konjuvce,0,87
+3646,Ljupten,0,10
+3647,Gornja Lokošnica,0,84
+3648,Mečji Do,0,102
+3649,Koraćevac,0,84
+3650,Vilje Kolo,0,84
+3651,Lebet,0,120
+3652,Inovo,0,67
+3653,Stanjinac,0,67
+3654,Bujić,0,168
+3655,Vlaščić,0,93
+3656,Mašoviće,0,45
+3657,Zobnatica,0,25
+3658,Grgetek,0,127
+3659,Krnja Jela,0,45
+3660,Dragojloviće,0,45
+3661,Rtari,0,118
+3662,Dunavac,0,179
+3663,Dragočevo,0,139
+3664,Pilareta,0,139
+3665,Maglič,0,4
+3666,Gokčanica,0,4
+3667,Pretina,0,76
+3668,Vogance,0,76
+3669,Gavez,0,60
+3670,Zeletovo,0,87
+3671,Crcavac,0,84
+3672,Muškovina,0,12
+3673,Donje Goračiće,0,45
+3674,Svračkovo,0,133
+3675,Jevik,0,45
+3676,Otanj,0,133
+3677,Raškoviće,0,45
+3678,Brajići,0,88
+3679,Vranići,0,97
+3680,Dolac,0,4
+3681,Čokotar,0,79
+3682,Tačevac,0,48
+3683,Matarova,0,48
+3684,Cerevajka,0,168
+3685,Maričiće,0,48
+3686,Rlica,0,60
+3687,Stara Banja,0,160
+3688,Mijovce,0,121
+3689,Zahumsko,0,45
+3690,Breza,0,45
+3691,Kalenićki Prnjavor,0,72
+3692,Iričići,0,79
+3693,Gornji Vratari,0,8
+3694,Pretrkovac,0,117
+3695,Gornja Slatina,0,84
+3696,Rtanj,0,83
+3697,Aldina Reka,0,67
+3698,Milošev Do,0,12
+3699,Međani,0,12
+3700,Crčevo,0,45
+3701,Đakovo,0,4
+3702,Lisina,0,27
+3703,Panjevac,0,8
+3704,Donji Račnik,0,20
+3705,Kupinince,0,121
+3706,Goločevac,0,147
+3707,Sinji Vir,0,104
+3708,Dragobužde,0,121
+3709,Zloćudovo,0,84
+3710,Krpejce,0,84
+3711,Mrčkovina,0,12
+3712,Lijeva Reka,0,45
+3713,Gornji Banjani,0,88
+3714,Gorovič,0,69
+3715,Sebevranje,0,153
+3716,Masurovac,0,18
+3717,Kučin,0,12
+3718,Milići,0,45
+3719,Ratkovac,0,82
+3720,Vršački Ritovi,0,107
+3721,Kurbalija,0,168
+3722,Skradnik,0,45
+3723,Goluban,0,45
+3724,Đerađ,0,118
+3725,Ilince,0,168
+3726,Gornovac,0,147
+3727,Prekorađa,0,48
+3728,Malo Krušince,0,60
+3729,Zorovac,0,87
+3730,Kruševo,0,12
+3731,Žuče,0,140
+3732,Miliće,0,4
+3733,Stanuloviće,0,79
+3734,Srndalje,0,60
+3735,Binovce,0,86
+3736,Parada,0,48
+3737,Rajčevce,0,147
+3738,Tabanovići,0,133
+3739,Sokolići,0,97
+3740,Bojanići,0,4
+3741,Leva Reka,0,153
+3742,Čamurlija,0,134
+3743,Masurica,0,86
+3744,Vojinovac,0,163
+3745,Kunice,0,93
+3746,Tolišnica,0,4
+3747,Bagačiće,0,45
+3748,Ranatovce,0,168
+3749,Drtevci,0,79
+3750,Telovac,0,62
+3751,Potkrš,0,12
+3752,Tikva,0,78
+3753,Čipalje,0,45
+3754,Vrh,0,4
+3755,Koznik,0,45
+3756,Donja Otulja,0,121
+3757,Dulan,0,121
+3758,Gojmanovac,0,102
+3759,Bagremovo,0,25
+3760,Selova,0,48
+3761,Radunje,0,79
+3762,Gubavce,0,160
+3763,Blato,0,45
+3764,Rucka,0,110
+3765,Milavac,0,64
+3766,Todorin Do,0,95
+3767,Dejance,0,147
+3768,Klinovac,0,76
+3769,Oslare,0,76
+3770,Plužac,0,152
+3771,Lučane,0,76
+3772,Draga,0,140
+3773,Ovčinja,0,23
+3774,Lisa,0,65
+3775,Jakalj,0,23
+3776,Metriš,0,100
+3777,Pilica,0,23
+3778,Zaovine,0,23
+3779,Beserovina,0,23
+3780,Jagoštica,0,23
+3781,Metković,0,22
+3782,Crvica,0,23
+3783,Dub,0,23
+3784,Naboje,0,140
+3785,Prilike,0,65
+3786,Devići,0,65
+3787,Sitniče,0,139
+3788,Plešin,0,27
+3789,Crna Glava,0,27
+3790,Šošiće,0,79
+3791,Bogdanje,0,108
+3792,Tobolac,0,108
+3793,Lukar,0,20
+3794,Žbevac,0,76
+3795,Preobraženje,0,121
+3796,Prekadin,0,68
+3797,Kožince,0,68
+3798,Gubetin,0,68
+3799,Berilje,0,68
+3800,Zlatovo,0,113
+3801,Jelovac,0,113
+3802,Suvojnica,0,86
+3803,Alakince,0,86
+3804,Donje Krnjino,0,18
+3805,Vlasi,0,116
+3806,Konjska Reka,0,23
+3807,Zaugline,0,23
+3808,Badanj,0,27
+3809,Sočice,0,36
+3810,Plašće,0,36
+3811,Zabrnjica,0,36
+3812,Zagradina,0,36
+3813,Crnugovići,0,36
+3814,Sjeverin,0,36
+3815,Živinice,0,36
+3816,Hercegovačka Goleša,0,36
+3817,Pepelj,0,23
+3818,Mažići,0,36
+3819,Bastav,0,152
+3820,Gunjaci,0,152
+3821,Konjic,0,152
+3822,Jugovići,0,37
+3823,Dragodol,0,152
+3824,Lopatanj,0,152
+3825,Ostružanj,0,152
+3826,Gvozdac,0,23
+3827,Sijerač,0,23
+3828,Gornje Crniljevo,0,152
+3829,Gornji Tavankut,0,24
+3830,Oštra Stijena,0,12
+3831,Biskupići,0,12
+3832,Draksin,0,23
+3833,Kujavica,0,119
+3834,Ušak,0,45
+3835,Donji Petrovci,0,101
+3836,Braćak,0,140
+3837,Leskova,0,140
+3838,Javorska Ravna Gora,0,65
+3839,Sivčina,0,65
+3840,Detane,0,140
+3841,Radaljevo,0,65
+3842,Veskoviće,0,45
+3843,Medovine,0,65
+3844,Kosovica,0,65
+3845,Ramoševo,0,140
+3846,Melaje,0,140
+3847,Arapoviće,0,140
+3848,Gleđica,0,65
+3849,Muhovo,0,139
+3850,Mana,0,65
+3851,Godovo,0,140
+3852,Morani,0,140
+3853,Velje Polje,0,140
+3854,Južni Kočarnik,0,140
+3855,Potreb,0,140
+3856,Noćaje,0,140
+3857,Žirče,0,140
+3858,Raduhovce,0,140
+3859,Osonica,0,65
+3860,Vrmbaje,0,65
+3861,Pustovlah,0,139
+3862,Ćulije,0,140
+3863,Rajčinovićka Trnava,0,139
+3864,Oraše,0,140
+3865,Kožlje,0,139
+3866,Čašić Dolac,0,139
+3867,Lukocrevo,0,139
+3868,Sebečevo,0,139
+3869,Jezgroviće,0,140
+3870,Lukarsko Goševo,0,139
+3871,Vranovina,0,139
+3872,Aluloviće,0,139
+3873,Rajkoviće,0,139
+3874,Prćenova,0,139
+3875,Vitkoviće,0,139
+3876,Hotkovo,0,139
+3877,Požežina,0,139
+3878,Brvenica,0,27
+3879,Vučja Lokva,0,139
+3880,Gnjilica,0,27
+3881,Pavlica,0,27
+3882,Kaznoviće,0,27
+3883,Piskanja,0,27
+3884,Žutice,0,27
+3885,Biljanovac,0,27
+3886,Kremiće,0,27
+3887,Beljevac,0,109
+3888,Semeteš,0,27
+3889,Živkovac,0,151
+3890,Putnikovo,0,138
+3891,Starci,0,8
+3892,Donji Dubič,0,108
+3893,Gornji Ribnik,0,108
+3894,Tržac,0,8
+3895,Donji Ribnik,0,108
+3896,Riljac,0,108
+3897,Mala Drenova,0,108
+3898,Poljna,0,108
+3899,Bogalinac,0,72
+3900,Gornja Omašnica,0,108
+3901,Brajnovac,0,72
+3902,Gornje Grgure,0,42
+3903,Bresno Polje,0,108
+3904,Muzaće,0,42
+3905,Rašica,0,42
+3906,Kaševar,0,42
+3907,Prebreza,0,42
+3908,Donje Grgure,0,42
+3909,Đurevac,0,42
+3910,Čungula,0,42
+3911,Sveta Petka,0,76
+3912,Sefer,0,168
+3913,Norča,0,168
+3914,Miratovac,0,168
+3915,Donja Šušaja,0,168
+3916,Žujince,0,168
+3917,Slavujevac,0,168
+3918,Crnotince,0,168
+3919,Bukarevac,0,168
+3920,Mali Trnovac,0,76
+3921,Božinjevac,0,76
+3922,Lopardince,0,76
+3923,Pribovce,0,76
+3924,Ravno Bučje,0,76
+3925,Lukarce,0,76
+3926,Spančevac,0,76
+3927,Krševica,0,76
+3928,Sejace,0,76
+3929,Gornje Trebešinje,0,121
+3930,Barbace,0,147
+3931,Prekašnica,0,68
+3932,Gornja Bejašnica,0,68
+3933,Donja Bejašnica,0,68
+3934,Gornji Statovac,0,68
+3935,Alabana,0,42
+3936,Rgaje,0,68
+3937,Pestiš,0,68
+3938,Međuhana,0,42
+3939,Šiljomana,0,42
+3940,Mala Draguša,0,42
+3941,Pretežana,0,42
+3942,Gornja Jošanica,0,42
+3943,Donja Draguša,0,42
+3944,Donja Jošanica,0,42
+3945,Donja Bresnica,0,68
+3946,Gojinovac,0,68
+3947,Kondželj,0,68
+3948,Belogoš,0,68
+3949,Maletina,0,117
+3950,Donji Statovac,0,68
+3951,Mrljak,0,68
+3952,Bublica,0,68
+3953,Reljinac,0,68
+3954,Jugovac,0,68
+3955,Gornje Kordince,0,68
+3956,Donje Kordince,0,68
+3957,Šurić,0,10
+3958,Golešnica,0,10
+3959,Trućevac,0,113
+3960,Židilje,0,113
+3961,Sladaja,0,113
+3962,Strmosten,0,113
+3963,Žitkovica,0,92
+3964,Ponikve,0,92
+3965,Obilić,0,87
+3966,Zarbince,0,76
+3967,Roždace,0,121
+3968,Malo Vojlovce,0,91
+3969,Donje Trnjane,0,84
+3970,Prilepac,0,122
+3971,Ladovica,0,122
+3972,Batulovce,0,122
+3973,Konopnica,0,122
+3974,Skrapež,0,122
+3975,Blagojev Kamen,0,124
+3976,Rđavica,0,86
+3977,Gornja Koznica,0,86
+3978,Dadince,0,122
+3979,Donja Lomnica,0,122
+3980,Sredor,0,122
+3981,Gornja Lomnica,0,122
+3982,Šebet,0,132
+3983,Ruplje,0,170
+3984,Vučadelce,0,86
+3985,Donji Dejan,0,122
+3986,Borin Do,0,122
+3987,Gornji Prisjan,0,122
+3988,Aleksine,0,122
+3989,Drečinovac,0,67
+3990,Lepena,0,67
+3991,Potrkanje,0,67
+3992,Kostroševci,0,86
+3993,Drajinci,0,86
+3994,Suhi Dol,0,86
+3995,Mali Suvodol,0,116
+3996,Veliki Suvodol,0,116
+3997,Staro Korito,0,67
+3998,Selačka,0,100
+3999,Drvnik,0,67
+4000,Vranište,0,116
+4001,Držina,0,116
+4002,Papratna,0,67
+4003,Gabrovnica,0,67
+4004,Ragodeš,0,116
+4005,Šugrin,0,116
+4006,Staničenje,0,116
+4007,Mirkovci,0,116
+4008,Trnavac,0,100
+4009,Kamik,0,116
+4010,Šipikovo,0,100
+4011,Rasnica,0,116
+4012,Prisjan,0,116
+4013,Petačinci,0,141
+4014,Trnski Odorovci,0,141
+4015,Iskrovci,0,141
+4016,Jalbotina,0,116
+4017,Velika Lukanja,0,116
+4018,Skrvenica,0,141
+4019,Peterlaš,0,141
+4020,Radejna,0,141
+4021,Visočki Odorovci,0,141
+4022,Slavinja,0,116
+4023,Mojinci,0,141
+4024,Brebevnica,0,141
+4025,Vlkovija,0,141
+4026,Senokos,0,141
+4027,Gornji Krivodol,0,141
+4028,Batkovići,0,36
+4029,Pribojske Čelice,0,36
+4030,Smiljevac,0,65
+4031,Vasiljevići,0,65
+4032,Opaljenik,0,65
+4033,Liso Polje,0,38
+4034,Plenibabe,0,140
+4035,Dobrinje,0,140
+4036,Gračane,0,139
+4037,Pokrvenik,0,140
+4038,Orlje,0,140
+4039,Istočni Mojstir,0,140
+4040,Izrok,0,140
+4041,Kosuriće,0,139
+4042,Leča,0,139
+4043,Biniće,0,27
+4044,Zarevo,0,27
+4045,Zlatare,0,139
+4046,Pasji Potok,0,139
+4047,Negotinac,0,139
+4048,Orahovo,0,27
+4049,Ugljarevo,0,108
+4050,Kočine,0,79
+4051,Loboder,0,108
+4052,Rajinac,0,108
+4053,Donja Crnišava,0,108
+4054,Končulj,0,76
+4055,Depce,0,168
+4056,Mađare,0,168
+4057,Negovac,0,76
+4058,Žuželjica,0,76
+4059,Tesovište,0,121
+4060,Srednji Statovac,0,68
+4061,Jovine Livade,0,68
+4062,Đurovac,0,68
+4063,Zoljevo,0,84
+4064,Pirkovac,0,102
+4065,Božinovac,0,67
+4066,Bacijevce,0,86
+4067,Donje Gare,0,122
+4068,Donja Sokolovica,0,67
+4069,Dobroviš,0,122
+4070,Mala Jasikova,0,100
+4071,Cerev Del,0,116
+4072,Dragovita,0,141
+4073,Zaskovci,0,116
+4074,Činiglavci,0,116
+4075,Gornja Nevlja,0,141
+4076,Jelovica,0,116
+4077,Boljev Dol,0,141
+4078,Gornji Stranjani,0,12
+4079,Kovilje,0,65
+4080,Erčege,0,65
+4081,Guceviće,0,140
+4082,Koniče,0,140
+4083,Bregovi,0,140
+4084,Nadumce,0,140
+4085,Čmanjke,0,140
+4086,Podlokanj,0,33
+4087,Grubetiće,0,139
+4088,Jova,0,139
+4089,Tiodže,0,27
+4090,Gornji Dubič,0,108
+4091,Kutlovac,0,42
+4092,Ljanik,0,168
+4093,Arbanaška,0,68
+4094,Brežani,0,42
+4095,Šišmanovac,0,68
+4096,Dobrotić,0,68
+4097,Mačina,0,68
+4098,Javorje,0,122
+4099,Gornja Sokolovica,0,67
+4100,Budoželja,0,65
+4101,Bovanj,0,140
+4102,Vever,0,139
+4103,Stradovo,0,139
+4104,Pusta Tušimlja,0,139
+4105,Batnjik,0,139
+4106,Pajsak,0,108
+4107,Laudonovac,0,46
+4108,Čar,0,76
+4109,Vidovača,0,68
+4110,Kostenica,0,68
+4111,Kalabovce,0,86
+4112,Ostrc,0,122
+4113,Vidovac,0,67
+4114,Kanjevina,0,45
+4115,Brniševo,0,140
+4116,Skukovo,0,139
+4117,Plavkovo,0,27
+4118,Stanevce,0,168
+4119,Pečeno,0,168
+4120,Gornja Šušaja,0,168
+4121,Struganica,0,121
+4122,Bukoloram,0,68
+4123,Vlasina Rid,0,86
+4124,Basara,0,116
+4125,Milojkovac,0,116
+4126,Devreč,0,140
+4127,Drežnica,0,76
+4128,Đušnica,0,68
+4129,Stari Đurovac,0,68
+4130,Balčak,0,68
+4131,Strajiniće,0,45
+4132,Šipče,0,140
+4133,Špiljani,0,140
+4134,Orlovac,0,48
+4135,Grapa,0,141
+4136,Petrovo Polje,0,45
+4137,Berčevac,0,168
+4138,Gnila,0,140
+4139,Rastelica,0,48
+4140,Uzovo,0,76
+4141,Odojeviće,0,139
+4142,Trn,0,48
+4143,Đorđevac,0,76
+4144,Dugojnica,0,86
+4145,Markovac,0,109
+4146,Topola (selo),0,69
+4147,Rakovac,0,27
+4148,Novo Selo,0,27
+4149,Plana,0,4
+4150,Kamenica,0,4
+4151,Zaklopača,0,4
+4152,Mala Vrbica,0,71
+4153,Stubal,0,4
+4154,Trgovište,0,4
+4155,Grabovac,0,44
+4156,Junkovac,0,69
+4157,Mladenovac (selo),0,109
+4158,Donja Trnava,0,69
+4159,Cerovac,0,71
+4160,Cerovac,0,5
+4161,Đurđevo,0,163
+4162,Dublje,0,108
+4163,Velika Grabovnica,0,79
+4164,Lukovo,0,48
+4165,Stubal,0,8
+4166,Stragari,0,108
+4167,Bučje,0,108
+4168,Popović,0,163
+4169,Bošnjane,0,163
+4170,Jabučje,0,71
+4171,Rača,0,163
+4172,Dobri Do,0,123
+4173,Vrbovac,0,123
+4174,Ralja,0,123
+4175,Prnjavor,0,21
+4176,Mala Plana,0,5
+4177,Staro Selo,0,20
+4178,Novo Selo,0,111
+4179,Subotica,0,8
+4180,Žunje,0,79
+4181,Lazarevac,0,60
+4182,Mačkovac,0,48
+4183,Štitare,0,60
+4184,Vučak,0,60
+4185,Suvaja,0,52
+4186,Vrba,0,20
+4187,Lozovik,0,20
+4188,Kovačevac,0,20
+4189,Dublje,0,80
+4190,Grabovac,0,80
+4191,Bresje,0,20
+4192,Vlaški Do,0,7
+4193,Toponica,0,85
+4194,Trnjane,0,43
+4195,Vrbnica,0,85
+4196,Veliko Selo,0,85
+4197,Kupinovo,0,48
+4198,Rataje,0,121
+4199,Buštranje,0,121
+4200,Novo Selo,0,147
+4201,Vranjska Banja,0,153
+4202,Novo Selo,0,86
+4203,Bresnica,0,77
+4204,Novo Selo,0,48
+4205,Kaludra,0,68
+4206,Suvaja,0,42
+4207,Tulare,0,68
+4208,Zdravinje,0,68
+4209,Lipovac,0,60
+4210,Lovci,0,60
+4211,Tekija,0,60
+4212,Varvarin (selo),0,52
+4213,Gornja Toponica,0,68
+4214,Drenovac,0,68
+4215,Maćedonce (retkocersko),0,160
+4216,Brestovac,0,87
+4217,Rečica,0,144
+4218,Ćukovac,0,68
+4219,Ribare,0,60
+4220,Vodice,0,68
+4221,Petrovac,0,68
+4222,Klisurica,0,68
+4223,Porodin,0,10
+4224,Vitkovac,0,10
+4225,Varoš,0,117
+4226,Podgorac,0,117
+4227,Padina,0,26
+4228,Kamenica,0,10
+4229,Kovanluk,0,26
+4230,Loćika,0,10
+4231,Bradarac,0,10
+4232,Kraljevo,0,10
+4233,Balajnac,0,113
+4234,Subotica,0,80
+4235,Dubnica,0,80
+4236,Grabovica,0,113
+4237,Tekija,0,104
+4238,Davidovac,0,104
+4239,Bošnjane,0,104
+4240,Lomnica,0,113
+4241,Leskovac,0,103
+4242,Bistrica,0,103
+4243,Trnovče,0,103
+4244,Starčevo,0,103
+4245,Rečica,0,43
+4246,Popovac,0,114
+4247,Ostrovo,0,114
+4248,Kumane,0,114
+4249,Zabrega,0,104
+4250,Resavica (selo),0,113
+4251,Ribare,0,131
+4252,Kaona,0,124
+4253,Krivača,0,91
+4254,Šilovo,0,91
+4255,Novo Selo,0,91
+4256,Kamenica,0,87
+4257,Dragovac,0,87
+4258,Ćukovac,0,87
+4259,Badnjevac,0,144
+4260,Međa,0,84
+4261,Svirce,0,84
+4262,Vlase,0,84
+4263,Milanovo,0,84
+4264,Lipovica,0,84
+4265,Niš (palilula),0,143
+4266,Donja Trnava,0,134
+4267,Vrbovac,0,128
+4268,Stanci,0,10
+4269,Popovac,0,134
+4270,Knežica,0,70
+4271,Niš (crveni Krst),0,134
+4272,Niš (medijana),0,99
+4273,Niš (pantelej),0,135
+4274,Lipovac,0,10
+4275,Resnik,0,128
+4276,Trgovište,0,128
+4277,Šarbanovac,0,128
+4278,Ravna Reka,0,120
+4279,Beli Potok,0,84
+4280,Belanovce,0,120
+4281,Jovac,0,120
+4282,Brestovo,0,120
+4283,Priboj,0,84
+4284,Šainovac,0,84
+4285,Orašac,0,84
+4286,Kamenica,0,135
+4287,Rudare,0,84
+4288,Kumarevo,0,84
+4289,Ostrovica,0,120
+4290,Priboj,0,120
+4291,Slatina,0,84
+4292,Grdelica (selo),0,84
+4293,Oraovica (kod Grdelice),0,84
+4294,Suvi Do,0,143
+4295,Novo Selo,0,128
+4296,Rujište,0,83
+4297,Suvi Do,0,131
+4298,Koprivnica,0,132
+4299,Milatovac,0,131
+4300,Selište,0,131
+4301,Jablanica,0,83
+4302,Mali Izvor,0,83
+4303,Brestovac,0,89
+4304,Markovac,0,107
+4305,Stajkovce,0,86
+4306,Koznica,0,120
+4307,Novo Selo,0,84
+4308,Brezovica,0,122
+4309,Bistrica,0,170
+4310,Dolac (selo),0,62
+4311,Mezgraja,0,18
+4312,Crnče,0,62
+4313,Gradište,0,62
+4314,Glogovac,0,62
+4315,Toponica,0,62
+4316,Izvor,0,102
+4317,Slatina,0,67
+4318,Orešac,0,67
+4319,Krupac,0,62
+4320,Lukovo,0,102
+4321,Vrbica,0,100
+4322,Trgovište,0,67
+4323,Jelašnica,0,67
+4324,Borovac,0,100
+4325,Resnik,0,18
+4326,Kalna,0,170
+4327,Draginac,0,18
+4328,Radoševac,0,18
+4329,Ponor,0,116
+4330,Vlahovo,0,102
+4331,Vitanovac,0,62
+4332,Klenje,0,62
+4333,Klisura,0,62
+4334,Cerova,0,116
+4335,Leskovac,0,100
+4336,Bučje,0,89
+4337,Jelašnica,0,100
+4338,Glogovica,0,100
+4339,Brestovac,0,94
+4340,Jasenica,0,94
+4341,Slatina,0,94
+4342,Izvor,0,116
+4343,Veliko Selo,0,116
+4344,Miloševo,0,94
+4345,Crni Vrh,0,67
+4346,Oreovica,0,116
+4347,Aleksandrovac,0,94
+4348,Bukovče,0,94
+4349,Davidovac,0,98
+4350,Mala Vrbica,0,98
+4351,Prnjavor,0,106
+4352,Lipnica,0,37
+4353,Straža,0,37
+4354,Novo Selo,0,37
+4355,Čitluk,0,130
+4356,Stupnica,0,37
+4357,Slatina,0,37
+4358,Cerova,0,63
+4359,Veliko Selo,0,37
+4360,Kamenica,0,37
+4361,Glogovac,0,22
+4362,Sovljak,0,22
+4363,Vrbovo,0,12
+4364,Rača,0,36
+4365,Čitluk,0,36
+4366,Ivanje,0,12
+4367,Jablanica,0,148
+4368,Kovačevac,0,12
+4369,Drenova,0,12
+4370,Divci,0,12
+4371,Brezna,0,36
+4372,Stave,0,63
+4373,Lug,0,23
+4374,Belotić,0,22
+4375,Osečina (selo),0,152
+4376,Dvorište,0,106
+4377,Krivaja,0,106
+4378,Slatina,0,106
+4379,Kruščica,0,16
+4380,Bare,0,12
+4381,Gračanica,0,12
+4382,Mileševo,0,12
+4383,Kriva Reka,0,148
+4384,Gornja Bela Reka,0,78
+4385,Brezovice,0,93
+4386,Dobrotin,0,23
+4387,Cerje,0,23
+4388,Jelovik,0,23
+4389,Volujac,0,61
+4390,Kaona,0,119
+4391,Belotić,0,119
+4392,Zablaće,0,106
+4393,Sušica,0,93
+4394,Duboko,0,61
+4395,Bogatić,0,93
+4396,Novaci,0,38
+4397,Orašac,0,106
+4398,Visoka,0,16
+4399,Kosjerić (selo),0,105
+4400,Trnava,0,61
+4401,Kamenica,0,61
+4402,Ravnje,0,93
+4403,Jasenica,0,93
+4404,Raduša,0,38
+4405,Žabari,0,93
+4406,Beloševac,0,93
+4407,Vrbica,0,15
+4408,Slatina,0,38
+4409,Ljutice,0,133
+4410,Tabanović,0,95
+4411,Loznica,0,93
+4412,Brezovica,0,38
+4413,Vrelo,0,38
+4414,Ušće,0,47
+4415,Orašac,0,47
+4416,Cerova,0,16
+4417,Planinica,0,95
+4418,Trešnjevica,0,16
+4419,Rudnica,0,140
+4420,Raduša,0,140
+4421,Brnjica,0,45
+4422,Vučak,0,65
+4423,Guča (selo),0,118
+4424,Zabrđe,0,45
+4425,Rogača,0,118
+4426,Joševa,0,38
+4427,Mionica (selo),0,95
+4428,Pridvorica,0,82
+4429,Lučani (selo),0,118
+4430,Strmovo,0,82
+4431,Pepeljevac,0,82
+4432,Lajkovac (selo),0,82
+4433,Takovo,0,38
+4434,Ratari,0,47
+4435,Ugrinovci,0,174
+4436,Polom,0,88
+4437,Pridvorica,0,97
+4438,Belo Polje,0,47
+4439,Baljevac,0,47
+4440,Rakovac,0,139
+4441,Dubovo,0,140
+4442,Požega,0,139
+4443,Paralovo,0,139
+4444,Rajac,0,97
+4445,Slatina,0,97
+4446,Petnica,0,97
+4447,Brezova,0,4
+4448,Beljina,0,97
+4449,Loznica,0,97
+4450,Drenova,0,88
+4451,Stubica,0,49
+4452,Lukavica,0,49
+4453,Brajkovac,0,49
+4454,Trnava,0,97
+4455,Trbušnica,0,49
+4456,Bistrica,0,49
+4457,Medoševac,0,49
+4458,Dren,0,49
+4459,Baluga (ljubićska),0,97
+4460,Nakučani,0,88
+4461,Cerova,0,88
+4462,Kruševica,0,49
+4463,Lipnica,0,97
+4464,Majdan,0,88
+4465,Zagrađe,0,88
+4466,Brezovica,0,88
+4467,Strmovo,0,49
+4468,Guncati,0,40
+4469,Sibnica,0,162
+4470,Slatina,0,162
+4471,Guberevac,0,162
+4472,Beograd (savski Venac),0,175
+4473,Beograd (stari Grad),0,176
+4474,Banja,0,139
+4475,Postenje,0,139
+4476,Osoje,0,139
+4477,Brestovo,0,139
+4478,Trnava,0,27
+4479,Varevo,0,27
+4480,Brezna,0,4
+4481,Kovači,0,4
+4482,Jablanica,0,88
+4483,Grabovica,0,88
+4484,Stojnik,0,162
+4485,Konjuša,0,44
+4486,Lipovac,0,88
+4487,Ljubičevac,0,71
+4488,Lipovac,0,69
+4489,Kamenica,0,71
+4490,Vinča,0,69
+4491,Crkvine,0,109
+4492,Ploča,0,8
+4493,Brnjica,0,44
+4494,Sibnica,0,4
+4495,Drenovac,0,71
+4496,Ribari,0,79
+4497,Kobilje,0,79
+4498,Bare,0,72
+4499,Vitanovac,0,60
+4500,Velika Kruševica,0,60
+4501,Šljivovac,0,85
+4502,Sibnica,0,7
+4503,Aleksandrovac,0,121
+4504,Bresnica,0,121
+4505,Babina Poljana,0,147
+4506,Ploča,0,77
+4507,Dukat,0,77
+4508,Izvor,0,77
+4509,Kutlovo,0,48
+4510,Stubla,0,160
+4511,Zagrađe,0,48
+4512,Viča,0,68
+4513,Slatina,0,60
+4514,Kobilje,0,60
+4515,Pločnik,0,167
+4516,Štulac,0,91
+4517,Savinac,0,87
+4518,Crni Kao,0,117
+4519,Grabovo,0,117
+4520,Vlaška,0,75
+4521,Zabrđe,0,103
+4522,Kula,0,85
+4523,Golubovac,0,104
+4524,Manastirica,0,103
+4525,Jošanica,0,131
+4526,Barič,0,92
+4527,Radevce,0,91
+4528,Poroštica,0,91
+4529,Igrište,0,84
+4530,Drenovac,0,121
+4531,Aleksandrovo,0,26
+4532,Dobrujevac,0,10
+4533,Miljkovac,0,134
+4534,Jagnjilo,0,120
+4535,Padež,0,84
+4536,Bistrica,0,84
+4537,Jelašnica,0,84
+4538,Oraovica (kod Crkovnice),0,84
+4539,Davidovac,0,102
+4540,Vrelo,0,135
+4541,Čukljenik,0,150
+4542,Vrbovac,0,83
+4543,Predejane (selo),0,84
+4544,Dobro Polje,0,170
+4545,Ribare,0,102
+4546,Novo Selo,0,62
+4547,Oreovac,0,62
+4548,Aleksandrovac,0,18
+4549,Šarbanovac,0,67
+4550,Stapar,0,93
+4551,Cikote,0,37
+4552,Orašac,0,12
+4553,Bukovik,0,12
+4554,Dubnica,0,105
+4555,Korman,0,106
+4556,Donja Bela Reka,0,78
+4557,Bukovik,0,78
+4558,Vapa,0,45
+4559,Bukovac,0,95
+4560,Bogaraš,0,25
+4561,Mirosaljci,0,16
+4562,Rasno,0,45
+4563,Dragojevac,0,16
+4564,Dolovo,0,140
+4565,Jarebice,0,140
+4566,Vučkovica,0,118
+4567,Živica,0,118
+4568,Petka,0,49
+4569,Skobalj,0,82
+4570,Vrba,0,140
+4571,Pope,0,139
+4572,Zabrđe,0,139
+4573,Vrnčani,0,88
+4574,Leskovac,0,49
+4575,Baluga (trnavska),0,97
+4576,Cerje,0,4
+4577,Reka,0,4
+4578,Belo Polje,0,27
+4579,Pobrđe,0,27
+4580,Mataruge,0,4
+4581,Bare,0,4
+4582,Drlupa,0,162
+4583,Kotraža,0,71
+4584,Leskovac,0,44
+4585,Ljubić,0,44
+4586,Rajkovac,0,69
+4587,Slatina,0,20
+4588,Goločelo,0,71
+4589,Brđani,0,79
+4590,Maleševo,0,72
+4591,Ćelije,0,60
+4592,Selište,0,48
+4593,Tijovac,0,48
+4594,Mala Vrbnica,0,60
+4595,Orašje,0,52
+4596,Svinjište,0,168
+4597,Mala Reka,0,147
+4598,Lukovo,0,121
+4599,Pepeljevac,0,48
+4600,Pridvorica,0,42
+4601,Bovan,0,60
+4602,Toponica,0,144
+4603,Petrovac,0,84
+4604,Izvor,0,144
+4605,Dašnica,0,10
+4606,Donja Toponica,0,134
+4607,Smrdan,0,84
+4608,Novo Selo,0,132
+4609,Miljkovac,0,132
+4610,Ravna Gora,0,122
+4611,Đurinac,0,102
+4612,Šljivovik,0,102
+4613,Izvor,0,18
+4614,Planinica,0,116
+4615,Lukavica,0,141
+4616,Samarinovac,0,94
+4617,Čitluk,0,112
+4618,Gračanica,0,130
+4619,Slatina,0,12
+4620,Miloševac,0,106
+4621,Kosančić,0,58
+4622,Trnava,0,148
+4623,Bačevci,0,93
+4624,Novo Selo,0,3
+4625,Gradac,0,45
+4626,Krivača,0,118
+4627,Ostrovica,0,140
+4628,Lukovo,0,27
+4629,Brestovac,0,44
+4630,Prnjavor,0,88
+4631,Ravnište,0,79
+4632,Okruglica,0,108
+4633,Dubrava,0,48
+4634,Žabare,0,60
+4635,Mojsinje,0,167
+4636,Petrovac,0,91
+4637,Čubura,0,26
+4638,Studena,0,121
+4639,Gornja Trnava,0,134
+4640,Beli Potok,0,128
+4641,Toponica,0,132
+4642,Mala Grabovnica,0,84
+4643,Vrbnica,0,45
+4644,Joševa,0,93
+4645,Subotica,0,145
+4646,Bresnica,0,145
+4647,Dubnica,0,45
+4648,Kriva Reka,0,88
+4649,Bresnik,0,4
+4650,Belo Polje,0,88
+4651,Pavlovac,0,69
+4652,Đerekare,0,79
+4653,Lukavac,0,60
+4654,Nesvrta,0,153
+4655,Novo Selo,0,68
+4656,Vina,0,84
+4657,Leskovik,0,134
+4658,Kukavica,0,120
+4659,Debeli Lug,0,146
+4660,Crveni Breg,0,84
+4661,Glogovac,0,67
+4662,Dupljane,0,94
+4663,Ursule,0,45
+4664,Novo Selo,0,119
+4665,Čitluk,0,45
+4666,Bukovica,0,4
+4667,Jablanica,0,139
+4668,Ravni,0,79
+4669,Petrovac,0,147
+4670,Boljevac,0,60
+4671,Crna Bara,0,10
+4672,Lipe,0,131
+4673,Brajkovac,0,12
+4674,Sopotnica,0,12
+4675,Trešnjevica,0,45
+4676,Međurečje,0,4
+4677,Barje,0,77
+4678,Krivaja,0,45
+4679,Belo Polje,0,79
+4680,Ćurkovica,0,121
+4681,Braljina,0,167
+4682,Dobra Voda,0,87
+4683,Ravni Del,0,84
+4684,Drenova,0,148
+4685,Dobroselica,0,72
+4686,Margance,0,121
+4687,Bukovica,0,60
+4688,Leskovica,0,18
+4689,Grabovac,0,108
+4690,Katun,0,121
+4691,Golubac,0,95
+4692,Bare,0,113
+4693,Kovilovo,0,179
+4694,Crni Vrh,0,153
+4695,Vrelo,0,18
+4696,Vrelo,0,48
+4697,Jezero,0,45
+4698,Klisura,0,70
+4699,Kneževac,0,45
+4700,Drenovac,0,67
+4701,Vitkovac,0,67
+4702,Crvena Jabuka,0,38
+4703,Rečica,0,98
+4704,Kamenica,0,88
+4705,Dubrava,0,65
+4706,Turija,0,76
+4707,Trnava,0,168
+4708,Šume,0,65
+4709,Odžaci,0,108
+4710,Rača,0,23
+4711,Ćelije,0,82
+4712,Trnava,0,139
+4713,Gradac,0,27
+4714,Rvati,0,27
+4715,Selište,0,68
+4716,Bukovac,0,113
+4717,Belo Polje,0,86
+4718,Planinica,0,108
+4719,Mađere,0,68
+4720,Strmac,0,36
+4721,Suvi Do,0,140
+4722,Šaronje,0,140
+4723,Rokci,0,65
+4724,Bele Vode,0,139
+4725,Kovači,0,140
+4726,Brusnik,0,65
+4727,Dobri Do,0,65
+4728,Kruševo,0,139
+4729,Čečina,0,65
+4730,Zeoke,0,49
+4731,Brđani,0,139
+4732,Kruševica,0,27
+4733,Gradac,0,79
+4734,Brezovica,0,108
+4735,Lopaš,0,108
+4736,Kupusina,0,111
+4737,Sibnica,0,42
+4738,Stubal,0,42
+4739,Vrbovac,0,42
+4740,Breznica,0,76
+4741,Rakovac,0,76
+4742,Beli Breg,0,121
+4743,Novo Selo,0,76
+4744,Buštranje,0,76
+4745,Krivaja,0,42
+4746,Lazarevac,0,42
+4747,Mala Reka,0,60
+4748,Bogujevac,0,68
+4749,Beli Kamen,0,68
+4750,Dubrava,0,87
+4751,Gornja Trnava,0,68
+4752,Bela Voda,0,68
+4753,Zebica,0,60
+4754,Lipovac,0,117
+4755,Dvorište,0,113
+4756,Lipovica,0,113
+4757,Panjevac,0,113
+4758,Gložane,0,122
+4759,Duga Poljana,0,132
+4760,Lipovica,0,122
+4761,Boljare,0,122
+4762,Gradište,0,122
+4763,Jastrebac,0,122
+4764,Kruševica,0,122
+4765,Topli Do,0,86
+4766,Blato,0,116
+4767,Gradište,0,67
+4768,Gradašnica,0,116
+4769,Petrovac,0,116
+4770,Gradište,0,116
+4771,Sopot,0,116
+4772,Dobri Do,0,116
+4773,Obrenovac,0,116
+4774,Bučje,0,36
+4775,Preseka,0,65
+4776,Krstac,0,45
+4777,Gradac,0,140
+4778,Osaonica,0,139
+4779,Slatina,0,139
+4780,Jablanica,0,140
+4781,Bare,0,139
+4782,Borovac,0,76
+4783,Bogdanovac,0,76
+4784,Jablanica,0,76
+4785,Grabovac,0,68
+4786,Pasjača,0,68
+4787,Koprivnica,0,10
+4788,Jezero,0,113
+4789,Crna Bara,0,122
+4790,Barje,0,141
+4791,Slivnica,0,141
+4792,Plana,0,45
+4793,Dolac,0,139
+4794,Staro Selo,0,68
+4795,Cerovica,0,128
+4796,Koprivnica,0,139
+4797,Grabovica,0,45
+4798,Obornjača,0,25
+4799,Sušica,0,45
+4800,Bukovac,0,168
+4801,Jastrebac,0,76
+4802,Ravno Bučje,0,67
+4803,Brezovica,0,97
+4804,Gare,0,168
+4805,Planinica,0,141
+4806,Goševo,0,139
+4807,Boroviće,0,45
+4808,Gradac,0,65
+4809,Rusce,0,76
+4810,Pokrvenik,0,27

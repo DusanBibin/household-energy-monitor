@@ -1,0 +1,136 @@
+services:
+  backend:
+    build:
+      context: ./nvtbackend   
+      dockerfile: Dockerfile
+    container_name: nvt-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_started
+      influxdb:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+    command: ["--initMode", "--fullData"]
+    volumes:
+      - ./nvtbackend/data:/app/data
+      - ./nvtbackend/files:/app/files
+      - ./nvtbackend/password.txt:/app/password.txt
+      
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: nvt
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: postgresdb
+    ports:
+      - "5432:5432"
+    volumes:
+    - ./nvtbackend/data:/docker-entrypoint-initdb.d:ro
+    - postgres_data:/var/lib/postgresql/data
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: nvt
+      DOCKER_INFLUXDB_INIT_PASSWORD: sifra123
+      DOCKER_INFLUXDB_INIT_ORG: nvt
+      DOCKER_INFLUXDB_INIT_BUCKET: nvt
+      DOCKER_INFLUXDB_INIT_RETENTION: 0
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: CTL_htkm6HgdUY8K9yRFdfb74-R5mE6e6GMUkRd2eYn5zXWaS9O3ubtj3-l8g13S-Qc04xIqAcVsyXUzuLvwaQ==
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+      - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS http://localhost:8086/health || exit 1"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+  influxdb-seed:
+    image: influxdb:2.7
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./nvtbackend/data/influxdb/electricity_compact.lp:/tmp/electricity_compact.lp:ro
+      - influxdb-seed-flag:/seed
+    command: >
+      sh -c 'if [ ! -f /seed/done ]; then influx write --host http://influxdb:8086 --bucket nvt --org nvt --token CTL_htkm6HgdUY8K9yRFdfb74-R5mE6e6GMUkRd2eYn5zXWaS9O3ubtj3-l8g13S-Qc04xIqAcVsyXUzuLvwaQ== --file /tmp/electricity_compact.lp && touch /seed/done; fi'
+
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  
+      - "15672:15672" 
+    environment:
+      RABBITMQ_DEFAULT_USER: nvt
+      RABBITMQ_DEFAULT_PASS: 123
+
+  frontend:
+    build:
+      context: ./nvtfrontend
+      dockerfile: Dockerfile  
+    container_name: nvt-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nvtbackend/files:/files:ro
+    depends_on:
+      - backend
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.enabled=false  
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+    - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 || exit 1"]
+      interval: 10s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+  influxdb-data:
+  influxdb-config:
+  postgres_data:
+  es_data:
+  influxdb-seed-flag:

@@ -1,0 +1,110 @@
+package com.example.nvt.service;
+
+import com.example.nvt.enumeration.RequestStatus;
+import com.example.nvt.model.HouseholdRequest;
+import com.example.nvt.model.User;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+
+@Service
+@RequiredArgsConstructor
+public class EmailService {
+
+    @Value("${spring.sendgrid.api-key}")
+    private String SENDGRID_API_KEY;
+
+    private final HttpServletRequest request;
+
+    private static final String VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID = "d-e79626c48a854745b0aea28224306310";
+    private static final String REQUEST_STATUS_UPDATE_TEMPLATE_ID = "d-0db559b7cda8486083c66806e8547cfa";
+    private static final String SENDER_EMAIL = "springbootsendgrid@gmail.com";
+    @Async
+    public void sendVerificationEmail(User user, String baseUrl) {
+        Email from = new Email(SENDER_EMAIL);
+
+        String toEmail = user.getEmail();
+
+        Email to = new Email(toEmail);
+        System.out.println("Sent email to: " + toEmail);
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(to);
+        Mail mail = new Mail();
+        mail.setFrom(from);
+
+
+        
+        String link = baseUrl + "/auth/verification/".concat(user.getVerification().getVerificationCode());
+
+        String subject = "Verify email address";
+        personalization.addDynamicTemplateData("firstName", user.getFirstName());
+        personalization.addDynamicTemplateData("verificationLink", link);
+        mail.setTemplateId(VERIFICATION_TEMPLATE_VERIFY_EMAIL_ID);
+
+        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        System.out.println("iksdebro1");
+        System.out.println(link);
+        System.out.println("iksdebro2");
+    }
+
+    @Async
+    public void sendRequestUpdate(String email, String firstName, String address, String status, String reason) {
+        Email from = new Email(SENDER_EMAIL);
+
+        Email to = new Email(email);
+        System.out.println("Sent email to: " + email);
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(to);
+        Mail mail = new Mail();
+        mail.setFrom(from);
+
+        String subject = "Request status update";
+        personalization.addDynamicTemplateData("firstName", firstName);
+        personalization.addDynamicTemplateData("address", address);
+        personalization.addDynamicTemplateData("requestStatus", status);
+        if(reason != null ) personalization.addDynamicTemplateData("reason", "Reason: " + reason);
+
+        mail.setTemplateId(REQUEST_STATUS_UPDATE_TEMPLATE_ID);
+
+        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+}

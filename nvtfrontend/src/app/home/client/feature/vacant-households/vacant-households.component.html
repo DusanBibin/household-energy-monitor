@@ -1,0 +1,8 @@
+<div class="w-100 h-100">
+  <app-vacant-households-form 
+    (searchQueryE)="handleSearchQuery($event)" [filteredSuggestionsInput]="filteredSuggestions"
+    (searchAggregateE)="handleSearchAggregate($event)" [realestatesInput]="realestatePins"
+    (realestateIdsE)="handleRealestateImagePaths($event)" [realestatesImagesMapInput]="realestateImagesMap"
+    (realestateIdE)="handleRealestateNavigationDetails($event)" [vacantRealestateApartmentsIds]="vacantRealestateApartmentsIds"
+  ></app-vacant-households-form>
+</div>

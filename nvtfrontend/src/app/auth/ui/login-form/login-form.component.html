@@ -1,0 +1,63 @@
+<div style="min-height: 100vh;" class="d-flex p-4">
+    
+  <div class="border p-3" style="width: fit-content; margin: auto;">
+
+    <form [formGroup]="loginForm" (ngSubmit)="loginClick()" novalidate>
+        
+      <h4 class="card-title mb-4">Login</h4>
+        
+      <div class="form-group mb-2">
+          <label for="email">Email address</label>
+          <input type="email"
+                class="form-control"
+                id="email"
+                placeholder="Enter email"
+                name="email"
+                formControlName="email"
+                [ngClass]="{'is-invalid': loginClicked && isControlInvalid('email')}"
+                required>
+                
+          @if (loginClicked && isControlInvalid('email')) {
+            <div
+                class="invalid-feedback">
+                {{getControlError('email')}}
+            </div>
+          }
+          
+    
+      </div>
+      
+      <div class="form-group mb-2">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter password"
+            formControlName="password"
+            [ngClass]="{'is-invalid': loginClicked && loginForm.get('password')?.invalid}"
+            required>
+
+            @if(loginClicked && isControlInvalid('password')) {
+              <div
+                class="invalid-feedback">
+                {{getControlError('password')}}
+              </div>
+            }
+      </div>
+      <p class="fs-8 mb-4">Don't have an account?<a routerLink="../registration" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Register here</a></p>
+
+        
+      <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+        @if (!loading) {<span>Login</span>}
+        @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+        
+      </button>
+
+  </form>
+
+        
+  </div>
+
+</div>
+    

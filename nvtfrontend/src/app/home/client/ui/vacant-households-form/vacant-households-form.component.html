@@ -1,0 +1,244 @@
+<div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: auto;" (click)="showApartmentSelection($event)">
+  
+  @if(apartmentSelectionPosition.buildingSelected && filteredVacantRealestateApartmentsIds){
+    <div
+    class="popup-card shadow-lg d-flex flex-column" style="max-width: 250px; max-height: 250px; overflow:hidden;"
+    (click)="clickPopup($event)"
+    [ngStyle]="{
+      left: apartmentSelectionPosition.location.x + 'px',
+      top: apartmentSelectionPosition.location.y + 'px',
+      position: 'absolute',
+      zIndex: 1080
+    }">
+      <div class="pb-3">Choose an apartment</div> 
+      <input
+        type="text"
+        class="form-control mb-3"
+        style="font-size: medium;"
+        name="search-vacant"
+        [formControl]="apartmentSearchControl"
+        (input)="highlightApartmentNumber($event)"
+      >
+
+
+      <ul class="list-group w-100 bg-white flex-grow-1 overflow-auto m-0 border">
+
+      @for (apartment of filteredVacantRealestateApartmentsIds; track i; let i = $index) {
+          <li
+            class="list-group-item list-group-item-action"
+            style="cursor: pointer;" [innerHTML]="apartment.apartmentNumber" (click)="navigateHouseholdApartmentDetails(apartment.id)">
+          </li>
+        }
+        
+      </ul>
+  </div>
+  }
+  
+
+  <div class="px-3">
+    <div class="form-group w-100 position-relative mb-4" style="box-sizing: border-box;  ">
+      <label for="searchInput"></label>
+      <input
+        type="text"
+        class="form-control py-3 ps-4 pe-5"
+        id="searchInput"
+        style="font-size: medium;"
+        placeholder="Search for address, city, zipcode, municipality, or region"
+        name="search-vacant"
+        [formControl]="searchControl"
+        (focus)="showDropdown=true"
+        (blur)="hideDropdown()"
+      >
+      <i
+      class="bi bi-x-circle position-absolute text-secondary"
+      style="top: 65%; right: 16px; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem;"
+      *ngIf="searchControl.value"
+      (click)="searchControl.setValue('')"
+      ></i>
+  
+
+      @if((filteredSuggestionsInput.length > 0 && showDropdown)){
+        <ul style="z-index: 1050; overflow-y: auto;"
+        class="list-group position-absolute w-100 shadow bg-white shadow"  >
+
+          @for (suggestion of filteredSuggestionsInput; track suggestion) {
+            <li
+              class="list-group-item list-group-item-action"
+              style="cursor: pointer;"
+              (mousedown)="selectSuggestion(suggestion, $event)">
+              <i class="bi me-2" [ngClass]="{
+                'bi-house-door': suggestion.type === 'HOUSE',
+                'bi-building': suggestion.type === 'BUILDING',
+                'bi-signpost': suggestion.type === 'COTTAGE',
+                'bi-shop': suggestion.type === 'COMMERCE_SPACE',
+                'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(suggestion.type)
+              }"></i> 
+              <span [innerHTML]="suggestion.highlighted"></span>
+            </li>
+          }
+          
+        </ul>
+      }
+      
+    </div>
+  </div>
+  
+  <div class="d-flex flex-grow-1 flex-xl-row flex-column" style="background-color: blue; min-height: 0;"  > 
+  
+    <div class="d-flex flex-column" style="background-color: purple; min-width: 50%; min-height: 40%;">
+      
+        <div id="mape" style="width: 100%; height: 100%">
+          <google-map #googleMap width="100%" height="100%" [options]="mapOptions">        
+          </google-map>
+          @if(selectedRealestateMarker){
+            <div class="popup-card" style="z-index: 1070;" [style.left.px]="popupPosition.x" [style.top.px]="popupPosition.y">
+              <a (click)="routeDetailsPage(selectedRealestateMarker.doc, $event)">
+                <i class="bi me-2" [ngClass]="{
+                  'bi-house-door': selectedRealestateMarker.doc.type === 'HOUSE',
+                  'bi-building': selectedRealestateMarker.doc.type === 'BUILDING',
+                  'bi-signpost': selectedRealestateMarker.doc.type === 'COTTAGE',
+                  'bi-shop': selectedRealestateMarker.doc.type === 'COMMERCE_SPACE',
+                  'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(selectedRealestateMarker.doc.type)
+                }"></i> {{selectedRealestateMarker.doc.address}} 
+              </a>
+            </div>
+
+          }
+        
+        </div>
+
+       
+    
+    </div>
+    
+    <div class="border flex-grow-1 " style="background-color: white; box-sizing: border-box; overflow-y: scroll;">
+     
+     <!-- <div>{{realestatesInput.length}} {{realestatePagination.totalPages}} {{realestatePagination.currentPage}}</div> -->
+    
+      @if(realestatesInput.length === 0 && !isLoading){<div class="w-100 h-100 d-flex justify-content-center align-items-center"><p class="m-0 g-0 px-2 pt-3">No vacant realestates found</p></div>}
+      @if (isLoading) {
+          <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+      }@else {
+        @if(realestatesDisplay.length > 0){
+        
+          <div class="container-fluid g-0 p-3">
+            <div class="row g-3">
+              @if(realestatesInput.length > 0){<p class="m-0 g-0 px-2 pt-3">{{realestatesInput.length}} results displayed, zoom in on map for more results</p>}
+              @for (realestate of realestatesDisplay; track realestate.doc.dbId) {
+
+
+                <div class="col-sm-6" style="display: block; cursor: pointer;">
+                  <a (click)="routeDetailsPage(realestate.doc, $event)" class="text-decoration-none text-reset">
+                    <div [ngClass]="{'shadow-lg': realestate.doc.dbId == highlightedRealestate?.doc?.dbId}"
+                    class="p-2 rounded border shadow " (mouseenter)="highlightRealestate(true, realestate)" (mouseleave)="highlightRealestate(false, realestate)">
+                      <div id="{{'carousel' + realestate.doc.dbId}}" class="carousel slide">
+
+                      
+
+                      <div class="carousel-indicators">
+                        @for (imagePath of realestate.imagePaths; track imagePath; let index = $index) {
+                          <button type="button" (click)="$event.stopPropagation()" 
+                            [attr.data-bs-target]="'#carousel' + realestate.doc.dbId" 
+                            [attr.data-bs-slide-to]="index" 
+                            [attr.aria-label]="'Slide ' + index + 1"
+                            
+                            [class.active]="index === 0"
+                            [attr.aria-current]="index === 0 ? 'true' : null"></button>
+                        }
+                      </div>
+
+                      <div class="carousel-inner">
+                        @for (imagePath of realestate.imagePaths; track imagePath; let index = $index) {
+                          <div class="carousel-item" [ngClass]="{'active':index === 0}">
+                            <img [src]="ENVIRONMENT_URL + imagePath" class="d-block w-100" alt="..." loading="lazy">
+                          </div>
+                        }
+                      </div>
+
+                    
+
+
+
+
+                      <button (click)="$event.stopPropagation()" class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button (click)="$event.stopPropagation()" class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + realestate.doc.dbId"  data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                      
+                      </div>
+                      <div >
+                      <i class="bi me-2" [ngClass]="{
+                        'bi-house-door': realestate.doc.type === 'HOUSE',
+                        'bi-building': realestate.doc.type === 'BUILDING',
+                        'bi-signpost': realestate.doc.type === 'COTTAGE',
+                        'bi-shop': realestate.doc.type === 'COMMERCE_SPACE',
+                        'bi-geo-alt': ['REGION', 'MUNICIPALITY', 'CITY'].includes(realestate.doc.type)
+                      }">
+                      </i>
+                      @if(realestate.doc.type === 'HOUSE'){<strong>Residential House</strong>}
+                      @if(realestate.doc.type === 'BUILDING'){<strong>Apartment Building</strong>}
+                      @if(realestate.doc.type === 'COTTAGE'){<strong>Cottage</strong>}
+                      @if(realestate.doc.type === 'COMMERCE_SPACE'){<strong>Commerce Space</strong>}
+                      <br>
+                      {{realestate.doc.address}}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              
+              
+              
+              
+              }
+            </div>
+            
+  
+            @if(realestatesInput.length > 10){
+              <div class="d-flex justify-content-center align-items-center">
+                <nav aria-label="iksdebro" class="pt-4">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage - 1)" [ngClass]="{'disabled': realestatePagination.currentPage === 1}">Previous</a>
+                    </li>
+                    @for (pageNum of realestatePagination.pages; track $index) {
+                      <li class="page-item" role="button" (click)="changePage(pageNum)" [ngClass]="{'active': realestatePagination.currentPage === pageNum}"><a class="page-link">{{pageNum}}</a></li>
+                    }
+                    <li class="page-item">
+                      <a class="page-link" role="button" (click)="changePage(realestatePagination.currentPage + 1)"[ngClass]="{'disabled': realestatePagination.currentPage === realestatePagination.totalPages}">Next</a>
+                    </li> 
+                  </ul>
+                </nav>
+              </div>
+            }
+            
+            
+          </div>
+        }
+      }
+      
+      
+
+
+
+
+    </div>
+
+
+    
+  
+  </div>
+ 
+  
+  
+
+</div>
+
+

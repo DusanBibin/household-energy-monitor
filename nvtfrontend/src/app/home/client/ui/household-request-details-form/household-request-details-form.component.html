@@ -1,0 +1,323 @@
+<div class="w-100 d-flex flex-column" style="height: 100%; overflow-y: scroll;">
+   
+ 
+    <div class="border-bottom p-3" style="background-color: white;">
+        <h5 class="m-0">Household claim request</h5>
+    </div>
+    
+
+    @if(requestDetails){
+        
+
+        @if(requestDetails.isError && requestDetails.error?.message == "Request doesn't exist"){
+            <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                {{requestDetails.error?.message}}    
+            </div>
+        }@else {
+            <div class="container-fluid g-0 m-0 p-0 h-100 d-flex flex-column">
+        
+                <div class="row g-2 m-0 px-2 pb-3 pt-2">
+                    <div class="row g-0 m-0 px-1 pt-2">
+                        <div class="p-3 rounded border shadow ">
+        
+        
+                            <div class="row p-0 m-0">
+                                <div class="col-12 d-flex p-0 m-0">
+
+                                    @if(requestDetails.data){
+
+                                    
+                                        <dl class="m-0 col-12 row" >
+                                            <div class="col-md-6 col-12">
+                                                
+                                                <div class="mb-3">
+                                                    <dt class="fs-4 fw-normal">Address</dt>
+                                                    <div class="d-flex flex-row align-items-center">  
+                                                    
+                                                        <i class="bi me-2" [ngClass]="{
+                                                            'bi-house-door': requestDetails.data.realEstateType === 'HOUSE',
+                                                            'bi-building': requestDetails.data.realEstateType === 'BUILDING',
+                                                            'bi-signpost': requestDetails.data.realEstateType === 'COTTAGE',
+                                                            'bi-shop': requestDetails.data.realEstateType === 'COMMERCE_SPACE'
+                                                            }"></i> 
+                                                        <p class="card-title ps-2 m-0">{{requestDetails.data.address}}</p>
+                                                
+            
+                                                        <a class="ms-3" (click)="navigate()" >
+                                                            <button class="btn btn-primary">View household</button>
+                                                        </a>
+            
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="mb-3">
+                                                    <dt class="fs-4 fw-normal">Request status</dt>
+                                                    <dd>{{requestDetails.data.requestStatus}}</dd>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <dt class="fs-4 fw-normal">Request type</dt>
+                                                    <dd>{{requestDetails.data.requestType}}</dd>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <dt class="fs-4 fw-normal">Request submitted time</dt>
+                                                    <dd>{{requestDetails.data.requestSubmitted | date: 'dd/MM/yyyy HH:mm:ss'}}</dd>
+                                                </div>
+            
+                                                <div class="mb-3">
+                                                    <dt class="fs-4 fw-normal mb-2">Requester</dt>
+                                                    
+                                                    <div class="d-flex flex-row align-items-center pt-1">
+                                                        <img [src]="envProfileImg + requestDetails.data.requester.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                                        <div class="d-flex flex-column">
+                                                            <span>{{requestDetails.data.requester.name}} {{requestDetails.data.requester.lastname}}</span>
+                                                            <span>{{requestDetails.data.requester.email}}</span>
+                                                            
+                                                        </div>
+                                                    </div> 
+                                                
+                                                </div>
+                                                
+
+                                                
+
+                                                <div class="mb-3">
+            
+                                                    <dt class="fs-4 fw-normal mb-2">Request files</dt>
+            
+                                                    @for (filePath of requestDetails.data.proof_images; track filePath){
+                                                        <div class="d-flex flex-row align-items-center pt-1">
+                                                            <span class="me-3">{{filePath}}</span>
+                                                            <a [href]="envRequestFile + requestDetails.data.id + '/' + filePath" download>
+                                                                <button class="btn btn-primary">Download</button>
+                                                            </a>
+                                                        </div> 
+                                                    }
+                                                    @for (filePath of requestDetails.data.proof_pdfs; track filePath){
+                                                        <div class="d-flex flex-row align-items-center pt-1">
+                                                            <span class="me-3">{{filePath}}</span>
+                                                            <a [href]="envRequestFile + requestDetails.data.id + '/' + filePath" download>
+                                                                <button class="btn btn-primary">Download</button>
+                                                            </a>
+                                                        </div> 
+                                                    }
+                                                    
+                                                
+                                                </div>
+                                                
+                                            </div>
+                                            
+            
+                                            @if(requestDetails.data.requestStatus !== 'PENDING'){
+                                                <div class="col-lg-6 col-12">
+                                                    
+                                                
+                                                    <div class="mb-3">
+                                                        <dt class="fs-4 fw-normal">Request processed time</dt>
+                                                        <dd>{{requestDetails.data.requestProcessed | date: 'dd/MM/yyyy HH:mm:ss'}}</dd>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <dt class="fs-4 fw-normal mb-2">Reviewing admin</dt>
+                                                        
+                                                        <div class="d-flex flex-row align-items-center pt-1">
+                                                            <img [src]="envProfileImg + requestDetails.data.reviewingAdmin.id" alt="profileImg" width="40" height="40" class="rounded-circle me-2">
+                                                            <div class="d-flex flex-column">
+                                                                <span>{{requestDetails.data.reviewingAdmin.name}} {{requestDetails.data.reviewingAdmin.lastname}}</span>
+                                                                <span>{{requestDetails.data.reviewingAdmin.email}}</span>
+                                                                
+                                                            </div>
+                                                        </div> 
+                                                        
+                                                    </div>
+                                                
+                                                    @if(requestDetails.data.denialReason){
+                                                        <div class="mb-3">
+                                                            <dt class="fs-4 fw-normal">Decline reason</dt>
+                                                            <dd class="fs-6">{{requestDetails.data.denialReason}}</dd>    
+                                                        </div>
+                                                    }
+                                                    
+                                                        
+                                                    
+                                                    
+                                                    
+                                                </div>
+                                            }
+                                        
+            
+                                            
+            
+                                        </dl>
+                                    }
+                                    
+                                </div>
+                            </div>
+                            
+
+                            @if(this.jwtService.hasRole(['SUPERADMIN', 'ADMIN'])){
+
+                                @if(this.requestDetails.data && this.requestDetails.data.requestStatus === "PENDING"){
+                                    <div class="row p-0 m-0">
+
+
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            @if(isLoadingDecision){
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                  </div>
+                                            }@else {
+                                                <div class="d-flex gap-2">
+                                                    <button (click)="openDenyDialog()" class="btn btn-primary">Deny request</button>
+                                                    
+                                                    <button (click)="openAcceptDialog()" class="btn btn-primary">Accept request</button>
+                                                </div>
+                                            }
+                                            
+                                            
+                                        </div>
+                                       
+                                    </div>
+                                }
+                                
+                            }
+                            
+                            
+                            
+        
+                        </div>
+                    </div>    
+    
+                </div>
+    
+                
+                <ng-template #denyDialog let-modal>
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">Please input the reason for denying the request</h1>
+                      <button type="button" class="btn-close" aria-label="Close" (click)="resetAndDismiss(modal)"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column">
+                       
+                          
+                            
+                        <form [formGroup]="form">
+                            <textarea rows="10" class="form-control" formControlName="reason"></textarea>
+                        </form>
+                          
+        
+        
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" (click)="resetAndDismiss(modal)">Cancel</button>
+                      <button type="button" class="btn btn-primary" (click)="denyRequest(modal)">Submit</button>
+                    </div>
+              </ng-template>
+
+
+
+              <ng-template #acceptDialog let-modal>
+                <div class="modal-header">
+                  <a>The following requests will be declined automatically</a>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="resetAndDismiss(modal)"></button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="min-height: 200px;">
+                    <!-- <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div> -->
+                    @if(isLoadingPending){
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    }@else{
+                        <div class="h-100 w-100" style="overflow-y: scroll; margin: 0;"> 
+                            @if(helperPendingRequests){
+                                @for (req of helperPendingRequests.content; track req){
+                                    <div (click)="navigateDetailsRequest(req.realestateId, req.householdId, req.id, modal)"
+                                    (mouseenter)="selectedId = req.id" 
+                                    (mouseleave)="selectedId = 0" 
+                                    class="p-2 mb-2 rounded border d-flex flex-md-row justify-content-between flex-column"
+                                    [ngClass]="{
+                                    'shadow-lg': selectedId === req.id,
+                                    'shadow': selectedId !== req.id
+                                    }"
+                                    style="cursor: pointer;">
+                        
+                                        <div>
+                                            <div class="d-flex flex-row mb-1 "> 
+                                            
+                                                <i class="bi me-2" [ngClass]="{
+                                                    'bi-house-door': req.realEstateType === 'HOUSE',
+                                                    'bi-building': req.realEstateType === 'BUILDING',
+                                                    'bi-signpost': req.realEstateType === 'COTTAGE',
+                                                    'bi-shop': req.realEstateType === 'COMMERCE_SPACE'
+                                                }"></i> 
+                                                <p class="m-0" style="font-size: medium;">{{req.address}}</p>
+                                    
+                                            </div>
+                                            <p class="m-0" style="font-size: medium;">{{req.requestStatus}}</p>
+                                        </div>
+                            
+                            
+                            
+                                        <div class="d-flex flex-row flex-md-column gap-3 gap-md-0 mt-3 mt-md-0">
+                                            <small class="m-0" >Subbmitted at: {{req.requestSubmitted | date: 'dd/MM/yyyy HH:mm:ss'}}</small>
+                                            @if(req.requestProcessed) {<small class="m-0" >Processed at: {{req.requestProcessed  | date: 'dd/MM/yyyy HH:mm:ss'}}</small>}
+                                        </div>
+                                    
+                                    </div>
+                                }
+                            }
+                        </div>
+                        @if (totalPages > 1) {
+                            <div class="d-flex justify-content-center align-items-center border-top">
+                                <nav aria-label="Pagination" class="pt-4">
+                                    <ul class="pagination">
+                                
+                                    <li class="page-item" [class.disabled]="page === 0">
+                                        <a class="page-link" role="button" (click)="goPrevious()">Previous</a>
+                                    </li>
+                                    
+                
+                                    <li 
+                                        class="page-item" 
+                                        [class.active]="page === i"
+                                        role="button" 
+                                        *ngFor="let p of [].constructor(totalPages); let i = index"
+                                        (click)="goToPage(i)">
+                                        <a class="page-link">{{ i + 1 }}</a>
+                                    </li>
+                                
+                                    <li class="page-item" [class.disabled]="page === totalPages - 1">
+                                        <a class="page-link" role="button" (click)="goNext()">Next</a>
+                                    </li>
+                                
+                                    </ul>
+                                </nav>
+                                </div>
+                        }
+                    }
+                    
+                      
+                    
+    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="resetAndDismiss(modal)">Cancel</button>
+                  <button type="button" class="btn btn-primary" (click)="acceptRequest(modal)">Submit</button>
+                </div>
+          </ng-template>
+               
+                    
+                
+        
+            </div>
+        }
+        
+    }@else{
+        <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    }
+
+
+</div>

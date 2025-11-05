@@ -1,0 +1,133 @@
+package com.example.nvt.service;
+
+
+import com.example.nvt.DTO.PartialUserDataDTO;
+import com.example.nvt.DTO.UserSummaryDTO;
+import com.example.nvt.exceptions.NotFoundException;
+import com.example.nvt.model.SuperAdmin;
+import com.example.nvt.model.User;
+import com.example.nvt.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Service;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final FileService fileService;
+
+
+    public User getUserByEmail(String email){
+
+        var userWrapper = userRepository.findByEmail(email);
+        if(userWrapper.isEmpty()) throw new NotFoundException("User not found");
+        return userWrapper.get();
+    }
+
+    public User getUserById(Long id) {
+        var userWrapper = userRepository.findById(id);
+        if(userWrapper.isEmpty()) throw new NotFoundException("User not found");
+        return userWrapper.get();
+    }
+
+
+    public boolean emailAlreadyExists(String email){
+        var userWrapper = userRepository.findByEmail(email);
+        return userWrapper.isPresent();
+    }
+
+
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
+
+
+
+    public UserSummaryDTO convertToDTO(User user){
+        return UserSummaryDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .lastname(user.getLastname())
+                .name(user.getFirstName())
+                .build();
+    }
+
+    @Cacheable(value = "smallProfileImg", key = "#userId")
+    public String getSmallProfileImg(Long userId) {
+
+        var user = getUserById(userId);
+        String imagePath = fileService.uploadDirUsers + "/" +  user.getId() + "/small_" + user.getProfileImg();
+
+        if(!Files.exists(Paths.get(imagePath))) return "/" + fileService.uploadDirUsers + "/DEFAULT.jpg";
+
+        return "/" + imagePath;
+    }
+
+    public PartialUserDataDTO getUserData(User user, Long userId){
+
+        if(user == null){
+            user =  getUserById(userId);
+        }
+
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
+
+        if(user instanceof SuperAdmin superAdmin){
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+
+        return data;
+
+    }
+
+
+    @Cacheable(value = "partialUserData", key = "#userId")
+    public PartialUserDataDTO getPartialUserData(Long userId) {
+
+        User user = getUserById(userId);
+
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
+
+        if (user instanceof SuperAdmin superAdmin) {
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+
+        return data;
+    }
+
+
+    public PartialUserDataDTO getPartialUserData(User user) {
+        PartialUserDataDTO data = PartialUserDataDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getFirstName())
+                .lastname(user.getLastname())
+                .role(user.getRole())
+                .build();
+
+        if (user instanceof SuperAdmin superAdmin) {
+            data.setFirstLogin(superAdmin.isFirstLogin());
+        }
+
+        return data;
+    }
+
+}

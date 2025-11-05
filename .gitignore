@@ -1,0 +1,85 @@
+# ========== Global IntelliJ Ignore for Both Projects ==========
+# Ignore IntelliJ project files in both frontend and backend
+nvtbackend/.idea/
+nvtbackend/*.iml
+
+nvtfrontend/.idea/
+nvtfrontend/*.iml
+
+# ========== Java & Maven (Spring Boot backend) ==========
+
+# Compiled class files
+nvtbackend/**/*.class
+
+# Maven target directory
+nvtbackend/target/
+
+# IntelliJ project artifacts
+nvtbackend/.idea/
+nvtbackend/*.iml
+nvtbackend/out/
+
+# Logs and JVM crash logs
+nvtbackend/*.log
+nvtbackend/hs_err_pid*
+nvtbackend/replay_pid*
+
+# Maven wrapper files
+nvtbackend/.mvn/wrapper/maven-wrapper.jar
+nvtbackend/.mvn/timing.properties
+
+# Release-related
+nvtbackend/pom.xml.tag
+nvtbackend/pom.xml.releaseBackup
+nvtbackend/pom.xml.versionsBackup
+nvtbackend/pom.xml.next
+nvtbackend/release.properties
+nvtbackend/dependency-reduced-pom.xml
+nvtbackend/buildNumber.properties
+
+# Eclipse files (if accidentally added)
+nvtbackend/.classpath
+nvtbackend/.project
+
+# ========== Angular (Frontend) ==========
+
+# Build output
+nvtfrontend/dist/
+nvtfrontend/tmp/
+
+# Dependency directories
+nvtfrontend/node_modules/
+nvtfrontend/bower_components/
+
+# IDE/editor settings
+nvtfrontend/.idea/
+nvtfrontend/*.iml
+
+# Angular CLI / build system generated files
+nvtfrontend/*.log
+nvtfrontend/.angular/
+nvtfrontend/.sass-cache/
+nvtfrontend/coverage/
+nvtfrontend/connect.lock/
+nvtfrontend/libpeerconnection.log/
+nvtfrontend/npm-debug.log
+nvtfrontend/testem.log
+nvtfrontend/typings/
+
+# e2e test files
+nvtfrontend/e2e/*.js
+nvtfrontend/e2e/*.map
+
+# ========== macOS System Files ==========
+.DS_Store
+
+scripts/venv/
+nvtbackend/data/influxdb
+
+__pycache__/
+*.pyc
+
+
+*.key
+*.crt
+certs/

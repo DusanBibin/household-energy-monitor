@@ -1,0 +1,223 @@
+<!-- <div style="min-height: 100vh;" class="d-flex justify-content-center align-items-center p-4"> -->
+
+<div class="w-100 d-flex p-3" style="height: 100%; overflow-y: scroll;">
+    
+    <form style="margin: auto;" [formGroup]="registrationForm" (ngSubmit)="registerClick()" class="border p-3">
+      
+
+      @if(this.router.url === '/home/superadmin/admin-registration'){
+            <h4 class="mb-4">Admin registration</h4>
+      }
+      @else {
+            <h4 class="mb-4">Registration</h4>
+      }
+
+      <div class="d-flex flex-column flex-md-row justify-content-center gap-4 mb-4">
+          <div style="height: auto; width: fit-content;">
+              <div style="height: 17rem; width: 17rem;" class="border p-2 rounded">
+                  <img [src]="imgUrl" class="img-thumbnail rounded" style="height: 100%; width: 100%; background-color: grey;">
+              </div>
+
+
+
+              <div class="form-group mt-2 mb-3">
+                  <label for="profileImg">Profile picture</label>
+                  <input type="file"
+
+                        #fileInput
+                        style="width: 17rem;"
+                        class="form-control"
+                        id="profileImg"
+                        placeholder="Upload profile image"
+                        name="profileImg"
+                        (change)="onImagePicked($event)"
+                        [ngClass]="{'is-invalid': isInvalidImg}"
+                        required>
+                        
+                  
+                  @if(isInvalidImg){
+                        <div class="invalid-feedback">
+                              {{imgErrMsg}}
+                        </div>            
+                  }
+                      
+              </div>
+
+              @if(!(this.router.url === '/home/admin-registration')){
+                  <p class="fs-7">Already have an account?<a routerLink="../login" routerLinkActive="active" class="link-offset-2 link-underline link-underline-opacity-0"> Login here</a></p>
+              }
+              
+          </div>
+          <div style="height: fit-content; width: fit-content;">
+              
+              <div style="width: 17rem;" class="form-group mb-2" >
+                  <label for="name">Name</label>
+                  <input type="text"
+                        style="width: 17rem;"
+                        class="form-control"
+                        id="name"
+                        placeholder="Enter your name"
+                        name="name"
+                        formControlName="name"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('name')}"
+                        required>
+                        
+                  @if(registerClicked && isControlInvalid('name')){
+                        <div class="invalid-feedback">
+                        
+                              {{getControlError('name')}}
+                        </div>
+                  }
+                  
+              </div>
+              
+              <div style="width: 17rem;" class="form-group mb-2">
+                  <label for="lastname">Lastname</label>
+                  <input type="text"
+                        style="width: 17rem;"   
+                        class="form-control"
+                        id="lastname"
+                        placeholder="Enter your lastname"
+                        name="lastname"
+                        formControlName="lastname"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('lastname')}"
+                        required>
+                        
+                  
+                  @if(registerClicked && isControlInvalid('lastname')){
+                        <div class="invalid-feedback">
+                              {{getControlError('lastname')}}
+                        </div>
+                  }
+                      
+              </div>
+              
+              <div style="width: 17rem;" class="form-group mb-2">
+                  <label for="email">Enter email</label>
+                  <input type="email"
+                        style="width: 17rem;"
+                        class="form-control"
+                        id="email"
+                        placeholder="Enter your email"
+                        name="email"
+                        formControlName="email"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('email')}"
+                        required>
+                  
+                  @if(registerClicked && isControlInvalid('email')) {
+                        <div class="invalid-feedback">
+                              {{getControlError('email')}}
+                        </div>
+                  }
+                      
+              </div>
+
+              <div style="width: 17rem;" class="form-group mb-2">
+                  <label for="phone">Phone number</label>
+                  <input type="text"
+                        
+                        class="form-control"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                        name="phone"
+                        formControlName="phone"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('phone')}"
+                        required>
+                  
+                  @if(registerClicked && isControlInvalid('phone')){
+                        <div class="invalid-feedback">
+                              {{getControlError('phone')}}
+                        </div>
+                  }
+                  
+              </div>
+
+
+              <div style="width: 17rem;" class="form-group mb-2">
+                  <label for="password">Password</label>
+                  <input type="password"
+                        style="width: 17rem;"
+                        class="form-control"
+                        id="password"
+                        placeholder="Enter password"
+                        name="password"
+                        formControlName="password"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('password')}"
+                        required>
+                  @if (registerClicked && isControlInvalid('password')) {
+                        <div
+                              class="invalid-feedback">
+                              {{getControlError('password')}}
+                        </div>     
+                  }
+                      
+              </div>
+
+
+              <div class="form-group">
+                  <label for="repeatPassword">Repeat password</label>
+                  <input type="password"
+                  style="width: 17rem;"
+                        class="form-control"
+                        id="repeatPassword"
+                        placeholder="Enter password again"
+                        name="repeatPassword"
+                        formControlName="repeatPassword"
+                        [ngClass]="{'is-invalid': registerClicked && isControlInvalid('repeatPassword')}"
+                        required>
+                        
+                  @if (registerClicked && isControlInvalid('repeatPassword')) {
+                        <div class="invalid-feedback">
+                              {{getControlError('repeatPassword')}}
+                        </div>
+                  }
+                  
+                      
+              </div>
+
+
+            </div>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+                  @if (!loading) {<span>Register</span>}
+                  @if (loading) {<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+            </button>
+
+
+            
+
+      </form>
+
+      <ng-template #cropDialog let-modal>
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Crop your profile picture</h1>
+              <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center">
+                  <image-cropper class="border" style="width: fit-content; height: fit-content;"
+                        [imageChangedEvent]="imageChangedEvent"
+                        [maintainAspectRatio]="true"
+                        [aspectRatio]="1 / 1"
+                        [cropperMinWidth]="128"
+                        [cropperMinHeight]="128"
+                        [cropperMaxHeight]="minCrop"
+                        [cropperMaxWidth]="minCrop"
+                        format="png"
+                        (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded($event)"
+                        (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()"
+                  ></image-cropper>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="cropImage()">Submit</button>
+            </div>
+      </ng-template>
+
+
+      
+      
+</div>
