@@ -17,14 +17,14 @@ services:
         condition: service_started
       elasticsearch:
         condition: service_healthy
-    command: ["--initMode", "--fullData"]
+    command: ["--initMode"]
     volumes:
       - ./nvtbackend/data:/app/data
       - ./nvtbackend/files:/app/files
       - ./nvtbackend/password.txt:/app/password.txt
       
   db:
-    image: postgres
+    image: postgres:17
     environment:
       POSTGRES_USER: nvt
       POSTGRES_PASSWORD: 123
